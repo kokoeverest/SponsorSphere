@@ -12,11 +12,11 @@ namespace SponsorSphere.Domain.Models
     {
         public string IBAN { get; set; } = iban;
         public List<User> SponsoredAthletes { get; set; } = [];
-        public Task BecomeSponsor()
+        public Task? BecomeSponsor()
         {
             return null;
         }
-        public Task CancelSponsorship()
+        public Task? CancelSponsorship()
         {
             return null;
         }

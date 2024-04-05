@@ -10,4 +10,3 @@ namespace SponsorSphere.Domain.Models
         public decimal AmountNeeded { get; set; } = amount;
     }
 }
-// Goal class - date, type of the event (Race, Self-organized, Training etc.), sport, Competitor profile etc.

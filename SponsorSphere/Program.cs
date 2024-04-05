@@ -1,4 +1,13 @@
-﻿using SponsorSphere.Domain.Models;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using SponsorSphere.Application;
+using SponsorSphere.Domain.Enums;
+using SponsorSphere.Domain.Models;
+using SponsorSphere.Infrastructure.Interfaces;
+using SponsorSphere.Infrastructure.Repositories;
+using System.Diagnostics.Metrics;
+using System.Numerics;
+using System.Xml.Linq;
 
 var input = delegate (string s)
 {
@@ -6,18 +15,24 @@ var input = delegate (string s)
     return Console.ReadLine();
 };
 
+
+var diContainer = new ServiceCollection()
+    .AddSingleton<IAthleteRepository, AthleteRepository>()
+    .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly))
+    .BuildServiceProvider();
+
+IMediator mediator = diContainer.GetRequiredService<IMediator>();
 // Simulation of a regisration form
 
 //var name = input("First name: ");
+//var lastName = input("Last name: ");
 //var email = input("Email: ");
 //var pass = input("Password: ");
 //var country = input("Country: ");
-//var lastName = input("Last name: ");
 //var phone = input("Phone: ");
 //var birthDay = input("Date of birth: dd/mm/yyyy");
-//var sport = input("Sport: ");
 
-//Athlete currentAthlete = new(
+//var currentAthlete = await mediator.Send(new CreateAthlete(
 //    name,
 //    lastName,
 //    email,
@@ -25,20 +40,32 @@ var input = delegate (string s)
 //    country,
 //    phone,
 //    birthDay,
-//    sport
-//    );
+//    SportsEnum.MountainRunning
+//    ));
 
-Athlete currentAthlete = new("Petar", "Petrov", "mail@mail.mail", "", "Bulgaria", "0812849282", "02/4/1999", "football");
-//SponsorIndividual sponsor = new (name, email, pass, country);
-//await sponsor.Register();
-await currentAthlete.Register();
+var peshoAthlete = await mediator.Send(new CreateAthlete(
+    "Petar",
+    "Petrov",
+    "5rov@mail.mail",
+    "dd",
+    "bg",
+    "09198",
+    "30/09/1983",
+    SportsEnum.MountainRunning
+    ));
 
+var goshoAhtlete = await mediator.Send(new CreateAthlete(
+    "Georgi",
+    "Petkov",
+    "5kov@mail.mail",
+    "ss",
+    "bg",
+    "09198",
+    "30/03/2005",
+    SportsEnum.Golf
+    ));
 
-// Database class - for storage of all info (sample schema of the db)
-// implementation for searching for athletes and sponsors with filtering
-// search athletes by name (alphabetically), age (ascending), country, sport, achievements, urgent needs for sponsorship (goal in the near future)
-// search sponsors by name, country, amount of athletes or money provided
+var athletes = await mediator.Send( new GetAllAthletes() );
+var golfers = await mediator.Send(new GetAthletesBySport(SportsEnum.Golf));
 
-// Main page
-
-Console.WriteLine();
+Console.WriteLine(string.Join("\n", golfers));

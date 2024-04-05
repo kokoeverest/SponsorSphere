@@ -1,4 +1,6 @@
-﻿namespace SponsorSphere.Domain.Models
+﻿using SponsorSphere.Domain.Enums;
+
+namespace SponsorSphere.Domain.Models
 {
     public class Athlete(
         string name,
@@ -8,14 +10,14 @@
         string country,
         string phone,
         string birthDate,
-        string sport
+        SportsEnum sport
         ) : User(name,
         email,
         password,
         country
         )
     {
-        public string Sport { get; set; } = sport;
+        public SportsEnum Sport { get; set; } = sport;
         public string LastName { get; set; } = lastName;
         public string PhoneNumber { get; set; } = phone;
         public DateTime BirthDate { get; set; } = DateTime.Parse(birthDate);

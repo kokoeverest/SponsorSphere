@@ -1,10 +1,7 @@
-﻿namespace SponsorSphere.Domain.Models
-{
+﻿using SponsorSphere.Domain.Enums;
 
-    public enum SponsorshipLevel
-    {
-        Monthly, Annual, SinglePayment // FundRaiser and Donation might be the same?
-    }
+namespace SponsorSphere.Domain.Models
+{
 
     public class Sponsorship(SponsorshipLevel level, User sponsor, User athlete, decimal amount)
     {

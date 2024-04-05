@@ -7,16 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Athletes\Commands\" />
-    <Folder Include="Athletes\Responses\" />
-    <Folder Include="Athletes\Queries\" />
     <Folder Include="BlogPosts\Commands\" />
     <Folder Include="BlogPosts\Responses\" />
     <Folder Include="BlogPosts\Queries\" />
     <Folder Include="Goals\Commands\" />
     <Folder Include="Goals\Responses\" />
     <Folder Include="Goals\Queries\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="SponsorCompanies\Commands\" />
     <Folder Include="SponsorCompanies\Responses\" />
     <Folder Include="SponsorCompanies\Queries\" />

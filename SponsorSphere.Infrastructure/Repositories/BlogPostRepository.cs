@@ -1,6 +1,6 @@
 ﻿namespace SponsorSphere.Infrastructure.Repositories
 {
-    public class GoalRepository
+    public class BlogPostRepository
     {
     }
 }
