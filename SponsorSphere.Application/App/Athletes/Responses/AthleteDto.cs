@@ -2,7 +2,7 @@
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
-namespace SponsorSphere.Application.Athletes.Responses
+namespace SponsorSphere.Application.App.Athletes.Responses
 {
     public class AthleteDto : IUserDto
     {
@@ -10,7 +10,7 @@ namespace SponsorSphere.Application.Athletes.Responses
         public string Name { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty; 
+        public string Country { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public int Age { get; set; }
         public SportsEnum Sport { get; set; }

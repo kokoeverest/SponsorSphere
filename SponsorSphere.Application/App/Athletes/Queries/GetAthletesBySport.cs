@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using SponsorSphere.Application.Athletes.Responses;
+using SponsorSphere.Application.App.Athletes.Responses;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Infrastructure.Interfaces;
 
-namespace SponsorSphere.Application;
+namespace SponsorSphere.Application.App.Athletes.Queries;
 
 public record GetAthletesBySport(SportsEnum Sport) : IRequest<List<AthleteDto>>;
 

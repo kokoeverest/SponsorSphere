@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using SponsorSphere.Application.Athletes.Responses;
+using SponsorSphere.Application.App.Athletes.Responses;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Interfaces;
 
-namespace SponsorSphere.Application;
+namespace SponsorSphere.Application.App.Athletes.Commands;
 
 public record CreateAthlete(
     string Name,
@@ -37,7 +37,7 @@ public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
             request.Country,
             request.Phone,
             request.BirthDate,
-            (string)request.Sport.ToString()
+            request.Sport.ToString()
         ];
 
         if (strings.Any(str => string.IsNullOrEmpty(str)))
@@ -59,9 +59,9 @@ public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
             Id = GetNextId()
         };
 
-        var newAthlete = _userRepository.Create( athlete );
+        var newAthlete = _userRepository.Create(athlete);
 
-        return Task.FromResult(AthleteDto.FromAthlete( athlete ) );
+        return Task.FromResult(AthleteDto.FromAthlete(athlete));
     }
 
     private int GetNextId()

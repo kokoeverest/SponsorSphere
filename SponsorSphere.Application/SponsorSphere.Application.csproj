@@ -7,21 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BlogPosts\Commands\" />
-    <Folder Include="BlogPosts\Responses\" />
-    <Folder Include="BlogPosts\Queries\" />
-    <Folder Include="Goals\Commands\" />
-    <Folder Include="Goals\Responses\" />
-    <Folder Include="Goals\Queries\" />
-    <Folder Include="SponsorCompanies\Commands\" />
-    <Folder Include="SponsorCompanies\Responses\" />
-    <Folder Include="SponsorCompanies\Queries\" />
-    <Folder Include="SponsorIndividuals\Commands\" />
-    <Folder Include="SponsorIndividuals\Responses\" />
-    <Folder Include="SponsorIndividuals\Queries\" />
-    <Folder Include="Sponsorships\Commands\" />
-    <Folder Include="Sponsorships\Responses\" />
-    <Folder Include="Sponsorships\Queries\" />
+    <Folder Include="App\BlogPosts\Commands\" />
+    <Folder Include="App\BlogPosts\Responses\" />
+    <Folder Include="App\BlogPosts\Queries\" />
+    <Folder Include="App\Goals\Commands\" />
+    <Folder Include="App\Goals\Responses\" />
+    <Folder Include="App\Goals\Queries\" />
+    <Folder Include="App\SponsorCompanies\Commands\" />
+    <Folder Include="App\SponsorCompanies\Responses\" />
+    <Folder Include="App\SponsorCompanies\Queries\" />
+    <Folder Include="App\SponsorIndividuals\Commands\" />
+    <Folder Include="App\SponsorIndividuals\Responses\" />
+    <Folder Include="App\SponsorIndividuals\Queries\" />
+    <Folder Include="App\Sponsorships\Commands\" />
+    <Folder Include="App\Sponsorships\Responses\" />
+    <Folder Include="App\Sponsorships\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
