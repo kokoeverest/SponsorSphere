@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Athletes\Commands\" />
+    <Folder Include="Athletes\Responses\" />
+    <Folder Include="Athletes\Queries\" />
+    <Folder Include="BlogPosts\Commands\" />
+    <Folder Include="BlogPosts\Responses\" />
+    <Folder Include="BlogPosts\Queries\" />
+    <Folder Include="Goals\Commands\" />
+    <Folder Include="Goals\Responses\" />
+    <Folder Include="Goals\Queries\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="SponsorCompanies\Commands\" />
+    <Folder Include="SponsorCompanies\Responses\" />
+    <Folder Include="SponsorCompanies\Queries\" />
+    <Folder Include="SponsorIndividuals\Commands\" />
+    <Folder Include="SponsorIndividuals\Responses\" />
+    <Folder Include="SponsorIndividuals\Queries\" />
+    <Folder Include="Sponsorships\Commands\" />
+    <Folder Include="Sponsorships\Responses\" />
+    <Folder Include="Sponsorships\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SponsorSphere.Infrastructure\SponsorSphere.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

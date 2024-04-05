@@ -3,7 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SponsorSphere.ConsolePresentation", "SponsorSphere\SponsorSphere.ConsolePresentation.csproj", "{D84087FC-7DD1-424D-9B04-9025B6A4103C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SponsorSphere.ConsolePresentation", "SponsorSphere\SponsorSphere.ConsolePresentation.csproj", "{D84087FC-7DD1-424D-9B04-9025B6A4103C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{40F9DEBB-ABB3-4783-B930-C26617392D4F} = {40F9DEBB-ABB3-4783-B930-C26617392D4F}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SponsorSphere.Application", "SponsorSphere.Application\SponsorSphere.Application.csproj", "{40F9DEBB-ABB3-4783-B930-C26617392D4F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C306E044-B0EC-482F-995D-0642C16C9D9B} = {C306E044-B0EC-482F-995D-0642C16C9D9B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SponsorSphere.Infrastructure", "SponsorSphere.Infrastructure\SponsorSphere.Infrastructure.csproj", "{C306E044-B0EC-482F-995D-0642C16C9D9B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286} = {8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SponsorSphere.Domain", "SponsorSphere.Domain\SponsorSphere.Domain.csproj", "{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +30,18 @@ Global
 		{D84087FC-7DD1-424D-9B04-9025B6A4103C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D84087FC-7DD1-424D-9B04-9025B6A4103C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D84087FC-7DD1-424D-9B04-9025B6A4103C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40F9DEBB-ABB3-4783-B930-C26617392D4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40F9DEBB-ABB3-4783-B930-C26617392D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40F9DEBB-ABB3-4783-B930-C26617392D4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40F9DEBB-ABB3-4783-B930-C26617392D4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C306E044-B0EC-482F-995D-0642C16C9D9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C306E044-B0EC-482F-995D-0642C16C9D9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C306E044-B0EC-482F-995D-0642C16C9D9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C306E044-B0EC-482F-995D-0642C16C9D9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
