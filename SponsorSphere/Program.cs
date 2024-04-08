@@ -1,13 +1,11 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SponsorSphere.Application;
+using SponsorSphere.Application.App.Athletes.Commands;
+using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Domain.Enums;
-using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Interfaces;
 using SponsorSphere.Infrastructure.Repositories;
-using System.Diagnostics.Metrics;
-using System.Numerics;
-using System.Xml.Linq;
 
 var input = delegate (string s)
 {

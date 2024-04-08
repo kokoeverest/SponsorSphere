@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="App\Achievements\Commands\" />
+    <Folder Include="App\Achievements\Responses\" />
+    <Folder Include="App\Achievements\Queries\" />
     <Folder Include="App\BlogPosts\Commands\" />
     <Folder Include="App\BlogPosts\Responses\" />
     <Folder Include="App\BlogPosts\Queries\" />

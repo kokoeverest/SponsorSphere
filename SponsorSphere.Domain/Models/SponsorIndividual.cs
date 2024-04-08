@@ -11,16 +11,15 @@ namespace SponsorSphere.Domain.Models
      string birthDate
         ) : User(name, email, password, country), ISponsor
     {
-        private DateTime _birthDate = DateTime.Parse(birthDate);
         public string LastName { get; set; } = lastName;
-        public DateTime BirthDate => _birthDate;
+        public DateTime BirthDate { get; set; } = DateTime.Parse(birthDate);
         public int Age => (int)(DateTime.Now.Subtract(BirthDate).TotalDays / 365);
         public List<User> SponsoredAthletes { get; set; } = [];
-        public Task BecomeSponsor()
+        public Task? BecomeSponsor()
         {
             return null;
         }
-        public Task CancelSponsorship()
+        public Task? CancelSponsorship()
         {
             return null;
         }
