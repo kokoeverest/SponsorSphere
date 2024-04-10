@@ -7,8 +7,9 @@ namespace SponsorSphere.Domain.Models
          string email,
          string password,
          string country,
+         string phoneNumber,
          string iban
-        ) : User(name, email, password, country), ISponsor
+        ) : User(name, email, password, country, phoneNumber), ISponsor
     {
         public string IBAN { get; set; } = iban;
         public Task? BecomeSponsor()

@@ -6,15 +6,16 @@ namespace SponsorSphere.Domain.Models
         string name,
         string email,
         string password,
-        string country
+        string country,
+        string phoneNumber
         ) : IUser
     {
         public int? Id { get; set; }
         public string Name { get; set; } = name;
         public string Email { get; set; } = email;
-        public string Password { private get; set; } = password;
+        public string Password { get; set; } = password;
         public string Country { get; set; } = country;
-        public string Phone { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = phoneNumber;
         public DateTime Created { get; set; } = DateTime.Now;
         public string PictureOrLogo { get; set; } = string.Empty;
         public string Website { get; set; } = string.Empty;

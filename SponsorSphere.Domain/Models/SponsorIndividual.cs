@@ -8,8 +8,9 @@ namespace SponsorSphere.Domain.Models
      string email,
      string password,
      string country,
+     string phoneNumber,
      string birthDate
-        ) : User(name, email, password, country), ISponsor
+        ) : User(name, email, password, country, phoneNumber), ISponsor
     {
         public string LastName { get; set; } = lastName;
         public DateTime BirthDate { get; set; } = DateTime.Parse(birthDate);

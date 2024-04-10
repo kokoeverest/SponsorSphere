@@ -2,12 +2,11 @@
 
 namespace SponsorSphere.Domain.Models
 {
-    public class Achievement(SportsEnum sport, User athlete, string eventType, string dateOfEvent, ushort placeFinished)
+    public class Achievement(Athlete athlete, SportEvent sportEvent, ushort placeFinished)
     {
         public int? Id { get; set; }
-        public DateTime Created { get; set; } = DateTime.Parse(dateOfEvent);
-        public SportsEnum Sport { get; set; } = sport;
-        public string EventType { get; set; } = eventType;
+        public SportsEnum Sport { get; set; } = sportEvent.Sport;
+        public SportEvent EventType { get; set; } = sportEvent;
         public ushort? PlaceFinished { get; set; } = placeFinished;
         public User Athlete { get; set; } = athlete;
     }

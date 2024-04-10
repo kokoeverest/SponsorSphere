@@ -1,7 +1,6 @@
 ﻿using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Interfaces;
-using System.Diagnostics.Metrics;
 
 namespace SponsorSphere.Infrastructure.Repositories
 {
@@ -59,7 +58,7 @@ namespace SponsorSphere.Infrastructure.Repositories
                     return _athletes.ElementAt(i);
                 }
             }
-            throw new ApplicationException($"User with id {userId} not found");
+            throw new ApplicationException($"Athlete with id {userId} not found");
         }
 
         public int GetLastId()

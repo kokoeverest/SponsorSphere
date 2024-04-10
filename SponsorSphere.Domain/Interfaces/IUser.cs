@@ -9,7 +9,7 @@ namespace SponsorSphere.Domain.Interfaces
         public string Email { get; }
         public string Password { set; }
         public string Country { get; }
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
         public DateTime Created { get; set; }
         public string PictureOrLogo { get; set; }
         public string Website { get; set; }

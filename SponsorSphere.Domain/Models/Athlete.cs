@@ -8,18 +8,18 @@ namespace SponsorSphere.Domain.Models
         string email,
         string password,
         string country,
-        string phone,
+        string phoneNumber,
         string birthDate,
         SportsEnum sport
         ) : User(name,
         email,
         password,
-        country
+        country,
+        phoneNumber
         )
     {
-        public SportsEnum Sport { get; set; } = sport;
         public string LastName { get; set; } = lastName;
-        public string PhoneNumber { get; set; } = phone;
+        public SportsEnum Sport { get; set; } = sport;
         public DateTime BirthDate { get; set; } = DateTime.Parse(birthDate);
 
         public List<Achievement> Achievements { get; set; } = [];

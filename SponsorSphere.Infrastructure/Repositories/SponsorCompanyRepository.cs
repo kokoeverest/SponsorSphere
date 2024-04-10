@@ -1,50 +1,61 @@
 ﻿using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Interfaces;
+using System.Diagnostics.Metrics;
 
 namespace SponsorSphere.Infrastructure.Repositories
 {
     public class SponsorCompanyRepository : ISponsorCompanyRepository
     {
-        public User Create(User user)
+        private readonly List<SponsorCompany> _sponsorCompanies = [];
+        public SponsorCompany Create(SponsorCompany user)
         {
-            throw new NotImplementedException();
+            _sponsorCompanies.Add(user);
+            return user;
         }
 
         public bool Delete(int userId)
         {
             throw new NotImplementedException();
         }
-        public User GetById(int userId)
+        public SponsorCompany GetById(int userId)
+        {
+            for (int i = 0; i < _sponsorCompanies.Count; i++)
+            {
+                if (_sponsorCompanies[i].Id == userId)
+                {
+                    return _sponsorCompanies.ElementAt(i);
+                }
+            }
+            throw new ApplicationException($"Sponsor with id {userId} not found");
+        }
+
+        public List<SponsorCompany> GetAll()
+        {
+            return _sponsorCompanies;
+        }
+
+        public List<SponsorCompany> GetByCountry(string country)
+        {
+            return _sponsorCompanies.Where(sponsorCompany => sponsorCompany.Country == country).ToList();
+        }
+
+        public List<SponsorCompany> GetByMostAthletes()
         {
             throw new NotImplementedException();
         }
 
-        public List<User> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<User> GetByCountry()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<User> GetByMostAthletes()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<User> GetByMoneyProvided()
+        public List<SponsorCompany> GetByMoneyProvided()
         {
             throw new NotImplementedException();
         }
 
         public int GetLastId()
         {
-            throw new NotImplementedException();
+            int firstId = 1;
+            return _sponsorCompanies.Max(sponsorCompany => sponsorCompany.Id) + 1 ?? firstId;
         }
 
-        public User Update(int userId)
+        public SponsorCompany Update(int userId)
         {
             throw new NotImplementedException();
         }
