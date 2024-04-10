@@ -8,7 +8,7 @@ namespace SponsorSphere.Application.Interfaces
         public string Name { get; set; }
         public string Email { get; set; }
         public string Country { get; set; }
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
         public DateTime Created { get; set; }
         public string PictureOrLogo { get; set; }
         public string Website { get; set; }

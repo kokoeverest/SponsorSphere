@@ -4,6 +4,7 @@ using SponsorSphere.Application;
 using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Domain.Enums;
+using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Interfaces;
 using SponsorSphere.Infrastructure.Repositories;
 
@@ -17,6 +18,7 @@ var input = delegate (string s)
 var diContainer = new ServiceCollection()
     .AddSingleton<IAthleteRepository, AthleteRepository>()
     .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly))
+    .AddAutoMapper(typeof(AssemblyMarker).Assembly)
     .BuildServiceProvider();
 
 IMediator mediator = diContainer.GetRequiredService<IMediator>();
@@ -27,7 +29,7 @@ IMediator mediator = diContainer.GetRequiredService<IMediator>();
 //var email = input("Email: ");
 //var pass = input("Password: ");
 //var country = input("Country: ");
-//var phone = input("Phone: ");
+//var phoneNumber = input("Phone: ");
 //var birthDay = input("Date of birth: dd/mm/yyyy");
 
 //var currentAthlete = await mediator.Send(new CreateAthlete(
@@ -36,12 +38,11 @@ IMediator mediator = diContainer.GetRequiredService<IMediator>();
 //    email,
 //    pass,
 //    country,
-//    phone,
+//    phoneNumber,
 //    birthDay,
 //    SportsEnum.MountainRunning
 //    ));
-
-var peshoAthlete = await mediator.Send(new CreateAthlete(
+var peshoAthlete = new Athlete(
     "Petar",
     "Petrov",
     "5rov@mail.mail",
@@ -50,9 +51,9 @@ var peshoAthlete = await mediator.Send(new CreateAthlete(
     "09198",
     "30/09/1983",
     SportsEnum.MountainRunning
-    ));
+    );
 
-var goshoAhtlete = await mediator.Send(new CreateAthlete(
+var goshoAthlete = new Athlete(
     "Georgi",
     "Petkov",
     "5kov@mail.mail",
@@ -61,9 +62,41 @@ var goshoAhtlete = await mediator.Send(new CreateAthlete(
     "09198",
     "30/03/2005",
     SportsEnum.Golf
+    );
+
+var peshoDto = await mediator.Send(new CreateAthlete(
+    peshoAthlete.Name,
+    peshoAthlete.LastName,
+    peshoAthlete.Email,
+    peshoAthlete.Password,
+    peshoAthlete.Country,
+    peshoAthlete.PhoneNumber,
+    peshoAthlete.BirthDate.ToString(),
+    peshoAthlete.Sport
     ));
 
+var goshoDto = await mediator.Send(new CreateAthlete(
+    goshoAthlete.Name,
+    goshoAthlete.LastName,
+    goshoAthlete.Email,
+    goshoAthlete.Password,
+    goshoAthlete.Country,
+    goshoAthlete.PhoneNumber,
+    goshoAthlete.BirthDate.ToString(),
+    goshoAthlete.Sport
+    ));
+
+peshoAthlete.Achievements.Add(new Achievement(SportsEnum.MountainRunning, peshoAthlete, "race", "2020/10/01", 1));
+
 var athletes = await mediator.Send( new GetAllAthletes() );
+
+foreach (var athlete in athletes)
+{
+    foreach (var achievement in athlete.Achievements)
+    {
+        Console.WriteLine(achievement.PlaceFinished);
+    }
+}
 var golfers = await mediator.Send(new GetAthletesBySport(SportsEnum.Golf));
 
 Console.WriteLine(string.Join("\n", golfers));

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using SponsorSphere.Application.App.Athletes.Responses;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
@@ -12,7 +13,7 @@ public record CreateAthlete(
     string Email,
     string Password,
     string Country,
-    string Phone,
+    string PhoneNumber,
     string BirthDate,
     SportsEnum Sport
     ) : IRequest<AthleteDto>;
@@ -20,10 +21,11 @@ public record CreateAthlete(
 public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
 {
     private readonly IAthleteRepository _userRepository;
-
-    public CreateAthleteHandler(IAthleteRepository userRepository)
+    private readonly IMapper _mapper;
+    public CreateAthleteHandler(IAthleteRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _mapper = mapper;
     }
 
     public Task<AthleteDto> Handle(CreateAthlete request, CancellationToken cancellationToken)
@@ -35,7 +37,7 @@ public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
             request.Email,
             request.Password,
             request.Country,
-            request.Phone,
+            request.PhoneNumber,
             request.BirthDate,
             request.Sport.ToString()
         ];
@@ -52,7 +54,7 @@ public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
             request.Email,
             request.Password,
             request.Country,
-            request.Phone,
+            request.PhoneNumber,
             request.BirthDate,
             request.Sport)
         {
@@ -60,8 +62,9 @@ public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
         };
 
         var newAthlete = _userRepository.Create(athlete);
+        var athleteDto = _mapper.Map<AthleteDto>(athlete);
 
-        return Task.FromResult(AthleteDto.FromAthlete(athlete));
+        return Task.FromResult(athleteDto);
     }
 
     private int GetNextId()
