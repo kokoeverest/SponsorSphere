@@ -22,7 +22,6 @@ namespace SponsorSphere.Domain.Models
         public string PhoneNumber { get; set; } = phone;
         public DateTime BirthDate { get; set; } = DateTime.Parse(birthDate);
 
-        public List<User> Sponsors { get; set; } = [];
         public List<Achievement> Achievements { get; set; } = [];
         public List<Goal> Goals { get; set; } = [];
 

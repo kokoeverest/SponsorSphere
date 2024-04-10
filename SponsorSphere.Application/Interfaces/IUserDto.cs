@@ -17,5 +17,6 @@ namespace SponsorSphere.Application.Interfaces
         public string TwitterLink { get; set; }
         public string StravaLink { get; set; }
         public List<BlogPost> Posts { get; set; }
+        public List<Sponsorship> Sponsorships { get; set; }
     }
 }

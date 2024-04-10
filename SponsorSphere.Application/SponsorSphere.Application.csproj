@@ -11,23 +11,19 @@
     <Folder Include="App\Achievements\Responses\" />
     <Folder Include="App\Achievements\Queries\" />
     <Folder Include="App\BlogPosts\Commands\" />
-    <Folder Include="App\BlogPosts\Responses\" />
     <Folder Include="App\BlogPosts\Queries\" />
     <Folder Include="App\Goals\Commands\" />
-    <Folder Include="App\Goals\Responses\" />
     <Folder Include="App\Goals\Queries\" />
     <Folder Include="App\SponsorCompanies\Commands\" />
-    <Folder Include="App\SponsorCompanies\Responses\" />
     <Folder Include="App\SponsorCompanies\Queries\" />
     <Folder Include="App\SponsorIndividuals\Commands\" />
-    <Folder Include="App\SponsorIndividuals\Responses\" />
     <Folder Include="App\SponsorIndividuals\Queries\" />
     <Folder Include="App\Sponsorships\Commands\" />
-    <Folder Include="App\Sponsorships\Responses\" />
     <Folder Include="App\Sponsorships\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MediatR" Version="12.2.0" />
   </ItemGroup>
 

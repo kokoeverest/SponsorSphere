@@ -1,5 +1,4 @@
 ﻿using SponsorSphere.Domain.Interfaces;
-//using InternshipProject.Domain.Logs;
 
 namespace SponsorSphere.Domain.Models
 {
@@ -10,7 +9,7 @@ namespace SponsorSphere.Domain.Models
         string country
         ) : IUser
     {
-        public int? Id { get; set; } = null;
+        public int? Id { get; set; }
         public string Name { get; set; } = name;
         public string Email { get; set; } = email;
         public string Password { private get; set; } = password;
@@ -24,6 +23,7 @@ namespace SponsorSphere.Domain.Models
         public string TwitterLink { get; set; } = string.Empty;
         public string StravaLink { get; set; } = string.Empty;
         public List<BlogPost> Posts { get; set; } = [];
+        public List<Sponsorship> Sponsorships { get; set; } = [];
 
         public async Task Register()
         {

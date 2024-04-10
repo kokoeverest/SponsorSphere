@@ -11,7 +11,6 @@ namespace SponsorSphere.Domain.Models
         ) : User(name, email, password, country), ISponsor
     {
         public string IBAN { get; set; } = iban;
-        public List<User> SponsoredAthletes { get; set; } = [];
         public Task? BecomeSponsor()
         {
             return null;

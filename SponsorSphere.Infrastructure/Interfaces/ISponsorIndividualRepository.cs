@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SponsorSphere.Domain.Enums;
+using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Infrastructure.Interfaces
 {
-    internal interface ISponsorIndividualRepository
+    public interface ISponsorIndividualRepository
     {
+        SponsorIndividual Create(SponsorIndividual user);
+        SponsorIndividual Update(int userId);
+        bool Delete(int userId);
+        List<SponsorIndividual> GetAll();
+        SponsorIndividual GetById(int userId);
+        List<SponsorIndividual> GetByCountry(string country);
+        int GetLastId();
+        public List<SponsorIndividual> GetByAge(int age);
+
     }
 }

@@ -2,7 +2,7 @@
 {
     public class BlogPost(string date, string content, User author, List<string> pictures)
     {
-        public int? Id { get; set; } = null;
+        public int? Id { get; set; }
         public DateTime Created { get; set; } = DateTime.Parse(date);
         public string Content { get; set; } = content;
         public User Author { get; set; } = author;
@@ -10,5 +10,3 @@
 
     }
 }
-
-// BlogPost or Article or Post class - date, body, author, picture gallery/video link

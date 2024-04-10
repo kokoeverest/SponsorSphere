@@ -4,7 +4,7 @@ namespace SponsorSphere.Domain.Interfaces
 {
     public interface ISponsor
     {
-        public List<User> SponsoredAthletes { get; set; }
+        public List<Sponsorship> Sponsorships { get; set; }
         public Task? BecomeSponsor();
         public Task? CancelSponsorship();
     }
