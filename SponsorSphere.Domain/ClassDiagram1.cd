@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SponsorSphere.Domain.Models.Achievement">
+    <Position X="2.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAACAAAAAAAAAAAAAAAAEAAAAAAAAAACABAAAAAA=</HashCode>
+      <FileName>Models\Achievement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.Athlete">
+    <Position X="6.25" Y="5" Width="1.5" />
+    <InheritanceLine Type="SponsorSphere.Domain.Models.User" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="2.812" />
+        <Point X="6.01" Y="2.812" />
+        <Point X="6.01" Y="6.063" />
+        <Point X="6.25" Y="6.063" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEEAAAQAAAAAAAAAAACAAAAAIAg=</HashCode>
+      <FileName>Models\Athlete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.BlogPost">
+    <Position X="2.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAgAAAAAAgAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BlogPost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.Goal">
+    <Position X="8.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAACAAAAAAAAAAAAAAAAEAAIAAAABAACAAAAAAAA=</HashCode>
+      <FileName>Models\Goal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.SponsorCompany">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="SponsorSphere.Domain.Models.User" FixedFromPoint="true">
+      <Path>
+        <Point X="6.25" Y="2.812" />
+        <Point X="6.01" Y="2.812" />
+        <Point X="6.01" Y="1.246" />
+        <Point X="5.75" Y="1.246" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SponsorCompany.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.19" />
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.SponsorIndividual">
+    <Position X="4.25" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="SponsorSphere.Domain.Models.User" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="2.812" />
+        <Point X="6.01" Y="2.812" />
+        <Point X="6.01" Y="6.062" />
+        <Point X="5.75" Y="6.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAIAAAAEAAAAQAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Models\SponsorIndividual.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.Sponsorship">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAACAAAAAAAAAAAAAAACAAAAAAAQBAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Sponsorship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.SportEvent">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQEAAIAAAAAAACAAABAAAA=</HashCode>
+      <FileName>Models\SportEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.User">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACEAAAgjAAhABABAACQAYAAAIBAAQCAAEQAAAAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Right" Position="1.144" />
+  </Class>
+  <Interface Name="SponsorSphere.Domain.Interfaces.ISponsor">
+    <Position X="4.25" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAEQAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISponsor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SponsorSphere.Domain.Interfaces.IUser">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACEAAAgjAAhABABAACQAYAAAIBAAQCAAEQAAAAAAA=</HashCode>
+      <FileName>Interfaces\IUser.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="SponsorSphere.Domain.Enums.EventsEnum" Collapsed="true">
+    <Position X="10" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAQAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\EventsEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SponsorSphere.Domain.Enums.SponsorshipLevel" Collapsed="true">
+    <Position X="10" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAIAAAAAAAgA=</HashCode>
+      <FileName>Enums\SponsorshipLevel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SponsorSphere.Domain.Enums.SportsEnum" Collapsed="true">
+    <Position X="10" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RIgACoAAAAAAAAABAAAAAACAiAAIAAIAAAAAAAABQAA=</HashCode>
+      <FileName>Enums\SportsEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -64,6 +64,8 @@ var goshoAthlete = new Athlete(
     SportsEnum.Golf
     );
 
+var sportEvent = new SportEvent(SportsEnum.MountainRunning, "Persenk ultra", EventsEnum.Race, "2020/08/16", "Bulgaria");
+
 var peshoDto = await mediator.Send(new CreateAthlete(
     peshoAthlete.Name,
     peshoAthlete.LastName,
@@ -86,7 +88,8 @@ var goshoDto = await mediator.Send(new CreateAthlete(
     goshoAthlete.Sport
     ));
 
-peshoAthlete.Achievements.Add(new Achievement(SportsEnum.MountainRunning, peshoAthlete, "race", "2020/10/01", 1));
+
+peshoAthlete.Achievements.Add(new Achievement(peshoAthlete, sportEvent, 1));
 
 var athletes = await mediator.Send( new GetAllAthletes() );
 
