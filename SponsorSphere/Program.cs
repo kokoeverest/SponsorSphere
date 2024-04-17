@@ -43,14 +43,14 @@ IMediator mediator = diContainer.GetRequiredService<IMediator>();
 //    SportsEnum.MountainRunning
 //    ));
 var peshoAthlete = new Athlete(
-    "Petar",
-    "Petrov",
-    "5rov@mail.mail",
-    "dd",
-    "bg",
-    "09198",
-    "30/09/1983",
-    SportsEnum.MountainRunning
+    name: "Petar",
+    lastName: "Petrov",
+    email: "5rov@mail.mail",
+    password: "dd",
+    country: "bg",
+    phoneNumber: "09198",
+    birthDate: "30/09/1983",
+    sport: SportsEnum.MountainRunning
     );
 
 var goshoAthlete = new Athlete(

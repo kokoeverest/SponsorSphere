@@ -1,13 +1,31 @@
 ﻿using SponsorSphere.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SponsorSphere.Domain.Models
 {
-    public class Achievement(Athlete athlete, SportEvent sportEvent, ushort placeFinished)
+    public class Achievement
     {
-        public int? Id { get; set; }
-        public SportsEnum Sport { get; set; } = sportEvent.Sport;
-        public SportEvent EventType { get; set; } = sportEvent;
-        public ushort? PlaceFinished { get; set; } = placeFinished;
-        public User Athlete { get; set; } = athlete;
+        public SportsEnum Sport { get; set; }
+        public required SportEvent EventType { get; set; }
+        public ushort? PlaceFinished { get; set; }
+
+        [Key]
+        public int AthleteId { get; set; }
+
+        [NotMapped]
+        public required User Athlete { get; set; }
+
+        public Achievement() { }
+
+        [SetsRequiredMembers]
+        public Achievement(User athlete, SportEvent sportEvent, ushort placeFinished)
+        {
+            Sport = sportEvent.Sport;
+            EventType = sportEvent;
+            PlaceFinished = placeFinished;
+            Athlete = athlete;
+        }
     }
 }

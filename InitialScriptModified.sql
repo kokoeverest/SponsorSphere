@@ -26,6 +26,21 @@
 
 USE SponsorSphere;
 
+--CREATE TABLE Sports (
+--	Id INT PRIMARY KEY IDENTITY(1,1),
+--	Name NVARCHAR(100) NOT NULL,
+--)
+
+--CREATE TABLE SponsorshipLevels (
+--	Id INT PRIMARY KEY IDENTITY(1,1),
+--	Level NVARCHAR(50) NOT NULL,
+--)
+
+--CREATE TABLE EventTypes (
+--	Id INT PRIMARY KEY IDENTITY(1,1),
+--	Type NVARCHAR(100) NOT NULL,
+--)
+
 --CREATE TABLE Users (
 --	Id INT NOT NULL IDENTITY(1,1),
 --	Name NVARCHAR(200) NOT NULL,
@@ -46,9 +61,10 @@ USE SponsorSphere;
 --CREATE TABLE Athletes (
 --	LastName NVARCHAR(200) NOT NULL,
 --	Birthdate DATETIME NOT NULL,
---	Sport NVARCHAR(200) NOT NULL,
+--    SportId INT NOT NULL,
 --	UserId INT NOT NULL,
 --	CONSTRAINT FK_Athlete_UserId FOREIGN KEY (UserId) REFERENCES Users (Id),
+--    CONSTRAINT FK_Athlete_Sport FOREIGN KEY (SportId) REFERENCES Sports(Id),
 --)
 
 --CREATE TABLE SponsorCompanies (
@@ -65,14 +81,15 @@ USE SponsorSphere;
 --)
 
 --CREATE TABLE Sponsorships (
---	Id INT PRIMARY KEY,
 --	Created DATETIME NOT NULL,
---	Level TINYINT NOT NULL,
+--	LevelId INT NOT NULL,
 --	Amount MONEY NOT NULL,
 --	AthleteId INT NOT NULL,
 --	SponsorId INT NOT NULL,
 --	CONSTRAINT FK_AthleteId_Sponsorship FOREIGN KEY (AthleteId) REFERENCES Users (Id),
 --	CONSTRAINT FK_SponsorId_Sponsorship FOREIGN KEY (SponsorId) REFERENCES Users (Id),
+--	CONSTRAINT FK_SponsorshipLevel FOREIGN KEY (LevelId) REFERENCES SponsorshipLevels(Id),
+--	CONSTRAINT PK_Sponsorships PRIMARY KEY (AthleteId, SponsorId),
 --)
 
 --CREATE TABLE SportEvents (
@@ -80,29 +97,31 @@ USE SponsorSphere;
 --	Name NVARCHAR(200) NOT NULL,
 --	Country NVARCHAR(100) NOT NULL,
 --	EventDate DATETIME NOT NULL,
---	EventType NVARCHAR(100) NOT NULL,
---	Sport NVARCHAR(200) NOT NULL,
+--    EventTypeId INT NOT NULL,
+--    SportId INT NOT NULL,
 --    Finished BIT NOT NULL,
+--    CONSTRAINT FK_EventType FOREIGN KEY (EventTypeId) REFERENCES EventTypes(Id),
+--    CONSTRAINT FK_Sport FOREIGN KEY (SportId) REFERENCES Sports(Id),
 --)
 
 --CREATE TABLE Achievements (
---	Id INT PRIMARY KEY,
 --	Created DATETIME NOT NULL,
 --	PlaceFinished SMALLINT NULL,
 --	SportEventId INT NOT NULL,
 --	AthleteId INT NOT NULL,
 --	CONSTRAINT FK_Athlete_Achievement FOREIGN KEY (AthleteId) REFERENCES Users (Id),
---  CONSTRAINT FK_SportEvent_Achievement FOREIGN KEY (SportEventId) REFERENCES SportEvents (Id),
+--    CONSTRAINT FK_SportEvent_Achievement FOREIGN KEY (SportEventId) REFERENCES SportEvents (Id),
+--	CONSTRAINT PK_Achievements PRIMARY KEY (AthleteId, SportEventId),
 --)
 
 --CREATE TABLE Goals (
---	Id INT PRIMARY KEY,
 --	Created DATETIME NOT NULL,
---  SportEventId INT NOT NULL,
+--    SportEventId INT NOT NULL,
 --	AmountNeeded MONEY NOT NULL,
 --	AthleteId INT NOT NULL,
 --	CONSTRAINT FK_Athlete_Goal FOREIGN KEY (AthleteId) REFERENCES Users (Id),
---  CONSTRAINT FK_SportEvent_Goal FOREIGN KEY (SportEventId) REFERENCES SportEvents (Id),
+--	CONSTRAINT FK_SportEvent_Goal FOREIGN KEY (SportEventId) REFERENCES SportEvents (Id),
+--	CONSTRAINT PK_Goals PRIMARY KEY (AthleteId, SportEventId),
 --)
 
 --CREATE TABLE BlogPosts (
@@ -118,4 +137,4 @@ USE SponsorSphere;
 --	SponsorId INT NOT NULL,
 --	CONSTRAINT FK_Athlete FOREIGN KEY ( AthleteId) REFERENCES Users (Id),
 --	CONSTRAINT FK_Sponsor FOREIGN KEY ( SponsorId) REFERENCES Users (Id),
---	)
+--)

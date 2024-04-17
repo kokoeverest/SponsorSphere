@@ -1,110 +1,89 @@
 ﻿using SponsorSphere.Domain.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SponsorSphere.Domain.Models
 {
-    public abstract class User(
-        string name,
-        string email,
-        string password,
-        string country,
-        string phoneNumber
-        ) : IUser
+    public abstract class User : IUser
     {
         public int? Id { get; set; }
-        public string Name { get; set; } = name;
-        public string Email { get; set; } = email;
-        public string Password { get; set; } = password;
-        public string Country { get; set; } = country;
-        public string PhoneNumber { get; set; } = phoneNumber;
+
+        [MaxLength(200)]
+        public required string Name { get; set; }
+
+        [MaxLength(100)]
+        public required string Email { get; set; }
+
+        [MaxLength(200)]
+        public required string Password { get; set; }
+
+        [MaxLength(100)]
+        public required string Country { get; set; }
+
+        [MaxLength(16)]
+        public required string PhoneNumber { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public string PictureOrLogo { get; set; } = string.Empty;
+
+        [MaxLength(200)]
         public string Website { get; set; } = string.Empty;
+
+        [MaxLength(200)]
         public string FaceBookLink { get; set; } = string.Empty;
+
+        [MaxLength(200)]
         public string InstagramLink { get; set; } = string.Empty;
+
+        [MaxLength(200)]
         public string TwitterLink { get; set; } = string.Empty;
+
+        [MaxLength(200)]
         public string StravaLink { get; set; } = string.Empty;
+
+        [NotMapped]
         public List<BlogPost> Posts { get; set; } = [];
+
+        [NotMapped]
         public List<Sponsorship> Sponsorships { get; set; } = [];
 
-        public async Task Register()
-        {
-            //Logger currentLog = new("Register", true);
-            //try
-            //{
-            //    await currentLog.LogMessage(currentLog);
-            //    Console.WriteLine($"{Name} registered successfully!");
+        public User() { }
 
-            //}
-            //catch (Exception)
-            //{
-            //    currentLog.Success = false;
-            //    await currentLog.LogMessage(currentLog);
-            //    await Console.Out.WriteLineAsync($"{Name} could not be registered!");
-            //}
+        [SetsRequiredMembers]
+        public User(
+            string name,
+            string email,
+            string password,
+            string country,
+            string phoneNumber
+        )
+        {
+            Name = name;
+            Email = email;
+            Password = password;
+            Country = country;
+            PhoneNumber = phoneNumber;
         }
-        public async Task Login()
-        {
-            //Logger currentLog = new("Login", true);
-            //try
-            //{
-            //    await currentLog.LogMessage(currentLog);
-            //    Console.WriteLine($"{Name} logged in successfully!");
 
-            //}
-            //catch (Exception)
-            //{
-            //    currentLog.Success = false;
-            //    await currentLog.LogMessage(currentLog);
-            //    await Console.Out.WriteLineAsync($"Login unsuccessful for {Name}!");
-            //}
+        public Task? Register()
+        {
+            return null;
         }
-        public async Task Logout()
+        public Task? Login()
         {
-            //Logger currentLog = new("Logout", true);
-            //try
-            //{
-            //    await currentLog.LogMessage(currentLog);
-            //    Console.WriteLine($"{Name} logged out successfully!");
-
-            //}
-            //catch (Exception)
-            //{
-            //    currentLog.Success = false;
-            //    await currentLog.LogMessage(currentLog);
-            //    await Console.Out.WriteLineAsync($"{Name} could not log out!");
-            //}
+            return null;
         }
-        public async Task ResetPassword()
+        public Task? Logout()
         {
-            //Logger currentLog = new("ResetPassword", true);
-            //try
-            //{
-            //    await currentLog.LogMessage(currentLog);
-            //    Console.WriteLine($"{Name} reset password successfully!");
-
-            //}
-            //catch (Exception)
-            //{
-            //    currentLog.Success = false;
-            //    await currentLog.LogMessage(currentLog);
-            //    await Console.Out.WriteLineAsync($"Password for {Name} could not be reset!");
-            //}
+            return null;
         }
-        public async Task EditProfile()
+        public Task? ResetPassword()
         {
-            //Logger currentLog = new("EditProfile", true);
-            //try
-            //{
-            //    await currentLog.LogMessage(currentLog);
-            //    Console.WriteLine($"{Name} profile edited successfully!");
-
-            //}
-            //catch (Exception)
-            //{
-            //    currentLog.Success = false;
-            //    await currentLog.LogMessage(currentLog);
-            //    await Console.Out.WriteLineAsync($"{Name} profile could not be edited!");
-            //}
+            return null;
+        }
+        public Task? EditProfile()
+        {
+            return null;
         }
     }
 }

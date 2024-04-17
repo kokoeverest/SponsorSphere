@@ -1,17 +1,29 @@
 ﻿using SponsorSphere.Domain.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SponsorSphere.Domain.Models
 {
-    public class SponsorCompany(
-         string name,
-         string email,
-         string password,
-         string country,
-         string phoneNumber,
-         string iban
-        ) : User(name, email, password, country, phoneNumber), ISponsor
+    public class SponsorCompany : User, ISponsor
     {
-        public string IBAN { get; set; } = iban;
+        [MaxLength(34)]
+        public required string IBAN { get; set; }
+
+        public SponsorCompany() { }
+
+        [SetsRequiredMembers]
+        public SponsorCompany(
+             string name,
+             string email,
+             string password,
+             string country,
+             string phoneNumber,
+             string iban
+        ) : base(name, email, password, country, phoneNumber)
+        {
+            IBAN = iban;
+        }
+
         public Task? BecomeSponsor()
         {
             return null;

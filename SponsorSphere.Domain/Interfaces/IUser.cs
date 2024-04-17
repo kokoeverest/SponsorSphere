@@ -19,10 +19,10 @@ namespace SponsorSphere.Domain.Interfaces
         public string StravaLink { get; set; }
         public List<BlogPost> Posts { get; set; }
         public List<Sponsorship> Sponsorships { get; set; }
-        public Task Register();
-        public Task Login();
-        public Task Logout();
-        public Task ResetPassword();
-        public Task EditProfile();
+        public Task? Register();
+        public Task? Login();
+        public Task? Logout();
+        public Task? ResetPassword();
+        public Task? EditProfile();
     }
 }
