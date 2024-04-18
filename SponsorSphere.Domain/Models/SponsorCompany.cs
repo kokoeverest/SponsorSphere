@@ -23,14 +23,5 @@ namespace SponsorSphere.Domain.Models
         {
             IBAN = iban;
         }
-
-        public Task? BecomeSponsor()
-        {
-            return null;
-        }
-        public Task? CancelSponsorship()
-        {
-            return null;
-        }
     }
 }

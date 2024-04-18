@@ -15,10 +15,10 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.Property(si => si.BirthDate)
                 .IsRequired(true);
 
-            //builder.HasMany(si => si.Sponsorships)
-            //    .WithOne(s => s.SponsorIndividual)
-            //    .HasForeignKey(s => s.SponsorIndividual)
-            //    .OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(si => si.Sponsorships)
+                .WithOne(s => s.SponsorIndividual)
+                .HasForeignKey(s => s.SponsorIndividualId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

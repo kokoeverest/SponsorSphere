@@ -89,7 +89,7 @@ var goshoDto = await mediator.Send(new CreateAthlete(
     ));
 
 
-peshoAthlete.Achievements.Add(new Achievement(peshoAthlete, sportEvent, 1));
+peshoAthlete.Achievements.Add(new Achievement { Athlete = peshoAthlete, SportEvent = sportEvent, PlaceFinished = 1 });
 
 var athletes = await mediator.Send( new GetAllAthletes() );
 

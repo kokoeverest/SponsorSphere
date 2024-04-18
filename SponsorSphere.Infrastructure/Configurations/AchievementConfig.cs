@@ -12,10 +12,15 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.Property(a => a.Sport)
                  .HasConversion<int>();
 
-            builder.Ignore(a => a.AthleteAchievement);
+            builder.HasOne(achievement => achievement.Athlete)
+                .WithMany()
+                .HasForeignKey(achievement => achievement.AthleteId);
 
-            builder.HasKey(a => new { a.AthleteAchievement, a.SportEvent });
-            
+            builder.HasOne(achievement => achievement.SportEvent)
+                .WithMany()
+                .HasForeignKey(achievement => achievement.SportEventId);
+
+            builder.HasKey(a => new { a.AthleteId, a.SportEventId });            
         }
     }
 }

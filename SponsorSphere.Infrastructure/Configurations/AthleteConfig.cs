@@ -15,10 +15,10 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.Property(ath => ath.Sport)
                 .HasConversion<int>();
 
-            //builder.HasMany(ath => ath.Sponsorships)
-            //    .WithOne(s => s.AthleteSponsorship)
-            //    .HasForeignKey(s => s.AthleteSponsorship)
-            //    .OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(ath => ath.Sponsorships)
+                .WithOne(s => s.SponsoredAthlete)
+                .HasForeignKey(s => s.SponsoredAthleteId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

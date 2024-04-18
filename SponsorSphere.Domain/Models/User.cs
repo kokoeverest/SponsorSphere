@@ -1,7 +1,4 @@
-﻿using SponsorSphere.Domain.Interfaces;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace SponsorSphere.Domain.Models
 {
@@ -39,27 +36,6 @@ namespace SponsorSphere.Domain.Models
             Password = password;
             Country = country;
             PhoneNumber = phoneNumber;
-        }
-
-        public Task? Register()
-        {
-            return null;
-        }
-        public Task? Login()
-        {
-            return null;
-        }
-        public Task? Logout()
-        {
-            return null;
-        }
-        public Task? ResetPassword()
-        {
-            return null;
-        }
-        public Task? EditProfile()
-        {
-            return null;
         }
     }
 }

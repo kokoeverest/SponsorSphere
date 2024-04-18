@@ -31,14 +31,5 @@ namespace SponsorSphere.Domain.Models
             LastName = lastName;
             BirthDate = DateTime.Parse(birthDate);
         }
-
-        public Task? BecomeSponsor()
-        {
-            return null;
-        }
-        public Task? CancelSponsorship()
-        {
-            return null;
-        }
     }
 }
