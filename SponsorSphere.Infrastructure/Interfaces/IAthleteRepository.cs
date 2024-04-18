@@ -9,7 +9,7 @@ namespace SponsorSphere.Infrastructure.Interfaces
         Athlete Update(int userId);
         bool Delete(int userId);
         List<Athlete> GetAll();
-        Athlete GetById(int userId);
+        Task<User?> GetById(int userId, SponsorSphereDbContext context);
         List<Athlete> GetByCountry(string country);
         int GetLastId();
         public List<Athlete> GetByAge(int age);

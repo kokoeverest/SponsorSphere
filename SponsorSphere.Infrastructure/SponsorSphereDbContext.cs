@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using System.Data.SqlTypes;
+using System.Reflection;
 
 namespace SponsorSphere.Infrastructure
 {
@@ -14,7 +15,7 @@ namespace SponsorSphere.Infrastructure
         public DbSet<Goal> Goals { get; set; } = default!;
         public DbSet<SponsorCompany> SponsorCompanies { get; set; } = default!;
         public DbSet<SponsorIndividual> SponsorIndividuals { get; set; } = default!;
-        public DbSet<Sponsorship> Sponsorships { get; set; } = default!;
+        //public DbSet<Sponsorship> Sponsorships { get; set; } = default!;
         public DbSet<SportEvent> SportEvents { get; set; } = default!;
         public DbSet<Achievement> Achievements { get; set; } = default!;
 
@@ -28,43 +29,10 @@ namespace SponsorSphere.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Achievement>()
-                .Property(e => e.Sport)
-                .HasConversion<int>();
+            modelBuilder.Entity<User>().UseTptMappingStrategy();
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Athlete>()
-                .Property(e => e.Sport)
-                .HasConversion<int>();
-
-            modelBuilder.Entity<Goal>()
-                .Property(e => e.Sport)
-                .HasConversion<int>();
-
-            modelBuilder.Entity<Goal>()
-                .Property(e => e.AmountNeeded)
-                .HasConversion<decimal>();
-
-            modelBuilder.Entity<Goal>()
-                .HasKey(e => new { e.SportEventId, e.AthleteId});
-
-            modelBuilder.Entity<Sponsorship>()
-                .Property(e => e.Level)
-                .HasConversion<int>();
-
-            modelBuilder.Entity<Sponsorship>()
-                .Property(e => e.Amount)
-                .HasConversion<decimal>();
-
-            modelBuilder.Entity<Sponsorship>()
-                .HasKey(e => new { e.SponsorId, e.AthleteId });
-
-            modelBuilder.Entity<SportEvent>()
-                .Property(e => e.Sport)
-                .HasConversion<int>();
-
-            modelBuilder.Entity<SportEvent>()
-                 .Property(e => e.EventType)
-                 .HasConversion<int>();
         }
     }
 }

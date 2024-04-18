@@ -12,12 +12,11 @@ namespace SponsorSphere.Domain.Models
         public required decimal AmountNeeded { get; set; }
         public int AthleteId { get; set; }
 
-        [NotMapped]
-        public required User Athlete { get; set; }
+        public required Athlete Athlete { get; set; }
 
         public Goal() { }
 
-        public Goal(SportEvent eventType, decimal amount, User athlete)
+        public Goal(SportEvent eventType, decimal amount, Athlete athlete)
         {
             Date = eventType.EventDate;
             EventType = eventType;

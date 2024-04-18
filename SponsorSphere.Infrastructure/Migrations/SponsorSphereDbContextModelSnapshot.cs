@@ -43,7 +43,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasIndex("EventTypeId");
 
-                    b.ToTable("Achievements");
+                    b.ToTable("Achievements", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.BlogPost", b =>
@@ -71,7 +71,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BlogPosts");
+                    b.ToTable("BlogPosts", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Goal", b =>
@@ -93,7 +93,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("SportEventId", "AthleteId");
 
-                    b.ToTable("Goals");
+                    b.ToTable("Goals", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsorship", b =>
@@ -115,7 +115,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("SponsorId", "AthleteId");
 
-                    b.ToTable("Sponsorships");
+                    b.ToTable("Sponsorships", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.SportEvent", b =>
@@ -150,7 +150,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SportEvents");
+                    b.ToTable("SportEvents", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.User", b =>
@@ -225,7 +225,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
 
@@ -247,7 +247,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Property<int>("Sport")
                         .HasColumnType("int");
 
-                    b.ToTable("Users", t =>
+                    b.ToTable("Users", null, t =>
                         {
                             t.Property("BirthDate")
                                 .HasColumnName("Athlete_BirthDate");

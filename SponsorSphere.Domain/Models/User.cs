@@ -5,47 +5,23 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SponsorSphere.Domain.Models
 {
-    public abstract class User : IUser
+    public abstract class User
     {
         public int? Id { get; set; }
-
-        [MaxLength(200)]
         public required string Name { get; set; }
-
-        [MaxLength(100)]
         public required string Email { get; set; }
-
-        [MaxLength(200)]
         public required string Password { get; set; }
-
-        [MaxLength(100)]
         public required string Country { get; set; }
-
-        [MaxLength(16)]
         public required string PhoneNumber { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public string PictureOrLogo { get; set; } = string.Empty;
-
-        [MaxLength(200)]
         public string Website { get; set; } = string.Empty;
-
-        [MaxLength(200)]
         public string FaceBookLink { get; set; } = string.Empty;
-
-        [MaxLength(200)]
         public string InstagramLink { get; set; } = string.Empty;
-
-        [MaxLength(200)]
         public string TwitterLink { get; set; } = string.Empty;
-
-        [MaxLength(200)]
         public string StravaLink { get; set; } = string.Empty;
-
-        [NotMapped]
-        public List<BlogPost> Posts { get; set; } = [];
-
-        [NotMapped]
-        public List<Sponsorship> Sponsorships { get; set; } = [];
+        public ICollection<BlogPost> Posts { get; set; } = [];
+        
 
         public User() { }
 

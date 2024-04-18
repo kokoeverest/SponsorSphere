@@ -17,8 +17,8 @@ namespace SponsorSphere.Domain.Interfaces
         public string InstagramLink { get; set; }
         public string TwitterLink { get; set; }
         public string StravaLink { get; set; }
-        public List<BlogPost> Posts { get; set; }
-        public List<Sponsorship> Sponsorships { get; set; }
+        public ICollection<BlogPost> Posts { get; set; }
+        public ICollection<Sponsorship> Sponsorships { get; set; }
         public Task? Register();
         public Task? Login();
         public Task? Logout();

@@ -1,4 +1,5 @@
-﻿using SponsorSphere.Domain.Enums;
+﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Interfaces;
 
@@ -49,15 +50,17 @@ namespace SponsorSphere.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Athlete GetById(int userId)
+        public async Task<User?> GetById(int userId, SponsorSphereDbContext context)
         {
-            for (int i = 0; i < _athletes.Count; i++)
-            {
-                if (_athletes[i].Id == userId)
-                {
-                    return _athletes.ElementAt(i);
-                }
-            }
+            return await context.Users.FirstOrDefaultAsync(athlete => athlete.Id == userId);
+            //for (int i = 0; i < _athletes.Count; i++)
+            //{
+            //    if (_athletes[i].Id == userId)
+            //    {
+            //        return _athletes.ElementAt(i);
+            //    }
+            //}
+            
             throw new ApplicationException($"Athlete with id {userId} not found");
         }
 

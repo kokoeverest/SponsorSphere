@@ -8,12 +8,12 @@ namespace SponsorSphere.Domain.Models
         public required DateTime Created { get; set; }
         public required string Content { get; set; }
         public required User Author { get; set; }
-        public List<string>? Pictures { get; set; }
+        public ICollection<string>? Pictures { get; set; }
 
         public BlogPost() { }
 
         [SetsRequiredMembers]
-        public BlogPost(string date, string content, User author, List<string>? pictures)
+        public BlogPost(string date, string content, User author, ICollection<string>? pictures)
         {
             Created = DateTime.Parse(date);
             Content = content;

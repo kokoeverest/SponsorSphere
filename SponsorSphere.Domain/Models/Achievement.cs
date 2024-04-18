@@ -8,24 +8,19 @@ namespace SponsorSphere.Domain.Models
     public class Achievement
     {
         public SportsEnum Sport { get; set; }
-        public required SportEvent EventType { get; set; }
+        public required SportEvent SportEvent { get; set; }
         public ushort? PlaceFinished { get; set; }
-
-        [Key]
-        public int AthleteId { get; set; }
-
-        [NotMapped]
-        public required User Athlete { get; set; }
+        public required Athlete AthleteAchievement { get; set; }
 
         public Achievement() { }
 
         [SetsRequiredMembers]
-        public Achievement(User athlete, SportEvent sportEvent, ushort placeFinished)
+        public Achievement(Athlete athlete, SportEvent sportEvent, ushort placeFinished)
         {
             Sport = sportEvent.Sport;
-            EventType = sportEvent;
+            SportEvent = sportEvent;
             PlaceFinished = placeFinished;
-            Athlete = athlete;
+            AthleteAchievement = athlete;
         }
     }
 }

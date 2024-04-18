@@ -7,11 +7,7 @@ namespace SponsorSphere.Domain.Models
     public class SportEvent
     {
         public int? Id { get; set; }
-
-        [MaxLength(200)]
         public required string Name { get; set; }
-
-        [MaxLength(100)]
         public required string Country { get; set; }
         public DateTime EventDate { get; set; }
         public bool Finished { get; set; }

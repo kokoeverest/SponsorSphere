@@ -11,7 +11,7 @@ namespace SponsorSphere.Application.App.Athletes.Responses
         public int Age { get; set; }
         public SportsEnum Sport { get; set; }
         public DateTime BirthDate { get; set; }
-        public List<Achievement> Achievements { get; set; } = [];
-        public List<Goal> Goals { get; set; } = [];
+        public ICollection<Achievement> Achievements { get; set; } = [];
+        public ICollection<Goal> Goals { get; set; } = [];
     }
 }

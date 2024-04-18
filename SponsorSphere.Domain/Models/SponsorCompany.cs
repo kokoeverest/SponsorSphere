@@ -4,10 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SponsorSphere.Domain.Models
 {
-    public class SponsorCompany : User, ISponsor
+    public class SponsorCompany : User
     {
-        [MaxLength(34)]
         public required string IBAN { get; set; }
+        public ICollection<Sponsorship> Sponsorships { get; set; } = [];
 
         public SponsorCompany() { }
 
