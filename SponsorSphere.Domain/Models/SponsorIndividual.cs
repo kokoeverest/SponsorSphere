@@ -6,7 +6,6 @@ namespace SponsorSphere.Domain.Models
     {
         public required string LastName { get; set; }
         public required DateTime BirthDate { get; set; }
-        public ICollection<Sponsorship> Sponsorships { get; set; } = [];
 
         [NotMapped]
         public int Age => (int)(DateTime.Now.Subtract(BirthDate).TotalDays / 365);

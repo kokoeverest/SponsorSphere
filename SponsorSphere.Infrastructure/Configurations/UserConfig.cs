@@ -52,8 +52,7 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.HasMany(u => u.Posts)
                 .WithOne(bp => bp.Author)
                 .HasForeignKey(u => u.AuthorId)
-                .OnDelete(DeleteBehavior.Restrict);
-            
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

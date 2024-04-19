@@ -14,14 +14,18 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.Property(s => s.Amount)
                 .HasConversion<decimal>();
 
-            builder.Property(s => s.SponsorCompanyId)
-                .IsRequired(false);
             
-            builder.Property(s => s.SponsorIndividualId)
-                .IsRequired(false);
+            builder.HasKey(s => new { s.AthleteId, s.SponsorId });
 
+            builder.HasOne(s => s.Athlete)
+                .WithMany()
+                .HasForeignKey(s => s.AthleteId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasKey(s => new { s.AthleteId, s.SponsorCompanyId, s.SponsorIndividualId });
+            builder.HasOne(s => s.Sponsor)
+                .WithMany()
+                .HasForeignKey(s => s.SponsorId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

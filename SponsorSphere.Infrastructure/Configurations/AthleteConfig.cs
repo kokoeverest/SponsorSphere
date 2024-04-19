@@ -20,6 +20,16 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .WithOne(s => s.Athlete)
                 .HasForeignKey(s => s.AthleteId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(ath => ath.Goals)
+                .WithOne(s => s.Athlete)
+                .HasForeignKey(s => s.AthleteId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(ath => ath.Achievements)
+                .WithOne(s => s.Athlete)
+                .HasForeignKey(s => s.AthleteId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

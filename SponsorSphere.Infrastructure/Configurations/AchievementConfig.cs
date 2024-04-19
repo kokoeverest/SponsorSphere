@@ -12,7 +12,11 @@ namespace SponsorSphere.Infrastructure.Configurations
                  .HasConversion<int>();
 
 
-            builder.HasKey(a => new { a.AthleteId, a.SportEventId });            
+            builder.HasKey(a => new { a.AthleteId, a.SportEventId });
+
+            builder.HasOne(a => a.SportEvent)
+                .WithOne()
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

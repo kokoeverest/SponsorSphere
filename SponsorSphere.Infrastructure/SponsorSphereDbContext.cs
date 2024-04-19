@@ -32,7 +32,7 @@ namespace SponsorSphere.Infrastructure
             modelBuilder.Entity<User>().UseTptMappingStrategy();
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            //base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 
         }
     }

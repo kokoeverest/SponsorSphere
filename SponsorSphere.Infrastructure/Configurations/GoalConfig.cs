@@ -15,7 +15,11 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .HasConversion<decimal>();
 
 
-            builder.HasKey(g => new { g.SportEventId, g.AthleteId });
+            builder.HasKey(g => new { g.AthleteId, g.SportEventId });
+
+            builder.HasOne(g => g.SportEvent)
+                .WithOne()
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

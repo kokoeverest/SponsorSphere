@@ -1,4 +1,6 @@
-﻿namespace SponsorSphere.Domain.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SponsorSphere.Domain.Models
 {
     public abstract class User
     {
@@ -16,5 +18,8 @@
         public string TwitterLink { get; set; } = string.Empty;
         public string StravaLink { get; set; } = string.Empty;
         public ICollection<BlogPost> Posts { get; set; } = [];
+
+        [NotMapped]
+        public ICollection<Sponsorship> Sponsorships { get; set; } = [];
     }
 }

@@ -11,12 +11,6 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.Property(sc => sc.IBAN)
                 .IsRequired(true)
                 .HasMaxLength(34);
-
-
-            builder.HasMany(sc => sc.Sponsorships)
-                .WithOne(s => s.SponsorCompany)
-                .HasForeignKey(s => s.SponsorCompanyId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
