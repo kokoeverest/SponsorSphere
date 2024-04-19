@@ -8,10 +8,6 @@ namespace SponsorSphere.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<BlogPost> builder)
         {
-            //builder.HasOne(bp => bp.Author)
-            //    .WithMany(u => u.Posts)
-            //    .HasForeignKey(bp => bp.Author)
-            //    .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

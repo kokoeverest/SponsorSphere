@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SponsorSphere.Domain.Models;
-using System.Reflection.Emit;
 
 namespace SponsorSphere.Infrastructure.Configurations
 {
@@ -14,6 +13,7 @@ namespace SponsorSphere.Infrastructure.Configurations
 
             builder.Property(g => g.AmountNeeded)
                 .HasConversion<decimal>();
+
 
             builder.HasKey(g => new { g.SportEventId, g.AthleteId });
         }

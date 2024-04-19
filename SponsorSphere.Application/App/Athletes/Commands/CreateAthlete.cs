@@ -42,23 +42,23 @@ public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
             request.Sport.ToString()
         ];
 
-        if (strings.Any(str => string.IsNullOrEmpty(str)))
+        if (strings.Any(string.IsNullOrEmpty))
         {
             throw new ApplicationException("Cannot create athlete without required fields! Check your input!");
         }
         // Phone, Email and Password validations
 
-        Athlete athlete = new(
-            request.Name,
-            request.LastName,
-            request.Email,
-            request.Password,
-            request.Country,
-            request.PhoneNumber,
-            request.BirthDate,
-            request.Sport)
+        var athlete = new Athlete
         {
-            Id = GetNextId()
+            Id = GetNextId(),
+            Name = request.Name,
+            LastName = request.LastName,
+            Email = request.Email,
+            Password = request.Password,
+            Country = request.Country,
+            PhoneNumber = request.PhoneNumber,
+            BirthDate = DateTime.Parse(request.BirthDate),
+            Sport = request.Sport
         };
 
         var newAthlete = _userRepository.Create(athlete);

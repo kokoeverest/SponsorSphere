@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace SponsorSphere.Domain.Models
+﻿namespace SponsorSphere.Domain.Models
 {
     public abstract class User
     {
@@ -18,24 +16,5 @@ namespace SponsorSphere.Domain.Models
         public string TwitterLink { get; set; } = string.Empty;
         public string StravaLink { get; set; } = string.Empty;
         public ICollection<BlogPost> Posts { get; set; } = [];
-        
-
-        public User() { }
-
-        [SetsRequiredMembers]
-        public User(
-            string name,
-            string email,
-            string password,
-            string country,
-            string phoneNumber
-        )
-        {
-            Name = name;
-            Email = email;
-            Password = password;
-            Country = country;
-            PhoneNumber = phoneNumber;
-        }
     }
 }

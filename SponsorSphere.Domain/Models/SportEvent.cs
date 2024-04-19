@@ -1,6 +1,4 @@
 ﻿using SponsorSphere.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SponsorSphere.Domain.Models
 {
@@ -13,17 +11,5 @@ namespace SponsorSphere.Domain.Models
         public bool Finished { get; set; }
         public EventsEnum EventType { get; set; }
         public SportsEnum Sport { get; set; }
-
-        public SportEvent() { }
-
-        [SetsRequiredMembers]
-        public SportEvent(SportsEnum sport, string eventName, EventsEnum eventType, string dateOfEvent, string country)
-        {
-            Name = eventName;
-            Country = country;
-            EventDate = DateTime.Parse(dateOfEvent);
-            EventType = eventType;
-            Sport = sport;
-        }
     }
 }

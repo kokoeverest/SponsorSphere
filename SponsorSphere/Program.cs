@@ -42,29 +42,36 @@ IMediator mediator = diContainer.GetRequiredService<IMediator>();
 //    birthDay,
 //    SportsEnum.MountainRunning
 //    ));
-var peshoAthlete = new Athlete(
-    name: "Petar",
-    lastName: "Petrov",
-    email: "5rov@mail.mail",
-    password: "dd",
-    country: "bg",
-    phoneNumber: "09198",
-    birthDate: "30/09/1983",
-    sport: SportsEnum.MountainRunning
-    );
+var peshoAthlete = new Athlete { 
+    Name = "Petar",
+    LastName = "Petrov",
+    Email = "5rov@mail.mail",
+    Password = "dd",
+    Country = "bg",
+    PhoneNumber = "09198",
+    BirthDate = DateTime.Parse("30/09/1983"),
+    Sport = SportsEnum.MountainRunning
+    };
 
-var goshoAthlete = new Athlete(
-    "Georgi",
-    "Petkov",
-    "5kov@mail.mail",
-    "ss",
-    "bg",
-    "09198",
-    "30/03/2005",
-    SportsEnum.Golf
-    );
+var goshoAthlete = new Athlete {
+    Name = "Georgi",
+    LastName = "Petkov",
+    Email = "5kov@mail.mail",
+    Password = "ss",
+    Country = "bg",
+    PhoneNumber = "09198",
+    BirthDate = DateTime.Parse("30/03/2005"),
+    Sport = SportsEnum.Golf
+    };
 
-var sportEvent = new SportEvent(SportsEnum.MountainRunning, "Persenk ultra", EventsEnum.Race, "2020/08/16", "Bulgaria");
+var sportEvent = new SportEvent
+{
+    Sport = SportsEnum.MountainRunning,
+    Name = "Persenk ultra",
+    EventType = EventsEnum.Race,
+    EventDate = DateTime.Parse("2020/08/16"),
+    Country = "Bulgaria"
+};
 
 var peshoDto = await mediator.Send(new CreateAthlete(
     peshoAthlete.Name,

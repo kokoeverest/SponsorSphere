@@ -12,6 +12,7 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .IsRequired(true)
                 .HasMaxLength(34);
 
+
             builder.HasMany(sc => sc.Sponsorships)
                 .WithOne(s => s.SponsorCompany)
                 .HasForeignKey(s => s.SponsorCompanyId)
