@@ -53,6 +53,9 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .WithOne(bp => bp.Author)
                 .HasForeignKey(u => u.AuthorId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasIndex(u => u.Email)
+                .IsUnique();
         }
     }
 }

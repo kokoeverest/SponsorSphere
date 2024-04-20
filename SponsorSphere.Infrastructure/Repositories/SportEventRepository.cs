@@ -2,7 +2,7 @@
 
 namespace SponsorSphere.Infrastructure.Repositories
 {
-    public class BlogPostRepository : IBlogPostRepository
+    public class SportEventRepository : ISportEventRepository
     {
     }
 }

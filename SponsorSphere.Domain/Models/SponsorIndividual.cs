@@ -2,7 +2,7 @@
 
 namespace SponsorSphere.Domain.Models
 {
-    public class SponsorIndividual : User
+    public class SponsorIndividual : Sponsor
     {
         public required string LastName { get; set; }
         public required DateTime BirthDate { get; set; }

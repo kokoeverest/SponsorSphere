@@ -1,6 +1,6 @@
 ﻿namespace SponsorSphere.Application.App.Athletes.Commands
 {
-    public class AddAchievement
+    public class AddAchievementCommand
     {
     }
 }

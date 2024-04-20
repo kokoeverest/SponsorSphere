@@ -2,7 +2,7 @@
 
 namespace SponsorSphere.Domain.Models
 {
-    public class SponsorCompany : User
+    public class SponsorCompany : Sponsor
     {
         public required string IBAN { get; set; }
     }

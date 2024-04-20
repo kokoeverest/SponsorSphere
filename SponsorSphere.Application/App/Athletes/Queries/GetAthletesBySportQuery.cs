@@ -6,9 +6,9 @@ using SponsorSphere.Infrastructure.Interfaces;
 
 namespace SponsorSphere.Application.App.Athletes.Queries;
 
-public record GetAthletesBySport(SportsEnum Sport) : IRequest<List<AthleteDto>>;
+public record GetAthletesBySportQuery(SportsEnum Sport) : IRequest<List<AthleteDto>>;
 
-public class GetAthletesBySportHandler : IRequestHandler<GetAthletesBySport, List<AthleteDto>>
+public class GetAthletesBySportHandler : IRequestHandler<GetAthletesBySportQuery, List<AthleteDto>>
 {
     private readonly IAthleteRepository _athleteRepository;
     private readonly IMapper _mapper;
@@ -19,11 +19,11 @@ public class GetAthletesBySportHandler : IRequestHandler<GetAthletesBySport, Lis
         _mapper = mapper;
     }
 
-    public Task<List<AthleteDto>> Handle(GetAthletesBySport request, CancellationToken cancellationToken)
+    public async Task<List<AthleteDto>> Handle(GetAthletesBySportQuery request, CancellationToken cancellationToken)
     {
-        var athletes = _athleteRepository.GetBySport(request.Sport);
+        var athletes = await _athleteRepository.GetBySportAsync(request.Sport);
         var mappedAthletes = _mapper.Map<List<AthleteDto>>(athletes);
 
-        return Task.FromResult(mappedAthletes);
+        return await Task.FromResult(mappedAthletes);
     }
 }

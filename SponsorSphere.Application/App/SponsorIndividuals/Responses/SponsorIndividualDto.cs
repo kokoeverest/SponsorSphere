@@ -1,9 +1,8 @@
-﻿using SponsorSphere.Application.App.Users.Responses;
-using SponsorSphere.Application.Interfaces;
+﻿using SponsorSphere.Application.App.Sponsors.Responses;
 
 namespace SponsorSphere.Application.App.SponsorIndividuals.Responses
 {
-    public class SponsorIndividualDto : UserDto, IUserDto
+    public class SponsorIndividualDto : SponsorDto
     {
         public string LastName { get; set; } = string.Empty;
         public DateTime BirthDate { get; set; }

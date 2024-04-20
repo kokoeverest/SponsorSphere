@@ -1,9 +1,8 @@
-﻿using SponsorSphere.Application.App.Users.Responses;
-using SponsorSphere.Application.Interfaces;
+﻿using SponsorSphere.Application.App.Sponsors.Responses;
 
 namespace SponsorSphere.Application.App.SponsorCompanies.Responses
 {
-    public class SponsorCompanyDto : UserDto, IUserDto
+    public class SponsorCompanyDto : SponsorDto
     {
         public string IBAN { get; set; } = string.Empty;
     }

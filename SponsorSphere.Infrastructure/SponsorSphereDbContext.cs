@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
-using System.Data.SqlTypes;
 using System.Reflection;
 
 namespace SponsorSphere.Infrastructure
@@ -23,8 +21,11 @@ namespace SponsorSphere.Infrastructure
         {
             optionsBuilder
                 .UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=SponsorsphereTest")
+#if DEBUG
                 .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },
-                    LogLevel.Information);
+                    LogLevel.Information)
+#endif
+                    ;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

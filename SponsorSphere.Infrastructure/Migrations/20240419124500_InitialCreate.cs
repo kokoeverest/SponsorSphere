@@ -95,36 +95,16 @@ namespace SponsorSphere.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SponsorCompanies",
+                name: "Sponsors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    IBAN = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SponsorCompanies", x => x.Id);
+                    table.PrimaryKey("PK_Sponsors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SponsorCompanies_Users_Id",
-                        column: x => x.Id,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SponsorIndividuals",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SponsorIndividuals", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SponsorIndividuals_Users_Id",
+                        name: "FK_Sponsors_Users_Id",
                         column: x => x.Id,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -181,6 +161,43 @@ namespace SponsorSphere.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SponsorCompanies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    IBAN = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SponsorCompanies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SponsorCompanies_Sponsors_Id",
+                        column: x => x.Id,
+                        principalTable: "Sponsors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SponsorIndividuals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SponsorIndividuals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SponsorIndividuals_Sponsors_Id",
+                        column: x => x.Id,
+                        principalTable: "Sponsors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sponsorships",
                 columns: table => new
                 {
@@ -199,9 +216,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         principalTable: "Athletes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Sponsorships_Users_SponsorId",
+                        name: "FK_Sponsorships_Sponsors_SponsorId",
                         column: x => x.SponsorId,
-                        principalTable: "Users",
+                        principalTable: "Sponsors",
                         principalColumn: "Id");
                 });
 
@@ -254,6 +271,9 @@ namespace SponsorSphere.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Athletes");
+
+            migrationBuilder.DropTable(
+                name: "Sponsors");
 
             migrationBuilder.DropTable(
                 name: "Users");

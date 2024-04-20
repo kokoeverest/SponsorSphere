@@ -10,6 +10,6 @@ namespace SponsorSphere.Domain.Models
         public int AthleteId { get; set; }
         public required Athlete Athlete { get; set; }
         public int SponsorId { get; set; }
-        public required User Sponsor { get; set; }
+        public required Sponsor Sponsor { get; set; }
     }
 }

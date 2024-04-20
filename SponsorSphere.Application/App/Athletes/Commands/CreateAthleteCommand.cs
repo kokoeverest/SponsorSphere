@@ -7,28 +7,28 @@ using SponsorSphere.Infrastructure.Interfaces;
 
 namespace SponsorSphere.Application.App.Athletes.Commands;
 
-public record CreateAthlete(
+public record CreateAthleteCommand(
     string Name,
     string LastName,
     string Email,
     string Password,
     string Country,
     string PhoneNumber,
-    string BirthDate,
+    DateTime BirthDate,
     SportsEnum Sport
     ) : IRequest<AthleteDto>;
 
-public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
+public class CreateAthleteHandler : IRequestHandler<CreateAthleteCommand, AthleteDto>
 {
-    private readonly IAthleteRepository _userRepository;
+    private readonly IAthleteRepository _athleteRepository;
     private readonly IMapper _mapper;
-    public CreateAthleteHandler(IAthleteRepository userRepository, IMapper mapper)
+    public CreateAthleteHandler(IAthleteRepository athleteRepository, IMapper mapper)
     {
-        _userRepository = userRepository;
+        _athleteRepository = athleteRepository;
         _mapper = mapper;
     }
 
-    public Task<AthleteDto> Handle(CreateAthlete request, CancellationToken cancellationToken)
+    public async Task<AthleteDto> Handle(CreateAthleteCommand request, CancellationToken cancellationToken)
     {
         IEnumerable<string> strings =
         [
@@ -38,7 +38,7 @@ public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
             request.Password,
             request.Country,
             request.PhoneNumber,
-            request.BirthDate,
+            request.BirthDate.ToString(),
             request.Sport.ToString()
         ];
 
@@ -50,25 +50,18 @@ public class CreateAthleteHandler : IRequestHandler<CreateAthlete, AthleteDto>
 
         var athlete = new Athlete
         {
-            Id = GetNextId(),
             Name = request.Name,
             LastName = request.LastName,
             Email = request.Email,
             Password = request.Password,
             Country = request.Country,
             PhoneNumber = request.PhoneNumber,
-            BirthDate = DateTime.Parse(request.BirthDate),
+            BirthDate = request.BirthDate,
             Sport = request.Sport
         };
+        var newAthlete = await _athleteRepository.AddAsync(athlete);
+        var athleteDto = _mapper.Map<AthleteDto>(newAthlete);
 
-        var newAthlete = _userRepository.Create(athlete);
-        var athleteDto = _mapper.Map<AthleteDto>(athlete);
-
-        return Task.FromResult(athleteDto);
-    }
-
-    private int GetNextId()
-    {
-        return _userRepository.GetLastId();
+        return await Task.FromResult(athleteDto);
     }
 }

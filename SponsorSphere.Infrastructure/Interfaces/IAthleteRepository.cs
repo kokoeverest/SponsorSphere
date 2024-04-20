@@ -5,17 +5,18 @@ namespace SponsorSphere.Infrastructure.Interfaces
 {
     public interface IAthleteRepository
     {
-        Athlete Create(Athlete user);
-        Athlete Update(int userId);
-        bool Delete(int userId);
-        List<Athlete> GetAll();
-        Task<User?> GetById(int userId, SponsorSphereDbContext context);
-        List<Athlete> GetByCountry(string country);
-        int GetLastId();
-        public List<Athlete> GetByAge(int age);
-        public List<Athlete> GetBySport(SportsEnum sport);
-        public List<Athlete> GetByUrgentNeed();
-        public List<Athlete> GetByAchievements();
+        Task<Athlete> AddAsync(Athlete user);
+        Task<Athlete?> UpdateAsync(int userId);
+        Task DeleteAsync(int userId);
+        Task<List<Athlete>> GetAllAsync();
+        Task<List<Athlete>> GetAllAsync(int pageNumber, int pageSize);
+        Task<Athlete?> GetByIdAsync(int userId);
+        Task<List<Athlete>> GetByCountryAsync(string country);
+        int GetLastIdAsync();
+        Task<List<Athlete>> GetByAgeAsync(int age);
+        Task<List<Athlete>> GetBySportAsync(SportsEnum sport);
+        Task<List<Athlete>> GetByUrgentNeedAsync();
+        Task<List<Athlete>> GetByAchievementsAsync();
 
     }
 }

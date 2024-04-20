@@ -5,6 +5,7 @@ using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
+using SponsorSphere.Infrastructure;
 using SponsorSphere.Infrastructure.Interfaces;
 using SponsorSphere.Infrastructure.Repositories;
 
@@ -16,7 +17,8 @@ var input = delegate (string s)
 
 
 var diContainer = new ServiceCollection()
-    .AddSingleton<IAthleteRepository, AthleteRepository>()
+    .AddDbContext<SponsorSphereDbContext>()
+    .AddScoped<IAthleteRepository, AthleteRepository>()
     .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly))
     .AddAutoMapper(typeof(AssemblyMarker).Assembly)
     .BuildServiceProvider();
@@ -42,7 +44,8 @@ IMediator mediator = diContainer.GetRequiredService<IMediator>();
 //    birthDay,
 //    SportsEnum.MountainRunning
 //    ));
-var peshoAthlete = new Athlete { 
+var peshoAthlete = new Athlete
+{
     Name = "Petar",
     LastName = "Petrov",
     Email = "5rov@mail.mail",
@@ -51,9 +54,10 @@ var peshoAthlete = new Athlete {
     PhoneNumber = "09198",
     BirthDate = DateTime.Parse("30/09/1983"),
     Sport = SportsEnum.MountainRunning
-    };
+};
 
-var goshoAthlete = new Athlete {
+var goshoAthlete = new Athlete
+{
     Name = "Georgi",
     LastName = "Petkov",
     Email = "5kov@mail.mail",
@@ -62,7 +66,7 @@ var goshoAthlete = new Athlete {
     PhoneNumber = "09198",
     BirthDate = DateTime.Parse("30/03/2005"),
     Sport = SportsEnum.Golf
-    };
+};
 
 var sportEvent = new SportEvent
 {
@@ -72,41 +76,45 @@ var sportEvent = new SportEvent
     EventDate = DateTime.Parse("2020/08/16"),
     Country = "Bulgaria"
 };
+try
+{
 
-var peshoDto = await mediator.Send(new CreateAthlete(
-    peshoAthlete.Name,
-    peshoAthlete.LastName,
-    peshoAthlete.Email,
-    peshoAthlete.Password,
-    peshoAthlete.Country,
-    peshoAthlete.PhoneNumber,
-    peshoAthlete.BirthDate.ToString(),
-    peshoAthlete.Sport
-    ));
+    var peshoDto = await mediator.Send(new CreateAthleteCommand(
+        peshoAthlete.Name,
+        peshoAthlete.LastName,
+        peshoAthlete.Email,
+        peshoAthlete.Password,
+        peshoAthlete.Country,
+        peshoAthlete.PhoneNumber,
+        peshoAthlete.BirthDate,
+        peshoAthlete.Sport
+        ));
 
-var goshoDto = await mediator.Send(new CreateAthlete(
-    goshoAthlete.Name,
-    goshoAthlete.LastName,
-    goshoAthlete.Email,
-    goshoAthlete.Password,
-    goshoAthlete.Country,
-    goshoAthlete.PhoneNumber,
-    goshoAthlete.BirthDate.ToString(),
-    goshoAthlete.Sport
-    ));
+    var goshoDto = await mediator.Send(new CreateAthleteCommand(
+        goshoAthlete.Name,
+        goshoAthlete.LastName,
+        goshoAthlete.Email,
+        goshoAthlete.Password,
+        goshoAthlete.Country,
+        goshoAthlete.PhoneNumber,
+        goshoAthlete.BirthDate,
+        goshoAthlete.Sport
+        ));
+}
+catch (InvalidDataException e)
+{
+    Console.WriteLine(e.Message);
+}
 
 
 peshoAthlete.Achievements.Add(new Achievement { Athlete = peshoAthlete, SportEvent = sportEvent, PlaceFinished = 1 });
 
-var athletes = await mediator.Send( new GetAllAthletes() );
+var athletes = await mediator.Send(new GetAllAthletesQuery());
 
 foreach (var athlete in athletes)
 {
-    foreach (var achievement in athlete.Achievements)
-    {
-        Console.WriteLine(achievement.PlaceFinished);
-    }
+    Console.WriteLine($"Id: {athlete.Id}, Last name: {athlete.LastName}, Sport: {athlete.Sport}");
 }
-var golfers = await mediator.Send(new GetAthletesBySport(SportsEnum.Golf));
+var golfers = await mediator.Send(new GetAthletesBySportQuery(SportsEnum.Golf));
 
-Console.WriteLine(string.Join("\n", golfers));
+Console.WriteLine(golfers[0].Age);

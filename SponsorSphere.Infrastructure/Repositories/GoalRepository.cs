@@ -1,6 +1,8 @@
-﻿namespace SponsorSphere.Infrastructure.Repositories
+﻿using SponsorSphere.Infrastructure.Interfaces;
+
+namespace SponsorSphere.Infrastructure.Repositories
 {
-    public class GoalRepository
+    public class GoalRepository : IGoalRepository
     {
     }
 }

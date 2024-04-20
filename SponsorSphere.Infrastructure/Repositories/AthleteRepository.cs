@@ -2,77 +2,110 @@
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Interfaces;
+using System.Data;
 
 namespace SponsorSphere.Infrastructure.Repositories
 {
     public class AthleteRepository : IAthleteRepository
     {
-        private readonly List<Athlete> _athletes = [];
+        private readonly SponsorSphereDbContext _context;
 
-        public Athlete Create(Athlete athlete)
+        public AthleteRepository(SponsorSphereDbContext context)
         {
-            _athletes.Add(athlete);
-            return athlete;
+            _context = context;
         }
 
-        public bool Delete(int userId)
+        public async Task<Athlete> AddAsync(Athlete athlete)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Athletes.Add(athlete);
+                await _context.SaveChangesAsync();
+                return athlete;
+            }
+            catch (DbUpdateException e)
+            {
+                await Console.Out.WriteLineAsync(e.GetType().ToString());
+                throw new InvalidDataException("User with that email already exists");
+            }
         }
 
-        public List<Athlete> GetAll()
+        public async Task DeleteAsync(int userId)
         {
-            return _athletes;
-        }
+            var athleteToDelete = await GetByIdAsync(userId);
+            //var result = await _context.Users.ExecuteDeleteAsync(athleteToDelete);
 
-        public List<Athlete> GetByCountry(string country)
-        {
-            return _athletes.Where(athlete => athlete.Country == country).ToList();
+            if (athleteToDelete is not null)
+            {
+                _context.Users.Remove(athleteToDelete);
+                await _context.SaveChangesAsync();
+            }
         }
-
-        public List<Athlete> GetByAge(int age)
+        public async Task<Athlete?> GetByIdAsync(int userId)
         {
-            return _athletes.Where(athlete => athlete.Age <= age).ToList();
-        }
+            var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == userId);
 
-        public List<Athlete> GetBySport(SportsEnum sport)
-        {
-            return _athletes.Where(athlete => athlete.Sport == sport).ToList();
-        }
-
-        public List<Athlete> GetByUrgentNeed()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Athlete> GetByAchievements()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<User?> GetById(int userId, SponsorSphereDbContext context)
-        {
-            return await context.Users.FirstOrDefaultAsync(athlete => athlete.Id == userId);
-            //for (int i = 0; i < _athletes.Count; i++)
-            //{
-            //    if (_athletes[i].Id == userId)
-            //    {
-            //        return _athletes.ElementAt(i);
-            //    }
-            //}
-            
+            if (athlete is not null)
+            {
+                return athlete;
+            }
             throw new ApplicationException($"Athlete with id {userId} not found");
         }
-
-        public int GetLastId()
+        public async Task<List<Athlete>> GetAllAsync()
         {
-            int firstId = 1;
-            return _athletes.Max(athlete => athlete.Id) + 1 ?? firstId;
+            return await _context.Athletes.ToListAsync();
+        }
+        public async Task<List<Athlete>> GetAllAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Athletes
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
-        public Athlete Update(int userId)
+        public async Task<List<Athlete>> GetByCountryAsync(string country)
         {
-            throw new NotImplementedException();
+            return await _context.Athletes.Where(athlete => athlete.Country == country).ToListAsync();
+        }
+
+        public async Task<List<Athlete>> GetByAgeAsync(int age)
+        {
+            return await _context.Athletes.Where(athlete => athlete.Age <= age).ToListAsync();
+        }
+
+        public async Task<List<Athlete>> GetBySportAsync(SportsEnum sport)
+        {
+            return await _context.Athletes.Where(athlete => athlete.Sport == sport).ToListAsync();
+        }
+
+        public async Task<List<Athlete>> GetByUrgentNeedAsync()
+        {
+            // to be modified
+            return await _context.Athletes.ToListAsync();
+        }
+
+        public async Task<List<Athlete>> GetByAchievementsAsync()
+        {
+            // to be modified
+            return await _context.Athletes.ToListAsync();
+        }
+
+
+        public async Task<Athlete?> UpdateAsync(int userId)
+        {
+            // to be modified
+            var athlete = await GetByIdAsync(userId);
+            if (athlete is not null)
+            {
+                return athlete;
+            }
+            return null;
+        }
+
+        public int GetLastIdAsync()
+        {
+            // to be modified
+            return 1;
         }
     }
 }

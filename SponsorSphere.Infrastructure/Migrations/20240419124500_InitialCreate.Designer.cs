@@ -12,7 +12,7 @@ using SponsorSphere.Infrastructure;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     [DbContext(typeof(SponsorSphereDbContext))]
-    [Migration("20240419104813_InitialCreate")]
+    [Migration("20240419124500_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -244,9 +244,16 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.ToTable("Athletes");
                 });
 
-            modelBuilder.Entity("SponsorSphere.Domain.Models.SponsorCompany", b =>
+            modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsor", b =>
                 {
                     b.HasBaseType("SponsorSphere.Domain.Models.User");
+
+                    b.ToTable("Sponsors", (string)null);
+                });
+
+            modelBuilder.Entity("SponsorSphere.Domain.Models.SponsorCompany", b =>
+                {
+                    b.HasBaseType("SponsorSphere.Domain.Models.Sponsor");
 
                     b.Property<string>("IBAN")
                         .IsRequired()
@@ -258,7 +265,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.SponsorIndividual", b =>
                 {
-                    b.HasBaseType("SponsorSphere.Domain.Models.User");
+                    b.HasBaseType("SponsorSphere.Domain.Models.Sponsor");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -328,7 +335,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SponsorSphere.Domain.Models.User", "Sponsor")
+                    b.HasOne("SponsorSphere.Domain.Models.Sponsor", "Sponsor")
                         .WithMany()
                         .HasForeignKey("SponsorId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -348,9 +355,18 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SponsorSphere.Domain.Models.SponsorCompany", b =>
+            modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsor", b =>
                 {
                     b.HasOne("SponsorSphere.Domain.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("SponsorSphere.Domain.Models.Sponsor", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SponsorSphere.Domain.Models.SponsorCompany", b =>
+                {
+                    b.HasOne("SponsorSphere.Domain.Models.Sponsor", null)
                         .WithOne()
                         .HasForeignKey("SponsorSphere.Domain.Models.SponsorCompany", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -359,7 +375,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.SponsorIndividual", b =>
                 {
-                    b.HasOne("SponsorSphere.Domain.Models.User", null)
+                    b.HasOne("SponsorSphere.Domain.Models.Sponsor", null)
                         .WithOne()
                         .HasForeignKey("SponsorSphere.Domain.Models.SponsorIndividual", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
