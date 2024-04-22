@@ -10,6 +10,7 @@ namespace SponsorSphere.Application.Interfaces
         public IGoalRepository GoalRepository { get; }
         public ISponsorCompanyRepository SponsorCompanyRepository { get; }
         public ISponsorIndividualRepository SponsorIndividualRepository { get; }
+        public ISponsorRepository SponsorRepository { get; }
         public ISponsorshipRepository SponsorshipRepository { get; }
         public ISportEventRepository SportEventRepository { get; }
 

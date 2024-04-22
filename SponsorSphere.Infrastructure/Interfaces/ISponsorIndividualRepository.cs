@@ -1,18 +1,16 @@
-﻿using SponsorSphere.Domain.Enums;
-using SponsorSphere.Domain.Models;
+﻿using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Infrastructure.Interfaces
 {
     public interface ISponsorIndividualRepository
     {
-        SponsorIndividual Create(SponsorIndividual user);
-        SponsorIndividual Update(int userId);
-        bool Delete(int userId);
-        List<SponsorIndividual> GetAll();
-        SponsorIndividual GetById(int userId);
-        List<SponsorIndividual> GetByCountry(string country);
-        int GetLastId();
-        public List<SponsorIndividual> GetByAge(int age);
+        Task<SponsorIndividual> CreateAsync(SponsorIndividual user);
+        Task<List<SponsorIndividual>> GetAllAsync();
+        Task<SponsorIndividual> GetByIdAsync(int userId);
+        Task<List<SponsorIndividual>> GetByCountryAsync(string country);
+        Task<List<SponsorIndividual>> GetByAgeAsync(int age);
+        Task<int> DeleteAsync(int userId);
+        void Update(SponsorIndividual userId);
 
     }
 }

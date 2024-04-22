@@ -7,12 +7,12 @@ namespace SponsorSphere.Application.App.Athletes.Queries;
 
 public record GetAllAthletesQuery : IRequest<List<AthleteDto>>;
 
-public class GetAllAthletesHandler : IRequestHandler<GetAllAthletesQuery, List<AthleteDto>>
+public class GetAllAthletesQueryHandler : IRequestHandler<GetAllAthletesQuery, List<AthleteDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public GetAllAthletesHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetAllAthletesQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

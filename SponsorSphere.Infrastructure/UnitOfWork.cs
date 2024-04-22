@@ -11,6 +11,7 @@ namespace SponsorSphere.Infrastructure
                       IGoalRepository goalRepository,
                       ISponsorCompanyRepository sponsorCompanyRepository,
                       ISponsorIndividualRepository sponsorIndividualRepository,
+                      ISponsorRepository sponsorRepository,
                       ISponsorshipRepository sponsorshipRepository,
                       ISportEventRepository sportEventRepository) : IUnitOfWork
     {
@@ -23,6 +24,7 @@ namespace SponsorSphere.Infrastructure
         public IGoalRepository GoalRepository { get; private set; } = goalRepository;
         public ISponsorCompanyRepository SponsorCompanyRepository { get; private set; } = sponsorCompanyRepository;
         public ISponsorIndividualRepository SponsorIndividualRepository { get; private set; } = sponsorIndividualRepository;
+        public ISponsorRepository SponsorRepository { get; private set; } = sponsorRepository;
         public ISponsorshipRepository SponsorshipRepository { get; private set; } = sponsorshipRepository;
         public ISportEventRepository SportEventRepository { get; private set; } = sportEventRepository;
 

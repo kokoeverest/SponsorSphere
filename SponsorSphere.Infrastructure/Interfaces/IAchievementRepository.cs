@@ -1,6 +1,6 @@
 ﻿namespace SponsorSphere.Infrastructure.Interfaces
 {
-    public interface IBlogPostRepository
+    public interface IAchievementRepository
     {
     }
 }

@@ -12,12 +12,9 @@
     <Folder Include="App\BlogPosts\Queries\" />
     <Folder Include="App\Goals\Commands\" />
     <Folder Include="App\Goals\Queries\" />
-    <Folder Include="App\SponsorCompanies\Queries\" />
-    <Folder Include="App\SponsorIndividuals\Queries\" />
     <Folder Include="App\Sponsorships\Commands\" />
     <Folder Include="App\Sponsorships\Queries\" />
     <Folder Include="App\Sponsors\Commands\" />
-    <Folder Include="App\Sponsors\Queries\" />
     <Folder Include="App\SportEvents\Queries\" />
   </ItemGroup>
 

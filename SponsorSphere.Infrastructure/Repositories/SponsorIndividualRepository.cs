@@ -1,68 +1,76 @@
-﻿using SponsorSphere.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Interfaces;
 
 namespace SponsorSphere.Infrastructure.Repositories
 {
     public class SponsorIndividualRepository : ISponsorIndividualRepository
     {
-        private readonly List<SponsorIndividual> _sponsorIndividuals = [];
-        public SponsorIndividual Create(SponsorIndividual user)
-        {
-            _sponsorIndividuals.Add(user);
-            return user;
-        }
+        private readonly SponsorSphereDbContext _context;
 
-        public bool Delete(int userId)
+        public SponsorIndividualRepository(SponsorSphereDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
-       
-        public SponsorIndividual GetById(int userId)
+        public async Task<SponsorIndividual> CreateAsync(SponsorIndividual sponsorIndividual)
         {
-            for (int i = 0; i < _sponsorIndividuals.Count; i++)
+            try
             {
-                if (_sponsorIndividuals[i].Id == userId)
-                {
-                    return _sponsorIndividuals.ElementAt(i);
-                }
+                _context.SponsorIndividuals.Add(sponsorIndividual);
+                await _context.SaveChangesAsync();
+                return sponsorIndividual;
             }
-            throw new ApplicationException($"User with id {userId} not found");
+            catch (DbUpdateException)
+            {
+                throw new InvalidDataException("User with that email already exists");
+            }
         }
 
-        public List<SponsorIndividual> GetAll()
+        public async Task<int> DeleteAsync(int userId)
         {
-            return _sponsorIndividuals;
+            var sponsorIndividualToDelete = await GetByIdAsync(userId);
+
+            if (sponsorIndividualToDelete is not null)
+            {
+                _context.Users.Remove(sponsorIndividualToDelete);
+                return await _context.SaveChangesAsync();
+            }
+            return 0;
         }
 
-        public List<SponsorIndividual> GetByAge(int age)
+        public async Task<SponsorIndividual> GetByIdAsync(int userId)
         {
-            return _sponsorIndividuals.Where(sponsorIndividual => sponsorIndividual.Age <= age).ToList();
+            var sponsorIndividual = await _context.SponsorIndividuals.FirstOrDefaultAsync(si => si.Id == userId);
+
+            if (sponsorIndividual is not null)
+            {
+                return sponsorIndividual;
+            }
+            throw new ApplicationException($"Sponsor with id {userId} not found");
         }
 
-        public List<SponsorIndividual> GetByCountry(string country)
+        public async Task<List<SponsorIndividual>> GetAllAsync()
         {
-            return _sponsorIndividuals.Where(sponsorIndividual => sponsorIndividual.Country == country).ToList();
+            return await _context.SponsorIndividuals.ToListAsync();
         }
 
-        public List<SponsorIndividual> GetByMostAthletes()
+        public async Task<List<SponsorIndividual>> GetByAgeAsync(int age)
         {
-            throw new NotImplementedException();
+            return await _context.SponsorIndividuals
+                .Where(sponsorIndividual => sponsorIndividual.Age <= age)
+                .ToListAsync();
         }
 
-        public List<SponsorIndividual> GetByMoneyProvided()
+        public async Task<List<SponsorIndividual>> GetByCountryAsync(string country)
         {
-            throw new NotImplementedException();
+            return await _context.SponsorIndividuals
+                .Where(sponsorIndividual => sponsorIndividual.Country == country)
+                .ToListAsync();
         }
-
-        public int GetLastId()
+        public void Update(SponsorIndividual sponsorIndividualToUpdate)
         {
-            int firstId = 1;
-            return _sponsorIndividuals.Max(sponsorIndividual => sponsorIndividual.Id) + 1 ?? firstId;
-        }
-
-        public SponsorIndividual Update(int userId)
-        {
-            throw new NotImplementedException();
+            var result = _context.SponsorIndividuals.Update(sponsorIndividualToUpdate);
+            Console.WriteLine(result.ToString());
         }
     }
 }

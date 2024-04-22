@@ -41,7 +41,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasIndex("SportEventId")
                         .IsUnique();
 
-                    b.ToTable("Achievements");
+                    b.ToTable("Achievements", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.BlogPost", b =>
@@ -69,7 +69,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BlogPosts");
+                    b.ToTable("BlogPosts", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Goal", b =>
@@ -94,7 +94,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasIndex("SportEventId")
                         .IsUnique();
 
-                    b.ToTable("Goals");
+                    b.ToTable("Goals", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsorship", b =>
@@ -118,7 +118,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("Sponsorships");
+                    b.ToTable("Sponsorships", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.SportEvent", b =>
@@ -153,7 +153,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SportEvents");
+                    b.ToTable("SportEvents", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.User", b =>
@@ -221,7 +221,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
@@ -241,7 +241,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Property<int>("Sport")
                         .HasColumnType("int");
 
-                    b.ToTable("Athletes");
+                    b.ToTable("Athletes", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsor", b =>
@@ -260,7 +260,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .HasMaxLength(34)
                         .HasColumnType("nvarchar(34)");
 
-                    b.ToTable("SponsorCompanies");
+                    b.ToTable("SponsorCompanies", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.SponsorIndividual", b =>
@@ -275,7 +275,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.ToTable("SponsorIndividuals");
+                    b.ToTable("SponsorIndividuals", (string)null);
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Achievement", b =>

@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SponsorSphere.Application;
 using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Queries;
+using SponsorSphere.Application.App.Athletes.Responses;
+using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure;
@@ -15,15 +17,27 @@ var input = delegate (string s)
     return Console.ReadLine();
 };
 
+static IMediator Init()
+{
+    var diContainer = new ServiceCollection()
+        .AddDbContext<SponsorSphereDbContext>()
+        .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly))
+        .AddScoped<IUnitOfWork, UnitOfWork>()
+        .AddScoped<IAchievementRepository, AchievementsRepository>()
+        .AddScoped<IAthleteRepository, AthleteRepository>()
+        .AddScoped<IBlogPostRepository, BlogPostRepository>()
+        .AddScoped<IGoalRepository, GoalRepository>()
+        .AddScoped<ISponsorCompanyRepository, SponsorCompanyRepository>()
+        .AddScoped<ISponsorIndividualRepository, SponsorIndividualRepository>()
+        .AddScoped<ISponsorshipRepository, SponsorshipRepository>()
+        .AddScoped<ISportEventRepository, SportEventRepository>()
+        .AddAutoMapper(typeof(AssemblyMarker).Assembly)
+        .BuildServiceProvider();
 
-var diContainer = new ServiceCollection()
-    .AddDbContext<SponsorSphereDbContext>()
-    .AddScoped<IAthleteRepository, AthleteRepository>()
-    .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly))
-    .AddAutoMapper(typeof(AssemblyMarker).Assembly)
-    .BuildServiceProvider();
+    return diContainer.GetRequiredService<IMediator>();
+}
 
-IMediator mediator = diContainer.GetRequiredService<IMediator>();
+var mediator = Init();
 // Simulation of a regisration form
 
 //var name = input("First name: ");
@@ -34,16 +48,17 @@ IMediator mediator = diContainer.GetRequiredService<IMediator>();
 //var phoneNumber = input("Phone: ");
 //var birthDay = input("Date of birth: dd/mm/yyyy");
 
-//var currentAthlete = await mediator.Send(new CreateAthlete(
+//var currentAthlete = await mediator.Send(new CreateAthleteCommand(
 //    name,
 //    lastName,
 //    email,
 //    pass,
 //    country,
 //    phoneNumber,
-//    birthDay,
+//    DateTime.Parse(birthDay),
 //    SportsEnum.MountainRunning
 //    ));
+
 var peshoAthlete = new Athlete
 {
     Name = "Petar",
@@ -76,44 +91,57 @@ var sportEvent = new SportEvent
     EventDate = DateTime.Parse("2020/08/16"),
     Country = "Bulgaria"
 };
+AthleteDto? peshoDto = null;
+
 try
 {
-
-    var peshoDto = await mediator.Send(new CreateAthleteCommand(
-        peshoAthlete.Name,
-        peshoAthlete.LastName,
-        peshoAthlete.Email,
-        peshoAthlete.Password,
-        peshoAthlete.Country,
-        peshoAthlete.PhoneNumber,
-        peshoAthlete.BirthDate,
-        peshoAthlete.Sport
-        ));
-
-    var goshoDto = await mediator.Send(new CreateAthleteCommand(
-        goshoAthlete.Name,
-        goshoAthlete.LastName,
-        goshoAthlete.Email,
-        goshoAthlete.Password,
-        goshoAthlete.Country,
-        goshoAthlete.PhoneNumber,
-        goshoAthlete.BirthDate,
-        goshoAthlete.Sport
-        ));
+    peshoDto = await RegisterAthlete(peshoAthlete);
+    //var goshoDto = RegisterAthlete(goshoAthlete);
 }
 catch (InvalidDataException e)
 {
     Console.WriteLine(e.Message);
 }
 
-
-peshoAthlete.Achievements.Add(new Achievement { Athlete = peshoAthlete, SportEvent = sportEvent, PlaceFinished = 1 });
-
-var athletes = await mediator.Send(new GetAllAthletesQuery());
-
-foreach (var athlete in athletes)
+if (peshoDto is not null)
 {
-    Console.WriteLine($"Id: {athlete.Id}, Last name: {athlete.LastName}, Sport: {athlete.Sport}");
+    var pesho = await mediator.Send(new GetAthleteByIdQuery(peshoDto.Id));
+    if (pesho != null)
+        await mediator.Send(
+            new UpdateAthleteCommand(
+                AthleteToUpdate: pesho,
+                NewWebsite: "pesho.con",
+                NewFaceBookLink: "",
+                NewStravaLink: "strava.con/peshoatleta",
+                NewInstagramLink: "",
+                NewTwitterLink: ""));
+}
+
+
+
+async Task<AthleteDto> RegisterAthlete(Athlete athlete)
+{
+    return await mediator.Send(new CreateAthleteCommand(
+        athlete.Name,
+        athlete.LastName,
+        athlete.Email,
+        athlete.Password,
+        athlete.Country,
+        athlete.PhoneNumber,
+        athlete.BirthDate,
+        athlete.Sport
+        ));
+}
+//Console.WriteLine(await mediator.Send(new DeleteAthleteCommand(1)));
+
+var athleteDtos = await mediator.Send(new GetAllAthletesQuery());
+
+foreach (var athlete in athleteDtos)
+{
+    Console.WriteLine($"Id: {athlete.Id}, " +
+        $"Last name: {athlete.LastName}, " +
+        $"Sport: {athlete.Sport}, " +
+        $"Website: {athlete.Website}");
 }
 var golfers = await mediator.Send(new GetAthletesBySportQuery(SportsEnum.Golf));
 

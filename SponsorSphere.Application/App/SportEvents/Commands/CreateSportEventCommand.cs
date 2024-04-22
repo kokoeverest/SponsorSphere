@@ -1,6 +1,6 @@
 ﻿namespace SponsorSphere.Application.App.SportEvents.Commands
 {
-    public class CreateEvent
+    public class CreateSportEventCommand
     {
     }
 }

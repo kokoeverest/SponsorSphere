@@ -1,4 +1,5 @@
-﻿using SponsorSphere.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Interfaces;
 using System.Diagnostics.Metrics;
 
@@ -6,58 +7,64 @@ namespace SponsorSphere.Infrastructure.Repositories
 {
     public class SponsorCompanyRepository : ISponsorCompanyRepository
     {
-        private readonly List<SponsorCompany> _sponsorCompanies = [];
-        public SponsorCompany Create(SponsorCompany user)
+        private readonly SponsorSphereDbContext _context;
+
+        public SponsorCompanyRepository(SponsorSphereDbContext context)
         {
-            _sponsorCompanies.Add(user);
-            return user;
+            _context = context;
         }
 
-        public bool Delete(int userId)
+        public async Task<SponsorCompany> CreateAsync(SponsorCompany sponsorCompany)
         {
-            throw new NotImplementedException();
-        }
-        public SponsorCompany GetById(int userId)
-        {
-            for (int i = 0; i < _sponsorCompanies.Count; i++)
+            try
             {
-                if (_sponsorCompanies[i].Id == userId)
-                {
-                    return _sponsorCompanies.ElementAt(i);
-                }
+                _context.SponsorCompanies.Add(sponsorCompany);
+                await _context.SaveChangesAsync();
+                return sponsorCompany;
+            }
+            catch (DbUpdateException)
+            {
+                throw new InvalidDataException("User with that email already exists");
+            }
+        }
+
+        public async Task<int> DeleteAsync(int userId)
+        {
+            var sponsorCompanyToDelete = await GetByIdAsync(userId);
+
+            if (sponsorCompanyToDelete is not null)
+            {
+                _context.Users.Remove(sponsorCompanyToDelete);
+                return await _context.SaveChangesAsync();
+            }
+            return 0;
+        }
+        public async Task<SponsorCompany> GetByIdAsync(int userId)
+        {
+            var sponsorCompany = await _context.SponsorCompanies.FirstOrDefaultAsync(sc => sc.Id == userId);
+
+            if (sponsorCompany is not null)
+            {
+                return sponsorCompany;
             }
             throw new ApplicationException($"Sponsor with id {userId} not found");
         }
 
-        public List<SponsorCompany> GetAll()
+        public async Task<List<SponsorCompany>> GetAllAsync()
         {
-            return _sponsorCompanies;
+            return await _context.SponsorCompanies.ToListAsync();
         }
 
-        public List<SponsorCompany> GetByCountry(string country)
+        public async Task<List<SponsorCompany>> GetByCountryAsync(string country)
         {
-            return _sponsorCompanies.Where(sponsorCompany => sponsorCompany.Country == country).ToList();
+            return await _context.SponsorCompanies
+                .Where(sponsorCompany => sponsorCompany.Country == country)
+                .ToListAsync();
         }
-
-        public List<SponsorCompany> GetByMostAthletes()
+        public void Update(SponsorCompany sponsorCompanyToUpdate)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<SponsorCompany> GetByMoneyProvided()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetLastId()
-        {
-            int firstId = 1;
-            return _sponsorCompanies.Max(sponsorCompany => sponsorCompany.Id) + 1 ?? firstId;
-        }
-
-        public SponsorCompany Update(int userId)
-        {
-            throw new NotImplementedException();
+            var result = _context.SponsorCompanies.Update(sponsorCompanyToUpdate);
+            Console.WriteLine(result.ToString());
         }
     }
 }

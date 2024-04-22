@@ -13,6 +13,7 @@ namespace SponsorSphere.Infrastructure
         public DbSet<Goal> Goals { get; set; } = default!;
         public DbSet<SponsorCompany> SponsorCompanies { get; set; } = default!;
         public DbSet<SponsorIndividual> SponsorIndividuals { get; set; } = default!;
+        public DbSet<Sponsor> Sponsors { get; set; } = default!;
         public DbSet<Sponsorship> Sponsorships { get; set; } = default!;
         public DbSet<SportEvent> SportEvents { get; set; } = default!;
         public DbSet<Achievement> Achievements { get; set; } = default!;
