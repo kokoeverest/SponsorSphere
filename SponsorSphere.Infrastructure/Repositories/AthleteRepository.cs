@@ -15,7 +15,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Athlete> AddAsync(Athlete athlete)
+        public async Task<Athlete> CreateAsync(Athlete athlete)
         {
             try
             {
@@ -23,23 +23,25 @@ namespace SponsorSphere.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
                 return athlete;
             }
-            catch (DbUpdateException e)
+            catch (DbUpdateException)
             {
-                await Console.Out.WriteLineAsync(e.GetType().ToString());
+                //await Console.Out.WriteLineAsync(e.GetType().ToString());
                 throw new InvalidDataException("User with that email already exists");
             }
         }
 
-        public async Task DeleteAsync(int userId)
+        public async Task<int> DeleteAsync(int userId)
         {
+            //return await _context.Users.Where(u => u.Id == userId).ExecuteDeleteAsync(); 
+            // ExecuteDelete and ExecuteUpdate doesn't apply to TpT mapping strategy
             var athleteToDelete = await GetByIdAsync(userId);
-            //var result = await _context.Users.ExecuteDeleteAsync(athleteToDelete);
 
             if (athleteToDelete is not null)
             {
                 _context.Users.Remove(athleteToDelete);
-                await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync();
             }
+            return 0;
         }
         public async Task<Athlete?> GetByIdAsync(int userId)
         {
@@ -90,22 +92,11 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.Athletes.ToListAsync();
         }
 
-
-        public async Task<Athlete?> UpdateAsync(int userId)
+        public void Update(Athlete athleteToUpdate)
         {
-            // to be modified
-            var athlete = await GetByIdAsync(userId);
-            if (athlete is not null)
-            {
-                return athlete;
-            }
-            return null;
-        }
-
-        public int GetLastIdAsync()
-        {
-            // to be modified
-            return 1;
+            
+            var result = _context.Athletes.Update(athleteToUpdate);
+            Console.WriteLine(result.ToString());
         }
     }
 }

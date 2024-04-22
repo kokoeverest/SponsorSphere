@@ -4,7 +4,7 @@ namespace SponsorSphere.Domain.Interfaces
 {
     public interface IUser
     {
-        public int? Id { get; }
+        public int Id { get; }
         public string Name { get; }
         public string Email { get; }
         public string Password { set; }

@@ -7,15 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="App\Achievements\Commands\" />
     <Folder Include="App\Achievements\Queries\" />
     <Folder Include="App\BlogPosts\Commands\" />
     <Folder Include="App\BlogPosts\Queries\" />
     <Folder Include="App\Goals\Commands\" />
     <Folder Include="App\Goals\Queries\" />
-    <Folder Include="App\SponsorCompanies\Commands\" />
     <Folder Include="App\SponsorCompanies\Queries\" />
-    <Folder Include="App\SponsorIndividuals\Commands\" />
     <Folder Include="App\SponsorIndividuals\Queries\" />
     <Folder Include="App\Sponsorships\Commands\" />
     <Folder Include="App\Sponsorships\Queries\" />
