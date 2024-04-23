@@ -20,7 +20,7 @@ public class GetSponsorCompaniesByCountryQueryHandler : IRequestHandler<GetSpons
 
     public async Task<List<SponsorCompanyDto>> Handle(GetSponsorCompaniesByCountryQuery request, CancellationToken cancellationToken)
     {
-        var sponsorCompanies = await _unitOfWork.SponsorCompanyRepository.GetByCountryAsync(request.Country);
+        var sponsorCompanies = await _unitOfWork.SponsorCompaniesRepository.GetByCountryAsync(request.Country);
         var mappedSponsorCompanies = _mapper.Map<List<SponsorCompanyDto>>(sponsorCompanies);
 
         return await Task.FromResult(mappedSponsorCompanies);

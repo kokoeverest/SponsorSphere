@@ -8,8 +8,8 @@ namespace SponsorSphere.Domain.Models
         public SponsorshipLevel Level { get; set; }
         public decimal Amount { get; set; }
         public int AthleteId { get; set; }
-        public required Athlete Athlete { get; set; }
+        public Athlete? Athlete { get; set; }
         public int SponsorId { get; set; }
-        public required Sponsor Sponsor { get; set; }
+        public Sponsor? Sponsor { get; set; }
     }
 }

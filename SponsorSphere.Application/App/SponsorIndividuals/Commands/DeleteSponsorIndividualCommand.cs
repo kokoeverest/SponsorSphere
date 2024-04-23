@@ -14,6 +14,6 @@ public class DeleteSponsorIndividualCommandHandler : IRequestHandler<DeleteSpons
 
     public async Task<int> Handle(DeleteSponsorIndividualCommand request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.SponsorIndividualRepository.DeleteAsync(request.SponsorIndividualId);
+        return await _unitOfWork.SponsorIndividualsRepository.DeleteAsync(request.SponsorIndividualId);
     }
 }

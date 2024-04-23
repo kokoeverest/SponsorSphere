@@ -4,7 +4,7 @@ namespace SponsorSphere.Domain.Models
 {
     public class SportEvent
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public required string Name { get; set; }
         public required string Country { get; set; }
         public DateTime EventDate { get; set; }

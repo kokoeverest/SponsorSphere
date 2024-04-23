@@ -1,7 +1,7 @@
 ﻿using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
-namespace SponsorSphere.Infrastructure.Interfaces
+namespace SponsorSphere.Application.Interfaces
 {
     public interface IAthleteRepository
     {
@@ -15,6 +15,6 @@ namespace SponsorSphere.Infrastructure.Interfaces
         Task<List<Athlete>> GetBySportAsync(SportsEnum sport);
         Task<List<Athlete>> GetByUrgentNeedAsync();
         Task<List<Athlete>> GetByAchievementsAsync();
-        void Update(Athlete athleteToUpdate);
+        void Update(int userId);
     }
 }

@@ -1,6 +1,5 @@
 ﻿
 using SponsorSphere.Application.Interfaces;
-using SponsorSphere.Infrastructure.Interfaces;
 
 namespace SponsorSphere.Infrastructure
 {
@@ -20,13 +19,13 @@ namespace SponsorSphere.Infrastructure
 
         public IAthleteRepository AthletesRepository { get; private set; } = athleteRepository;
         public IAchievementRepository AchievementsRepository { get; private set; } = achievementRepository;
-        public IBlogPostRepository BlogPostRepository { get; private set; } = blogPostRepository;
-        public IGoalRepository GoalRepository { get; private set; } = goalRepository;
-        public ISponsorCompanyRepository SponsorCompanyRepository { get; private set; } = sponsorCompanyRepository;
-        public ISponsorIndividualRepository SponsorIndividualRepository { get; private set; } = sponsorIndividualRepository;
-        public ISponsorRepository SponsorRepository { get; private set; } = sponsorRepository;
-        public ISponsorshipRepository SponsorshipRepository { get; private set; } = sponsorshipRepository;
-        public ISportEventRepository SportEventRepository { get; private set; } = sportEventRepository;
+        public IBlogPostRepository BlogPostsRepository { get; private set; } = blogPostRepository;
+        public IGoalRepository GoalsRepository { get; private set; } = goalRepository;
+        public ISponsorCompanyRepository SponsorCompaniesRepository { get; private set; } = sponsorCompanyRepository;
+        public ISponsorIndividualRepository SponsorIndividualsRepository { get; private set; } = sponsorIndividualRepository;
+        public ISponsorRepository SponsorsRepository { get; private set; } = sponsorRepository;
+        public ISponsorshipRepository SponsorshipsRepository { get; private set; } = sponsorshipRepository;
+        public ISportEventRepository SportEventsRepository { get; private set; } = sportEventRepository;
 
         public async Task BeginTransactionAsync()
         {

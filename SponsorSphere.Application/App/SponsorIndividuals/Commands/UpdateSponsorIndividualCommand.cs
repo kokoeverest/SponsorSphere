@@ -7,7 +7,7 @@ using SponsorSphere.Domain.Models;
 namespace SponsorSphere.Application.App.SponsorIndividuals.Commands;
 // Add more of the properties which can be changed
 public record UpdateSponsorIndividualCommand(
-    SponsorIndividual SponsorIndividualToUpdate,
+    int SponsorIndividualToUpdate,
     string? NewWebsite,
     string? NewFaceBookLink,
     string? NewStravaLink,
@@ -35,7 +35,7 @@ public class UpdateSponsorIndividualCommandHandler : IRequestHandler<UpdateSpons
         request.SponsorIndividualToUpdate.InstagramLink = request.NewInstagramLink ?? oldSponsorIndividual.InstagramLink;
         request.SponsorIndividualToUpdate.TwitterLink = request.NewTwitterLink ?? oldSponsorIndividual.TwitterLink;
 
-        _unitOfWork.SponsorIndividualRepository.Update(request.SponsorIndividualToUpdate);
+        _unitOfWork.SponsorIndividualsRepository.Update(request.SponsorIndividualToUpdate);
 
         var updatedSponsorCompanyDto = _mapper.Map<SponsorIndividualDto>(request.SponsorIndividualToUpdate);
 

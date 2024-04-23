@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
-using SponsorSphere.Infrastructure.Interfaces;
 
 namespace SponsorSphere.Infrastructure.Repositories
 {
@@ -16,7 +16,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             try
             {
-                _context.SponsorIndividuals.Add(sponsorIndividual);
+                await _context.SponsorIndividuals.AddAsync(sponsorIndividual);
                 await _context.SaveChangesAsync();
                 return sponsorIndividual;
             }
@@ -38,7 +38,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             return 0;
         }
 
-        public async Task<SponsorIndividual> GetByIdAsync(int userId)
+        public async Task<SponsorIndividual?> GetByIdAsync(int userId)
         {
             var sponsorIndividual = await _context.SponsorIndividuals.FirstOrDefaultAsync(si => si.Id == userId);
 
@@ -51,13 +51,16 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<List<SponsorIndividual>> GetAllAsync()
         {
-            return await _context.SponsorIndividuals.ToListAsync();
+            return await _context.SponsorIndividuals
+                .OrderBy(sponsor => sponsor.Name)
+                .ToListAsync();
         }
 
         public async Task<List<SponsorIndividual>> GetByAgeAsync(int age)
         {
             return await _context.SponsorIndividuals
                 .Where(sponsorIndividual => sponsorIndividual.Age <= age)
+                .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
 
@@ -65,11 +68,14 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             return await _context.SponsorIndividuals
                 .Where(sponsorIndividual => sponsorIndividual.Country == country)
+                .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
-        public void Update(SponsorIndividual sponsorIndividualToUpdate)
+        public async void Update(int userId)
         {
+            var sponsorIndividualToUpdate = await GetByIdAsync(userId);
             var result = _context.SponsorIndividuals.Update(sponsorIndividualToUpdate);
+            _context.SaveChanges();
             Console.WriteLine(result.ToString());
         }
     }

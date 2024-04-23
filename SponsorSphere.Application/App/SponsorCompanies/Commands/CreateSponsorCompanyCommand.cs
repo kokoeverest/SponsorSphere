@@ -57,7 +57,7 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
                 IBAN = request.Iban
             };
 
-            var newSponsorCompany = await _unitOfWork.SponsorCompanyRepository.CreateAsync(sponsorCompany);
+            var newSponsorCompany = await _unitOfWork.SponsorCompaniesRepository.CreateAsync(sponsorCompany);
             await _unitOfWork.CommitTransactionAsync();
 
             var sponsorCompanyDto = _mapper.Map<SponsorCompanyDto>(newSponsorCompany);

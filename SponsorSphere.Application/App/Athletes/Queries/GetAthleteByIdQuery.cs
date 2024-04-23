@@ -6,9 +6,9 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.Athletes.Queries;
 
-public record GetAthleteByIdQuery(int AthleteId) : IRequest<Athlete?>;
+public record GetAthleteByIdQuery(int AthleteId) : IRequest<AthleteDto?>;
 
-public class GetAthleteByIdQueryHandler : IRequestHandler<GetAthleteByIdQuery, Athlete?>
+public class GetAthleteByIdQueryHandler : IRequestHandler<GetAthleteByIdQuery, AthleteDto?>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -19,11 +19,11 @@ public class GetAthleteByIdQueryHandler : IRequestHandler<GetAthleteByIdQuery, A
         _mapper = mapper;
     }
 
-    public async Task<Athlete?> Handle(GetAthleteByIdQuery request, CancellationToken cancellationToken)
+    public async Task<AthleteDto?> Handle(GetAthleteByIdQuery request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.AthletesRepository.GetByIdAsync(request.AthleteId);
-        //var mappedAthlete = _mapper.Map<AthleteDto>(athlete);
+        var athlete = await _unitOfWork.AthletesRepository.GetByIdAsync(request.AthleteId);
+        var mappedAthlete = _mapper.Map<AthleteDto>(athlete);
 
-        //return await Task.FromResult(mappedAthlete);
+        return await Task.FromResult(mappedAthlete);
     }
 }

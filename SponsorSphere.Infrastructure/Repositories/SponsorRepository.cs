@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
-using SponsorSphere.Infrastructure.Interfaces;
 
 namespace SponsorSphere.Infrastructure.Repositories
 {
@@ -15,7 +15,8 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<Sponsor>> GetByMostAthletesAsync()
         {
             var sponsors = await _context.Sponsors
-                .OrderByDescending(s => s.Sponsorships.Count)
+                .OrderByDescending(sponsor => sponsor.Sponsorships.Count)
+                .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
 
             return sponsors;

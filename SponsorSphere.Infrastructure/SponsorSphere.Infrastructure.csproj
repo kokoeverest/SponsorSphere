@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SponsorSphere.Domain\SponsorSphere.Domain.csproj" />
+    <ProjectReference Include="..\SponsorSphere.Application\SponsorSphere.Application.csproj" />
   </ItemGroup>
 
 </Project>

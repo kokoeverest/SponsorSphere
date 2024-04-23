@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
+using SponsorSphere.Application.App.SponsorCompanies.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SponsorCompanies.Queries;
 
-public record GetSponsorCompanyByIdQuery(int SponsorCompanyId) : IRequest<SponsorCompany?>;
+public record GetSponsorCompanyByIdQuery(int SponsorCompanyId) : IRequest<SponsorCompanyDto?>;
 
-public class GetSponsorCompanyByIdQueryHandler : IRequestHandler<GetSponsorCompanyByIdQuery, SponsorCompany?>
+public class GetSponsorCompanyByIdQueryHandler : IRequestHandler<GetSponsorCompanyByIdQuery, SponsorCompanyDto?>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -18,8 +19,12 @@ public class GetSponsorCompanyByIdQueryHandler : IRequestHandler<GetSponsorCompa
         _mapper = mapper;
     }
 
-    public async Task<SponsorCompany?> Handle(GetSponsorCompanyByIdQuery request, CancellationToken cancellationToken)
+    public async Task<SponsorCompanyDto?> Handle(GetSponsorCompanyByIdQuery request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.SponsorCompanyRepository.GetByIdAsync(request.SponsorCompanyId);
+        var sponsorCompany = await _unitOfWork.SponsorCompaniesRepository.GetByIdAsync(request.SponsorCompanyId);
+        var mappedSponsorCompany = _mapper.Map<SponsorCompanyDto>(sponsorCompany);
+
+        return await Task.FromResult(mappedSponsorCompany);
+
     }
 }

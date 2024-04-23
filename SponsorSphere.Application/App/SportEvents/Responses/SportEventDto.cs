@@ -4,7 +4,7 @@ namespace SponsorSphere.Application.App.SportEvents.Responses
 {
     public class SportEventDto
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
         public DateTime EventDate { get; set; }

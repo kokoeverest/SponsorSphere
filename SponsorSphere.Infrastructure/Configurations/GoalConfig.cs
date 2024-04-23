@@ -19,7 +19,7 @@ namespace SponsorSphere.Infrastructure.Configurations
 
             builder.HasOne(g => g.SportEvent)
                 .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

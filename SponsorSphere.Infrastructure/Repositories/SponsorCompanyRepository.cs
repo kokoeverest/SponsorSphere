@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
-using SponsorSphere.Infrastructure.Interfaces;
 using System.Diagnostics.Metrics;
 
 namespace SponsorSphere.Infrastructure.Repositories
@@ -18,7 +18,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             try
             {
-                _context.SponsorCompanies.Add(sponsorCompany);
+                await _context.SponsorCompanies.AddAsync(sponsorCompany);
                 await _context.SaveChangesAsync();
                 return sponsorCompany;
             }
@@ -39,7 +39,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             }
             return 0;
         }
-        public async Task<SponsorCompany> GetByIdAsync(int userId)
+        public async Task<SponsorCompany?> GetByIdAsync(int userId)
         {
             var sponsorCompany = await _context.SponsorCompanies.FirstOrDefaultAsync(sc => sc.Id == userId);
 
@@ -52,18 +52,23 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<List<SponsorCompany>> GetAllAsync()
         {
-            return await _context.SponsorCompanies.ToListAsync();
+            return await _context.SponsorCompanies
+                .OrderBy(sponsor => sponsor.Name)
+                .ToListAsync();
         }
 
         public async Task<List<SponsorCompany>> GetByCountryAsync(string country)
         {
             return await _context.SponsorCompanies
                 .Where(sponsorCompany => sponsorCompany.Country == country)
+                .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
-        public void Update(SponsorCompany sponsorCompanyToUpdate)
+        public async void Update(int userId)
         {
+            var sponsorCompanyToUpdate = await GetByIdAsync(userId);
             var result = _context.SponsorCompanies.Update(sponsorCompanyToUpdate);
+            _context.SaveChanges();
             Console.WriteLine(result.ToString());
         }
     }

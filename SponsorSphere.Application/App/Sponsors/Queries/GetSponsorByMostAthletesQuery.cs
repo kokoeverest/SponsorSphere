@@ -20,7 +20,7 @@ public class GetSponsorsByMostAthletesQueryHandler : IRequestHandler<GetSponsors
 
     public async Task<List<SponsorDto>> Handle(GetSponsorsByMostAthletesQuery request, CancellationToken cancellationToken)
     {
-        var sponsors = await _unitOfWork.SponsorRepository.GetByMostAthletesAsync();
+        var sponsors = await _unitOfWork.SponsorsRepository.GetByMostAthletesAsync();
         var mappedSponsors = _mapper.Map<List<SponsorDto>>(sponsors);
 
         return await Task.FromResult(mappedSponsors);

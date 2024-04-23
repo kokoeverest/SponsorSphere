@@ -20,6 +20,6 @@ public class GetSponsorIndividualByIdQueryHandler : IRequestHandler<GetSponsorIn
 
     public async Task<SponsorIndividual?> Handle(GetSponsorIndividualByIdQuery request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.SponsorIndividualRepository.GetByIdAsync(request.SponosrIndividualId);
+        return await _unitOfWork.SponsorIndividualsRepository.GetByIdAsync(request.SponosrIndividualId);
     }
 }

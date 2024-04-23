@@ -1,4 +1,4 @@
-﻿namespace SponsorSphere.Infrastructure.Interfaces
+﻿namespace SponsorSphere.Application.Interfaces
 {
     public interface IGoalRepository
     {

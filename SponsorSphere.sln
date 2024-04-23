@@ -8,17 +8,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SponsorSphere.ConsolePresen
 		{40F9DEBB-ABB3-4783-B930-C26617392D4F} = {40F9DEBB-ABB3-4783-B930-C26617392D4F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SponsorSphere.Application", "SponsorSphere.Application\SponsorSphere.Application.csproj", "{40F9DEBB-ABB3-4783-B930-C26617392D4F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C306E044-B0EC-482F-995D-0642C16C9D9B} = {C306E044-B0EC-482F-995D-0642C16C9D9B}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SponsorSphere.Infrastructure", "SponsorSphere.Infrastructure\SponsorSphere.Infrastructure.csproj", "{C306E044-B0EC-482F-995D-0642C16C9D9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SponsorSphere.Application", "SponsorSphere.Application\SponsorSphere.Application.csproj", "{40F9DEBB-ABB3-4783-B930-C26617392D4F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286} = {8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SponsorSphere.Domain", "SponsorSphere.Domain\SponsorSphere.Domain.csproj", "{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SponsorSphere.Infrastructure", "SponsorSphere.Infrastructure\SponsorSphere.Infrastructure.csproj", "{C306E044-B0EC-482F-995D-0642C16C9D9B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{40F9DEBB-ABB3-4783-B930-C26617392D4F} = {40F9DEBB-ABB3-4783-B930-C26617392D4F}
+		{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286} = {8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SponsorSphere.Domain", "SponsorSphere.Domain\SponsorSphere.Domain.csproj", "{8FDDAB59-2FD7-4BA4-BF92-83D9E50B4286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

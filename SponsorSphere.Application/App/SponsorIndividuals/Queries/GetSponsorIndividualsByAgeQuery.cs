@@ -20,7 +20,7 @@ public class GetSponsorIndividualsByAgeQueryHandler : IRequestHandler<GetSponsor
 
     public async Task<List<SponsorIndividualDto>> Handle(GetSponsorIndividualsByAgeQuery request, CancellationToken cancellationToken)
     {
-        var sponsorIndividuals = await _unitOfWork.SponsorIndividualRepository.GetByAgeAsync(request.Age);
+        var sponsorIndividuals = await _unitOfWork.SponsorIndividualsRepository.GetByAgeAsync(request.Age);
         var mappedSponsorIndividuals = _mapper.Map<List<SponsorIndividualDto>>(sponsorIndividuals);
 
         return await Task.FromResult(mappedSponsorIndividuals);

@@ -1,48 +1,58 @@
-﻿using SponsorSphere.Domain.Enums;
+﻿using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
-using SponsorSphere.Infrastructure.Interfaces;
 
 namespace SponsorSphere.Infrastructure.Repositories
 {
     public class SponsorshipRepository : ISponsorshipRepository
     {
-        public Sponsorship Create(Sponsorship sponsorship)
+        private readonly SponsorSphereDbContext _context;
+
+        public SponsorshipRepository(SponsorSphereDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<Sponsorship> CreateAsync(Sponsorship sponsorship)
+        {
+            await _context.Sponsorships.AddAsync(sponsorship);
+            await _context.SaveChangesAsync();
+            return sponsorship;
+        }
+
+        public Task<int> Delete(Sponsorship sponsorship)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(Sponsorship sponsorship)
+        public async Task<List<Sponsorship>> GetByAmountAsync(decimal amount)
         {
             throw new NotImplementedException();
         }
 
-        public List<Sponsorship> GetByAmount(decimal amount)
+        public async Task<List<Sponsorship>> GetByAthleteIdAsync(int athleteId)
         {
             throw new NotImplementedException();
         }
 
-        public List<Sponsorship> GetByAthleteId(int athleteId)
+        public async Task<Sponsorship> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Sponsorship GetById(int id)
+        public async Task<List<Sponsorship>> GetByLevelAsync(SponsorshipLevel level)
         {
             throw new NotImplementedException();
         }
 
-        public List<Sponsorship> GetByLevel(SponsorshipLevel level)
+        public async Task<List<Sponsorship>> GetBySponsorIdAsync(int sponsorId)
         {
             throw new NotImplementedException();
         }
 
-        public List<Sponsorship> GetBySponsorId(int sponsorId)
+        public async Task<Sponsorship> Update(Sponsorship sponsorship)
         {
-            throw new NotImplementedException();
-        }
-
-        public Sponsorship Update(Sponsorship sponsorship)
-        {
+            _context.SaveChanges();
             throw new NotImplementedException();
         }
     }

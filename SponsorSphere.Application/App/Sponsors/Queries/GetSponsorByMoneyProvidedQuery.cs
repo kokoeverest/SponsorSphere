@@ -20,7 +20,7 @@ public class GetSponsorsByMoneyProvidedQueryHandler : IRequestHandler<GetSponsor
 
     public async Task<List<SponsorDto>> Handle(GetSponsorsByMoneyProvidedQuery request, CancellationToken cancellationToken)
     {
-        var sponsors = await _unitOfWork.SponsorRepository.GetByMoneyProvidedAsync();
+        var sponsors = await _unitOfWork.SponsorsRepository.GetByMoneyProvidedAsync();
         var mappedSponsors = _mapper.Map<List<SponsorDto>>(sponsors);
 
         return await Task.FromResult(mappedSponsors);

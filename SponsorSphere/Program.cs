@@ -5,10 +5,10 @@ using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Application.App.Athletes.Responses;
 using SponsorSphere.Application.Interfaces;
+using SponsorSphere.ConsolePresentation;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure;
-using SponsorSphere.Infrastructure.Interfaces;
 using SponsorSphere.Infrastructure.Repositories;
 
 var input = delegate (string s)
@@ -28,6 +28,7 @@ static IMediator Init()
         .AddScoped<IBlogPostRepository, BlogPostRepository>()
         .AddScoped<IGoalRepository, GoalRepository>()
         .AddScoped<ISponsorCompanyRepository, SponsorCompanyRepository>()
+        .AddScoped<ISponsorRepository, SponsorRepository>()
         .AddScoped<ISponsorIndividualRepository, SponsorIndividualRepository>()
         .AddScoped<ISponsorshipRepository, SponsorshipRepository>()
         .AddScoped<ISportEventRepository, SportEventRepository>()
@@ -59,43 +60,15 @@ var mediator = Init();
 //    SportsEnum.MountainRunning
 //    ));
 
-var peshoAthlete = new Athlete
-{
-    Name = "Petar",
-    LastName = "Petrov",
-    Email = "5rov@mail.mail",
-    Password = "dd",
-    Country = "bg",
-    PhoneNumber = "09198",
-    BirthDate = DateTime.Parse("30/09/1983"),
-    Sport = SportsEnum.MountainRunning
-};
+var athletes = Seeder.SeedAthletes();
+var sponsorCompanies = Seeder.SeedSponsorCompanies();
+var sportevents = Seeder.SeedSportEvents();
 
-var goshoAthlete = new Athlete
-{
-    Name = "Georgi",
-    LastName = "Petkov",
-    Email = "5kov@mail.mail",
-    Password = "ss",
-    Country = "bg",
-    PhoneNumber = "09198",
-    BirthDate = DateTime.Parse("30/03/2005"),
-    Sport = SportsEnum.Golf
-};
-
-var sportEvent = new SportEvent
-{
-    Sport = SportsEnum.MountainRunning,
-    Name = "Persenk ultra",
-    EventType = EventsEnum.Race,
-    EventDate = DateTime.Parse("2020/08/16"),
-    Country = "Bulgaria"
-};
 AthleteDto? peshoDto = null;
 
 try
 {
-    peshoDto = await RegisterAthlete(peshoAthlete);
+    peshoDto = await RegisterAthlete(athletes[0]);
     //var goshoDto = RegisterAthlete(goshoAthlete);
 }
 catch (InvalidDataException e)
@@ -103,21 +76,16 @@ catch (InvalidDataException e)
     Console.WriteLine(e.Message);
 }
 
-if (peshoDto is not null)
-{
-    var pesho = await mediator.Send(new GetAthleteByIdQuery(peshoDto.Id));
-    if (pesho != null)
-        await mediator.Send(
-            new UpdateAthleteCommand(
-                AthleteToUpdate: pesho,
-                NewWebsite: "pesho.con",
-                NewFaceBookLink: "",
-                NewStravaLink: "strava.con/peshoatleta",
-                NewInstagramLink: "",
-                NewTwitterLink: ""));
-}
-
-
+var pesho = await mediator.Send(new GetAthleteByIdQuery(12));
+if (pesho != null)
+    await mediator.Send(
+        new UpdateAthleteCommand(
+            AthleteToUpdate: 12,
+            NewWebsite: "pesho.con",
+            NewFaceBookLink: "",
+            NewStravaLink: "strava.con/peshoatleta",
+            NewInstagramLink: "",
+            NewTwitterLink: ""));
 
 async Task<AthleteDto> RegisterAthlete(Athlete athlete)
 {

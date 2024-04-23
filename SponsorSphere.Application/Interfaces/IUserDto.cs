@@ -1,4 +1,5 @@
-﻿using SponsorSphere.Domain.Models;
+﻿using SponsorSphere.Application.App.BlogPosts.Responses;
+using SponsorSphere.Application.App.Sponsorships.Responses;
 
 namespace SponsorSphere.Application.Interfaces
 {
@@ -16,7 +17,7 @@ namespace SponsorSphere.Application.Interfaces
         public string InstagramLink { get; set; }
         public string TwitterLink { get; set; }
         public string StravaLink { get; set; }
-        public ICollection<BlogPost> Posts { get; set; }
-        public ICollection<Sponsorship> Sponsorships { get; set; }
+        public ICollection<BlogPostDto> Posts { get; set; }
+        public ICollection<SponsorshipDto> Sponsorships { get; set; }
     }
 }

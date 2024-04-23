@@ -20,7 +20,7 @@ public class GetAllSponsorIndividualsQueryHandler : IRequestHandler<GetAllSponso
 
     public async Task<List<SponsorIndividualDto>> Handle(GetAllSponsorIndividualsQuery request, CancellationToken cancellationToken)
     {
-        var sponsorIndividuals = await _unitOfWork.SponsorIndividualRepository.GetAllAsync();
+        var sponsorIndividuals = await _unitOfWork.SponsorIndividualsRepository.GetAllAsync();
         var mappedSponsorIndividuals = _mapper.Map<List<SponsorIndividualDto>>(sponsorIndividuals);
 
         return await Task.FromResult(mappedSponsorIndividuals);

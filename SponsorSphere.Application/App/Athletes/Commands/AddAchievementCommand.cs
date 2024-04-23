@@ -3,7 +3,6 @@ using MediatR;
 using SponsorSphere.Application.App.Achievements.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
-using SponsorSphere.Infrastructure.Interfaces;
 
 namespace SponsorSphere.Application.App.Athletes.Commands;
 

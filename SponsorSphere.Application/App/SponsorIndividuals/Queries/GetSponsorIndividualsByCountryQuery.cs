@@ -20,7 +20,7 @@ public class GetSponsorIndividualsByCountryQueryHandler : IRequestHandler<GetSpo
 
     public async Task<List<SponsorIndividualDto>> Handle(GetSponsorIndividualsByCountryQuery request, CancellationToken cancellationToken)
     {
-        var sponsorIndividuals = await _unitOfWork.SponsorIndividualRepository.GetByCountryAsync(request.Country);
+        var sponsorIndividuals = await _unitOfWork.SponsorIndividualsRepository.GetByCountryAsync(request.Country);
         var mappedSponsorIndividuals = _mapper.Map<List<SponsorIndividualDto>>(sponsorIndividuals);
 
         return await Task.FromResult(mappedSponsorIndividuals);

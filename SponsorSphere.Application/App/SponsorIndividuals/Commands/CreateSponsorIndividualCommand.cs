@@ -59,7 +59,7 @@ public class CreateSponsorIndividualCommandHandler : IRequestHandler<CreateSpons
                 BirthDate = request.BirthDate,
             };
 
-            var newSponsorIndividual = await _unitOfWork.SponsorIndividualRepository.CreateAsync(sponsorIndividual);
+            var newSponsorIndividual = await _unitOfWork.SponsorIndividualsRepository.CreateAsync(sponsorIndividual);
             await _unitOfWork.CommitTransactionAsync();
 
             var sponsorIndividualDto = _mapper.Map<SponsorIndividualDto>(newSponsorIndividual);

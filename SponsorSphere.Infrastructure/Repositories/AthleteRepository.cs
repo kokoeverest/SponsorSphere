@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
-using SponsorSphere.Infrastructure.Interfaces;
 using System.Data;
 
 namespace SponsorSphere.Infrastructure.Repositories
@@ -19,22 +19,21 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             try
             {
-                _context.Athletes.Add(athlete);
+                await _context.Athletes.AddAsync(athlete);
                 await _context.SaveChangesAsync();
                 return athlete;
             }
             catch (DbUpdateException)
             {
-                //await Console.Out.WriteLineAsync(e.GetType().ToString());
                 throw new InvalidDataException("User with that email already exists");
             }
         }
 
-        public async Task<int> DeleteAsync(int userId)
+        public async Task<int> DeleteAsync(int athleteId)
         {
             //return await _context.Users.Where(u => u.Id == userId).ExecuteDeleteAsync(); 
             // ExecuteDelete and ExecuteUpdate doesn't apply to TpT mapping strategy
-            var athleteToDelete = await GetByIdAsync(userId);
+            var athleteToDelete = await GetByIdAsync(athleteId);
 
             if (athleteToDelete is not null)
             {
@@ -43,41 +42,53 @@ namespace SponsorSphere.Infrastructure.Repositories
             }
             return 0;
         }
-        public async Task<Athlete?> GetByIdAsync(int userId)
+        public async Task<Athlete?> GetByIdAsync(int athleteId)
         {
-            var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == userId);
+            var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == athleteId);
 
             if (athlete is not null)
             {
                 return athlete;
             }
-            throw new ApplicationException($"Athlete with id {userId} not found");
+            throw new ApplicationException($"Athlete with id {athleteId} not found");
         }
         public async Task<List<Athlete>> GetAllAsync()
         {
-            return await _context.Athletes.ToListAsync();
+            return await _context.Athletes
+                .OrderBy(athlete => athlete.Name)
+                .ToListAsync();
         }
         public async Task<List<Athlete>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await _context.Athletes
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .OrderBy(athlete => athlete.Name)
                 .ToListAsync();
         }
 
         public async Task<List<Athlete>> GetByCountryAsync(string country)
         {
-            return await _context.Athletes.Where(athlete => athlete.Country == country).ToListAsync();
+            return await _context.Athletes
+                .Where(athlete => athlete.Country == country)
+                .OrderBy(athlete => athlete.Name)
+                .ToListAsync();
         }
 
         public async Task<List<Athlete>> GetByAgeAsync(int age)
         {
-            return await _context.Athletes.Where(athlete => athlete.Age <= age).ToListAsync();
+            return await _context.Athletes
+                .Where(athlete => athlete.Age <= age)
+                .OrderBy(athlete => athlete.Name)
+                .ToListAsync();
         }
 
         public async Task<List<Athlete>> GetBySportAsync(SportsEnum sport)
         {
-            return await _context.Athletes.Where(athlete => athlete.Sport == sport).ToListAsync();
+            return await _context.Athletes
+                .Where(athlete => athlete.Sport == sport)
+                .OrderBy(athlete => athlete.Name)
+                .ToListAsync();
         }
 
         public async Task<List<Athlete>> GetByUrgentNeedAsync()
@@ -92,11 +103,11 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.Athletes.ToListAsync();
         }
 
-        public void Update(Athlete athleteToUpdate)
+        public async void Update(int userId)
         {
-            
-            var result = _context.Athletes.Update(athleteToUpdate);
-            Console.WriteLine(result.ToString());
+            var athleteToUpdate = await GetByIdAsync(userId);
+            _context.Athletes.Update(athleteToUpdate);
+
         }
     }
 }
