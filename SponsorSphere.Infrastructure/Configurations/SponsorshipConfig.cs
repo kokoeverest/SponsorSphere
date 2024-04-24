@@ -17,15 +17,15 @@ namespace SponsorSphere.Infrastructure.Configurations
             
             builder.HasKey(s => new { s.AthleteId, s.SponsorId });
 
-            builder.HasOne(s => s.Athlete)
-                .WithMany()
-                .HasForeignKey(s => s.AthleteId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //builder.HasOne(s => s.Athlete)
+            //    .WithMany()
+            //    .HasForeignKey(s => s.AthleteId)
+            //    .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(s => s.Sponsor)
-                .WithMany()
-                .HasForeignKey(s => s.SponsorId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //builder.HasOne(s => s.Sponsor)
+            //    .WithMany()
+            //    .HasForeignKey(s => s.SponsorId)
+            //    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

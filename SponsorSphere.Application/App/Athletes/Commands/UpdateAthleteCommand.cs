@@ -8,7 +8,7 @@ namespace SponsorSphere.Application.App.Athletes.Commands;
 
 // Add more of the properties which can be changed
 public record UpdateAthleteCommand(
-    int AthleteToUpdate,
+    AthleteDto AthleteToUpdate,
     string? NewWebsite,
     string? NewFaceBookLink,
     string? NewStravaLink,

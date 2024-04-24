@@ -26,7 +26,7 @@ public class CreateSportEventCommandHandler : IRequestHandler<CreateSportEventCo
     }
     public async Task<SportEventDto> Handle(CreateSportEventCommand request, CancellationToken cancellationToken)
     {
-         var sportEvent = new SportEvent
+        var sportEvent = new SportEvent
         {
             Name = request.Name,
             Country = request.Country,

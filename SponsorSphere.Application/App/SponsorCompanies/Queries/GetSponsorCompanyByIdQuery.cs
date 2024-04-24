@@ -2,7 +2,6 @@
 using MediatR;
 using SponsorSphere.Application.App.SponsorCompanies.Responses;
 using SponsorSphere.Application.Interfaces;
-using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SponsorCompanies.Queries;
 

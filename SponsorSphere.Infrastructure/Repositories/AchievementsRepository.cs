@@ -1,4 +1,6 @@
-﻿using SponsorSphere.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.App.Achievements.Responses;
+using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure;
 
@@ -11,24 +13,30 @@ public class AchievementsRepository : IAchievementRepository
         _context = context;
     }
 
-    public Task<Achievement> CreateAsync(Achievement achievement)
+    public async Task<Achievement> CreateAsync(Achievement achievement)
     {
-        throw new NotImplementedException();
+        await _context.Achievements.AddAsync(achievement);
+        await _context.SaveChangesAsync();
+        return achievement;
     }
 
-    public Task<int> DeleteAsync(Achievement achievement)
+    public async Task<int> DeleteAsync(int sportEventId, int athleteId)
     {
-        throw new NotImplementedException();
+        return await _context.Achievements
+                .Where(ach => ach.AthleteId == athleteId &&
+                              ach.SportEventId == sportEventId)
+                .ExecuteDeleteAsync();
     }
 
-    public Task<List<Achievement>> GetAllAsync(Athlete athlete)
+    public async Task<List<Achievement>> GetAllAsync(int athleteId)
     {
-        throw new NotImplementedException();
+        return await _context.Achievements
+            .Where(ach => ach.AthleteId == athleteId)
+            .ToListAsync();
     }
 
-    public void Update(Achievement achievement)
+    public void Update(AchievementDto achievement)
     {
-        _context.SaveChanges();
         throw new NotImplementedException();
     }
 }

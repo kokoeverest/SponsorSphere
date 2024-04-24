@@ -1,4 +1,6 @@
-﻿using SponsorSphere.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.App.Sponsorships.Responses;
+using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
@@ -20,39 +22,31 @@ namespace SponsorSphere.Infrastructure.Repositories
             return sponsorship;
         }
 
-        public Task<int> Delete(Sponsorship sponsorship)
+        public async Task<int> DeleteAsync(int athleteId, int sponsorId)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<Sponsorship>> GetByAmountAsync(decimal amount)
-        {
-            throw new NotImplementedException();
+            return await _context.Sponsorships
+                .Where(sh => sh.AthleteId == athleteId && 
+                             sh.SponsorId == sponsorId)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<Sponsorship>> GetByAthleteIdAsync(int athleteId)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Sponsorship> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
+            return await _context.Sponsorships.Where(sh => sh.AthleteId == athleteId).ToListAsync();
         }
 
         public async Task<List<Sponsorship>> GetByLevelAsync(SponsorshipLevel level)
         {
-            throw new NotImplementedException();
+            return await _context.Sponsorships.Where(sh => sh.Level == level).ToListAsync();
         }
 
         public async Task<List<Sponsorship>> GetBySponsorIdAsync(int sponsorId)
         {
-            throw new NotImplementedException();
+            return await _context.Sponsorships.Where(sh => sh.SponsorId == sponsorId).ToListAsync();
         }
 
-        public async Task<Sponsorship> Update(Sponsorship sponsorship)
+        public async void Update(SponsorshipDto sponsorship)
         {
-            _context.SaveChanges();
             throw new NotImplementedException();
         }
     }

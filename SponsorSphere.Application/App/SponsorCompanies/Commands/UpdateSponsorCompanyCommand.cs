@@ -7,7 +7,7 @@ using SponsorSphere.Domain.Models;
 namespace SponsorSphere.Application.App.SponsorCompanies.Commands;
 // Add more of the properties which can be changed
 public record UpdateSponsorCompanyCommand(
-    int SponsorCompanyToUpdate,
+    SponsorCompanyDto SponsorCompanyToUpdate,
     string? NewWebsite,
     string? NewFaceBookLink,
     string? NewStravaLink,

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.App.Athletes.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
@@ -91,6 +92,24 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<object>> GetByAmountAsync()
+        {
+            var sponsorships = await _context.Athletes
+                .Join(_context.Sponsorships,
+                      athlete => athlete.Id,
+                      sponsorship => sponsorship.AthleteId,
+                      (athlete, sponsorship) => new { Athlete = athlete, Sponsorship = sponsorship })
+                .GroupBy(x => x.Athlete.Id,
+                         x => x.Sponsorship.Amount,
+                        (athleteId, amounts) => new
+                        {
+                            AthleteId = athleteId,
+                            TotalAmount = amounts.Sum()
+                        })
+                .ToListAsync();
+            return sponsorships.Cast<object>().ToList();
+        }
+
         public async Task<List<Athlete>> GetByUrgentNeedAsync()
         {
             // to be modified
@@ -103,10 +122,11 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.Athletes.ToListAsync();
         }
 
-        public async void Update(int userId)
+        public async void Update(AthleteDto userId)
         {
-            var athleteToUpdate = await GetByIdAsync(userId);
+            var athleteToUpdate = await GetByIdAsync(userId.Id);
             _context.Athletes.Update(athleteToUpdate);
+            await _context.SaveChangesAsync();
 
         }
     }

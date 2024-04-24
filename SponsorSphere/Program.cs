@@ -80,7 +80,7 @@ var pesho = await mediator.Send(new GetAthleteByIdQuery(12));
 if (pesho != null)
     await mediator.Send(
         new UpdateAthleteCommand(
-            AthleteToUpdate: 12,
+            AthleteToUpdate: pesho,
             NewWebsite: "pesho.con",
             NewFaceBookLink: "",
             NewStravaLink: "strava.con/peshoatleta",

@@ -10,7 +10,6 @@ public record CreateBlogPostCommand(
         DateTime Created,
         string Content,
         int AuthorId,
-        //User Author,
         ICollection<string>? Pictures
     ) : IRequest<BlogPostDto>;
 
@@ -32,13 +31,11 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
             AuthorId = request.AuthorId, 
             Content = request.Content, 
             Created = request.Created,
-            //Author = request.Author,
             Pictures = request.Pictures
         }
         );
         var mappedBlogPost = _mapper.Map<BlogPostDto>(newBlogPost);
 
         return await Task.FromResult(mappedBlogPost);
-
     }
 }

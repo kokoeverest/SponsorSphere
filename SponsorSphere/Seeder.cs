@@ -64,6 +64,7 @@ namespace SponsorSphere.ConsolePresentation
                 {
                     Sport = SportsEnum.MountainRunning,
                     Name = "Persenk ultra",
+                    Finished = true,
                     EventType = EventsEnum.Race,
                     EventDate = DateTime.Parse("2020/08/16"),
                     Country = "Bulgaria"
@@ -72,6 +73,7 @@ namespace SponsorSphere.ConsolePresentation
                 {
                     Sport = SportsEnum.SkyRunning,
                     Name = "Zegama Aizkori",
+                    Finished = false,
                     EventType = EventsEnum.Race,
                     EventDate = DateTime.Parse("2024/08/16"),
                     Country = "Spain"

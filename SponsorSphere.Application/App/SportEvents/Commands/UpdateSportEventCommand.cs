@@ -3,12 +3,11 @@ using MediatR;
 using SponsorSphere.Application.App.SportEvents.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
-using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SportEvents.Commands;
 
 public record UpdateSportEventCommand(
-    int SportEventToUpdate,
+    SportEventDto SportEventToUpdate,
     string NewName,
     string NewDate,
     string NewCountry,

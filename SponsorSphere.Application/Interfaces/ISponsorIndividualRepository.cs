@@ -1,4 +1,5 @@
-﻿using SponsorSphere.Domain.Models;
+﻿using SponsorSphere.Application.App.SponsorIndividuals.Responses;
+using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Interfaces
 {
@@ -10,7 +11,7 @@ namespace SponsorSphere.Application.Interfaces
         Task<List<SponsorIndividual>> GetByCountryAsync(string country);
         Task<List<SponsorIndividual>> GetByAgeAsync(int age);
         Task<int> DeleteAsync(int userId);
-        void Update(int userId);
+        void Update(SponsorIndividualDto userId);
 
     }
 }

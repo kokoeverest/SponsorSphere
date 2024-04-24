@@ -1,4 +1,6 @@
-﻿using SponsorSphere.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.App.BlogPosts.Responses;
+using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Infrastructure.Repositories
@@ -21,32 +23,49 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int blogPostId)
         {
-            throw new NotImplementedException();
+            return await _context.BlogPosts.Where(se => se.Id == blogPostId).ExecuteDeleteAsync();
         }
 
         public async Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int authorId)
         {
-            throw new NotImplementedException();
+            return await _context.BlogPosts.Where(bp => bp.AuthorId == authorId).ToListAsync();
         }
 
         public async Task<BlogPost?> GetByIdAsync(int blogPostId)
         {
-            throw new NotImplementedException();
+            var blogPost = await _context.BlogPosts.FirstOrDefaultAsync(bp => bp.Id == blogPostId);
+
+            if (blogPost is not null)
+            {
+                return blogPost;
+            }
+            throw new ApplicationException($"Post with id {blogPostId} not found");
         }
 
         public async Task<List<BlogPost>> GetLatestBlogPostsAsync()
         {
-            throw new NotImplementedException();
+            var latestPosts = await _context.BlogPosts
+                .OrderByDescending(bp => bp.Created)
+                .Take(3).ToListAsync();
+
+            return latestPosts;
         }
 
         public async Task<List<BlogPost>> GetLatestBlogPostsByAuthorIdAsync(int authorId)
         {
-            throw new NotImplementedException();
+            var latestPosts = await _context.BlogPosts
+                 .Where(bp => bp.AuthorId == authorId)
+                 .OrderByDescending(bp => bp.Created)
+                 .Take(3).ToListAsync();
+
+            return latestPosts;
         }
 
-        public void Update(BlogPost blogPostToUpdate)
+        public async void Update(BlogPostDto toUpdate)
         {
-            throw new NotImplementedException();
+            var blogPostToUpdate = await GetByIdAsync(toUpdate.Id);
+            _context.BlogPosts.Update(blogPostToUpdate);
+            await _context.SaveChangesAsync();
         }
     }
 }

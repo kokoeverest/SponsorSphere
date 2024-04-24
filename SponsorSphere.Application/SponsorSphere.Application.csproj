@@ -7,9 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="App\Achievements\Queries\" />
-    <Folder Include="App\Goals\Queries\" />
-    <Folder Include="App\Sponsorships\Queries\" />
     <Folder Include="App\Sponsors\Commands\" />
   </ItemGroup>
 

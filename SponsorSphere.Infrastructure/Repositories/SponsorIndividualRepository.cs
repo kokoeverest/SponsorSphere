@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.App.SponsorIndividuals.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -71,12 +72,12 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
-        public async void Update(int userId)
+        public async void Update(SponsorIndividualDto userId)
         {
-            var sponsorIndividualToUpdate = await GetByIdAsync(userId);
-            var result = _context.SponsorIndividuals.Update(sponsorIndividualToUpdate);
-            _context.SaveChanges();
-            Console.WriteLine(result.ToString());
+            var sponsorIndividualToUpdate = await GetByIdAsync(userId.Id);
+            _context.SponsorIndividuals.Update(sponsorIndividualToUpdate);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

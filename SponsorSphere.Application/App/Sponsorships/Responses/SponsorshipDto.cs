@@ -9,7 +9,7 @@ namespace SponsorSphere.Application.App.Sponsorships.Responses
         public DateTime Created { get; set; }
         public SponsorshipLevel Level { get; set; }
         public decimal Amount { get; set; }
-        public required UserDto Athlete { get; set; }
-        public required UserDto Sponsor { get; set; }
+        public required int AthleteId { get; set; }
+        public required int SponsorId { get; set; }
     }
 }

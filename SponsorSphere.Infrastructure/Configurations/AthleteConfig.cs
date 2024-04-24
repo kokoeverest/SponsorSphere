@@ -17,17 +17,17 @@ namespace SponsorSphere.Infrastructure.Configurations
 
 
             builder.HasMany(ath => ath.Sponsorships)
-                .WithOne(s => s.Athlete)
+                .WithOne()
                 .HasForeignKey(s => s.AthleteId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(ath => ath.Goals)
-                .WithOne(s => s.Athlete)
+                .WithOne()
                 .HasForeignKey(s => s.AthleteId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(ath => ath.Achievements)
-                .WithOne(s => s.Athlete)
+                .WithOne()
                 .HasForeignKey(s => s.AthleteId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using SponsorSphere.Application.Interfaces;
 
-namespace SponsorSphere.Application.App.Goals.Commands
+namespace SponsorSphere.Application.App.Goals.Commands;
+
+public record DeleteAchievementCommand(int AthleteId, int SportEventId) : IRequest<int>;
+public class DeleteAchievementCommandHandler : IRequestHandler<DeleteAchievementCommand, int>
 {
-    internal class DeleteGoalCommand
+    private readonly IUnitOfWork _unitOfWork;
+
+    public DeleteAchievementCommandHandler(IUnitOfWork unitOfWork)
     {
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<int> Handle(DeleteAchievementCommand request, CancellationToken cancellationToken)
+    {
+        return await _unitOfWork.AchievementsRepository.DeleteAsync(request.SportEventId, request.AthleteId);
     }
 }

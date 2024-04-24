@@ -2,12 +2,11 @@
 using MediatR;
 using SponsorSphere.Application.App.SponsorIndividuals.Responses;
 using SponsorSphere.Application.Interfaces;
-using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SponsorIndividuals.Commands;
 // Add more of the properties which can be changed
 public record UpdateSponsorIndividualCommand(
-    int SponsorIndividualToUpdate,
+    SponsorIndividualDto SponsorIndividualToUpdate,
     string? NewWebsite,
     string? NewFaceBookLink,
     string? NewStravaLink,

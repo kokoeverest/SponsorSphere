@@ -1,12 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using MediatR;
+using SponsorSphere.Application.App.BlogPosts.Responses;
+using SponsorSphere.Application.Interfaces;
 
-namespace SponsorSphere.Application.App.BlogPosts.Queries
+namespace SponsorSphere.Application.App.BlogPosts.Queries;
+
+public record GetBlogPostByIdQuery(int BlogPostId) : IRequest<BlogPostDto?>;
+
+public class GetBlogPostByIdQueryHandler : IRequestHandler<GetBlogPostByIdQuery, BlogPostDto?>
 {
-    internal class GetBlogPostByIdQuery
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public GetBlogPostByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
+    public async Task<BlogPostDto?> Handle(GetBlogPostByIdQuery request, CancellationToken cancellationToken)
+    {
+        var blogBost = await _unitOfWork.BlogPostsRepository.GetByIdAsync(request.BlogPostId);
+        var mappedBlogPost = _mapper.Map<BlogPostDto>(blogBost);
+
+        return mappedBlogPost;
     }
 }

@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using SponsorSphere.Application.App.SponsorIndividuals.Responses;
 using SponsorSphere.Application.Interfaces;
-using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SponsorIndividuals.Queries;
 
-public record GetSponsorIndividualByIdQuery(int SponosrIndividualId) : IRequest<SponsorIndividual?>;
+public record GetSponsorIndividualByIdQuery(int SponsorIndividualId) : IRequest<SponsorIndividualDto?>;
 
-public class GetSponsorIndividualByIdQueryHandler : IRequestHandler<GetSponsorIndividualByIdQuery, SponsorIndividual?>
+public class GetSponsorIndividualByIdQueryHandler : IRequestHandler<GetSponsorIndividualByIdQuery, SponsorIndividualDto?>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -18,8 +18,11 @@ public class GetSponsorIndividualByIdQueryHandler : IRequestHandler<GetSponsorIn
         _mapper = mapper;
     }
 
-    public async Task<SponsorIndividual?> Handle(GetSponsorIndividualByIdQuery request, CancellationToken cancellationToken)
+    public async Task<SponsorIndividualDto?> Handle(GetSponsorIndividualByIdQuery request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.SponsorIndividualsRepository.GetByIdAsync(request.SponosrIndividualId);
+        var sponsorIndividual = await _unitOfWork.SponsorIndividualsRepository.GetByIdAsync(request.SponsorIndividualId);
+        var mappedAthlete = _mapper.Map<SponsorIndividualDto>(sponsorIndividual);
+
+        return await Task.FromResult(mappedAthlete);
     }
 }

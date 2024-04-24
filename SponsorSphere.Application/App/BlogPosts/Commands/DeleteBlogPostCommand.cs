@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using SponsorSphere.Application.Interfaces;
 
-namespace SponsorSphere.Application.App.BlogPosts.Commands
+namespace SponsorSphere.Application.App.BlogPosts.Commands;
+
+public record DeleteBlogPostCommand(int AuthorId) : IRequest<int>;
+public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostCommand, int>
 {
-    internal class DeleteBlogPostCommand
+    private readonly IUnitOfWork _unitOfWork;
+
+    public DeleteBlogPostCommandHandler(IUnitOfWork unitOfWork)
     {
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<int> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken)
+    {
+        return await _unitOfWork.BlogPostsRepository.DeleteAsync(request.AuthorId);
     }
 }

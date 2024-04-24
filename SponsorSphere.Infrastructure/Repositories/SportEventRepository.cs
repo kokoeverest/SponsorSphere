@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.App.SportEvents.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -27,9 +28,9 @@ namespace SponsorSphere.Infrastructure.Repositories
             return sportEvent;
         }
 
-        public async Task<int> DeleteAsync(SportEvent sportEvent)
+        public async Task<int> DeleteAsync(int sportEventId)
         {
-            return await _context.SportEvents.Where(se => se.Id == sportEvent.Id).ExecuteDeleteAsync();
+            return await _context.SportEvents.Where(se => se.Id == sportEventId).ExecuteDeleteAsync();
         }
 
         public async Task<SportEvent?> GetByIdAsync(int sportEventId)
@@ -46,17 +47,19 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<SportEvent?> SearchAsync(SportEvent sportEvent)
         {
             return await _context.SportEvents
-                            .FirstOrDefaultAsync(se => se.Name == sportEvent.Name &&
-                                   se.Sport == sportEvent.Sport &&
-                                   se.EventDate == sportEvent.EventDate &&
-                                   se.Country == sportEvent.Country);
+                            .FirstOrDefaultAsync(
+                                se => se.Name == sportEvent.Name &&
+                                    se.Sport == sportEvent.Sport &&
+                                    se.EventDate == sportEvent.EventDate &&
+                                    se.Country == sportEvent.Country);
         }
 
-        public void Update(SportEvent sportEventToUpdate)
+        public async void Update(SportEventDto sportEvent)
         {
-            var result = _context.SportEvents.Update(sportEventToUpdate);
-            _context.SaveChanges();
-            Console.WriteLine(result.ToString());
+            var sportEventToUpdate = await GetByIdAsync(sportEvent.Id);
+            _context.SportEvents.Update(sportEventToUpdate);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

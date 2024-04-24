@@ -1,4 +1,5 @@
-﻿using SponsorSphere.Domain.Enums;
+﻿using SponsorSphere.Application.App.SportEvents.Responses;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Interfaces
@@ -8,7 +9,7 @@ namespace SponsorSphere.Application.Interfaces
         Task<SportEvent> CreateAsync(SportEvent sportEvent);
         Task<SportEvent?> GetByIdAsync(int sportEventId);
         Task<SportEvent?> SearchAsync(SportEvent sportEvent);
-        void Update(SportEvent sportEvent);
-        Task<int> DeleteAsync(SportEvent sportEvent);
+        void Update(SportEventDto sportEvent);
+        Task<int> DeleteAsync(int sportEventId);
     }
 }

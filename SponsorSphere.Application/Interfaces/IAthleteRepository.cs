@@ -1,4 +1,5 @@
-﻿using SponsorSphere.Domain.Enums;
+﻿using SponsorSphere.Application.App.Athletes.Responses;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Interfaces
@@ -15,6 +16,7 @@ namespace SponsorSphere.Application.Interfaces
         Task<List<Athlete>> GetBySportAsync(SportsEnum sport);
         Task<List<Athlete>> GetByUrgentNeedAsync();
         Task<List<Athlete>> GetByAchievementsAsync();
-        void Update(int userId);
+        Task<List<object>> GetByAmountAsync();
+        void Update(AthleteDto userId);
     }
 }
