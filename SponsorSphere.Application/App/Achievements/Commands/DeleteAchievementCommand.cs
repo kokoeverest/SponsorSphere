@@ -3,7 +3,7 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Achievements.Commands;
 
-public record DeleteAchievementCommand(int AthleteId, int SportEventId) : IRequest<int>;
+public record DeleteAchievementCommand(int SportEventId, int AthleteId) : IRequest<int>;
 public class DeleteAchievementCommandHandler : IRequestHandler<DeleteAchievementCommand, int>
 {
     private readonly IUnitOfWork _unitOfWork;

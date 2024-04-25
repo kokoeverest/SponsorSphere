@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.SponsorIndividuals.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
@@ -29,17 +30,17 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int userId)
         {
-            var sponsorIndividualToDelete = await GetByIdAsync(userId);
+            return await _context.Users.Where(user => user.Id.Equals(userId)).ExecuteDeleteAsync();
+            //var sponsorIndividualToDelete = await GetByIdAsync(userId);
 
-            if (sponsorIndividualToDelete is not null)
-            {
-                _context.Users.Remove(sponsorIndividualToDelete);
-                return await _context.SaveChangesAsync();
-            }
-            return 0;
+            //if (sponsorIndividualToDelete is not null)
+            //{
+            //    _context.Users.Remove(sponsorIndividualToDelete);
+            //}
+            //return sponsorIndividualToDelete is not null ? await _context.SaveChangesAsync() : 0;
         }
 
-        public async Task<SponsorIndividual?> GetByIdAsync(int userId)
+        public async Task<SponsorIndividual> GetByIdAsync(int userId)
         {
             var sponsorIndividual = await _context.SponsorIndividuals.FirstOrDefaultAsync(si => si.Id == userId);
 
@@ -72,12 +73,21 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
-        public async void Update(SponsorIndividualDto userId)
+        public async Task<SponsorIndividual> UpdateAsync(SponsorIndividualDto updatedSponsorIndividual)
         {
-            var sponsorIndividualToUpdate = await GetByIdAsync(userId.Id);
+            // Add more of the properties which can be changed
+            var sponsorIndividualToUpdate = await GetByIdAsync(updatedSponsorIndividual.Id);
+
+            sponsorIndividualToUpdate.Website = updatedSponsorIndividual.Website ?? sponsorIndividualToUpdate.Website;
+            sponsorIndividualToUpdate.FaceBookLink = updatedSponsorIndividual.FaceBookLink ?? sponsorIndividualToUpdate.FaceBookLink;
+            sponsorIndividualToUpdate.StravaLink = updatedSponsorIndividual.StravaLink ?? sponsorIndividualToUpdate.StravaLink;
+            sponsorIndividualToUpdate.InstagramLink = updatedSponsorIndividual.InstagramLink ?? sponsorIndividualToUpdate.InstagramLink;
+            sponsorIndividualToUpdate.TwitterLink = updatedSponsorIndividual.TwitterLink ?? sponsorIndividualToUpdate.TwitterLink;
+
             _context.SponsorIndividuals.Update(sponsorIndividualToUpdate);
 
             await _context.SaveChangesAsync();
+            return sponsorIndividualToUpdate;
         }
     }
 }

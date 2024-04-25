@@ -11,7 +11,7 @@ namespace SponsorSphere.Application.Interfaces
         public string Country { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime Created { get; set; }
-        public string PictureOrLogo { get; set; }
+        public int PictureId { get; set; }
         public string Website { get; set; }
         public string FaceBookLink { get; set; }
         public string InstagramLink { get; set; }

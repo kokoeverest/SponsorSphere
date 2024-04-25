@@ -7,11 +7,11 @@ namespace SponsorSphere.Application.Interfaces
     {
         Task<SponsorIndividual> CreateAsync(SponsorIndividual user);
         Task<List<SponsorIndividual>> GetAllAsync();
-        Task<SponsorIndividual?> GetByIdAsync(int userId);
+        Task<SponsorIndividual> GetByIdAsync(int userId);
         Task<List<SponsorIndividual>> GetByCountryAsync(string country);
         Task<List<SponsorIndividual>> GetByAgeAsync(int age);
         Task<int> DeleteAsync(int userId);
-        void Update(SponsorIndividualDto userId);
+        Task<SponsorIndividual> UpdateAsync(SponsorIndividualDto userId);
 
     }
 }

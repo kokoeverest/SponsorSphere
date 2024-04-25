@@ -7,9 +7,9 @@ namespace SponsorSphere.Application.Interfaces
     {
         Task<SponsorCompany> CreateAsync(SponsorCompany user);
         Task<List<SponsorCompany>> GetAllAsync();
-        Task<SponsorCompany?> GetByIdAsync(int userId);
+        Task<SponsorCompany> GetByIdAsync(int userId);
         Task<List<SponsorCompany>> GetByCountryAsync(string country);
         Task<int> DeleteAsync(int userId);
-        void Update(SponsorCompanyDto userId);
+        Task<SponsorCompany> UpdateAsync(SponsorCompanyDto userId);
     }
 }

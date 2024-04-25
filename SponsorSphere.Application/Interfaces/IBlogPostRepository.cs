@@ -1,5 +1,4 @@
 ﻿using SponsorSphere.Application.App.BlogPosts.Responses;
-using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Interfaces
@@ -11,7 +10,7 @@ namespace SponsorSphere.Application.Interfaces
         Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int authorId);
         Task<List<BlogPost>> GetLatestBlogPostsAsync();
         Task<List<BlogPost>> GetLatestBlogPostsByAuthorIdAsync(int authorId);
-        Task<BlogPost?> GetByIdAsync(int blogPostId);
-        void Update(BlogPostDto blogPostToUpdate);
+        Task<BlogPost> GetByIdAsync(int blogPostId);
+        Task<BlogPostDto> UpdateAsync(BlogPostDto blogPostToUpdate);
     }
 }

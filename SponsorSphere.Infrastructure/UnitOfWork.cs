@@ -8,6 +8,7 @@ namespace SponsorSphere.Infrastructure
                       IAchievementRepository achievementRepository,
                       IBlogPostRepository blogPostRepository,
                       IGoalRepository goalRepository,
+                      IPictureRepository pictureRepository,
                       ISponsorCompanyRepository sponsorCompanyRepository,
                       ISponsorIndividualRepository sponsorIndividualRepository,
                       ISponsorRepository sponsorRepository,
@@ -21,6 +22,7 @@ namespace SponsorSphere.Infrastructure
         public IAchievementRepository AchievementsRepository { get; private set; } = achievementRepository;
         public IBlogPostRepository BlogPostsRepository { get; private set; } = blogPostRepository;
         public IGoalRepository GoalsRepository { get; private set; } = goalRepository;
+        public IPictureRepository PictureRepository { get; private set; } = pictureRepository;
         public ISponsorCompanyRepository SponsorCompaniesRepository { get; private set; } = sponsorCompanyRepository;
         public ISponsorIndividualRepository SponsorIndividualsRepository { get; private set; } = sponsorIndividualRepository;
         public ISponsorRepository SponsorsRepository { get; private set; } = sponsorRepository;

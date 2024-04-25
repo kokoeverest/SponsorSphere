@@ -8,5 +8,6 @@ namespace SponsorSphere.Domain.Models
         public int SportEventId { get; set; }
         public ushort? PlaceFinished { get; set; }
         public int AthleteId { get; set; }
+
     }
 }

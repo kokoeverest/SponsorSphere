@@ -22,6 +22,21 @@ namespace SponsorSphere.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BlogPostPicture", b =>
+                {
+                    b.Property<int>("BlogPostsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PicturesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BlogPostsId", "PicturesId");
+
+                    b.HasIndex("PicturesId");
+
+                    b.ToTable("BlogPostPicture");
+                });
+
             modelBuilder.Entity("SponsorSphere.Domain.Models.Achievement", b =>
                 {
                     b.Property<int>("AthleteId")
@@ -38,19 +53,25 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("AthleteId", "SportEventId");
 
-                    b.HasIndex("SportEventId")
-                        .IsUnique();
+                    b.ToTable("Achievements");
 
-                    b.ToTable("Achievements", (string)null);
+                    b.HasData(
+                        new
+                        {
+                            AthleteId = 2,
+                            SportEventId = 1,
+                            PlaceFinished = 1,
+                            Sport = 13
+                        });
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.BlogPost", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
@@ -62,14 +83,20 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Pictures")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BlogPosts", (string)null);
+                    b.ToTable("BlogPosts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AuthorId = 4,
+                            Content = "A very interesting post about a sport achievement",
+                            Created = new DateTime(2023, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Goal", b =>
@@ -91,10 +118,54 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("AthleteId", "SportEventId");
 
-                    b.HasIndex("SportEventId")
-                        .IsUnique();
+                    b.ToTable("Goals");
 
-                    b.ToTable("Goals", (string)null);
+                    b.HasData(
+                        new
+                        {
+                            AthleteId = 2,
+                            SportEventId = 2,
+                            AmountNeeded = 5000m,
+                            Date = new DateTime(2024, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Sport = 13
+                        });
+                });
+
+            modelBuilder.Entity("SponsorSphere.Domain.Models.Picture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte?>("Content")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pictures");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Modified = new DateTime(2024, 4, 25, 0, 0, 0, 0, DateTimeKind.Local),
+                            Url = "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Modified = new DateTime(2024, 4, 25, 0, 0, 0, 0, DateTimeKind.Local),
+                            Url = "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing"
+                        });
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsorship", b =>
@@ -116,18 +187,26 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("AthleteId", "SponsorId");
 
-                    b.HasIndex("SponsorId");
+                    b.ToTable("Sponsorships");
 
-                    b.ToTable("Sponsorships", (string)null);
+                    b.HasData(
+                        new
+                        {
+                            AthleteId = 1,
+                            SponsorId = 3,
+                            Amount = 2000m,
+                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(1167),
+                            Level = 2
+                        });
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.SportEvent", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Country")
                         .IsRequired()
@@ -153,16 +232,38 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SportEvents", (string)null);
+                    b.ToTable("SportEvents");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Country = "Bulgaria",
+                            EventDate = new DateTime(2020, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventType = 0,
+                            Finished = true,
+                            Name = "Persenk ultra",
+                            Sport = 14
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Country = "Spain",
+                            EventDate = new DateTime(2024, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventType = 0,
+                            Finished = false,
+                            Name = "Zegama Aizkori",
+                            Sport = 13
+                        });
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.User", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Country")
                         .IsRequired()
@@ -170,6 +271,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -184,6 +288,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Property<string>("InstagramLink")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -200,9 +307,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
-                    b.Property<string>("PictureOrLogo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("PictureId")
+                        .HasColumnType("int");
 
                     b.Property<string>("StravaLink")
                         .HasMaxLength(200)
@@ -221,7 +327,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
 
                     b.UseTptMappingStrategy();
                 });
@@ -241,7 +347,49 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Property<int>("Sport")
                         .HasColumnType("int");
 
-                    b.ToTable("Athletes", (string)null);
+                    b.ToTable("Athletes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Country = "bg",
+                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(84),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "5rov@mail.mail",
+                            FaceBookLink = "",
+                            InstagramLink = "",
+                            IsDeleted = false,
+                            Name = "Petar",
+                            Password = "dd",
+                            PhoneNumber = "09198",
+                            StravaLink = "",
+                            TwitterLink = "",
+                            Website = "",
+                            BirthDate = new DateTime(1983, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "Petrov",
+                            Sport = 14
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Country = "bg",
+                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(385),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "5kov@mail.mail",
+                            FaceBookLink = "",
+                            InstagramLink = "",
+                            IsDeleted = false,
+                            Name = "Georgi",
+                            Password = "ss",
+                            PhoneNumber = "09198",
+                            StravaLink = "",
+                            TwitterLink = "",
+                            Website = "",
+                            BirthDate = new DateTime(2005, 3, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "Petkov",
+                            Sport = 4
+                        });
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsor", b =>
@@ -260,7 +408,45 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .HasMaxLength(34)
                         .HasColumnType("nvarchar(34)");
 
-                    b.ToTable("SponsorCompanies", (string)null);
+                    b.ToTable("SponsorCompanies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            Country = "bg",
+                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(1083),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "lidl@bg.gb",
+                            FaceBookLink = "",
+                            InstagramLink = "",
+                            IsDeleted = false,
+                            Name = "Lidl",
+                            Password = "ll",
+                            PhoneNumber = "1223",
+                            StravaLink = "",
+                            TwitterLink = "",
+                            Website = "",
+                            IBAN = "BG12345"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Country = "de",
+                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(1101),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "kaufland@bg.gb",
+                            FaceBookLink = "",
+                            InstagramLink = "",
+                            IsDeleted = false,
+                            Name = "Kaufland",
+                            Password = "kk",
+                            PhoneNumber = "1223",
+                            StravaLink = "",
+                            TwitterLink = "",
+                            Website = "",
+                            IBAN = "DE32215"
+                        });
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.SponsorIndividual", b =>
@@ -275,75 +461,58 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.ToTable("SponsorIndividuals", (string)null);
+                    b.ToTable("SponsorIndividuals");
+                });
+
+            modelBuilder.Entity("BlogPostPicture", b =>
+                {
+                    b.HasOne("SponsorSphere.Domain.Models.BlogPost", null)
+                        .WithMany()
+                        .HasForeignKey("BlogPostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SponsorSphere.Domain.Models.Picture", null)
+                        .WithMany()
+                        .HasForeignKey("PicturesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Achievement", b =>
                 {
-                    b.HasOne("SponsorSphere.Domain.Models.Athlete", "Athlete")
+                    b.HasOne("SponsorSphere.Domain.Models.Athlete", null)
                         .WithMany("Achievements")
                         .HasForeignKey("AthleteId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("SponsorSphere.Domain.Models.SportEvent", "SportEvent")
-                        .WithOne()
-                        .HasForeignKey("SponsorSphere.Domain.Models.Achievement", "SportEventId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Athlete");
-
-                    b.Navigation("SportEvent");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.BlogPost", b =>
                 {
-                    b.HasOne("SponsorSphere.Domain.Models.User", "Author")
+                    b.HasOne("SponsorSphere.Domain.Models.User", null)
                         .WithMany("Posts")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Goal", b =>
                 {
-                    b.HasOne("SponsorSphere.Domain.Models.Athlete", "Athlete")
+                    b.HasOne("SponsorSphere.Domain.Models.Athlete", null)
                         .WithMany("Goals")
                         .HasForeignKey("AthleteId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("SponsorSphere.Domain.Models.SportEvent", "SportEvent")
-                        .WithOne()
-                        .HasForeignKey("SponsorSphere.Domain.Models.Goal", "SportEventId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Athlete");
-
-                    b.Navigation("SportEvent");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsorship", b =>
                 {
-                    b.HasOne("SponsorSphere.Domain.Models.Athlete", "Athlete")
-                        .WithMany()
+                    b.HasOne("SponsorSphere.Domain.Models.Athlete", null)
+                        .WithMany("Sponsorships")
                         .HasForeignKey("AthleteId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("SponsorSphere.Domain.Models.Sponsor", "Sponsor")
-                        .WithMany()
-                        .HasForeignKey("SponsorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Athlete");
-
-                    b.Navigation("Sponsor");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Athlete", b =>
@@ -392,6 +561,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Navigation("Achievements");
 
                     b.Navigation("Goals");
+
+                    b.Navigation("Sponsorships");
                 });
 #pragma warning restore 612, 618
         }

@@ -26,17 +26,9 @@ public class UpdateSponsorIndividualCommandHandler : IRequestHandler<UpdateSpons
 
     public async Task<SponsorIndividualDto> Handle(UpdateSponsorIndividualCommand request, CancellationToken cancellationToken)
     {
-        var oldSponsorIndividual = request.SponsorIndividualToUpdate;
+        var updatedSponsorIndividual = _unitOfWork.SponsorIndividualsRepository.UpdateAsync(request.SponsorIndividualToUpdate);
 
-        request.SponsorIndividualToUpdate.Website = request.NewWebsite ?? oldSponsorIndividual.Website;
-        request.SponsorIndividualToUpdate.FaceBookLink = request.NewFaceBookLink ?? oldSponsorIndividual.FaceBookLink;
-        request.SponsorIndividualToUpdate.StravaLink = request.NewStravaLink ?? oldSponsorIndividual.StravaLink;
-        request.SponsorIndividualToUpdate.InstagramLink = request.NewInstagramLink ?? oldSponsorIndividual.InstagramLink;
-        request.SponsorIndividualToUpdate.TwitterLink = request.NewTwitterLink ?? oldSponsorIndividual.TwitterLink;
-
-        _unitOfWork.SponsorIndividualsRepository.Update(request.SponsorIndividualToUpdate);
-
-        var updatedSponsorCompanyDto = _mapper.Map<SponsorIndividualDto>(request.SponsorIndividualToUpdate);
+        var updatedSponsorCompanyDto = _mapper.Map<SponsorIndividualDto>(updatedSponsorIndividual);
 
         return await Task.FromResult(updatedSponsorCompanyDto);
     }

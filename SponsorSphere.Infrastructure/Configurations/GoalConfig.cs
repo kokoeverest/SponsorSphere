@@ -16,10 +16,6 @@ namespace SponsorSphere.Infrastructure.Configurations
 
 
             builder.HasKey(g => new { g.AthleteId, g.SportEventId });
-
-            //builder.HasOne(g => g.SportEvent)
-            //    .WithOne()
-            //    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

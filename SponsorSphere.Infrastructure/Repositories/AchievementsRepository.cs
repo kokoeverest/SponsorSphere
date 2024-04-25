@@ -28,6 +28,8 @@ public class AchievementsRepository : IAchievementRepository
                 .ExecuteDeleteAsync();
     }
 
+
+
     public async Task<List<Achievement>> GetAllAsync(int athleteId)
     {
         return await _context.Achievements
@@ -35,7 +37,7 @@ public class AchievementsRepository : IAchievementRepository
             .ToListAsync();
     }
 
-    public void Update(AchievementDto achievement)
+    public Task<Achievement> UpdateAsync(AchievementDto achievement)
     {
         throw new NotImplementedException();
     }

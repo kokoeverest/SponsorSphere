@@ -27,6 +27,7 @@ static IMediator Init()
         .AddScoped<IAthleteRepository, AthleteRepository>()
         .AddScoped<IBlogPostRepository, BlogPostRepository>()
         .AddScoped<IGoalRepository, GoalRepository>()
+        .AddScoped<IPictureRepository, PictureRepository>()
         .AddScoped<ISponsorCompanyRepository, SponsorCompanyRepository>()
         .AddScoped<ISponsorRepository, SponsorRepository>()
         .AddScoped<ISponsorIndividualRepository, SponsorIndividualRepository>()
@@ -60,46 +61,46 @@ var mediator = Init();
 //    SportsEnum.MountainRunning
 //    ));
 
-var athletes = Seeder.SeedAthletes();
-var sponsorCompanies = Seeder.SeedSponsorCompanies();
-var sportevents = Seeder.SeedSportEvents();
+//var athletes = Seeder.SeedAthletes();
+//var sponsorCompanies = Seeder.SeedSponsorCompanies();
+//var sportevents = Seeder.SeedSportEvents();
 
-AthleteDto? peshoDto = null;
+//AthleteDto? peshoDto = null;
 
-try
-{
-    peshoDto = await RegisterAthlete(athletes[0]);
-    //var goshoDto = RegisterAthlete(goshoAthlete);
-}
-catch (InvalidDataException e)
-{
-    Console.WriteLine(e.Message);
-}
+//try
+//{
+//    peshoDto = await RegisterAthlete(athletes[0]);
+//    //var goshoDto = RegisterAthlete(goshoAthlete);
+//}
+//catch (InvalidDataException e)
+//{
+//    Console.WriteLine(e.Message);
+//}
 
-var pesho = await mediator.Send(new GetAthleteByIdQuery(12));
-if (pesho != null)
-    await mediator.Send(
-        new UpdateAthleteCommand(
-            AthleteToUpdate: pesho,
-            NewWebsite: "pesho.con",
-            NewFaceBookLink: "",
-            NewStravaLink: "strava.con/peshoatleta",
-            NewInstagramLink: "",
-            NewTwitterLink: ""));
+//var pesho = await mediator.Send(new GetAthleteByIdQuery(12));
+//if (pesho != null)
+//    await mediator.Send(
+//        new UpdateAthleteCommand(
+//            AthleteToUpdate: pesho,
+//            NewWebsite: "pesho.con",
+//            NewFaceBookLink: "",
+//            NewStravaLink: "strava.con/peshoatleta",
+//            NewInstagramLink: "",
+//            NewTwitterLink: ""));
 
-async Task<AthleteDto> RegisterAthlete(Athlete athlete)
-{
-    return await mediator.Send(new CreateAthleteCommand(
-        athlete.Name,
-        athlete.LastName,
-        athlete.Email,
-        athlete.Password,
-        athlete.Country,
-        athlete.PhoneNumber,
-        athlete.BirthDate,
-        athlete.Sport
-        ));
-}
+//async Task<AthleteDto> RegisterAthlete(Athlete athlete)
+//{
+//    return await mediator.Send(new CreateAthleteCommand(
+//        athlete.Name,
+//        athlete.LastName,
+//        athlete.Email,
+//        athlete.Password,
+//        athlete.Country,
+//        athlete.PhoneNumber,
+//        athlete.BirthDate,
+//        athlete.Sport
+//        ));
+//}
 //Console.WriteLine(await mediator.Send(new DeleteAthleteCommand(1)));
 
 var athleteDtos = await mediator.Send(new GetAllAthletesQuery());

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace SponsorSphere.Domain.Models
+﻿namespace SponsorSphere.Domain.Models
 {
     public class SponsorCompany : Sponsor
     {

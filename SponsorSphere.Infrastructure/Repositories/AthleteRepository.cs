@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.Athletes.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
@@ -32,26 +33,21 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int athleteId)
         {
-            //return await _context.Users.Where(u => u.Id == userId).ExecuteDeleteAsync(); 
-            // ExecuteDelete and ExecuteUpdate doesn't apply to TpT mapping strategy
-            var athleteToDelete = await GetByIdAsync(athleteId);
+            return await _context.Users.Where(user => user.Id.Equals(athleteId)).ExecuteDeleteAsync();
+            //var athleteToDelete = await GetByIdAsync(athleteId);
 
-            if (athleteToDelete is not null)
-            {
-                _context.Users.Remove(athleteToDelete);
-                return await _context.SaveChangesAsync();
-            }
-            return 0;
+            //if (athleteToDelete is not null)
+            //{
+            //    _context.Users.Remove(athleteToDelete);
+            //}
+
+            //return athleteToDelete is not null ? await _context.SaveChangesAsync() : 0;
         }
-        public async Task<Athlete?> GetByIdAsync(int athleteId)
+        public async Task<Athlete> GetByIdAsync(int athleteId)
         {
             var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == athleteId);
 
-            if (athlete is not null)
-            {
-                return athlete;
-            }
-            throw new ApplicationException($"Athlete with id {athleteId} not found");
+            return athlete is not null ? athlete : throw new ApplicationException($"Athlete with id {athleteId} not found");
         }
         public async Task<List<Athlete>> GetAllAsync()
         {
@@ -122,12 +118,21 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.Athletes.ToListAsync();
         }
 
-        public async void Update(AthleteDto userId)
+        public async Task<Athlete> UpdateAsync(AthleteDto updatedAthlete)
         {
-            var athleteToUpdate = await GetByIdAsync(userId.Id);
+            var athleteToUpdate = await GetByIdAsync(updatedAthlete.Id);
+            // Add more of the properties which can be changed
+            athleteToUpdate.Website = updatedAthlete.Website ?? athleteToUpdate.Website;
+            athleteToUpdate.FaceBookLink = updatedAthlete.FaceBookLink ?? athleteToUpdate.FaceBookLink;
+            athleteToUpdate.StravaLink = updatedAthlete.StravaLink ?? athleteToUpdate.StravaLink;
+            athleteToUpdate.InstagramLink = updatedAthlete.InstagramLink ?? athleteToUpdate.InstagramLink;
+            athleteToUpdate.TwitterLink = updatedAthlete.TwitterLink ?? athleteToUpdate.TwitterLink;
+
             _context.Athletes.Update(athleteToUpdate);
+
             await _context.SaveChangesAsync();
 
+            return athleteToUpdate;
         }
     }
 }

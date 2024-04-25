@@ -8,6 +8,6 @@ namespace SponsorSphere.Application.Interfaces
         Task<Achievement> CreateAsync(Achievement achievement);
         Task<List<Achievement>> GetAllAsync(int athleteId);
         Task<int> DeleteAsync(int sportEventId, int athleteId);
-        void Update(AchievementDto achievement);
+        Task<Achievement> UpdateAsync(AchievementDto achievement);
     }
 }

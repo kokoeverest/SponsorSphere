@@ -30,10 +30,12 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int sportEventId)
         {
-            return await _context.SportEvents.Where(se => se.Id == sportEventId).ExecuteDeleteAsync();
+            return await _context.SportEvents
+                .Where(se => se.Id == sportEventId)
+                .ExecuteDeleteAsync();
         }
 
-        public async Task<SportEvent?> GetByIdAsync(int sportEventId)
+        public async Task<SportEvent> GetByIdAsync(int sportEventId)
         {
             var sportEvent = await _context.SportEvents.FirstOrDefaultAsync(se => se.Id == sportEventId);
 
@@ -47,19 +49,25 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<SportEvent?> SearchAsync(SportEvent sportEvent)
         {
             return await _context.SportEvents
-                            .FirstOrDefaultAsync(
-                                se => se.Name == sportEvent.Name &&
-                                    se.Sport == sportEvent.Sport &&
-                                    se.EventDate == sportEvent.EventDate &&
-                                    se.Country == sportEvent.Country);
+                .FirstOrDefaultAsync(se => se.Name == sportEvent.Name &&
+                        se.Sport == sportEvent.Sport &&
+                        se.EventDate == sportEvent.EventDate &&
+                        se.Country == sportEvent.Country);
         }
 
-        public async void Update(SportEventDto sportEvent)
+        public async Task<SportEventDto> UpdateAsync(SportEventDto sportEvent)
         {
-            var sportEventToUpdate = await GetByIdAsync(sportEvent.Id);
-            _context.SportEvents.Update(sportEventToUpdate);
+            await _context.SportEvents
+                .Where(se => se.Id == sportEvent.Id)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(se => se.Name, sportEvent.Name)
+                .SetProperty(se => se.Sport, sportEvent.Sport)
+                .SetProperty(se => se.Country, sportEvent.Country)
+                .SetProperty(se => se.EventType, sportEvent.EventType)
+                .SetProperty(se => se.EventDate, sportEvent.EventDate)
+            );
 
-            await _context.SaveChangesAsync();
+            return sportEvent;
         }
     }
 }

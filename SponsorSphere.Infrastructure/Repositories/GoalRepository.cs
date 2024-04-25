@@ -25,7 +25,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             return await _context.Goals
                 .Where(goal => goal.AthleteId == athleteId &&
-                              goal.SportEventId == sportEventId)
+                               goal.SportEventId == sportEventId)
                 .ExecuteDeleteAsync();
         }
 
@@ -36,7 +36,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             .ToListAsync();
         }
 
-        public void Update(GoalDto goal)
+        public Task<Goal> UpdateAsync(GoalDto goal)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using SponsorSphere.Application.App.BlogPosts.Responses;
+using SponsorSphere.Application.App.Pictures.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -10,7 +11,7 @@ public record CreateBlogPostCommand(
         DateTime Created,
         string Content,
         int AuthorId,
-        ICollection<string>? Pictures
+        ICollection<Picture>? Pictures
     ) : IRequest<BlogPostDto>;
 
 public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostCommand, BlogPostDto>

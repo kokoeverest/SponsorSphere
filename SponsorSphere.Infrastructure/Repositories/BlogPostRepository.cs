@@ -23,7 +23,9 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int blogPostId)
         {
-            return await _context.BlogPosts.Where(se => se.Id == blogPostId).ExecuteDeleteAsync();
+            return await _context.BlogPosts
+                .Where(se => se.Id == blogPostId)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int authorId)
@@ -31,7 +33,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.BlogPosts.Where(bp => bp.AuthorId == authorId).ToListAsync();
         }
 
-        public async Task<BlogPost?> GetByIdAsync(int blogPostId)
+        public async Task<BlogPost> GetByIdAsync(int blogPostId)
         {
             var blogPost = await _context.BlogPosts.FirstOrDefaultAsync(bp => bp.Id == blogPostId);
 
@@ -61,11 +63,15 @@ namespace SponsorSphere.Infrastructure.Repositories
             return latestPosts;
         }
 
-        public async void Update(BlogPostDto toUpdate)
+        public async Task<BlogPostDto> UpdateAsync(BlogPostDto blogPostToUpdate)
         {
-            var blogPostToUpdate = await GetByIdAsync(toUpdate.Id);
-            _context.BlogPosts.Update(blogPostToUpdate);
-            await _context.SaveChangesAsync();
+            await _context.BlogPosts
+                .Where(bp => bp.Id == blogPostToUpdate.Id)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(bp => bp.Content, blogPostToUpdate.Content)
+                .SetProperty(bp => bp.Pictures, blogPostToUpdate.Pictures));
+
+            return blogPostToUpdate;
         }
     }
 }

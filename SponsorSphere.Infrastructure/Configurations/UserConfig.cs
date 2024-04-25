@@ -48,11 +48,19 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .IsRequired(false)
                 .HasMaxLength(200);
 
+            builder.Property(u => u.PictureId)
+                .IsRequired(false);
+
 
             builder.HasMany(u => u.Posts)
                 .WithOne()
                 .HasForeignKey(u => u.AuthorId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            //builder.HasOne(u => u.PictureOrLogo)
+            //    .WithOne()
+            //    .HasForeignKey(p => (Picture)p)
+            //    .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasIndex(u => u.Email)
                 .IsUnique();

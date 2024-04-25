@@ -45,9 +45,16 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.Sponsorships.Where(sh => sh.SponsorId == sponsorId).ToListAsync();
         }
 
-        public async void Update(SponsorshipDto sponsorship)
+        public async Task<SponsorshipDto> UpdateAsync(SponsorshipDto sponsorship)
         {
-            throw new NotImplementedException();
+            await _context.Sponsorships
+                .Where(sh => sh.AthleteId == sponsorship.AthleteId &&
+                             sh.SponsorId == sponsorship.SponsorId)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(sh => sh.Amount, sponsorship.Amount)
+                .SetProperty(sh => sh.Level, sponsorship.Level)
+            );
+            return sponsorship;
         }
     }
 }

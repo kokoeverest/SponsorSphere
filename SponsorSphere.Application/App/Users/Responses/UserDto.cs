@@ -12,7 +12,7 @@ namespace SponsorSphere.Application.App.Users.Responses
         public string Country { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public DateTime Created { get; set; }
-        public string PictureOrLogo { get; set; } = string.Empty;
+        public int PictureId { get; set; }
         public string Website { get; set; } = string.Empty;
         public string FaceBookLink { get; set; } = string.Empty;
         public string InstagramLink { get; set; } = string.Empty;

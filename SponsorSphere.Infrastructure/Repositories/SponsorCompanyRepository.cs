@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.SponsorCompanies.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
-using System.Diagnostics.Metrics;
 
 namespace SponsorSphere.Infrastructure.Repositories
 {
@@ -31,16 +31,16 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int userId)
         {
-            var sponsorCompanyToDelete = await GetByIdAsync(userId);
+            return await _context.Users.Where(user => user.Id.Equals(userId)).ExecuteDeleteAsync();
+            //var sponsorCompanyToDelete = await GetByIdAsync(userId);
 
-            if (sponsorCompanyToDelete is not null)
-            {
-                _context.Users.Remove(sponsorCompanyToDelete);
-                return await _context.SaveChangesAsync();
-            }
-            return 0;
+            //if (sponsorCompanyToDelete is not null)
+            //{
+            //    _context.Users.Remove(sponsorCompanyToDelete);
+            //}
+            //return sponsorCompanyToDelete is not null ? await _context.SaveChangesAsync() : 0;
         }
-        public async Task<SponsorCompany?> GetByIdAsync(int userId)
+        public async Task<SponsorCompany> GetByIdAsync(int userId)
         {
             var sponsorCompany = await _context.SponsorCompanies.FirstOrDefaultAsync(sc => sc.Id == userId);
 
@@ -65,11 +65,19 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
-        public async void Update(SponsorCompanyDto userId)
+        public async Task<SponsorCompany> UpdateAsync(SponsorCompanyDto updatedSponsorCompany)
         {
-            var sponsorCompanyToUpdate = await GetByIdAsync(userId.Id);
+            var sponsorCompanyToUpdate = await GetByIdAsync(updatedSponsorCompany.Id);
+            // Add more of the properties which can be changed
+            sponsorCompanyToUpdate.Website = updatedSponsorCompany.Website ?? sponsorCompanyToUpdate.Website;
+            sponsorCompanyToUpdate.FaceBookLink = updatedSponsorCompany.FaceBookLink ?? sponsorCompanyToUpdate.FaceBookLink;
+            sponsorCompanyToUpdate.StravaLink = updatedSponsorCompany.StravaLink ?? sponsorCompanyToUpdate.StravaLink;
+            sponsorCompanyToUpdate.InstagramLink = updatedSponsorCompany.InstagramLink ?? sponsorCompanyToUpdate.InstagramLink;
+            sponsorCompanyToUpdate.TwitterLink = updatedSponsorCompany.TwitterLink ?? sponsorCompanyToUpdate.TwitterLink;
+
             _context.SponsorCompanies.Update(sponsorCompanyToUpdate);
             await _context.SaveChangesAsync();
+            return sponsorCompanyToUpdate;
         }
     }
 }
