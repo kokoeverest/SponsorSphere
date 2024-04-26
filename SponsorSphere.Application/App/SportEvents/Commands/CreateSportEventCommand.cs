@@ -9,7 +9,7 @@ namespace SponsorSphere.Application.App.SportEvents.Commands;
 
 public record CreateSportEventCommand(
     string Name,
-    string Country,
+    CountryEnum Country,
     string EventDate,
     bool Finished,
     EventsEnum EventType,

@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SponsorSphere.Application;
+using SponsorSphere.Application.App.Achievements.Commands;
+using SponsorSphere.Application.App.Achievements.Queries;
 using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Application.App.Athletes.Responses;
 using SponsorSphere.Application.Interfaces;
-using SponsorSphere.ConsolePresentation;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure;
@@ -61,32 +62,15 @@ var mediator = Init();
 //    SportsEnum.MountainRunning
 //    ));
 
-//var athletes = Seeder.SeedAthletes();
-//var sponsorCompanies = Seeder.SeedSponsorCompanies();
-//var sportevents = Seeder.SeedSportEvents();
+Console.WriteLine(await mediator.Send(new DeleteAthleteCommand(1)));
 
-//AthleteDto? peshoDto = null;
+//var pesho = await mediator.Send(new GetAthleteByIdQuery(1));
 
-//try
-//{
-//    peshoDto = await RegisterAthlete(athletes[0]);
-//    //var goshoDto = RegisterAthlete(goshoAthlete);
-//}
-//catch (InvalidDataException e)
-//{
-//    Console.WriteLine(e.Message);
-//}
+//Console.WriteLine(pesho.LastName);
+//pesho.LastName = "Ivankov";
 
-//var pesho = await mediator.Send(new GetAthleteByIdQuery(12));
-//if (pesho != null)
-//    await mediator.Send(
-//        new UpdateAthleteCommand(
-//            AthleteToUpdate: pesho,
-//            NewWebsite: "pesho.con",
-//            NewFaceBookLink: "",
-//            NewStravaLink: "strava.con/peshoatleta",
-//            NewInstagramLink: "",
-//            NewTwitterLink: ""));
+//var updatedPesho = await mediator.Send(new UpdateAthleteCommand(pesho));
+
 
 //async Task<AthleteDto> RegisterAthlete(Athlete athlete)
 //{
@@ -101,9 +85,9 @@ var mediator = Init();
 //        athlete.Sport
 //        ));
 //}
-//Console.WriteLine(await mediator.Send(new DeleteAthleteCommand(1)));
 
 var athleteDtos = await mediator.Send(new GetAllAthletesQuery());
+var peshoAchievements = await mediator.Send(new GetAchievementsByAthleteIdQuery(1));
 
 foreach (var athlete in athleteDtos)
 {
@@ -112,6 +96,3 @@ foreach (var athlete in athleteDtos)
         $"Sport: {athlete.Sport}, " +
         $"Website: {athlete.Website}");
 }
-var golfers = await mediator.Send(new GetAthletesBySportQuery(SportsEnum.Golf));
-
-Console.WriteLine(golfers[0].Age);

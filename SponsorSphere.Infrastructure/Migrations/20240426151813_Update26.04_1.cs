@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Update2504_1 : Migration
+    public partial class Update2604_1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Country = table.Column<int>(type: "int", nullable: false),
                     EventDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Finished = table.Column<bool>(type: "bit", nullable: false),
                     EventType = table.Column<int>(type: "int", nullable: false),
@@ -55,7 +55,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Country = table.Column<int>(type: "int", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PictureId = table.Column<int>(type: "int", nullable: true),
@@ -109,7 +109,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                         name: "FK_BlogPosts_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -145,6 +146,11 @@ namespace SponsorSphere.Infrastructure.Migrations
                         name: "FK_Achievements_Athletes_AthleteId",
                         column: x => x.AthleteId,
                         principalTable: "Athletes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Achievements_Users_AthleteId",
+                        column: x => x.AthleteId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -166,27 +172,11 @@ namespace SponsorSphere.Infrastructure.Migrations
                         name: "FK_Goals_Athletes_AthleteId",
                         column: x => x.AthleteId,
                         principalTable: "Athletes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Sponsorships",
-                columns: table => new
-                {
-                    AthleteId = table.Column<int>(type: "int", nullable: false),
-                    SponsorId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Level = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sponsorships", x => new { x.AthleteId, x.SponsorId });
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Sponsorships_Athletes_AthleteId",
+                        name: "FK_Goals_Users_AthleteId",
                         column: x => x.AthleteId,
-                        principalTable: "Athletes",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -252,13 +242,48 @@ namespace SponsorSphere.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Sponsorships",
+                columns: table => new
+                {
+                    AthleteId = table.Column<int>(type: "int", nullable: false),
+                    SponsorId = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sponsorships", x => new { x.AthleteId, x.SponsorId });
+                    table.ForeignKey(
+                        name: "FK_Sponsorships_Athletes_AthleteId",
+                        column: x => x.AthleteId,
+                        principalTable: "Athletes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Sponsorships_Sponsors_SponsorId",
+                        column: x => x.SponsorId,
+                        principalTable: "Sponsors",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Sponsorships_Users_AthleteId",
+                        column: x => x.AthleteId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Sponsorships_Users_SponsorId",
+                        column: x => x.SponsorId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "Pictures",
                 columns: new[] { "Id", "Content", "Modified", "Url" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2024, 4, 25, 0, 0, 0, 0, DateTimeKind.Local), "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing" },
-                    { 2, null, new DateTime(2024, 4, 25, 0, 0, 0, 0, DateTimeKind.Local), "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing" }
+                    { 1, null, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing" },
+                    { 2, null, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing" }
                 });
 
             migrationBuilder.InsertData(
@@ -266,8 +291,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                 columns: new[] { "Id", "Country", "EventDate", "EventType", "Finished", "Name", "Sport" },
                 values: new object[,]
                 {
-                    { 1, "Bulgaria", new DateTime(2020, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, true, "Persenk ultra", 14 },
-                    { 2, "Spain", new DateTime(2024, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, false, "Zegama Aizkori", 13 }
+                    { 1, 732800, new DateTime(2020, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, true, "Persenk ultra", 14 },
+                    { 2, 2510769, new DateTime(2024, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, false, "Zegama Aizkori", 13 }
                 });
 
             migrationBuilder.InsertData(
@@ -275,10 +300,10 @@ namespace SponsorSphere.Infrastructure.Migrations
                 columns: new[] { "Id", "Country", "Created", "DeletedOn", "Email", "FaceBookLink", "InstagramLink", "IsDeleted", "Name", "Password", "PhoneNumber", "PictureId", "StravaLink", "TwitterLink", "Website" },
                 values: new object[,]
                 {
-                    { 1, "bg", new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(84), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5rov@mail.mail", "", "", false, "Petar", "dd", "09198", null, "", "", "" },
-                    { 2, "bg", new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(385), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5kov@mail.mail", "", "", false, "Georgi", "ss", "09198", null, "", "", "" },
-                    { 3, "bg", new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(1083), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "lidl@bg.gb", "", "", false, "Lidl", "ll", "1223", null, "", "", "" },
-                    { 4, "de", new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(1101), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kaufland@bg.gb", "", "", false, "Kaufland", "kk", "1223", null, "", "", "" }
+                    { 1, 732800, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9057), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5rov@mail.mail", "", "", false, "Petar", "dd", "09198", null, "", "", "" },
+                    { 2, 732800, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9196), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5kov@mail.mail", "", "", false, "Georgi", "ss", "09198", null, "", "", "" },
+                    { 3, 732800, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9447), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "lidl@bg.gb", "", "", false, "Lidl", "ll", "1223", null, "", "", "" },
+                    { 4, 732800, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9455), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kaufland@bg.gb", "", "", false, "Kaufland", "kk", "1223", null, "", "", "" }
                 });
 
             migrationBuilder.InsertData(
@@ -307,7 +332,11 @@ namespace SponsorSphere.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Achievements",
                 columns: new[] { "AthleteId", "SportEventId", "PlaceFinished", "Sport" },
-                values: new object[] { 2, 1, 1, 13 });
+                values: new object[,]
+                {
+                    { 1, 1, 2, 14 },
+                    { 2, 1, 1, 13 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Goals",
@@ -326,7 +355,7 @@ namespace SponsorSphere.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Sponsorships",
                 columns: new[] { "AthleteId", "SponsorId", "Amount", "Created", "Level" },
-                values: new object[] { 1, 3, 2000m, new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(1167), 2 });
+                values: new object[] { 1, 3, 2000m, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9499), 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BlogPostPicture_PicturesId",
@@ -337,6 +366,11 @@ namespace SponsorSphere.Infrastructure.Migrations
                 name: "IX_BlogPosts_AuthorId",
                 table: "BlogPosts",
                 column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sponsorships_SponsorId",
+                table: "Sponsorships",
+                column: "SponsorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -376,10 +410,10 @@ namespace SponsorSphere.Infrastructure.Migrations
                 name: "Pictures");
 
             migrationBuilder.DropTable(
-                name: "Sponsors");
+                name: "Athletes");
 
             migrationBuilder.DropTable(
-                name: "Athletes");
+                name: "Sponsors");
 
             migrationBuilder.DropTable(
                 name: "Users");

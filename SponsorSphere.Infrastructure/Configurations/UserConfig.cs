@@ -22,7 +22,7 @@ namespace SponsorSphere.Infrastructure.Configurations
 
             builder.Property(u => u.Country)
                 .IsRequired(true)
-                .HasMaxLength(100);
+                .HasConversion<int>();
 
             builder.Property(u => u.PhoneNumber)
                 .IsRequired(true)
@@ -51,19 +51,15 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.Property(u => u.PictureId)
                 .IsRequired(false);
 
-
-            builder.HasMany(u => u.Posts)
-                .WithOne()
-                .HasForeignKey(u => u.AuthorId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            //builder.HasOne(u => u.PictureOrLogo)
-            //    .WithOne()
-            //    .HasForeignKey(p => (Picture)p)
-            //    .OnDelete(DeleteBehavior.NoAction);
+            builder.HasQueryFilter(u => !u.IsDeleted);
 
             builder.HasIndex(u => u.Email)
                 .IsUnique();
+
+            //builder.HasMany(sp => sp.Sponsorships)
+            //    .WithOne()
+            //    .HasForeignKey(s => s.SponsorId)
+            //    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -9,5 +9,6 @@ namespace SponsorSphere.Domain.Models
         public required SportsEnum Sport { get; set; }
         public required decimal AmountNeeded { get; set; }
         public int AthleteId { get; set; }
+        public User? Athlete { get; set; }
     }
 }

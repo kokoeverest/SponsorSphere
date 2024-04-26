@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SponsorSphere.Domain.Models;
+using System.Reflection.Emit;
 
 namespace SponsorSphere.Infrastructure.Configurations
 {
@@ -17,15 +18,24 @@ namespace SponsorSphere.Infrastructure.Configurations
             
             builder.HasKey(s => new { s.AthleteId, s.SponsorId });
 
-            //builder.HasOne(s => s.Athlete)
-            //    .WithMany()
-            //    .HasForeignKey(s => s.AthleteId)
-            //    .OnDelete(DeleteBehavior.NoAction);
+            builder
+                .HasOne(s => s.Athlete)
+                .WithMany()
+                .HasForeignKey(s => s.AthleteId)
+                .HasPrincipalKey(u => u.Id)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            //builder.HasOne(s => s.Sponsor)
-            //    .WithMany()
-            //    .HasForeignKey(s => s.SponsorId)
-            //    .OnDelete(DeleteBehavior.NoAction);
+            builder
+                .HasQueryFilter(s => !s.Athlete.IsDeleted);
+
+            builder
+                .HasOne(s => s.Sponsor)
+                .WithMany()
+                .HasForeignKey(s => s.SponsorId)
+                .HasPrincipalKey(u => u.Id)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasQueryFilter(s => !s.Sponsor.IsDeleted);
         }
     }
 }

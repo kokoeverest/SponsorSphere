@@ -6,6 +6,7 @@
         public required DateTime Created { get; set; }
         public required string Content { get; set; }
         public int AuthorId { get; set; }
+        public User? Author { get; set; }
         public ICollection<Picture>? Pictures { get; set; }
     }
 }

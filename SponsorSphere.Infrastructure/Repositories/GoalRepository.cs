@@ -36,9 +36,16 @@ namespace SponsorSphere.Infrastructure.Repositories
             .ToListAsync();
         }
 
-        public Task<Goal> UpdateAsync(GoalDto goal)
+        public async Task<GoalDto> UpdateAsync(GoalDto updatedGoal)
         {
-            throw new NotImplementedException();
+            await _context.Goals
+                .Where(g => g.AthleteId.Equals(updatedGoal.AthleteId))
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(g => g.Sport, updatedGoal.Sport)
+                .SetProperty(g => g.AmountNeeded, updatedGoal.AmountNeeded)
+                );
+
+            return updatedGoal;
         }
     }
 }

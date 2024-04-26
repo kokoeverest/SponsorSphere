@@ -12,8 +12,8 @@ using SponsorSphere.Infrastructure;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     [DbContext(typeof(SponsorSphereDbContext))]
-    [Migration("20240425131410_Update25.04_1")]
-    partial class Update2504_1
+    [Migration("20240426151813_Update26.04_1")]
+    partial class Update2604_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                             SportEventId = 1,
                             PlaceFinished = 1,
                             Sport = 13
+                        },
+                        new
+                        {
+                            AthleteId = 1,
+                            SportEventId = 1,
+                            PlaceFinished = 2,
+                            Sport = 14
                         });
                 });
 
@@ -160,13 +167,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Modified = new DateTime(2024, 4, 25, 0, 0, 0, 0, DateTimeKind.Local),
+                            Modified = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             Url = "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing"
                         },
                         new
                         {
                             Id = 2,
-                            Modified = new DateTime(2024, 4, 25, 0, 0, 0, 0, DateTimeKind.Local),
+                            Modified = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             Url = "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing"
                         });
                 });
@@ -190,6 +197,8 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.HasKey("AthleteId", "SponsorId");
 
+                    b.HasIndex("SponsorId");
+
                     b.ToTable("Sponsorships");
 
                     b.HasData(
@@ -198,7 +207,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AthleteId = 1,
                             SponsorId = 3,
                             Amount = 2000m,
-                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(1167),
+                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9499),
                             Level = 2
                         });
                 });
@@ -211,10 +220,8 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("Country")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("EventDate")
                         .HasColumnType("datetime2");
@@ -241,7 +248,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Country = "Bulgaria",
+                            Country = 732800,
                             EventDate = new DateTime(2020, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EventType = 0,
                             Finished = true,
@@ -251,7 +258,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            Country = "Spain",
+                            Country = 2510769,
                             EventDate = new DateTime(2024, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EventType = 0,
                             Finished = false,
@@ -268,10 +275,8 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("Country")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -356,8 +361,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Country = "bg",
-                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(84),
+                            Country = 732800,
+                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9057),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5rov@mail.mail",
                             FaceBookLink = "",
@@ -376,8 +381,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            Country = "bg",
-                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(385),
+                            Country = 732800,
+                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9196),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5kov@mail.mail",
                             FaceBookLink = "",
@@ -417,8 +422,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            Country = "bg",
-                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(1083),
+                            Country = 732800,
+                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9447),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lidl@bg.gb",
                             FaceBookLink = "",
@@ -435,8 +440,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 4,
-                            Country = "de",
-                            Created = new DateTime(2024, 4, 25, 16, 14, 8, 762, DateTimeKind.Local).AddTicks(1101),
+                            Country = 732800,
+                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9455),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kaufland@bg.gb",
                             FaceBookLink = "",
@@ -487,17 +492,27 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasOne("SponsorSphere.Domain.Models.Athlete", null)
                         .WithMany("Achievements")
                         .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SponsorSphere.Domain.Models.User", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Athlete");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.BlogPost", b =>
                 {
-                    b.HasOne("SponsorSphere.Domain.Models.User", null)
-                        .WithMany("Posts")
+                    b.HasOne("SponsorSphere.Domain.Models.User", "Author")
+                        .WithMany("BlogPosts")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Goal", b =>
@@ -505,8 +520,16 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasOne("SponsorSphere.Domain.Models.Athlete", null)
                         .WithMany("Goals")
                         .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SponsorSphere.Domain.Models.User", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Athlete");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsorship", b =>
@@ -514,8 +537,30 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasOne("SponsorSphere.Domain.Models.Athlete", null)
                         .WithMany("Sponsorships")
                         .HasForeignKey("AthleteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("SponsorSphere.Domain.Models.User", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SponsorSphere.Domain.Models.Sponsor", null)
+                        .WithMany("Sponsorships")
+                        .HasForeignKey("SponsorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SponsorSphere.Domain.Models.User", "Sponsor")
+                        .WithMany()
+                        .HasForeignKey("SponsorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Sponsor");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Athlete", b =>
@@ -556,7 +601,7 @@ namespace SponsorSphere.Infrastructure.Migrations
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.User", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("BlogPosts");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Athlete", b =>
@@ -565,6 +610,11 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     b.Navigation("Goals");
 
+                    b.Navigation("Sponsorships");
+                });
+
+            modelBuilder.Entity("SponsorSphere.Domain.Models.Sponsor", b =>
+                {
                     b.Navigation("Sponsorships");
                 });
 #pragma warning restore 612, 618

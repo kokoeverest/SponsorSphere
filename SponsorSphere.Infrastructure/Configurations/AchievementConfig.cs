@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SponsorSphere.Domain.Models;
+using System.Reflection.Emit;
 
 namespace SponsorSphere.Infrastructure.Configurations
 {
@@ -13,6 +14,16 @@ namespace SponsorSphere.Infrastructure.Configurations
 
 
             builder.HasKey(a => new { a.AthleteId, a.SportEventId });
+
+            builder
+                .HasOne(u => u.Athlete)
+                .WithMany()
+                .HasForeignKey(u => u.AthleteId)
+                .HasPrincipalKey(u => u.Id);
+
+            builder
+                .HasQueryFilter(u => !u.Athlete.IsDeleted);
+
         }
     }
 }

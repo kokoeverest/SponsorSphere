@@ -8,6 +8,6 @@ namespace SponsorSphere.Application.Interfaces
         Task<Goal> CreateAsync(Goal goal);
         Task<List<Goal>> GetAllAsync(int athleteId);
         Task<int> DeleteAsync(int sportEventId, int athleteId);
-        Task<Goal> UpdateAsync(GoalDto goal);
+        Task<GoalDto> UpdateAsync(GoalDto goal);
     }
 }

@@ -30,7 +30,8 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int authorId)
         {
-            return await _context.BlogPosts.Where(bp => bp.AuthorId == authorId).ToListAsync();
+            return await _context.BlogPosts
+                .Where(bp => bp.AuthorId == authorId).ToListAsync();
         }
 
         public async Task<BlogPost> GetByIdAsync(int blogPostId)

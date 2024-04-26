@@ -21,7 +21,7 @@ namespace SponsorSphere.Infrastructure.Configurations
 
             builder.Property(se => se.Country)
                 .IsRequired(true)
-                .HasMaxLength(100);
+                .HasConversion<int>();
         }
     }
 }

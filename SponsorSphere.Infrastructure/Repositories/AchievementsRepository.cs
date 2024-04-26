@@ -28,17 +28,21 @@ public class AchievementsRepository : IAchievementRepository
                 .ExecuteDeleteAsync();
     }
 
+    public IQueryable<Achievement> GetAllAsync(int athleteId) => 
+        _context.Achievements
+            .Where(ach => ach.AthleteId == athleteId);
+    
 
-
-    public async Task<List<Achievement>> GetAllAsync(int athleteId)
+    public async Task<AchievementDto> UpdateAsync(AchievementDto updatedAchievement)
     {
-        return await _context.Achievements
-            .Where(ach => ach.AthleteId == athleteId)
-            .ToListAsync();
-    }
+        await _context.Achievements
+                .Where(ach => ach.AthleteId.Equals(updatedAchievement.AthleteId) && 
+                              ach.SportEventId.Equals(updatedAchievement.SportEventId))
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(ach => ach.Sport, updatedAchievement.Sport)
+                .SetProperty(bp => bp.PlaceFinished, updatedAchievement.PlaceFinished)
+                );
 
-    public Task<Achievement> UpdateAsync(AchievementDto achievement)
-    {
-        throw new NotImplementedException();
+        return updatedAchievement;
     }
 }

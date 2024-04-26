@@ -22,8 +22,6 @@ public class UpdateAthleteCommandHandler : IRequestHandler<UpdateAthleteCommand,
     {
         var updatedAthlete = await _unitOfWork.AthletesRepository.UpdateAsync(request.AthleteToUpdate);
 
-        var updatedAthleteDto = _mapper.Map<AthleteDto>(updatedAthlete);
-
-        return await Task.FromResult(updatedAthleteDto);
+        return await Task.FromResult(updatedAthlete);
     }
 }

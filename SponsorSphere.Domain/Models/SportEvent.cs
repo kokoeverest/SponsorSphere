@@ -6,7 +6,7 @@ namespace SponsorSphere.Domain.Models
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public required string Country { get; set; }
+        public required CountryEnum Country { get; set; }
         public DateTime EventDate { get; set; }
         public bool Finished { get; set; }
         public EventsEnum EventType { get; set; }

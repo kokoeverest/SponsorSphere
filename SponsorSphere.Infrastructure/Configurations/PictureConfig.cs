@@ -8,12 +8,6 @@ namespace SponsorSphere.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Picture> builder)
         {
-            //builder.HasMany(p => p.BlogPosts)
-            //    .WithMany(bp => bp.Pictures);
-
-            //builder.HasMany(p => p.BlogPosts)
-            //    .WithOne()
-            //    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

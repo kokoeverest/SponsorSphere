@@ -6,8 +6,8 @@ namespace SponsorSphere.Application.Interfaces
     public interface IAchievementRepository
     {
         Task<Achievement> CreateAsync(Achievement achievement);
-        Task<List<Achievement>> GetAllAsync(int athleteId);
+        IQueryable<Achievement> GetAllAsync(int athleteId);
         Task<int> DeleteAsync(int sportEventId, int athleteId);
-        Task<Achievement> UpdateAsync(AchievementDto achievement);
+        Task<AchievementDto> UpdateAsync(AchievementDto updatedAchievement);
     }
 }

@@ -2,6 +2,7 @@
 using MediatR;
 using SponsorSphere.Application.App.SponsorCompanies.Responses;
 using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SponsorCompanies.Commands;
@@ -10,7 +11,7 @@ public record CreateSponsorCompanyCommand(
     string Name,
     string Email,
     string Password,
-    string Country,
+    CountryEnum Country,
     string PhoneNumber,
     string Iban
     ) : IRequest<SponsorCompanyDto>;
@@ -32,7 +33,7 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
             request.Name,
             request.Email,
             request.Password,
-            request.Country,
+            request.Country.ToString(),
             request.PhoneNumber,
             request.Iban
         ];

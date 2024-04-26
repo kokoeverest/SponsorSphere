@@ -6,7 +6,7 @@ namespace SponsorSphere.Application.App.SportEvents.Responses
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty;
+        public CountryEnum Country { get; set; }
         public bool Finished { get; set; }
         public DateTime EventDate { get; set; }
         public EventsEnum EventType { get; set; }

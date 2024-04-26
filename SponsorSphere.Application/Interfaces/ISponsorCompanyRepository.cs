@@ -1,4 +1,5 @@
 ﻿using SponsorSphere.Application.App.SponsorCompanies.Responses;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Interfaces
@@ -8,8 +9,8 @@ namespace SponsorSphere.Application.Interfaces
         Task<SponsorCompany> CreateAsync(SponsorCompany user);
         Task<List<SponsorCompany>> GetAllAsync();
         Task<SponsorCompany> GetByIdAsync(int userId);
-        Task<List<SponsorCompany>> GetByCountryAsync(string country);
+        Task<List<SponsorCompany>> GetByCountryAsync(CountryEnum country);
         Task<int> DeleteAsync(int userId);
-        Task<SponsorCompany> UpdateAsync(SponsorCompanyDto userId);
+        Task<SponsorCompanyDto> UpdateAsync(SponsorCompanyDto userId);
     }
 }

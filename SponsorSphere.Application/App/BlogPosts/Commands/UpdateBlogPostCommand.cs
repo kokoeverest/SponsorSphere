@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using SponsorSphere.Application.App.BlogPosts.Responses;
+using SponsorSphere.Application.Interfaces;
 
-namespace SponsorSphere.Application.App.BlogPosts.Commands
+namespace SponsorSphere.Application.App.BlogPosts.Commands;
+
+public record UpdateBlogPostCommand(BlogPostDto BlogPostToUpdate) : IRequest<BlogPostDto>;
+public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostCommand, BlogPostDto>
 {
-    internal class UpdateBlogPostCommand
+    private readonly IUnitOfWork _unitOfWork;
+
+    public UpdateBlogPostCommandHandler(IUnitOfWork unitOfWork)
     {
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<BlogPostDto> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken)
+    {
+        var updatedBlogPost = await _unitOfWork.BlogPostsRepository.UpdateAsync(request.BlogPostToUpdate);
+
+        return await Task.FromResult(updatedBlogPost);
     }
 }

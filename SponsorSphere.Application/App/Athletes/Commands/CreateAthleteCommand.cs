@@ -12,7 +12,7 @@ public record CreateAthleteCommand(
     string LastName,
     string Email,
     string Password,
-    string Country,
+    CountryEnum Country,
     string PhoneNumber,
     DateTime BirthDate,
     SportsEnum Sport
@@ -36,7 +36,7 @@ public class CreateAthleteCommandHandler : IRequestHandler<CreateAthleteCommand,
             request.LastName,
             request.Email,
             request.Password,
-            request.Country,
+            request.Country.ToString(),
             request.PhoneNumber,
             request.BirthDate.ToString(),
             request.Sport.ToString()

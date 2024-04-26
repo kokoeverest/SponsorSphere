@@ -1,5 +1,6 @@
 ﻿using SponsorSphere.Application.App.BlogPosts.Responses;
 using SponsorSphere.Application.App.Sponsorships.Responses;
+using SponsorSphere.Domain.Enums;
 
 namespace SponsorSphere.Application.Interfaces
 {
@@ -8,7 +9,7 @@ namespace SponsorSphere.Application.Interfaces
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public string Country { get; set; }
+        public CountryEnum Country { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime Created { get; set; }
         public int PictureId { get; set; }

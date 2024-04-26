@@ -9,7 +9,7 @@ namespace SponsorSphere.Application.App.Goals.Commands;
 
 public record CreateGoalCommand(
         string Name,
-        string Country,
+        CountryEnum Country,
         string EventDate,
         EventsEnum EventType,
         SportsEnum Sport,

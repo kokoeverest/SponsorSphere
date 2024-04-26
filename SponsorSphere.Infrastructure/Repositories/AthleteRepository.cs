@@ -33,15 +33,13 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int athleteId)
         {
-            return await _context.Users.Where(user => user.Id.Equals(athleteId)).ExecuteDeleteAsync();
-            //var athleteToDelete = await GetByIdAsync(athleteId);
-
-            //if (athleteToDelete is not null)
-            //{
-            //    _context.Users.Remove(athleteToDelete);
-            //}
-
-            //return athleteToDelete is not null ? await _context.SaveChangesAsync() : 0;
+            await _context.Users
+                .Where(user => user.Id.Equals(athleteId))
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(ath => ath.IsDeleted, true)
+                .SetProperty(ath => ath.DeletedOn, DateTime.UtcNow));
+            
+            return 1;
         }
         public async Task<Athlete> GetByIdAsync(int athleteId)
         {
@@ -64,7 +62,7 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Athlete>> GetByCountryAsync(string country)
+        public async Task<List<Athlete>> GetByCountryAsync(CountryEnum country)
         {
             return await _context.Athletes
                 .Where(athlete => athlete.Country == country)
@@ -118,21 +116,30 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.Athletes.ToListAsync();
         }
 
-        public async Task<Athlete> UpdateAsync(AthleteDto updatedAthlete)
+        public async Task<AthleteDto> UpdateAsync(AthleteDto updatedAthlete)
         {
-            var athleteToUpdate = await GetByIdAsync(updatedAthlete.Id);
-            // Add more of the properties which can be changed
-            athleteToUpdate.Website = updatedAthlete.Website ?? athleteToUpdate.Website;
-            athleteToUpdate.FaceBookLink = updatedAthlete.FaceBookLink ?? athleteToUpdate.FaceBookLink;
-            athleteToUpdate.StravaLink = updatedAthlete.StravaLink ?? athleteToUpdate.StravaLink;
-            athleteToUpdate.InstagramLink = updatedAthlete.InstagramLink ?? athleteToUpdate.InstagramLink;
-            athleteToUpdate.TwitterLink = updatedAthlete.TwitterLink ?? athleteToUpdate.TwitterLink;
+            await _context.Users.Where(u => u.Id == updatedAthlete.Id)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(ath => ath.Name, updatedAthlete.Name)
+                .SetProperty(ath => ath.Email, updatedAthlete.Email)
+                .SetProperty(ath => ath.Country, updatedAthlete.Country)
+                .SetProperty(ath => ath.PhoneNumber, updatedAthlete.PhoneNumber)
+                .SetProperty(ath => ath.PictureId, updatedAthlete.PictureId)
+                .SetProperty(ath => ath.Website, updatedAthlete.Website)
+                .SetProperty(ath => ath.FaceBookLink, updatedAthlete.FaceBookLink)
+                .SetProperty(ath => ath.InstagramLink, updatedAthlete.InstagramLink)
+                .SetProperty(ath => ath.TwitterLink, updatedAthlete.TwitterLink)
+                .SetProperty(ath => ath.StravaLink, updatedAthlete.StravaLink)
+                );
 
-            _context.Athletes.Update(athleteToUpdate);
+            await _context.Athletes.Where(ath => ath.Id == updatedAthlete.Id)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(ath => ath.LastName, updatedAthlete.LastName)
+                .SetProperty(ath => ath.BirthDate, updatedAthlete.BirthDate)
+                .SetProperty(ath => ath.Sport, updatedAthlete.Sport)
+            );
 
-            await _context.SaveChangesAsync();
-
-            return athleteToUpdate;
+            return updatedAthlete;
         }
     }
 }

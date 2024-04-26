@@ -19,17 +19,17 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.HasMany(ath => ath.Sponsorships)
                 .WithOne()
                 .HasForeignKey(s => s.AthleteId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(ath => ath.Goals)
                 .WithOne()
                 .HasForeignKey(s => s.AthleteId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(ath => ath.Achievements)
                 .WithOne()
                 .HasForeignKey(s => s.AthleteId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

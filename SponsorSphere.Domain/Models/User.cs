@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using SponsorSphere.Domain.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SponsorSphere.Domain.Models
 {
@@ -8,7 +9,7 @@ namespace SponsorSphere.Domain.Models
         public required string Name { get; set; }
         public required string Email { get; set; }
         public required string Password { get; set; }
-        public required string Country { get; set; }
+        public required CountryEnum Country { get; set; }
         public required string PhoneNumber { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public int? PictureId { get; set; }
@@ -19,7 +20,7 @@ namespace SponsorSphere.Domain.Models
         public string StravaLink { get; set; } = string.Empty;
         public bool IsDeleted { get; set; }
         public DateTime DeletedOn {  get; set; }
-        public ICollection<BlogPost> Posts { get; set; } = [];
+        public ICollection<BlogPost> BlogPosts { get; set; } = [];
 
         [NotMapped]
         public ICollection<Sponsorship> Sponsorships { get; set; } = [];

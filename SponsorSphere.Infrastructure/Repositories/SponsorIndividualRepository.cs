@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.SponsorIndividuals.Responses;
 using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Infrastructure.Repositories
@@ -30,14 +31,13 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int userId)
         {
-            return await _context.Users.Where(user => user.Id.Equals(userId)).ExecuteDeleteAsync();
-            //var sponsorIndividualToDelete = await GetByIdAsync(userId);
+            await _context.Users
+                .Where(si => si.Id.Equals(userId))
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(si => si.IsDeleted, true)
+                .SetProperty(si => si.DeletedOn, DateTime.UtcNow));
 
-            //if (sponsorIndividualToDelete is not null)
-            //{
-            //    _context.Users.Remove(sponsorIndividualToDelete);
-            //}
-            //return sponsorIndividualToDelete is not null ? await _context.SaveChangesAsync() : 0;
+            return 1;
         }
 
         public async Task<SponsorIndividual> GetByIdAsync(int userId)
@@ -66,28 +66,35 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<SponsorIndividual>> GetByCountryAsync(string country)
+        public async Task<List<SponsorIndividual>> GetByCountryAsync(CountryEnum country)
         {
             return await _context.SponsorIndividuals
                 .Where(sponsorIndividual => sponsorIndividual.Country == country)
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
-        public async Task<SponsorIndividual> UpdateAsync(SponsorIndividualDto updatedSponsorIndividual)
+        public async Task<SponsorIndividualDto> UpdateAsync(SponsorIndividualDto updatedSponsorIndividual)
         {
-            // Add more of the properties which can be changed
-            var sponsorIndividualToUpdate = await GetByIdAsync(updatedSponsorIndividual.Id);
+            await _context.Users.Where(u => u.Id == updatedSponsorIndividual.Id)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(si => si.Name, updatedSponsorIndividual.Name)
+                .SetProperty(si => si.Email, updatedSponsorIndividual.Email)
+                .SetProperty(si => si.Country, updatedSponsorIndividual.Country)
+                .SetProperty(si => si.PhoneNumber, updatedSponsorIndividual.PhoneNumber)
+                .SetProperty(si => si.PictureId, updatedSponsorIndividual.PictureId)
+                .SetProperty(si => si.Website, updatedSponsorIndividual.Website)
+                .SetProperty(si => si.FaceBookLink, updatedSponsorIndividual.FaceBookLink)
+                .SetProperty(si => si.InstagramLink, updatedSponsorIndividual.InstagramLink)
+                .SetProperty(si => si.TwitterLink, updatedSponsorIndividual.TwitterLink)
+                .SetProperty(si => si.StravaLink, updatedSponsorIndividual.StravaLink)
+                );
 
-            sponsorIndividualToUpdate.Website = updatedSponsorIndividual.Website ?? sponsorIndividualToUpdate.Website;
-            sponsorIndividualToUpdate.FaceBookLink = updatedSponsorIndividual.FaceBookLink ?? sponsorIndividualToUpdate.FaceBookLink;
-            sponsorIndividualToUpdate.StravaLink = updatedSponsorIndividual.StravaLink ?? sponsorIndividualToUpdate.StravaLink;
-            sponsorIndividualToUpdate.InstagramLink = updatedSponsorIndividual.InstagramLink ?? sponsorIndividualToUpdate.InstagramLink;
-            sponsorIndividualToUpdate.TwitterLink = updatedSponsorIndividual.TwitterLink ?? sponsorIndividualToUpdate.TwitterLink;
-
-            _context.SponsorIndividuals.Update(sponsorIndividualToUpdate);
-
-            await _context.SaveChangesAsync();
-            return sponsorIndividualToUpdate;
+            await _context.SponsorIndividuals.Where(si => si.Id == updatedSponsorIndividual.Id)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(si => si.LastName, updatedSponsorIndividual.LastName)
+                .SetProperty(si => si.BirthDate, updatedSponsorIndividual.BirthDate)
+            );
+            return updatedSponsorIndividual;
         }
     }
 }

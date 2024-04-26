@@ -2,10 +2,11 @@
 using MediatR;
 using SponsorSphere.Application.App.SponsorCompanies.Responses;
 using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Domain.Enums;
 
 namespace SponsorSphere.Application.App.SponsorCompanies.Queries;
 
-public record GetSponsorCompaniesByCountryQuery(string Country) : IRequest<List<SponsorCompanyDto>>;
+public record GetSponsorCompaniesByCountryQuery(CountryEnum Country) : IRequest<List<SponsorCompanyDto>>;
 
 public class GetSponsorCompaniesByCountryQueryHandler : IRequestHandler<GetSponsorCompaniesByCountryQuery, List<SponsorCompanyDto>>
 {

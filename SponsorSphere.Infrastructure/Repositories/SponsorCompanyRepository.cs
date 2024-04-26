@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.SponsorCompanies.Responses;
 using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Infrastructure.Repositories
@@ -31,14 +32,13 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int userId)
         {
-            return await _context.Users.Where(user => user.Id.Equals(userId)).ExecuteDeleteAsync();
-            //var sponsorCompanyToDelete = await GetByIdAsync(userId);
+            await _context.Users
+                .Where(sc => sc.Id.Equals(userId))
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(sc => sc.IsDeleted, true)
+                .SetProperty(sc => sc.DeletedOn, DateTime.UtcNow));
 
-            //if (sponsorCompanyToDelete is not null)
-            //{
-            //    _context.Users.Remove(sponsorCompanyToDelete);
-            //}
-            //return sponsorCompanyToDelete is not null ? await _context.SaveChangesAsync() : 0;
+            return 1;
         }
         public async Task<SponsorCompany> GetByIdAsync(int userId)
         {
@@ -58,26 +58,35 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<SponsorCompany>> GetByCountryAsync(string country)
+        public async Task<List<SponsorCompany>> GetByCountryAsync(CountryEnum country)
         {
             return await _context.SponsorCompanies
                 .Where(sponsorCompany => sponsorCompany.Country == country)
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
-        public async Task<SponsorCompany> UpdateAsync(SponsorCompanyDto updatedSponsorCompany)
+        public async Task<SponsorCompanyDto> UpdateAsync(SponsorCompanyDto updatedSponsorCompany)
         {
-            var sponsorCompanyToUpdate = await GetByIdAsync(updatedSponsorCompany.Id);
-            // Add more of the properties which can be changed
-            sponsorCompanyToUpdate.Website = updatedSponsorCompany.Website ?? sponsorCompanyToUpdate.Website;
-            sponsorCompanyToUpdate.FaceBookLink = updatedSponsorCompany.FaceBookLink ?? sponsorCompanyToUpdate.FaceBookLink;
-            sponsorCompanyToUpdate.StravaLink = updatedSponsorCompany.StravaLink ?? sponsorCompanyToUpdate.StravaLink;
-            sponsorCompanyToUpdate.InstagramLink = updatedSponsorCompany.InstagramLink ?? sponsorCompanyToUpdate.InstagramLink;
-            sponsorCompanyToUpdate.TwitterLink = updatedSponsorCompany.TwitterLink ?? sponsorCompanyToUpdate.TwitterLink;
+            await _context.Users.Where(u => u.Id == updatedSponsorCompany.Id)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(sc => sc.Name, updatedSponsorCompany.Name)
+                .SetProperty(sc => sc.Email, updatedSponsorCompany.Email)
+                .SetProperty(sc => sc.Country, updatedSponsorCompany.Country)
+                .SetProperty(sc => sc.PhoneNumber, updatedSponsorCompany.PhoneNumber)
+                .SetProperty(sc => sc.PictureId, updatedSponsorCompany.PictureId)
+                .SetProperty(sc => sc.Website, updatedSponsorCompany.Website)
+                .SetProperty(sc => sc.FaceBookLink, updatedSponsorCompany.FaceBookLink)
+                .SetProperty(sc => sc.InstagramLink, updatedSponsorCompany.InstagramLink)
+                .SetProperty(sc => sc.TwitterLink, updatedSponsorCompany.TwitterLink)
+                .SetProperty(sc => sc.StravaLink, updatedSponsorCompany.StravaLink)
+            );
 
-            _context.SponsorCompanies.Update(sponsorCompanyToUpdate);
-            await _context.SaveChangesAsync();
-            return sponsorCompanyToUpdate;
+            await _context.SponsorCompanies.Where(sc => sc.Id == updatedSponsorCompany.Id)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(sc => sc.IBAN, updatedSponsorCompany.IBAN)
+            );
+                
+            return updatedSponsorCompany;
         }
     }
 }
