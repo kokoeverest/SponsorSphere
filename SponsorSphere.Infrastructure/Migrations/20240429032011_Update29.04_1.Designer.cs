@@ -12,8 +12,8 @@ using SponsorSphere.Infrastructure;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     [DbContext(typeof(SponsorSphereDbContext))]
-    [Migration("20240426151813_Update26.04_1")]
-    partial class Update2604_1
+    [Migration("20240429032011_Update29.04_1")]
+    partial class Update2904_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,7 +105,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             Id = 1,
                             AuthorId = 4,
                             Content = "A very interesting post about a sport achievement",
-                            Created = new DateTime(2023, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Created = new DateTime(2023, 12, 5, 22, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -136,7 +136,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AthleteId = 2,
                             SportEventId = 2,
                             AmountNeeded = 5000m,
-                            Date = new DateTime(2024, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2024, 8, 15, 21, 0, 0, 0, DateTimeKind.Utc),
                             Sport = 13
                         });
                 });
@@ -167,13 +167,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Modified = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            Modified = new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4793),
                             Url = "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing"
                         },
                         new
                         {
                             Id = 2,
-                            Modified = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            Modified = new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4794),
                             Url = "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing"
                         });
                 });
@@ -207,7 +207,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AthleteId = 1,
                             SponsorId = 3,
                             Amount = 2000m,
-                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9499),
+                            Created = new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4587),
                             Level = 2
                         });
                 });
@@ -249,7 +249,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 1,
                             Country = 732800,
-                            EventDate = new DateTime(2020, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDate = new DateTime(2020, 8, 15, 21, 0, 0, 0, DateTimeKind.Utc),
                             EventType = 0,
                             Finished = true,
                             Name = "Persenk ultra",
@@ -259,7 +259,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 2,
                             Country = 2510769,
-                            EventDate = new DateTime(2024, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDate = new DateTime(2024, 8, 15, 21, 0, 0, 0, DateTimeKind.Utc),
                             EventType = 0,
                             Finished = false,
                             Name = "Zegama Aizkori",
@@ -340,6 +340,26 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.UseTptMappingStrategy();
                 });
 
+            modelBuilder.Entity("SponsorSphere.Infrastructure.BlogPostPicture", b =>
+                {
+                    b.Property<int>("BlogPostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BlogPostId", "PictureId");
+
+                    b.ToTable("BlogPostPictures");
+
+                    b.HasData(
+                        new
+                        {
+                            BlogPostId = 1,
+                            PictureId = 1
+                        });
+                });
+
             modelBuilder.Entity("SponsorSphere.Domain.Models.Athlete", b =>
                 {
                     b.HasBaseType("SponsorSphere.Domain.Models.User");
@@ -362,7 +382,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 1,
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9057),
+                            Created = new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4135),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5rov@mail.mail",
                             FaceBookLink = "",
@@ -374,7 +394,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             StravaLink = "",
                             TwitterLink = "",
                             Website = "",
-                            BirthDate = new DateTime(1983, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BirthDate = new DateTime(1983, 9, 29, 21, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Petrov",
                             Sport = 14
                         },
@@ -382,7 +402,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 2,
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9196),
+                            Created = new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4311),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5kov@mail.mail",
                             FaceBookLink = "",
@@ -394,7 +414,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             StravaLink = "",
                             TwitterLink = "",
                             Website = "",
-                            BirthDate = new DateTime(2005, 3, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BirthDate = new DateTime(2005, 3, 29, 21, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Petkov",
                             Sport = 4
                         });
@@ -423,7 +443,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 3,
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9447),
+                            Created = new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4550),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lidl@bg.gb",
                             FaceBookLink = "",
@@ -440,8 +460,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 4,
-                            Country = 732800,
-                            Created = new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9455),
+                            Country = 2921044,
+                            Created = new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4553),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kaufland@bg.gb",
                             FaceBookLink = "",

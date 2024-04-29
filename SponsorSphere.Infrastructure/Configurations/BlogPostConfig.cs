@@ -12,7 +12,7 @@ namespace SponsorSphere.Infrastructure.Configurations
                    .WithMany(p => p.BlogPosts);
 
             builder
-                .HasQueryFilter(u => !u.Author.IsDeleted);
+                .HasQueryFilter(bp => !bp.Author.IsDeleted);
         }
     }
 }

@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="App\Pictures\Commands\" />
-    <Folder Include="App\Pictures\Queries\" />
     <Folder Include="App\Sponsors\Commands\" />
   </ItemGroup>
 

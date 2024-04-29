@@ -6,12 +6,7 @@ using SponsorSphere.Application.Interfaces;
 namespace SponsorSphere.Application.App.SponsorIndividuals.Commands;
 // Add more of the properties which can be changed
 public record UpdateSponsorIndividualCommand(
-    SponsorIndividualDto SponsorIndividualToUpdate,
-    string? NewWebsite,
-    string? NewFaceBookLink,
-    string? NewStravaLink,
-    string? NewTwitterLink,
-    string? NewInstagramLink) : IRequest<SponsorIndividualDto>;
+    SponsorIndividualDto SponsorIndividualToUpdate) : IRequest<SponsorIndividualDto>;
 
 public class UpdateSponsorIndividualCommandHandler : IRequestHandler<UpdateSponsorIndividualCommand, SponsorIndividualDto>
 {

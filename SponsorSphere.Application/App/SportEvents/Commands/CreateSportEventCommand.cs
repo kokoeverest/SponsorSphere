@@ -30,7 +30,7 @@ public class CreateSportEventCommandHandler : IRequestHandler<CreateSportEventCo
         {
             Name = request.Name,
             Country = request.Country,
-            EventDate = DateTime.Parse(request.EventDate),
+            EventDate = DateTime.Parse(request.EventDate).ToUniversalTime(),
             Finished = request.Finished,
             EventType = request.EventType,
             Sport = request.Sport

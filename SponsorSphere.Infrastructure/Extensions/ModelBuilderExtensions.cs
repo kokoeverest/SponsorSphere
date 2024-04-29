@@ -18,7 +18,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Password = "dd",
                     Country = CountryEnum.BGR,
                     PhoneNumber = "09198",
-                    BirthDate = DateTime.Parse("30/09/1983"),
+                    BirthDate = DateTime.Parse("30/09/1983").ToUniversalTime(),
                     Sport = SportsEnum.MountainRunning
                 },
                 new Athlete
@@ -30,7 +30,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Password = "ss",
                     Country = CountryEnum.BGR,
                     PhoneNumber = "09198",
-                    BirthDate = DateTime.Parse("30/03/2005"),
+                    BirthDate = DateTime.Parse("30/03/2005").ToUniversalTime(),
                     Sport = SportsEnum.Golf
                 }
             );
@@ -52,7 +52,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Kaufland",
                     Email = "kaufland@bg.gb",
                     Password = "kk",
-                    Country = CountryEnum.BGR,
+                    Country = CountryEnum.DEU,
                     PhoneNumber = "1223",
                     IBAN = "DE32215"
                 }
@@ -75,7 +75,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Persenk ultra",
                     Finished = true,
                     EventType = EventsEnum.Race,
-                    EventDate = DateTime.Parse("2020/08/16"),
+                    EventDate = DateTime.Parse("2020/08/16").ToUniversalTime(),
                     Country = CountryEnum.BGR
                 },
                 new SportEvent
@@ -85,7 +85,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Zegama Aizkori",
                     Finished = false,
                     EventType = EventsEnum.Race,
-                    EventDate = DateTime.Parse("2024/08/16"),
+                    EventDate = DateTime.Parse("2024/08/16").ToUniversalTime(),
                     Country = CountryEnum.ESP
                 }
             );
@@ -104,7 +104,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Sport = SportsEnum.MountainRunning,
                     SportEventId = 1,
                     PlaceFinished = 2
-                }   
+                }
                 );
 
             modelBuilder.Entity<Goal>().HasData(
@@ -113,7 +113,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     AthleteId = 2,
                     Sport = SportsEnum.SkyRunning,
                     SportEventId = 2,
-                    Date = DateTime.Parse("2024/08/16"),
+                    Date = DateTime.Parse("2024/08/16").ToUniversalTime(),
                     AmountNeeded = 5000
                 });
 
@@ -122,13 +122,13 @@ namespace SponsorSphere.Infrastructure.Extensions
                 {
                     Id = 1,
                     Url = @"https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing",
-                    Modified = DateTime.Today
+                    Modified = DateTime.UtcNow
                 },
                 new Picture
                 {
                     Id = 2,
                     Url = @"https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing",
-                    Modified = DateTime.Today
+                    Modified = DateTime.UtcNow
                 });
 
             modelBuilder.Entity<BlogPost>().HasData(
@@ -136,8 +136,15 @@ namespace SponsorSphere.Infrastructure.Extensions
                 {
                     Id = 1,
                     Content = "A very interesting post about a sport achievement",
-                    Created = DateTime.Parse("2023.12.06"),
+                    Created = DateTime.Parse("2023.12.06").ToUniversalTime(),
                     AuthorId = 4
+                });
+
+            modelBuilder.Entity<BlogPostPicture>().HasData(
+                new BlogPostPicture
+                {
+                    PictureId = 1,
+                    BlogPostId = 1
 
                 });
         }

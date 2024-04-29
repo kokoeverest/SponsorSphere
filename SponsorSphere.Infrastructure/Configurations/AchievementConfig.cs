@@ -16,13 +16,13 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.HasKey(a => new { a.AthleteId, a.SportEventId });
 
             builder
-                .HasOne(u => u.Athlete)
+                .HasOne(a => a.Athlete)
                 .WithMany()
-                .HasForeignKey(u => u.AthleteId)
-                .HasPrincipalKey(u => u.Id);
+                .HasForeignKey(a => a.AthleteId)
+                .HasPrincipalKey(a => a.Id);
 
             builder
-                .HasQueryFilter(u => !u.Athlete.IsDeleted);
+                .HasQueryFilter(a => !a.Athlete.IsDeleted);
 
         }
     }

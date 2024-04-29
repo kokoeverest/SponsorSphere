@@ -11,7 +11,7 @@ namespace SponsorSphere.Domain.Models
         public required string Password { get; set; }
         public required CountryEnum Country { get; set; }
         public required string PhoneNumber { get; set; }
-        public DateTime Created { get; set; } = DateTime.Now;
+        public DateTime Created { get; set; } = DateTime.UtcNow;
         public int? PictureId { get; set; }
         public string Website { get; set; } = string.Empty;
         public string FaceBookLink { get; set; } = string.Empty;

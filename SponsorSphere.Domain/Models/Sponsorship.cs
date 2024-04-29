@@ -4,7 +4,7 @@ namespace SponsorSphere.Domain.Models
 {
     public class Sponsorship
     {
-        public DateTime Created { get; set; } = DateTime.Now;
+        public DateTime Created { get; set; } = DateTime.UtcNow;
         public SponsorshipLevel Level { get; set; }
         public decimal Amount { get; set; }
         public User? Athlete { get; set; }

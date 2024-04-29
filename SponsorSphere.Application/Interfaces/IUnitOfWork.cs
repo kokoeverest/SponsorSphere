@@ -6,7 +6,7 @@
         public IAchievementRepository AchievementsRepository { get; }
         public IBlogPostRepository BlogPostsRepository { get; }
         public IGoalRepository GoalsRepository { get; }
-        public IPictureRepository PictureRepository { get; }
+        public IPictureRepository PicturesRepository { get; }
         public ISponsorCompanyRepository SponsorCompaniesRepository { get; }
         public ISponsorIndividualRepository SponsorIndividualsRepository { get; }
         public ISponsorRepository SponsorsRepository { get; }

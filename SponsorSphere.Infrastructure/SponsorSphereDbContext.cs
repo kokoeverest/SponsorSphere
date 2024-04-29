@@ -11,6 +11,7 @@ namespace SponsorSphere.Infrastructure
         public DbSet<User> Users { get; set; } = default!;
         public DbSet<Athlete> Athletes { get; set; } = default!;
         public DbSet<BlogPost> BlogPosts { get; set; } = default!;
+        public DbSet<BlogPostPicture> BlogPostPictures { get; set; } = default!;
         public DbSet<Goal> Goals { get; set; } = default!;
         public DbSet<Picture> Pictures { get; set; } = default!;
         public DbSet<SponsorCompany> SponsorCompanies { get; set; } = default!;

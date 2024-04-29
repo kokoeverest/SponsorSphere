@@ -36,8 +36,8 @@ public class AchievementsRepository : IAchievementRepository
     public async Task<AchievementDto> UpdateAsync(AchievementDto updatedAchievement)
     {
         await _context.Achievements
-                .Where(ach => ach.AthleteId.Equals(updatedAchievement.AthleteId) && 
-                              ach.SportEventId.Equals(updatedAchievement.SportEventId))
+                .Where(ach => ach.AthleteId == updatedAchievement.AthleteId && 
+                              ach.SportEventId == updatedAchievement.SportEventId)
                 .ExecuteUpdateAsync(setters => setters
                 .SetProperty(ach => ach.Sport, updatedAchievement.Sport)
                 .SetProperty(bp => bp.PlaceFinished, updatedAchievement.PlaceFinished)

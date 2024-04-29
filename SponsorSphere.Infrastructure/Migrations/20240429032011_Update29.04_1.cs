@@ -8,11 +8,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Update2604_1 : Migration
+    public partial class Update2904_1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "BlogPostPictures",
+                columns: table => new
+                {
+                    BlogPostId = table.Column<int>(type: "int", nullable: false),
+                    PictureId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogPostPictures", x => new { x.BlogPostId, x.PictureId });
+                });
+
             migrationBuilder.CreateTable(
                 name: "Pictures",
                 columns: table => new
@@ -278,12 +290,17 @@ namespace SponsorSphere.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "BlogPostPictures",
+                columns: new[] { "BlogPostId", "PictureId" },
+                values: new object[] { 1, 1 });
+
+            migrationBuilder.InsertData(
                 table: "Pictures",
                 columns: new[] { "Id", "Content", "Modified", "Url" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing" },
-                    { 2, null, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing" }
+                    { 1, null, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4793), "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing" },
+                    { 2, null, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4794), "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing" }
                 });
 
             migrationBuilder.InsertData(
@@ -291,8 +308,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                 columns: new[] { "Id", "Country", "EventDate", "EventType", "Finished", "Name", "Sport" },
                 values: new object[,]
                 {
-                    { 1, 732800, new DateTime(2020, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, true, "Persenk ultra", 14 },
-                    { 2, 2510769, new DateTime(2024, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, false, "Zegama Aizkori", 13 }
+                    { 1, 732800, new DateTime(2020, 8, 15, 21, 0, 0, 0, DateTimeKind.Utc), 0, true, "Persenk ultra", 14 },
+                    { 2, 2510769, new DateTime(2024, 8, 15, 21, 0, 0, 0, DateTimeKind.Utc), 0, false, "Zegama Aizkori", 13 }
                 });
 
             migrationBuilder.InsertData(
@@ -300,10 +317,10 @@ namespace SponsorSphere.Infrastructure.Migrations
                 columns: new[] { "Id", "Country", "Created", "DeletedOn", "Email", "FaceBookLink", "InstagramLink", "IsDeleted", "Name", "Password", "PhoneNumber", "PictureId", "StravaLink", "TwitterLink", "Website" },
                 values: new object[,]
                 {
-                    { 1, 732800, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9057), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5rov@mail.mail", "", "", false, "Petar", "dd", "09198", null, "", "", "" },
-                    { 2, 732800, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9196), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5kov@mail.mail", "", "", false, "Georgi", "ss", "09198", null, "", "", "" },
-                    { 3, 732800, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9447), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "lidl@bg.gb", "", "", false, "Lidl", "ll", "1223", null, "", "", "" },
-                    { 4, 732800, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9455), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kaufland@bg.gb", "", "", false, "Kaufland", "kk", "1223", null, "", "", "" }
+                    { 1, 732800, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4135), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5rov@mail.mail", "", "", false, "Petar", "dd", "09198", null, "", "", "" },
+                    { 2, 732800, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4311), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5kov@mail.mail", "", "", false, "Georgi", "ss", "09198", null, "", "", "" },
+                    { 3, 732800, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4550), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "lidl@bg.gb", "", "", false, "Lidl", "ll", "1223", null, "", "", "" },
+                    { 4, 2921044, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4553), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kaufland@bg.gb", "", "", false, "Kaufland", "kk", "1223", null, "", "", "" }
                 });
 
             migrationBuilder.InsertData(
@@ -311,14 +328,14 @@ namespace SponsorSphere.Infrastructure.Migrations
                 columns: new[] { "Id", "BirthDate", "LastName", "Sport" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1983, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Petrov", 14 },
-                    { 2, new DateTime(2005, 3, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Petkov", 4 }
+                    { 1, new DateTime(1983, 9, 29, 21, 0, 0, 0, DateTimeKind.Utc), "Petrov", 14 },
+                    { 2, new DateTime(2005, 3, 29, 21, 0, 0, 0, DateTimeKind.Utc), "Petkov", 4 }
                 });
 
             migrationBuilder.InsertData(
                 table: "BlogPosts",
                 columns: new[] { "Id", "AuthorId", "Content", "Created" },
-                values: new object[] { 1, 4, "A very interesting post about a sport achievement", new DateTime(2023, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[] { 1, 4, "A very interesting post about a sport achievement", new DateTime(2023, 12, 5, 22, 0, 0, 0, DateTimeKind.Utc) });
 
             migrationBuilder.InsertData(
                 table: "Sponsors",
@@ -341,7 +358,7 @@ namespace SponsorSphere.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Goals",
                 columns: new[] { "AthleteId", "SportEventId", "AmountNeeded", "Date", "Sport" },
-                values: new object[] { 2, 2, 5000m, new DateTime(2024, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 13 });
+                values: new object[] { 2, 2, 5000m, new DateTime(2024, 8, 15, 21, 0, 0, 0, DateTimeKind.Utc), 13 });
 
             migrationBuilder.InsertData(
                 table: "SponsorCompanies",
@@ -355,7 +372,7 @@ namespace SponsorSphere.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Sponsorships",
                 columns: new[] { "AthleteId", "SponsorId", "Amount", "Created", "Level" },
-                values: new object[] { 1, 3, 2000m, new DateTime(2024, 4, 26, 18, 18, 12, 653, DateTimeKind.Local).AddTicks(9499), 2 });
+                values: new object[] { 1, 3, 2000m, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4587), 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BlogPostPicture_PicturesId",
@@ -387,6 +404,9 @@ namespace SponsorSphere.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "BlogPostPicture");
+
+            migrationBuilder.DropTable(
+                name: "BlogPostPictures");
 
             migrationBuilder.DropTable(
                 name: "Goals");
