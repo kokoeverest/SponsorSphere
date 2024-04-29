@@ -32,7 +32,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
             AuthorId = request.AuthorId, 
             Content = request.Content, 
             Created = request.Created,
-            Pictures = request.Pictures
+            //Pictures = request.Pictures
         }
         );
         var mappedBlogPost = _mapper.Map<BlogPostDto>(newBlogPost);

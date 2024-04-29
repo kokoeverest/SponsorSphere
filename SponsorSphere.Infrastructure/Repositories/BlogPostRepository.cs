@@ -31,7 +31,9 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int authorId)
         {
             return await _context.BlogPosts
-                .Where(bp => bp.AuthorId == authorId).ToListAsync();
+                .Include(bp => bp.Pictures)
+                .Where(bp => bp.AuthorId == authorId)
+                .ToListAsync();
         }
 
         public async Task<BlogPost> GetByIdAsync(int blogPostId)
@@ -48,6 +50,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<BlogPost>> GetLatestBlogPostsAsync()
         {
             var latestPosts = await _context.BlogPosts
+                .Include(bp => bp.Pictures)
                 .OrderByDescending(bp => bp.Created)
                 .Take(3).ToListAsync();
 
@@ -57,6 +60,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<BlogPost>> GetLatestBlogPostsByAuthorIdAsync(int authorId)
         {
             var latestPosts = await _context.BlogPosts
+                .Include(bp => bp.Pictures)
                  .Where(bp => bp.AuthorId == authorId)
                  .OrderByDescending(bp => bp.Created)
                  .Take(3).ToListAsync();
@@ -70,7 +74,8 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .Where(bp => bp.Id == blogPostToUpdate.Id)
                 .ExecuteUpdateAsync(setters => setters
                 .SetProperty(bp => bp.Content, blogPostToUpdate.Content)
-                .SetProperty(bp => bp.Pictures, blogPostToUpdate.Pictures));
+                .SetProperty(bp => bp.Pictures, blogPostToUpdate.Pictures)
+                );
 
             return blogPostToUpdate;
         }

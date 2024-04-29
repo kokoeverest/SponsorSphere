@@ -146,6 +146,12 @@ namespace SponsorSphere.Infrastructure.Extensions
                     PictureId = 1,
                     BlogPostId = 1
 
+                },
+                new BlogPostPicture
+                {
+                    PictureId = 2,
+                    BlogPostId = 1
+
                 });
         }
     }

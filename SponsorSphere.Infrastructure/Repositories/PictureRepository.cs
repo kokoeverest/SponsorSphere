@@ -28,20 +28,6 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ExecuteDeleteAsync();
         }
 
-        public async Task<List<PictureDto>> GetByBlogPostIdAsync(int blogPostId)
-        {
-            return await _context.Pictures
-                .Where(p => _context.BlogPostPictures.Any(bp => bp.BlogPostId == blogPostId && bp.PictureId == p.Id))
-                .Select(p => new PictureDto
-                {
-                    Id = p.Id,
-                    Url = p.Url,
-                    Content = p.Content,
-                    Modified = p.Modified,
-                })
-                .ToListAsync();
-        }
-
         public async Task<PictureDto> UpdateAsync(PictureDto updatedPicture)
         {
             await _context.Pictures

@@ -14,18 +14,6 @@ namespace SponsorSphere.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "BlogPostPictures",
-                columns: table => new
-                {
-                    BlogPostId = table.Column<int>(type: "int", nullable: false),
-                    PictureId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BlogPostPictures", x => new { x.BlogPostId, x.PictureId });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Pictures",
                 columns: table => new
                 {
@@ -194,24 +182,24 @@ namespace SponsorSphere.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BlogPostPicture",
+                name: "BlogPostPictures",
                 columns: table => new
                 {
-                    BlogPostsId = table.Column<int>(type: "int", nullable: false),
-                    PicturesId = table.Column<int>(type: "int", nullable: false)
+                    BlogPostId = table.Column<int>(type: "int", nullable: false),
+                    PictureId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BlogPostPicture", x => new { x.BlogPostsId, x.PicturesId });
+                    table.PrimaryKey("PK_BlogPostPictures", x => new { x.BlogPostId, x.PictureId });
                     table.ForeignKey(
-                        name: "FK_BlogPostPicture_BlogPosts_BlogPostsId",
-                        column: x => x.BlogPostsId,
+                        name: "FK_BlogPostPictures_BlogPosts_BlogPostId",
+                        column: x => x.BlogPostId,
                         principalTable: "BlogPosts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BlogPostPicture_Pictures_PicturesId",
-                        column: x => x.PicturesId,
+                        name: "FK_BlogPostPictures_Pictures_PictureId",
+                        column: x => x.PictureId,
                         principalTable: "Pictures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -290,17 +278,12 @@ namespace SponsorSphere.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "BlogPostPictures",
-                columns: new[] { "BlogPostId", "PictureId" },
-                values: new object[] { 1, 1 });
-
-            migrationBuilder.InsertData(
                 table: "Pictures",
                 columns: new[] { "Id", "Content", "Modified", "Url" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4793), "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing" },
-                    { 2, null, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4794), "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing" }
+                    { 1, null, new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1560), "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing" },
+                    { 2, null, new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1563), "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing" }
                 });
 
             migrationBuilder.InsertData(
@@ -317,10 +300,10 @@ namespace SponsorSphere.Infrastructure.Migrations
                 columns: new[] { "Id", "Country", "Created", "DeletedOn", "Email", "FaceBookLink", "InstagramLink", "IsDeleted", "Name", "Password", "PhoneNumber", "PictureId", "StravaLink", "TwitterLink", "Website" },
                 values: new object[,]
                 {
-                    { 1, 732800, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4135), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5rov@mail.mail", "", "", false, "Petar", "dd", "09198", null, "", "", "" },
-                    { 2, 732800, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4311), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5kov@mail.mail", "", "", false, "Georgi", "ss", "09198", null, "", "", "" },
-                    { 3, 732800, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4550), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "lidl@bg.gb", "", "", false, "Lidl", "ll", "1223", null, "", "", "" },
-                    { 4, 2921044, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4553), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kaufland@bg.gb", "", "", false, "Kaufland", "kk", "1223", null, "", "", "" }
+                    { 1, 732800, new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(236), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5rov@mail.mail", "", "", false, "Petar", "dd", "09198", null, "", "", "" },
+                    { 2, 732800, new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(462), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5kov@mail.mail", "", "", false, "Georgi", "ss", "09198", null, "", "", "" },
+                    { 3, 732800, new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1119), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "lidl@bg.gb", "", "", false, "Lidl", "ll", "1223", null, "", "", "" },
+                    { 4, 2921044, new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1125), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kaufland@bg.gb", "", "", false, "Kaufland", "kk", "1223", null, "", "", "" }
                 });
 
             migrationBuilder.InsertData(
@@ -356,6 +339,15 @@ namespace SponsorSphere.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "BlogPostPictures",
+                columns: new[] { "BlogPostId", "PictureId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 1, 2 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Goals",
                 columns: new[] { "AthleteId", "SportEventId", "AmountNeeded", "Date", "Sport" },
                 values: new object[] { 2, 2, 5000m, new DateTime(2024, 8, 15, 21, 0, 0, 0, DateTimeKind.Utc), 13 });
@@ -372,12 +364,12 @@ namespace SponsorSphere.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Sponsorships",
                 columns: new[] { "AthleteId", "SponsorId", "Amount", "Created", "Level" },
-                values: new object[] { 1, 3, 2000m, new DateTime(2024, 4, 29, 3, 20, 10, 976, DateTimeKind.Utc).AddTicks(4587), 2 });
+                values: new object[] { 1, 3, 2000m, new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1214), 2 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BlogPostPicture_PicturesId",
-                table: "BlogPostPicture",
-                column: "PicturesId");
+                name: "IX_BlogPostPictures_PictureId",
+                table: "BlogPostPictures",
+                column: "PictureId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BlogPosts_AuthorId",
@@ -401,9 +393,6 @@ namespace SponsorSphere.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Achievements");
-
-            migrationBuilder.DropTable(
-                name: "BlogPostPicture");
 
             migrationBuilder.DropTable(
                 name: "BlogPostPictures");

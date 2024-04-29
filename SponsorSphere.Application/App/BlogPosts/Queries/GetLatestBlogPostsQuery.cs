@@ -5,9 +5,9 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.BlogPosts.Queries;
 
-public record GetLatestBlogPostsQuery : IRequest<BlogPostDto?>;
+public record GetLatestBlogPostsQuery : IRequest<List<BlogPostDto?>>;
 
-public class GetLatestBlogPostsQueryHandler : IRequestHandler<GetLatestBlogPostsQuery, BlogPostDto?>
+public class GetLatestBlogPostsQueryHandler : IRequestHandler<GetLatestBlogPostsQuery, List<BlogPostDto?>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -17,10 +17,10 @@ public class GetLatestBlogPostsQueryHandler : IRequestHandler<GetLatestBlogPosts
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async Task<BlogPostDto?> Handle(GetLatestBlogPostsQuery request, CancellationToken cancellationToken)
+    public async Task<List<BlogPostDto?>> Handle(GetLatestBlogPostsQuery request, CancellationToken cancellationToken)
     {
         var blogBosts = await _unitOfWork.BlogPostsRepository.GetLatestBlogPostsAsync();
-        var mappedBlogPosts = _mapper.Map<BlogPostDto>(blogBosts);
+        var mappedBlogPosts = _mapper.Map<List<BlogPostDto?>>(blogBosts);
 
         return mappedBlogPosts;
     }

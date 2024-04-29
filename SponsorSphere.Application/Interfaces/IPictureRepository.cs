@@ -6,7 +6,6 @@ namespace SponsorSphere.Application.Interfaces
     public interface IPictureRepository
     {
         Task<Picture> CreateAsync(Picture picture);
-        Task<List<PictureDto>> GetByBlogPostIdAsync(int blogPostId);
         Task<PictureDto> UpdateAsync(PictureDto picture);
         Task<int> DeleteAsync(PictureDto picture);
     }

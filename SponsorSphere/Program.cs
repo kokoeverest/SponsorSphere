@@ -6,6 +6,7 @@ using SponsorSphere.Application.App.Achievements.Queries;
 using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Application.App.Athletes.Responses;
+using SponsorSphere.Application.App.BlogPosts.Queries;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
@@ -62,7 +63,7 @@ var mediator = Init();
 //    SportsEnum.MountainRunning
 //    ));
 
-Console.WriteLine(await mediator.Send(new DeleteAthleteCommand(1)));
+//Console.WriteLine(await mediator.Send(new DeleteAthleteCommand(1)));
 
 //var pesho = await mediator.Send(new GetAthleteByIdQuery(1));
 
@@ -85,7 +86,7 @@ Console.WriteLine(await mediator.Send(new DeleteAthleteCommand(1)));
 //        athlete.Sport
 //        ));
 //}
-
+var latestPosts = await mediator.Send(new GetLatestBlogPostsQuery());
 var athleteDtos = await mediator.Send(new GetAllAthletesQuery());
 var peshoAchievements = await mediator.Send(new GetAchievementsByAthleteIdQuery(1));
 

@@ -9,6 +9,7 @@ namespace SponsorSphere.Application.App.BlogPosts.Responses
         public DateTime Created { get; set; }
         public string Content { get; set; } = string.Empty;
         public required int AuthorId { get; set; }
-        public ICollection<Picture> Pictures { get; set; } = [];
+        public User? Author { get; set; }
+        public ICollection<Picture>? Pictures { get; set; }
     }
 }
