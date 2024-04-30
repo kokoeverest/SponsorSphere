@@ -28,9 +28,9 @@ public class AchievementsRepository : IAchievementRepository
                 .ExecuteDeleteAsync();
     }
 
-    public IQueryable<Achievement> GetAllAsync(int athleteId) => 
-        _context.Achievements
-            .Where(ach => ach.AthleteId == athleteId);
+    public async Task<List<Achievement>> GetAllAsync(int athleteId) => 
+        await _context.Achievements
+            .Where(ach => ach.AthleteId == athleteId).ToListAsync();
     
 
     public async Task<AchievementDto> UpdateAsync(AchievementDto updatedAchievement)

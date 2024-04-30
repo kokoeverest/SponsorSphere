@@ -1,16 +1,26 @@
-﻿using SponsorSphere.Domain.Enums;
+﻿using Microsoft.AspNetCore.Identity;
+using SponsorSphere.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SponsorSphere.Domain.Models
 {
-    public abstract class User
+    public class User: IdentityUser<int>
     {
-        public int Id { get; set; }
-        public required string Name { get; set; }
-        public required string Email { get; set; }
-        public required string Password { get; set; }
-        public required CountryEnum Country { get; set; }
-        public required string PhoneNumber { get; set; }
+        //public int Id { get; set; }
+
+        [Required]
+        public string Name { get; set; } = string.Empty;
+        //public string Email { get; set; }
+
+        [Required]
+        public  string Password { get; set; } = string.Empty;
+
+        [Required]
+        public  CountryEnum Country { get; set; }
+
+        [Required]
+        public override string? PhoneNumber { get; set; } = string.Empty;
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public int? PictureId { get; set; }
         public string Website { get; set; } = string.Empty;

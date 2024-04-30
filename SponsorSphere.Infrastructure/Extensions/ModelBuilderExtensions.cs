@@ -153,6 +153,20 @@ namespace SponsorSphere.Infrastructure.Extensions
                     BlogPostId = 1
 
                 });
+
+            modelBuilder.Entity<UserRole>().HasData(
+                new UserRole
+                {
+                    Id = 1,
+                    Name = RolesEnum.Athlete.ToString(),
+                    NormalizedName = RolesEnum.Athlete.ToString().ToUpper()
+                },
+                new UserRole
+                {
+                    Id = 2,
+                    Name = RolesEnum.Sponsor.ToString(),
+                    NormalizedName = RolesEnum.Sponsor.ToString().ToUpper()
+                });
         }
     }
 }

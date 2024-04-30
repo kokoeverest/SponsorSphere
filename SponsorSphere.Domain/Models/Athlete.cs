@@ -5,7 +5,7 @@ namespace SponsorSphere.Domain.Models
 {
     public class Athlete : User
     {
-        public required string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
         public SportsEnum Sport { get; set; }
         public DateTime BirthDate { get; set; }
         public ICollection<Achievement> Achievements { get; set; } = [];

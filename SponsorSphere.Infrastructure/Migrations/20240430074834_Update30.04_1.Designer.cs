@@ -12,18 +12,121 @@ using SponsorSphere.Infrastructure;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     [DbContext(typeof(SponsorSphereDbContext))]
-    [Migration("20240429091304_Update29.04_1")]
-    partial class Update2904_1
+    [Migration("20240430074834_Update30.04_1")]
+    partial class Update3004_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Achievement", b =>
                 {
@@ -152,13 +255,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Modified = new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1560),
+                            Modified = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8901),
                             Url = "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing"
                         },
                         new
                         {
                             Id = 2,
-                            Modified = new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1563),
+                            Modified = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8905),
                             Url = "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing"
                         });
                 });
@@ -192,7 +295,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AthleteId = 1,
                             SponsorId = 3,
                             Amount = 2000m,
-                            Created = new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1214),
+                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8518),
                             Level = 2
                         });
                 });
@@ -260,6 +363,13 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Country")
                         .HasColumnType("int");
 
@@ -274,6 +384,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("FaceBookLink")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -285,23 +398,46 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("PictureId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StravaLink")
                         .HasMaxLength(200)
@@ -310,6 +446,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Property<string>("TwitterLink")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Website")
                         .HasMaxLength(200)
@@ -320,9 +463,61 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
 
                     b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("SponsorSphere.Domain.Models.UserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Athlete",
+                            NormalizedName = "ATHLETE"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Sponsor",
+                            NormalizedName = "SPONSOR"
+                        });
                 });
 
             modelBuilder.Entity("SponsorSphere.Infrastructure.BlogPostPicture", b =>
@@ -373,18 +568,24 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "b72775ab-2857-4264-a61c-f8da676ada83",
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(236),
+                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(7596),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5rov@mail.mail",
+                            EmailConfirmed = false,
                             FaceBookLink = "",
                             InstagramLink = "",
                             IsDeleted = false,
+                            LockoutEnabled = false,
                             Name = "Petar",
                             Password = "dd",
                             PhoneNumber = "09198",
+                            PhoneNumberConfirmed = false,
                             StravaLink = "",
                             TwitterLink = "",
+                            TwoFactorEnabled = false,
                             Website = "",
                             BirthDate = new DateTime(1983, 9, 29, 21, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Petrov",
@@ -393,18 +594,24 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8890ace3-51a1-44a4-9220-f7d08c43e519",
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(462),
+                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(7909),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5kov@mail.mail",
+                            EmailConfirmed = false,
                             FaceBookLink = "",
                             InstagramLink = "",
                             IsDeleted = false,
+                            LockoutEnabled = false,
                             Name = "Georgi",
                             Password = "ss",
                             PhoneNumber = "09198",
+                            PhoneNumberConfirmed = false,
                             StravaLink = "",
                             TwitterLink = "",
+                            TwoFactorEnabled = false,
                             Website = "",
                             BirthDate = new DateTime(2005, 3, 29, 21, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Petkov",
@@ -434,36 +641,48 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "31152923-e650-422c-8bcd-b552a044bd6e",
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1119),
+                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8407),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lidl@bg.gb",
+                            EmailConfirmed = false,
                             FaceBookLink = "",
                             InstagramLink = "",
                             IsDeleted = false,
+                            LockoutEnabled = false,
                             Name = "Lidl",
                             Password = "ll",
                             PhoneNumber = "1223",
+                            PhoneNumberConfirmed = false,
                             StravaLink = "",
                             TwitterLink = "",
+                            TwoFactorEnabled = false,
                             Website = "",
                             IBAN = "BG12345"
                         },
                         new
                         {
                             Id = 4,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1de2b1dd-5f51-4f21-83d9-e65c42f94d2f",
                             Country = 2921044,
-                            Created = new DateTime(2024, 4, 29, 9, 13, 3, 928, DateTimeKind.Utc).AddTicks(1125),
+                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8439),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kaufland@bg.gb",
+                            EmailConfirmed = false,
                             FaceBookLink = "",
                             InstagramLink = "",
                             IsDeleted = false,
+                            LockoutEnabled = false,
                             Name = "Kaufland",
                             Password = "kk",
                             PhoneNumber = "1223",
+                            PhoneNumberConfirmed = false,
                             StravaLink = "",
                             TwitterLink = "",
+                            TwoFactorEnabled = false,
                             Website = "",
                             IBAN = "DE32215"
                         });
@@ -482,6 +701,57 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.ToTable("SponsorIndividuals");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.HasOne("SponsorSphere.Domain.Models.UserRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.HasOne("SponsorSphere.Domain.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.HasOne("SponsorSphere.Domain.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.HasOne("SponsorSphere.Domain.Models.UserRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SponsorSphere.Domain.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.HasOne("SponsorSphere.Domain.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Achievement", b =>

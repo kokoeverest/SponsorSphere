@@ -1,0 +1,6 @@
+@SponsorSphereWebAPI_HostAddress = http://localhost:5271
+
+GET {{SponsorSphereWebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

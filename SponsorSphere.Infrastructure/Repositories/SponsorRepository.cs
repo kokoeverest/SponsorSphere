@@ -22,7 +22,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             return sponsors;
         }
 
-        public async Task<List<Sponsor>> GetByMoneyProvidedAsync()
+        public Task<List<Sponsor>> GetByMoneyProvidedAsync()
         {
             throw new NotImplementedException();
         }

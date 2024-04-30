@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.Achievements.Responses;
 using SponsorSphere.Application.Interfaces;
 
@@ -21,7 +20,7 @@ public class GetAchievementsByAthleteIdQueryHandler : IRequestHandler<GetAchieve
 
     public async Task<List<AchievementDto>> Handle(GetAchievementsByAthleteIdQuery request, CancellationToken cancellationToken)
     {
-        var achievements = await _unitOfWork.AchievementsRepository.GetAllAsync(request.AthleteId).ToListAsync();
+        var achievements = await _unitOfWork.AchievementsRepository.GetAllAsync(request.AthleteId);
         var mappedAchievements = _mapper.Map<List<AchievementDto>>(achievements);
 
         return mappedAchievements;
