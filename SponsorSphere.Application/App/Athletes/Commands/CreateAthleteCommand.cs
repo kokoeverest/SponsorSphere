@@ -7,16 +7,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.Athletes.Commands;
 
-public record CreateAthleteCommand(
-    string Name,
-    string LastName,
-    string Email,
-    string Password,
-    CountryEnum Country,
-    string PhoneNumber,
-    DateTime BirthDate,
-    SportsEnum Sport
-    ) : IRequest<AthleteDto>;
+public record CreateAthleteCommand(Athlete Athlete) : IRequest<AthleteDto>;
 
 public class CreateAthleteCommandHandler : IRequestHandler<CreateAthleteCommand, AthleteDto>
 {
@@ -30,41 +21,12 @@ public class CreateAthleteCommandHandler : IRequestHandler<CreateAthleteCommand,
 
     public async Task<AthleteDto> Handle(CreateAthleteCommand request, CancellationToken cancellationToken)
     {
-        IEnumerable<string> strings =
-        [
-            request.Name,
-            request.LastName,
-            request.Email,
-            request.Password,
-            request.Country.ToString(),
-            request.PhoneNumber,
-            request.BirthDate.ToString(),
-            request.Sport.ToString()
-        ];
-
-        if (strings.Any(string.IsNullOrEmpty))
-        {
-            throw new InvalidDataException("Cannot create profile without required fields! Check your input!");
-        }
-
+        
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            // Phone, Email and Password validations
 
-            var athlete = new Athlete
-            {
-                Name = request.Name,
-                LastName = request.LastName,
-                Email = request.Email,
-                Password = request.Password,
-                Country = request.Country,
-                PhoneNumber = request.PhoneNumber,
-                BirthDate = request.BirthDate,
-                Sport = request.Sport
-            };
-
-            var newAthlete = await _unitOfWork.AthletesRepository.CreateAsync(athlete);
+            var newAthlete = await _unitOfWork.AthletesRepository.CreateAsync(request.Athlete);
             await _unitOfWork.CommitTransactionAsync();
 
             var athleteDto = _mapper.Map<AthleteDto>(newAthlete);

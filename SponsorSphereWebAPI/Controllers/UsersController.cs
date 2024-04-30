@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure.Core;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Responses;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
+using System.Text;
 
 namespace SponsorSphereWebAPI.Controllers
 {
@@ -11,12 +16,13 @@ namespace SponsorSphereWebAPI.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly UserManager<User> userManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IMediator _mediator;
 
-
-        public UsersController(UserManager<User> userManager)
+        public UsersController(UserManager<User> userManager, IMediator mediator)
         {
-            this.userManager = userManager;
+            this._userManager = userManager;
+            this._mediator = mediator;
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
@@ -29,23 +35,57 @@ namespace SponsorSphereWebAPI.Controllers
             return Ok(resultList);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
-        [Route("/register")]
-        public async Task<IActionResult> RegisterAsAthlete()
+        [Route("athletes/register")]
+        public async Task<IActionResult> RegisterAthlete(string name, CountryEnum country, string phoneNumber, string email, string password, string lastName, SportsEnum sport, string birthDate)
         {
+            //var loggedInUser = await this._userManager.FindByEmailAsync(email);
+            IEnumerable<string> strings =
+            [
+                name,
+                lastName,
+                email,
+                password,
+                country.ToString(),
+                phoneNumber,
+                birthDate,
+                sport.ToString()
+        ];
 
-            //var test = this.userManager.CreateAsync();
-            var athlete = this.HttpContext.User?.Identity?.Name ?? string.Empty;
-            var loggedInUser = await this.userManager.FindByEmailAsync(athlete);
-
-            if (loggedInUser == null)
+            if (strings.Any(string.IsNullOrEmpty))
             {
-                return BadRequest();
+                return BadRequest("Cannot create profile without required fields! Check your input!");
             }
-            var result = await this.userManager.AddToRoleAsync(loggedInUser, RoleConstants.Athlete);
 
-            return Ok(result);
+            // Phone, Email and Password validations
+
+            var athlete = new Athlete
+            {
+                Name = name,
+                UserName = name,
+                LastName = lastName,
+                Email = email,
+                //Password = string.Empty,
+                Country = country,
+                PhoneNumber = phoneNumber,
+                BirthDate = DateTime.Parse(birthDate).ToUniversalTime(),
+                Sport = sport
+            };
+            var res = _userManager.CheckPasswordAsync(athlete, password);
+            try
+            {
+                var createdAthlete = await _mediator.Send(new CreateAthleteCommand(athlete));
+                var registeredUser = await _userManager.AddPasswordAsync(athlete, password);
+
+                var result = await _userManager.AddToRoleAsync(athlete, RoleConstants.Athlete);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok();
         }
 
 
@@ -54,7 +94,7 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> UpdateAthlete(int id)
         {
             var athlete = this.HttpContext.User?.Identity?.Name ?? string.Empty;
-            var loggedInUser = await this.userManager.FindByEmailAsync(athlete);
+            var loggedInUser = await this._userManager.FindByEmailAsync(athlete);
 
             if (!ModelState.IsValid || loggedInUser is null)
             {
@@ -62,7 +102,7 @@ namespace SponsorSphereWebAPI.Controllers
             }
 
             //loggedInUser.Country = athleteToUpdate.Country;
-            var result = await this.userManager.UpdateAsync(loggedInUser);
+            var result = await this._userManager.UpdateAsync(loggedInUser);
             return Ok(result);
         }
 
@@ -71,7 +111,7 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> DeleteAthlete(int id)
         {
             var athlete = this.HttpContext.User?.Identity?.Name ?? string.Empty;
-            var loggedInUser = await this.userManager.FindByEmailAsync(athlete);
+            var loggedInUser = await this._userManager.FindByEmailAsync(athlete);
 
             if (loggedInUser == null)
             {

@@ -52,7 +52,7 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
             {
                 Name = request.Name,
                 Email = request.Email,
-                Password = request.Password,
+                //Password = request.Password,
                 Country = request.Country,
                 PhoneNumber = request.PhoneNumber,
                 IBAN = request.Iban

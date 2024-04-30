@@ -1,8 +1,11 @@
 using Microsoft.OpenApi.Models;
 using SponsorSphere.Infrastructure;
-
+using SponsorSphere.Infrastructure.Extensions;
 using Swashbuckle.AspNetCore.Filters;
 using SponsorSphere.Domain.Models;
+using SponsorSphere.Application;
+using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,13 +26,21 @@ builder.Services.AddSwaggerGen(options =>
 }
 );
 
-
-
+builder.Services.AddIdentityApiEndpoints<User>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+})
+.AddRoles<UserRole>()
+.AddEntityFrameworkStores<SponsorSphereDbContext>();
 
 builder.Services.AddAuthorization();
-
-
-
+builder.Services.AddInfrastructure();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly));
+        
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -53,7 +53,7 @@ public class CreateSponsorIndividualCommandHandler : IRequestHandler<CreateSpons
             {
                 Name = request.Name,
                 Email = request.Email,
-                Password = request.Password,
+                //Password = request.Password,
                 Country = request.Country,
                 PhoneNumber = request.PhoneNumber,
                 LastName = request.LastName,

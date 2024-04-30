@@ -1,15 +1,17 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Options;
 using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Application;
+using SponsorSphere.Infrastructure.Repositories;
 
 namespace SponsorSphere.Infrastructure.Extensions
 {
-    internal static class ServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
-        internal static void AddInfrastructure(this IServiceCollection services)
+        public static void AddInfrastructure(this IServiceCollection services)
         {
             services.AddDbContext<SponsorSphereDbContext>((serviceProvider, options) =>
             {
@@ -18,22 +20,24 @@ namespace SponsorSphere.Infrastructure.Extensions
                 options.UseSqlServer(dbOptions.Value.ConnectionString);
             });
 
-            services.AddIdentityApiEndpoints<User>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = false;
-                options.User.RequireUniqueEmail = true;
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = false;
-            })
-            .AddRoles<UserRole>()
-            .AddEntityFrameworkStores<SponsorSphereDbContext>();
-
             services.AddOptions<DbOptions>().Configure<IConfiguration>((settings, configuration) =>
             {
                 settings.ConnectionString = configuration["ConnectionString"] ?? string.Empty;
             });
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>()
+                    .AddScoped<IAchievementRepository, AchievementsRepository>()
+                    .AddScoped<IAthleteRepository, AthleteRepository>()
+                    .AddScoped<IBlogPostRepository, BlogPostRepository>()
+                    .AddScoped<IGoalRepository, GoalRepository>()
+                    .AddScoped<IPictureRepository, PictureRepository>()
+                    .AddScoped<ISponsorCompanyRepository, SponsorCompanyRepository>()
+                    .AddScoped<ISponsorRepository, SponsorRepository>()
+                    .AddScoped<ISponsorIndividualRepository, SponsorIndividualRepository>()
+                    .AddScoped<ISponsorshipRepository, SponsorshipRepository>()
+                    .AddScoped<ISportEventRepository, SportEventRepository>()
+                    .AddAutoMapper(typeof(AssemblyMarker).Assembly);
+                    //.BuildServiceProvider();
         }
     }
 }

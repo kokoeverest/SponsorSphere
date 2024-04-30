@@ -252,13 +252,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Modified = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8901),
+                            Modified = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(5471),
                             Url = "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing"
                         },
                         new
                         {
                             Id = 2,
-                            Modified = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8905),
+                            Modified = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(5476),
                             Url = "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing"
                         });
                 });
@@ -292,7 +292,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AthleteId = 1,
                             SponsorId = 3,
                             Amount = 2000m,
-                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8518),
+                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(4544),
                             Level = 2
                         });
                 });
@@ -413,11 +413,6 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -566,9 +561,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b72775ab-2857-4264-a61c-f8da676ada83",
+                            ConcurrencyStamp = "f1599e3d-44ad-4d30-bff9-d44114cf06b6",
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(7596),
+                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(3632),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5rov@mail.mail",
                             EmailConfirmed = false,
@@ -577,7 +572,6 @@ namespace SponsorSphere.Infrastructure.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "Petar",
-                            Password = "dd",
                             PhoneNumber = "09198",
                             PhoneNumberConfirmed = false,
                             StravaLink = "",
@@ -592,9 +586,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8890ace3-51a1-44a4-9220-f7d08c43e519",
+                            ConcurrencyStamp = "6b7848b6-953f-4d11-8a80-2472bedda380",
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(7909),
+                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(3975),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5kov@mail.mail",
                             EmailConfirmed = false,
@@ -603,7 +597,6 @@ namespace SponsorSphere.Infrastructure.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "Georgi",
-                            Password = "ss",
                             PhoneNumber = "09198",
                             PhoneNumberConfirmed = false,
                             StravaLink = "",
@@ -639,9 +632,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "31152923-e650-422c-8bcd-b552a044bd6e",
+                            ConcurrencyStamp = "ceefbd6c-5c98-4881-97d3-af6af407f431",
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8407),
+                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(4438),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lidl@bg.gb",
                             EmailConfirmed = false,
@@ -650,7 +643,6 @@ namespace SponsorSphere.Infrastructure.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "Lidl",
-                            Password = "ll",
                             PhoneNumber = "1223",
                             PhoneNumberConfirmed = false,
                             StravaLink = "",
@@ -663,9 +655,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1de2b1dd-5f51-4f21-83d9-e65c42f94d2f",
+                            ConcurrencyStamp = "931fdc5e-46ce-4b98-a0d7-f7193ffc58bc",
                             Country = 2921044,
-                            Created = new DateTime(2024, 4, 30, 7, 48, 33, 301, DateTimeKind.Utc).AddTicks(8439),
+                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(4458),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kaufland@bg.gb",
                             EmailConfirmed = false,
@@ -674,7 +666,6 @@ namespace SponsorSphere.Infrastructure.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "Kaufland",
-                            Password = "kk",
                             PhoneNumber = "1223",
                             PhoneNumberConfirmed = false,
                             StravaLink = "",
