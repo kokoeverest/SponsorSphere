@@ -1,4 +1,6 @@
-﻿using SponsorSphere.Application.App.Users.Responses;
+﻿using SponsorSphere.Application.App.Achievements.Responses;
+using SponsorSphere.Application.App.Goals.Responses;
+using SponsorSphere.Application.App.Users.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
@@ -11,7 +13,7 @@ namespace SponsorSphere.Application.App.Athletes.Responses
         public int Age { get; set; }
         public SportsEnum Sport { get; set; }
         public DateTime BirthDate { get; set; }
-        public ICollection<Achievement> Achievements { get; set; } = [];
-        public ICollection<Goal> Goals { get; set; } = [];
+        public ICollection<AchievementDto> Achievements { get; set; } = [];
+        public ICollection<GoalDto> Goals { get; set; } = [];
     }
 }

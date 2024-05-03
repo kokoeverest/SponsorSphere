@@ -44,7 +44,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("/author/{authorId}")]
+        [Route("author/{authorId}")]
         public async Task<IActionResult> GetBlogPostsByAuthorId(int pageNumber, int pageSize, int authorId)
         {
             var blogPosts = await _mediator.Send(new GetBlogPostByAuthorIdQuery(pageNumber, pageSize, authorId));
@@ -62,7 +62,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("latest/{authorid}")]
+        [Route("latest/{authorId}")]
         public async Task<IActionResult> GetLatestBlogPostsByAuthorId(int authorId)
         {
             var latestBlogPosts = await _mediator.Send(new GetLatestBlogPostsByAuthorIdQuery(authorId));
@@ -71,7 +71,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpPost]
         [Route("create")]
         public async Task<IActionResult> CreateBlogPost([FromForm] CreateBlogPostRequestModel model)
         {
@@ -136,7 +136,7 @@ namespace SponsorSphereWebAPI.Controllers
                 return BadRequest("The content should be at least 50 symbols!");
             }
 
-            if (loggedInUser != blogPost.Author)
+            if (loggedInUser.Id != blogPost.AuthorId)
             {
                 return Unauthorized("You are not the author of this post!");
             }
@@ -171,7 +171,7 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You are not authorised to do this!");
             }
 
-            if (loggedInUser != blogPost.Author)
+            if (loggedInUser.Id != blogPost.AuthorId)
             {
                 return Unauthorized("You are not the author of this post!");
             }

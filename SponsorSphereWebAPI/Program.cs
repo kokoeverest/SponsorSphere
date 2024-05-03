@@ -31,7 +31,7 @@ builder.Services.AddIdentityApiEndpoints<User>(options =>
     options.SignIn.RequireConfirmedAccount = false;
     options.User.RequireUniqueEmail = true;
     options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = false;
 })
 .AddRoles<UserRole>()

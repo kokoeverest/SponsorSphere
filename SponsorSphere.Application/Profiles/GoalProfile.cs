@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SponsorSphere.Application.App.Goals.Responses;
+using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Profiles
 {
@@ -7,7 +8,7 @@ namespace SponsorSphere.Application.Profiles
     {
         public GoalProfile()
         {
-            CreateMap<GoalProfile, GoalDto>();
+            CreateMap<Goal, GoalDto>();
         }
     }
 }

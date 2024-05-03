@@ -191,6 +191,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AuthorId = 4,
                             Content = "A very interesting post about a sport achievement",
                             Created = new DateTime(2023, 12, 5, 22, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AuthorId = 4,
+                            Content = "I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small\r\n                                villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have \r\n                                fascinated me throughout my life!",
+                            Created = new DateTime(2023, 12, 5, 22, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -252,13 +259,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Modified = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(5471),
+                            Modified = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2559),
                             Url = "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing"
                         },
                         new
                         {
                             Id = 2,
-                            Modified = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(5476),
+                            Modified = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2561),
                             Url = "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing"
                         });
                 });
@@ -292,7 +299,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AthleteId = 1,
                             SponsorId = 3,
                             Amount = 2000m,
-                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(4544),
+                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2168),
                             Level = 2
                         });
                 });
@@ -544,6 +551,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasBaseType("SponsorSphere.Domain.Models.User");
 
                     b.Property<DateTime>("BirthDate")
+                        .HasMaxLength(100)
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
@@ -561,9 +569,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f1599e3d-44ad-4d30-bff9-d44114cf06b6",
+                            ConcurrencyStamp = "511418d3-48c4-405b-badb-58b67796bab1",
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(3632),
+                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(721),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5rov@mail.mail",
                             EmailConfirmed = false,
@@ -586,9 +594,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b7848b6-953f-4d11-8a80-2472bedda380",
+                            ConcurrencyStamp = "88566c97-2607-414f-8bb2-6627ed885818",
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(3975),
+                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1078),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5kov@mail.mail",
                             EmailConfirmed = false,
@@ -606,6 +614,32 @@ namespace SponsorSphere.Infrastructure.Migrations
                             BirthDate = new DateTime(2005, 3, 29, 21, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Petkov",
                             Sport = 4
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2b988167-68fb-45c7-850a-d42779f8a87d",
+                            Country = 732800,
+                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1139),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "kalo@mail.bg",
+                            EmailConfirmed = false,
+                            FaceBookLink = "",
+                            InstagramLink = "",
+                            IsDeleted = false,
+                            LockoutEnabled = false,
+                            Name = "Kaloyan",
+                            PhoneNumber = "123456",
+                            PhoneNumberConfirmed = false,
+                            PictureId = 1,
+                            StravaLink = "www.strava.co/userkaloyan",
+                            TwitterLink = "",
+                            TwoFactorEnabled = false,
+                            Website = "",
+                            BirthDate = new DateTime(1997, 8, 14, 21, 0, 0, 0, DateTimeKind.Utc),
+                            LastName = "Peychev",
+                            Sport = 11
                         });
                 });
 
@@ -632,9 +666,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ceefbd6c-5c98-4881-97d3-af6af407f431",
+                            ConcurrencyStamp = "3153c0c3-8f25-4e0e-93d9-2efe0ffcd8c4",
                             Country = 732800,
-                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(4438),
+                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1850),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lidl@bg.gb",
                             EmailConfirmed = false,
@@ -655,9 +689,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "931fdc5e-46ce-4b98-a0d7-f7193ffc58bc",
+                            ConcurrencyStamp = "e500b14f-5ebb-41e6-823a-edfd100296d7",
                             Country = 2921044,
-                            Created = new DateTime(2024, 4, 30, 15, 15, 24, 46, DateTimeKind.Utc).AddTicks(4458),
+                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1879),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kaufland@bg.gb",
                             EmailConfirmed = false,
@@ -681,6 +715,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasBaseType("SponsorSphere.Domain.Models.Sponsor");
 
                     b.Property<DateTime>("BirthDate")
+                        .HasMaxLength(100)
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
@@ -689,6 +724,56 @@ namespace SponsorSphere.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.ToTable("SponsorIndividuals");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 5,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "23df8ba1-b47a-46cf-bdfe-52cfdb16d56a",
+                            Country = 732800,
+                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1959),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "anonimen@bg.gb",
+                            EmailConfirmed = false,
+                            FaceBookLink = "",
+                            InstagramLink = "",
+                            IsDeleted = false,
+                            LockoutEnabled = false,
+                            Name = "Lazar",
+                            PhoneNumber = "1223",
+                            PhoneNumberConfirmed = false,
+                            StravaLink = "",
+                            TwitterLink = "",
+                            TwoFactorEnabled = false,
+                            Website = "",
+                            BirthDate = new DateTime(1990, 1, 2, 22, 0, 0, 0, DateTimeKind.Utc),
+                            LastName = "Randov"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "dd5e54cc-dd8e-499d-b07b-b20777827a05",
+                            Country = 2077456,
+                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2050),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "michael@bg.gb",
+                            EmailConfirmed = false,
+                            FaceBookLink = "",
+                            InstagramLink = "",
+                            IsDeleted = false,
+                            LockoutEnabled = false,
+                            Name = "Michael",
+                            PhoneNumber = "1223",
+                            PhoneNumberConfirmed = false,
+                            StravaLink = "",
+                            TwitterLink = "",
+                            TwoFactorEnabled = false,
+                            Website = "",
+                            BirthDate = new DateTime(1975, 3, 29, 22, 0, 0, 0, DateTimeKind.Utc),
+                            LastName = "Uzunov"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

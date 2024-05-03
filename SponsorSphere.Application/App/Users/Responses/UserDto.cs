@@ -19,7 +19,7 @@ namespace SponsorSphere.Application.App.Users.Responses
         public string InstagramLink { get; set; } = string.Empty;
         public string TwitterLink { get; set; } = string.Empty;
         public string StravaLink { get; set; } = string.Empty;
-        public ICollection<BlogPostDto> Posts { get; set; } = [];
+        public ICollection<BlogPostDto> BlogPosts { get; set; } = [];
         public ICollection<SponsorshipDto> Sponsorships { get; set; } = [];
     }
 }

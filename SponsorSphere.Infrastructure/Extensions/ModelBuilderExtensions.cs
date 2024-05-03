@@ -30,6 +30,19 @@ namespace SponsorSphere.Infrastructure.Extensions
                     PhoneNumber = "09198",
                     BirthDate = DateTime.Parse("30/03/2005").ToUniversalTime(),
                     Sport = SportsEnum.Golf
+                },
+                new Athlete
+                {
+                    Id = 7,
+                    Name = "Kaloyan",
+                    LastName = "Peychev",
+                    Email = "kalo@mail.bg",
+                    Country = CountryEnum.BGR,
+                    PhoneNumber = "123456",
+                    BirthDate = DateTime.Parse("15/08/1997").ToUniversalTime(),
+                    Sport = SportsEnum.DownhillMountainBiking,
+                    PictureId = 1,
+                    StravaLink = "www.strava.co/userkaloyan"
                 }
             );
 
@@ -51,6 +64,29 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Country = CountryEnum.DEU,
                     PhoneNumber = "1223",
                     IBAN = "DE32215"
+                }
+            );
+
+            modelBuilder.Entity<SponsorIndividual>().HasData(
+                new SponsorIndividual
+                {
+                    Id = 5,
+                    Name = "Lazar",
+                    Email = "anonimen@bg.gb",
+                    Country = CountryEnum.BGR,
+                    PhoneNumber = "1223",
+                    LastName = "Randov",
+                    BirthDate = DateTime.Parse("03/01/1990").ToUniversalTime(),
+                },
+                new SponsorIndividual
+                {
+                    Id = 6,
+                    Name = "Michael",
+                    Email = "michael@bg.gb",
+                    Country = CountryEnum.AUS,
+                    PhoneNumber = "1223",
+                    LastName = "Uzunov",
+                    BirthDate = DateTime.Parse("30/03/1975").ToUniversalTime(),
                 }
             );
 
@@ -134,20 +170,28 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Content = "A very interesting post about a sport achievement",
                     Created = DateTime.Parse("2023.12.06").ToUniversalTime(),
                     AuthorId = 4
-                });
+                },
+                new BlogPost
+                {
+                    Id = 2,
+                    Content = @"I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small
+                                villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have 
+                                fascinated me throughout my life!",
+                    Created = DateTime.Parse("2023.12.06").ToUniversalTime(),
+                    AuthorId = 4
+                }
+                );
 
             modelBuilder.Entity<BlogPostPicture>().HasData(
                 new BlogPostPicture
                 {
                     PictureId = 1,
                     BlogPostId = 1
-
                 },
                 new BlogPostPicture
                 {
                     PictureId = 2,
                     BlogPostId = 1
-
                 });
 
             modelBuilder.Entity<UserRole>().HasData(

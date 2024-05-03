@@ -14,10 +14,8 @@ public class UpdateAchievementCommandHandler : IRequestHandler<UpdateAchievement
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<AchievementDto> Handle(UpdateAchievementCommand request, CancellationToken cancellationToken)
-    {
-        var updatedAchievement = await _unitOfWork.AchievementsRepository.UpdateAsync(request.AchievementToUpdate);
+    public async Task<AchievementDto> Handle(UpdateAchievementCommand request, CancellationToken cancellationToken) => 
+        
+        await _unitOfWork.AchievementsRepository.UpdateAsync(request.AchievementToUpdate);
 
-        return await Task.FromResult(updatedAchievement);
-    }
 }

@@ -40,7 +40,9 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<BlogPost> GetByIdAsync(int blogPostId)
         {
-            var blogPost = await _context.BlogPosts.FirstOrDefaultAsync(bp => bp.Id == blogPostId);
+            var blogPost = await _context.BlogPosts
+                .Include(bp => bp.Pictures)
+                .FirstOrDefaultAsync(bp => bp.Id == blogPostId);
 
             if (blogPost is not null)
             {

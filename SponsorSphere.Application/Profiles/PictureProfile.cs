@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SponsorSphere.Application.App.Pictures.Responses;
+using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Profiles
 {
@@ -7,7 +8,7 @@ namespace SponsorSphere.Application.Profiles
     {
         public PictureProfile()
         {
-            CreateMap<PictureProfile, PictureDto>();
+            CreateMap<Picture, PictureDto>();
         }
     }
 }

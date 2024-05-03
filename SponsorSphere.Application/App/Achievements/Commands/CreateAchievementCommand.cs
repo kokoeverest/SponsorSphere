@@ -7,15 +7,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.Achievements.Commands;
 
-public record CreateAchievementCommand(
-        string Name,
-        CountryEnum Country,
-        string EventDate,
-        EventsEnum EventType,
-        SportsEnum Sport,
-        ushort? PlaceFinished,
-        int AthleteId
-    ) : IRequest<AchievementDto>;
+public record CreateAchievementCommand(SportEvent SportEvent, Achievement Achievement) : IRequest<AchievementDto>;
 
 public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievementCommand, AchievementDto>
 {
@@ -30,34 +22,13 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
 
     public async Task<AchievementDto> Handle(CreateAchievementCommand request, CancellationToken cancellationToken)
     {
-        if (DateTime.UtcNow < DateTime.Parse(request.EventDate).ToUniversalTime())
-        {
-            throw new InvalidDataException("You can't create an achievement in the future");
-        }
-
         try
         {
             await _unitOfWork.BeginTransactionAsync();
 
-            var sportEvent = await _unitOfWork.SportEventsRepository
-                                        .CreateAsync(new SportEvent
-                                        {
-                                            Name = request.Name,
-                                            Country = request.Country,
-                                            EventDate = DateTime.Parse(request.EventDate).ToUniversalTime(),
-                                            Finished = true,
-                                            EventType = request.EventType,
-                                            Sport = request.Sport
-                                        });
+            var sportEvent = await _unitOfWork.SportEventsRepository.CreateAsync(request.SportEvent);
 
-            var newAchievement = await _unitOfWork.AchievementsRepository
-                                            .CreateAsync(new Achievement
-                                            {
-                                                Sport = request.Sport,
-                                                SportEventId = sportEvent.Id,
-                                                AthleteId = request.AthleteId,
-                                                PlaceFinished = request.PlaceFinished
-                                            });
+            var newAchievement = await _unitOfWork.AchievementsRepository.CreateAsync(request.Achievement);
 
             await _unitOfWork.CommitTransactionAsync();
             var mappedAchievement = _mapper.Map<AchievementDto>(newAchievement);

@@ -18,10 +18,8 @@ public class UpdateAthleteCommandHandler : IRequestHandler<UpdateAthleteCommand,
         _mapper = mapper;
     }
 
-    public async Task<AthleteDto> Handle(UpdateAthleteCommand request, CancellationToken cancellationToken)
-    {
-        var updatedAthlete = await _unitOfWork.AthletesRepository.UpdateAsync(request.AthleteToUpdate);
+    public async Task<AthleteDto> Handle(UpdateAthleteCommand request, CancellationToken cancellationToken) => 
+        
+        await _unitOfWork.AthletesRepository.UpdateAsync(request.AthleteToUpdate);
 
-        return await Task.FromResult(updatedAthlete);
-    }
 }

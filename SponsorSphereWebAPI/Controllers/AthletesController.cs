@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +19,14 @@ namespace SponsorSphereWebAPI.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly ILogger<AthletesController> _logger;
 
-        public AthletesController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, IMapper mapper)
+        public AthletesController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, ILogger<AthletesController> logger)
         {
             _userManager = userManager;
             _mediator = mediator;
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]

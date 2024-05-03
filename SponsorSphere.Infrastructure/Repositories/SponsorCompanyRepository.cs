@@ -40,6 +40,7 @@ namespace SponsorSphere.Infrastructure.Repositories
 
             return 1;
         }
+
         public async Task<SponsorCompany> GetByIdAsync(int userId)
         {
             var sponsorCompany = await _context.SponsorCompanies.FirstOrDefaultAsync(sc => sc.Id == userId);
