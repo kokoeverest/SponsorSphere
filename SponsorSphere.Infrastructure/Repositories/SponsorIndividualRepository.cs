@@ -44,14 +44,24 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             var sponsorIndividual = await _context.SponsorIndividuals.FirstOrDefaultAsync(si => si.Id == userId);
 
-            if (sponsorIndividual is not null)
+            if (sponsorIndividual is null)
             {
-                return sponsorIndividual;
+                throw new ApplicationException($"Sponsor with id {userId} not found");
             }
-            throw new ApplicationException($"Sponsor with id {userId} not found");
+
+            sponsorIndividual.BlogPosts = await _context.BlogPosts
+                .Include(bp => bp.Pictures)
+                .Where(bp => bp.AuthorId == sponsorIndividual.Id)
+                .ToListAsync();
+
+            sponsorIndividual.Sponsorships = await _context.Sponsorships
+                .Where(sh => sh.SponsorId == sponsorIndividual.Id)
+                .ToListAsync();
+
+            return sponsorIndividual;
         }
 
-        public async Task<List<SponsorIndividual>> GetAllAsync()
+        public async Task<List<SponsorIndividual>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await _context.SponsorIndividuals
                 .OrderBy(sponsor => sponsor.Name)

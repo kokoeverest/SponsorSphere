@@ -15,6 +15,10 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.Property(ath => ath.Sport)
                 .HasConversion<int>();
 
+            builder.Property(ath => ath.BirthDate)
+                .IsRequired(true)
+                .HasMaxLength(100);
+
 
             builder.HasMany(ath => ath.Sponsorships)
                 .WithOne()

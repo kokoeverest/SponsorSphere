@@ -5,9 +5,9 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Athletes.Queries;
 
-public record GetAthletesByAmountSponsoredQuery : IRequest<List<AthleteDto>>;
+public record GetAthletesByAmountSponsoredQuery : IRequest<List<object>?>;
 
-public class GetAthletesByAmountSponsoredQueryHandler : IRequestHandler<GetAthletesByAmountSponsoredQuery, List<AthleteDto>>
+public class GetAthletesByAmountSponsoredQueryHandler : IRequestHandler<GetAthletesByAmountSponsoredQuery, List<object>?>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -18,11 +18,11 @@ public class GetAthletesByAmountSponsoredQueryHandler : IRequestHandler<GetAthle
         _mapper = mapper;
     }
 
-    public async Task<List<AthleteDto>> Handle(GetAthletesByAmountSponsoredQuery request, CancellationToken cancellationToken)
+    public async Task<List<object>?> Handle(GetAthletesByAmountSponsoredQuery request, CancellationToken cancellationToken)
     {
         var athletes = await _unitOfWork.AthletesRepository.GetByAmountAsync();
-        var mappedAthletes = _mapper.Map<List<AthleteDto>>(athletes);
+        //var mappedAthletes = _mapper.Map<List<AthleteDto>>(athletes);
 
-        return await Task.FromResult(mappedAthletes);
+        return await Task.FromResult(athletes);
     }
 }

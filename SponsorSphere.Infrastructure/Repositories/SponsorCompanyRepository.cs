@@ -44,14 +44,24 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             var sponsorCompany = await _context.SponsorCompanies.FirstOrDefaultAsync(sc => sc.Id == userId);
 
-            if (sponsorCompany is not null)
+            if (sponsorCompany is null)
             {
-                return sponsorCompany;
+                throw new ApplicationException($"Sponsor with id {userId} not found");
             }
-            throw new ApplicationException($"Sponsor with id {userId} not found");
+
+            sponsorCompany.BlogPosts = await _context.BlogPosts
+                .Include(bp => bp.Pictures)
+                .Where(bp => bp.AuthorId == sponsorCompany.Id)
+                .ToListAsync();
+
+            sponsorCompany.Sponsorships = await _context.Sponsorships
+                .Where(sh => sh.SponsorId == sponsorCompany.Id)
+                .ToListAsync();
+
+            return sponsorCompany;
         }
 
-        public async Task<List<SponsorCompany>> GetAllAsync()
+        public async Task<List<SponsorCompany>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await _context.SponsorCompanies
                 .OrderBy(sponsor => sponsor.Name)
@@ -85,7 +95,7 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ExecuteUpdateAsync(setters => setters
                 .SetProperty(sc => sc.IBAN, updatedSponsorCompany.IBAN)
             );
-                
+
             return updatedSponsorCompany;
         }
     }

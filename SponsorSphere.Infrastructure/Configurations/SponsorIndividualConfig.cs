@@ -13,7 +13,8 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .HasMaxLength(200);
 
             builder.Property(si => si.BirthDate)
-                .IsRequired(true);
+                .IsRequired(true)
+                .HasMaxLength(100);
         }
     }
 }

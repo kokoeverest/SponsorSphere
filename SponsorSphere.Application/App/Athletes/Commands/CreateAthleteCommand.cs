@@ -24,25 +24,19 @@ public class CreateAthleteCommandHandler : IRequestHandler<CreateAthleteCommand,
         
         try
         {
-            await _unitOfWork.BeginTransactionAsync();
-
             var newAthlete = await _unitOfWork.AthletesRepository.CreateAsync(request.Athlete);
-            await _unitOfWork.CommitTransactionAsync();
-
+            
             var athleteDto = _mapper.Map<AthleteDto>(newAthlete);
             return await Task.FromResult(athleteDto);
         }
 
-        catch (InvalidDataException e)
+        catch (InvalidDataException)
         {
-            await Console.Out.WriteLineAsync(e.Message);
             throw;
         }
 
-        catch (Exception ex)
+        catch (Exception)
         {
-            await Console.Out.WriteLineAsync(ex.Message);
-            await _unitOfWork.RollbackTransactionAsync();
             throw;
         }
     }

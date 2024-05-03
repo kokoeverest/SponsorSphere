@@ -4,7 +4,6 @@ using SponsorSphere.Application.App.SponsorIndividuals.Responses;
 using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.SponsorIndividuals.Commands;
-// Add more of the properties which can be changed
 public record UpdateSponsorIndividualCommand(
     SponsorIndividualDto SponsorIndividualToUpdate) : IRequest<SponsorIndividualDto>;
 

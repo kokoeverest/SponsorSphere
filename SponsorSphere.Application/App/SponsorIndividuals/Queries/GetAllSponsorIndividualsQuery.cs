@@ -5,7 +5,7 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.SponsorIndividuals.Queries;
 
-public record GetAllSponsorIndividualsQuery : IRequest<List<SponsorIndividualDto>>;
+public record GetAllSponsorIndividualsQuery(int PageNumber, int PageSize) : IRequest<List<SponsorIndividualDto>>;
 
 public class GetAllSponsorIndividualsQueryHandler : IRequestHandler<GetAllSponsorIndividualsQuery, List<SponsorIndividualDto>>
 {
@@ -20,7 +20,7 @@ public class GetAllSponsorIndividualsQueryHandler : IRequestHandler<GetAllSponso
 
     public async Task<List<SponsorIndividualDto>> Handle(GetAllSponsorIndividualsQuery request, CancellationToken cancellationToken)
     {
-        var sponsorIndividuals = await _unitOfWork.SponsorIndividualsRepository.GetAllAsync();
+        var sponsorIndividuals = await _unitOfWork.SponsorIndividualsRepository.GetAllAsync(request.PageNumber, request.PageSize);
         var mappedSponsorIndividuals = _mapper.Map<List<SponsorIndividualDto>>(sponsorIndividuals);
 
         return await Task.FromResult(mappedSponsorIndividuals);

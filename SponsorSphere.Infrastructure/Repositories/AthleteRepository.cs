@@ -44,8 +44,30 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<Athlete> GetByIdAsync(int athleteId)
         {
             var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == athleteId);
+            
+            if (athlete is null)
+            {
+                throw new ApplicationException($"Athlete with id {athleteId} not found");
+            }
+            
+            athlete.BlogPosts = await _context.BlogPosts
+                .Include(bp => bp.Pictures)
+                .Where(bp => bp.AuthorId == athlete.Id)
+                .ToListAsync();
 
-            return athlete is not null ? athlete : throw new ApplicationException($"Athlete with id {athleteId} not found");
+            athlete.Sponsorships = await _context.Sponsorships
+                .Where(sh => sh.AthleteId == athlete.Id)
+                .ToListAsync();
+
+            athlete.Goals = await _context.Goals
+                .Where(goal => goal.AthleteId == athlete.Id)
+                .ToListAsync();
+
+            athlete.Achievements = await _context.Achievements
+                .Where(ach => ach.AthleteId == athlete.Id)
+                .ToListAsync();
+
+            return athlete;
         }
         public async Task<List<Athlete>> GetAllAsync()
         {

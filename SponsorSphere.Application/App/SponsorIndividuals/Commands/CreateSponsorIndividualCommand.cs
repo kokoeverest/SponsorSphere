@@ -6,15 +6,7 @@ using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SponsorIndividuals.Commands;
-public record CreateSponsorIndividualCommand(
-    string Name,
-    string Email,
-    string Password,
-    CountryEnum Country,
-    string PhoneNumber,
-    string LastName,
-    DateTime BirthDate
-    ) : IRequest<SponsorIndividualDto>;
+public record CreateSponsorIndividualCommand(SponsorIndividual SponsorIndividual) : IRequest<SponsorIndividualDto>;
 
 public class CreateSponsorIndividualCommandHandler : IRequestHandler<CreateSponsorIndividualCommand, SponsorIndividualDto>
 {
@@ -28,55 +20,21 @@ public class CreateSponsorIndividualCommandHandler : IRequestHandler<CreateSpons
 
     public async Task<SponsorIndividualDto> Handle(CreateSponsorIndividualCommand request, CancellationToken cancellationToken)
     {
-        IEnumerable<string> strings =
-        [
-            request.Name,
-            request.Email,
-            request.Password,
-            request.Country.ToString(),
-            request.PhoneNumber,
-            request.LastName,
-            request.BirthDate.ToString()
-        ];
-
-        if (strings.Any(string.IsNullOrEmpty))
-        {
-            throw new InvalidDataException("Cannot create profile without required fields! Check your input!");
-        }
-
         try
         {
-            await _unitOfWork.BeginTransactionAsync();
-            // Phone, Email and Password validations
-
-            var sponsorIndividual = new SponsorIndividual
-            {
-                Name = request.Name,
-                Email = request.Email,
-                //Password = request.Password,
-                Country = request.Country,
-                PhoneNumber = request.PhoneNumber,
-                LastName = request.LastName,
-                BirthDate = request.BirthDate,
-            };
-
-            var newSponsorIndividual = await _unitOfWork.SponsorIndividualsRepository.CreateAsync(sponsorIndividual);
-            await _unitOfWork.CommitTransactionAsync();
+            var newSponsorIndividual = await _unitOfWork.SponsorIndividualsRepository.CreateAsync(request.SponsorIndividual);
 
             var sponsorIndividualDto = _mapper.Map<SponsorIndividualDto>(newSponsorIndividual);
             return await Task.FromResult(sponsorIndividualDto);
         }
 
-        catch (InvalidDataException e)
+        catch (InvalidDataException)
         {
-            await Console.Out.WriteLineAsync(e.Message);
             throw;
         }
 
-        catch (Exception ex)
+        catch (Exception)
         {
-            await Console.Out.WriteLineAsync(ex.Message);
-            await _unitOfWork.RollbackTransactionAsync();
             throw;
         }
     }
