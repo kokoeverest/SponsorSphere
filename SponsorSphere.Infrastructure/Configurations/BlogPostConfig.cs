@@ -9,7 +9,7 @@ namespace SponsorSphere.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<BlogPost> builder)
         {
             builder.HasMany(bp => bp.Pictures)
-               .WithMany(p => p.BlogPosts)
+               .WithMany()
                .UsingEntity<BlogPostPicture>(
                    j => j.HasOne(bp => bp.Picture)
                          .WithMany()

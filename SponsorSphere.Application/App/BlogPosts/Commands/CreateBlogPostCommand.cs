@@ -1,18 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
 using SponsorSphere.Application.App.BlogPosts.Responses;
-using SponsorSphere.Application.App.Pictures.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.BlogPosts.Commands;
 
-public record CreateBlogPostCommand(
-        DateTime Created,
-        string Content,
-        int AuthorId,
-        ICollection<Picture>? Pictures
-    ) : IRequest<BlogPostDto>;
+public record CreateBlogPostCommand(BlogPost BlogPost) : IRequest<BlogPostDto>;
 
 public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostCommand, BlogPostDto>
 {
@@ -27,14 +21,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
 
     public async Task<BlogPostDto> Handle(CreateBlogPostCommand request, CancellationToken cancellationToken)
     {
-        var newBlogPost = _unitOfWork.BlogPostsRepository.CreateAsync(new BlogPost
-        {
-            AuthorId = request.AuthorId, 
-            Content = request.Content, 
-            Created = request.Created,
-            //Pictures = request.Pictures
-        }
-        );
+        var newBlogPost = _unitOfWork.BlogPostsRepository.CreateAsync(request.BlogPost);
         var mappedBlogPost = _mapper.Map<BlogPostDto>(newBlogPost);
 
         return await Task.FromResult(mappedBlogPost);

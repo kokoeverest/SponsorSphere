@@ -15,10 +15,7 @@ public class UpdatePictureCommandHandler : IRequestHandler<UpdatePictureCommand,
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<PictureDto> Handle(UpdatePictureCommand request, CancellationToken cancellationToken)
-    {
-        var updatedPicture = await _unitOfWork.PicturesRepository.UpdateAsync(request.PictureToUpdate);
-
-        return await Task.FromResult(updatedPicture);
-    }
+    public async Task<PictureDto> Handle(UpdatePictureCommand request, CancellationToken cancellationToken) => 
+        
+        await _unitOfWork.PicturesRepository.UpdateAsync(request.PictureToUpdate);
 }

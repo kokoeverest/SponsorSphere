@@ -5,9 +5,9 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Goals.Queries;
 
-public record GetGoalsByAthleteIdQuery(int AthleteId) : IRequest<List<GoalDto>>;
+public record GetGoalsByAthleteIdQuery(int AthleteId) : IRequest<ICollection<GoalDto>>;
 
-public class GetGoalsByAthleteIdQueryHandler : IRequestHandler<GetGoalsByAthleteIdQuery, List<GoalDto>>
+public class GetGoalsByAthleteIdQueryHandler : IRequestHandler<GetGoalsByAthleteIdQuery, ICollection<GoalDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -18,10 +18,10 @@ public class GetGoalsByAthleteIdQueryHandler : IRequestHandler<GetGoalsByAthlete
         _mapper = mapper;
     }
 
-    public async Task<List<GoalDto>> Handle(GetGoalsByAthleteIdQuery request, CancellationToken cancellationToken)
+    public async Task<ICollection<GoalDto>> Handle(GetGoalsByAthleteIdQuery request, CancellationToken cancellationToken)
     {
         var achievements = await _unitOfWork.GoalsRepository.GetAllAsync(request.AthleteId);
-        var mappedAchievements = _mapper.Map<List<GoalDto>>(achievements);
+        var mappedAchievements = _mapper.Map<ICollection<GoalDto>>(achievements);
 
         return mappedAchievements;
     }

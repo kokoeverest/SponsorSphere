@@ -28,9 +28,11 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ExecuteDeleteAsync();
         }
 
-        public async Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int authorId)
+        public async Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int pageNumber, int pageSize, int authorId)
         {
             return await _context.BlogPosts
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .Include(bp => bp.Pictures)
                 .Where(bp => bp.AuthorId == authorId)
                 .ToListAsync();

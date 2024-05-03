@@ -14,10 +14,7 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<BlogPostDto> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken)
-    {
-        var updatedBlogPost = await _unitOfWork.BlogPostsRepository.UpdateAsync(request.BlogPostToUpdate);
-
-        return await Task.FromResult(updatedBlogPost);
-    }
+    public async Task<BlogPostDto> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken) =>
+ 
+        await _unitOfWork.BlogPostsRepository.UpdateAsync(request.BlogPostToUpdate);
 }

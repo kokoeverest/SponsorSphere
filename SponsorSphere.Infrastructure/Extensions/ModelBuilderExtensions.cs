@@ -15,7 +15,6 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Petar",
                     LastName = "Petrov",
                     Email = "5rov@mail.mail",
-                    //Password = "dd",
                     Country = CountryEnum.BGR,
                     PhoneNumber = "09198",
                     BirthDate = DateTime.Parse("30/09/1983").ToUniversalTime(),
@@ -27,7 +26,6 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Georgi",
                     LastName = "Petkov",
                     Email = "5kov@mail.mail",
-                    //Password = "ss",
                     Country = CountryEnum.BGR,
                     PhoneNumber = "09198",
                     BirthDate = DateTime.Parse("30/03/2005").ToUniversalTime(),
@@ -41,7 +39,6 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Id = 3,
                     Name = "Lidl",
                     Email = "lidl@bg.gb",
-                    //Password = "ll",
                     Country = CountryEnum.BGR,
                     PhoneNumber = "1223",
                     IBAN = "BG12345"
@@ -51,7 +48,6 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Id = 4,
                     Name = "Kaufland",
                     Email = "kaufland@bg.gb",
-                    //Password = "kk",
                     Country = CountryEnum.DEU,
                     PhoneNumber = "1223",
                     IBAN = "DE32215"

@@ -7,7 +7,7 @@ namespace SponsorSphere.Application.Interfaces
     {
         Task<BlogPost> CreateAsync(BlogPost blogPost);
         Task<int> DeleteAsync(int blogPostId);
-        Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int authorId);
+        Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int pageNumber, int pageSize, int authorId);
         Task<List<BlogPost>> GetLatestBlogPostsAsync();
         Task<List<BlogPost>> GetLatestBlogPostsByAuthorIdAsync(int authorId);
         Task<BlogPost> GetByIdAsync(int blogPostId);

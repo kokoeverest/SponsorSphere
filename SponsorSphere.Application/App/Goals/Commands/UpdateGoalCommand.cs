@@ -14,10 +14,7 @@ public class UpdateGoalCommandHandler : IRequestHandler<UpdateGoalCommand, GoalD
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<GoalDto> Handle(UpdateGoalCommand request, CancellationToken cancellationToken)
-    {
-        var updatedGoal = await _unitOfWork.GoalsRepository.UpdateAsync(request.GoalToUpdate);
-
-        return await Task.FromResult(updatedGoal);
-    }
+    public async Task<GoalDto> Handle(UpdateGoalCommand request, CancellationToken cancellationToken) => 
+        
+        await _unitOfWork.GoalsRepository.UpdateAsync(request.GoalToUpdate);
 }
