@@ -5,9 +5,9 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Sponsors.Queries;
 
-public record GetSponsorsByMostAthletesQuery() : IRequest<List<SponsorDto>>;
+public record GetSponsorsByMostAthletesQuery() : IRequest<List<object>>;
 
-public class GetSponsorsByMostAthletesQueryHandler : IRequestHandler<GetSponsorsByMostAthletesQuery, List<SponsorDto>>
+public class GetSponsorsByMostAthletesQueryHandler : IRequestHandler<GetSponsorsByMostAthletesQuery, List<object>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -18,11 +18,10 @@ public class GetSponsorsByMostAthletesQueryHandler : IRequestHandler<GetSponsors
         _mapper = mapper;
     }
 
-    public async Task<List<SponsorDto>> Handle(GetSponsorsByMostAthletesQuery request, CancellationToken cancellationToken)
+    public async Task<List<object>> Handle(GetSponsorsByMostAthletesQuery request, CancellationToken cancellationToken)
     {
         var sponsors = await _unitOfWork.SponsorsRepository.GetByMostAthletesAsync();
-        var mappedSponsors = _mapper.Map<List<SponsorDto>>(sponsors);
 
-        return await Task.FromResult(mappedSponsors);
+        return await Task.FromResult(sponsors);
     }
 }

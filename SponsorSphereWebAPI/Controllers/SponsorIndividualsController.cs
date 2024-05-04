@@ -14,24 +14,24 @@ using SponsorSphereWebAPI.RequestModels.SponsorIndividuals;
 namespace SponsorSphereWebAPI.Controllers
 {
     [ApiController]
-    [Route("users/sponsors")]
+    [Route("users/sponsors/individuals")]
     public class SponsorIndividualsController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly ILogger<SponsorIndividualsController> _logger;
 
-        public SponsorIndividualsController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, IMapper mapper)
+        public SponsorIndividualsController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, ILogger<SponsorIndividualsController> logger)
         {
             _userManager = userManager;
             _mediator = mediator;
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
-        [Route("individuals")]
+        [Route("")]
         public async Task<IActionResult> GetAllSponsorIndividuals(int pageNumber, int pageSize)
         {
             var resultList = await _mediator.Send(new GetAllSponsorIndividualsQuery(pageNumber, pageSize));
@@ -40,7 +40,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("individuals/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> GetSponsorIndividualById(int id)
         {
             try
@@ -52,10 +52,14 @@ namespace SponsorSphereWebAPI.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet]
-        [Route("individuals/country")]
+        [Route("country")]
         public async Task<IActionResult> GetSponsorIndividualsByCountry(CountryEnum country)
         {
             var resultList = await _mediator.Send(new GetSponsorIndividualsByCountryQuery(country));
@@ -64,7 +68,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("individuals/age")]
+        [Route("age")]
         public async Task<IActionResult> GetSponsorIndividualsByAge(int age)
         {
             var resultList = await _mediator.Send(new GetSponsorIndividualsByAgeQuery(age));
@@ -73,7 +77,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("individuals/register")]
+        [Route("register")]
         public async Task<IActionResult> RegisterSponsorIndividual([FromForm] RegisterSponsorIndividualRequestModel model)
         {
             if (!ModelState.IsValid)
@@ -113,9 +117,9 @@ namespace SponsorSphereWebAPI.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstants.Sponsor)]
         [HttpPatch]
-        [Route("individuals/update")]
+        [Route("update")]
         public async Task<IActionResult> UpdateSponsorIndividual([FromForm] SponsorIndividualDto updatedSponsorIndividual)
         {
             try
@@ -125,9 +129,14 @@ namespace SponsorSphereWebAPI.Controllers
                 var sponsorIndividual = HttpContext.User?.Identity?.Name ?? string.Empty;
                 var loggedInUser = await _userManager.FindByEmailAsync(sponsorIndividual);
 
-                if (sponsorIndividual is null || loggedInUser is null)
+                if (sponsorIndividual is null)
                 {
-                    throw new InvalidDataException("User not found");
+                    return NotFound("User not found");
+                }
+
+                if (loggedInUser is null)
+                {
+                    return Unauthorized("You have to log in first!");
                 }
 
                 var result = await _mediator.Send(new UpdateSponsorIndividualCommand(updatedSponsorIndividual));
@@ -144,9 +153,9 @@ namespace SponsorSphereWebAPI.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstants.Admin)]
         [HttpDelete]
-        [Route("individuals/delete")]
+        [Route("delete")]
         public async Task<IActionResult> DeleteSponsorIndividual()
         {
             var sponsorIndividual = HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -154,7 +163,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser is null)
             {
-                return NotFound();
+                return NotFound("User not found");
             }
 
             await _mediator.Send(new DeleteSponsorIndividualCommand(loggedInUser.Id));

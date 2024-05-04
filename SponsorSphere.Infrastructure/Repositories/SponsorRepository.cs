@@ -12,19 +12,43 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<List<Sponsor>> GetByMostAthletesAsync()
+        public async Task<List<object>> GetByMostAthletesAsync()
         {
             var sponsors = await _context.Sponsors
-                .OrderByDescending(sponsor => sponsor.Sponsorships.Count)
-                .OrderBy(sponsor => sponsor.Name)
+                .Join(_context.Sponsorships,
+                      sponsor => sponsor.Id,
+                      sponsorship => sponsorship.SponsorId,
+                      (sponsor, sponsorship) => new { Sponsor = sponsor, Sponsorship = sponsorship })
+                .GroupBy(x => x.Sponsor.Id,
+                         x => x.Sponsorship.Amount,
+                        (sponsorId, amounts) => new
+                        {
+                            SponsorId = sponsorId,
+                            TotalAmount = amounts.Count()
+                        })
+                .OrderByDescending(x => x.TotalAmount)
                 .ToListAsync();
 
-            return sponsors;
+            return sponsors.Cast<object>().ToList();
         }
 
-        public Task<List<Sponsor>> GetByMoneyProvidedAsync()
+        public async Task<List<object>> GetByMoneyProvidedAsync()
         {
-            throw new NotImplementedException();
+            var sponsorships = await _context.Sponsors
+                .Join(_context.Sponsorships,
+                      sponsor => sponsor.Id,
+                      sponsorship => sponsorship.SponsorId,
+                      (sponsor, sponsorship) => new { Sponsor = sponsor, Sponsorship = sponsorship })
+                .GroupBy(x => x.Sponsor.Id,
+                         x => x.Sponsorship.Amount,
+                        (sponsorId, amounts) => new
+                        {
+                            SponsorId = sponsorId,
+                            TotalAmount = amounts.Sum()
+                        })
+                .OrderByDescending(x => x.TotalAmount)
+                .ToListAsync();
+            return sponsorships.Cast<object>().ToList();
         }
     }
 }

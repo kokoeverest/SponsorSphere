@@ -43,7 +43,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser is null)
             {
-                return Unauthorized("You are not authorised to do this!");
+                return Unauthorized("You have to log in first!");
             }
 
             if (!ModelState.IsValid)
@@ -76,22 +76,14 @@ namespace SponsorSphereWebAPI.Controllers
 
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
-
                 await _mediator.Send(new CreateAchievementCommand(sportEvent, achievement));
-
-                await _unitOfWork.CommitTransactionAsync();
                 return Created();
             }
-
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
                 return StatusCode(500, ex.Message);
             }
-
         }
-
 
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpDelete]
@@ -108,7 +100,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser is null)
             {
-                return Unauthorized("You are not authorised to do this!");
+                return Unauthorized("You have to log in first!");
             }
 
             try
@@ -144,12 +136,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser is null)
             {
-                return Unauthorized("You are not authorised to do this!");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("The content should be at least 50 symbols!");
+                return Unauthorized("You have to log in first!");
             }
 
             var sportEvent = await _mediator.Send(new GetSportEventByIdQuery(updatedAchievement.SportEventId));
@@ -168,11 +155,12 @@ namespace SponsorSphereWebAPI.Controllers
             {
                 await _unitOfWork.BeginTransactionAsync();
                 var result = await _mediator.Send(new UpdateAchievementCommand(updatedAchievement));
-
+                await _unitOfWork.CommitTransactionAsync();
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                await _unitOfWork.RollbackTransactionAsync();
                 return StatusCode(500, ex.Message);
             }
         }

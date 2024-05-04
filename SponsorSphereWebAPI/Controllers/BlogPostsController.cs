@@ -18,13 +18,15 @@ namespace SponsorSphereWebAPI.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<BlogPostsController> _logger;
 
 
-        public BlogPostsController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork)
+        public BlogPostsController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, ILogger<BlogPostsController> logger)
         {
             _userManager = userManager;
             _mediator = mediator;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -85,7 +87,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser is null)
             {
-                return Unauthorized("You are not authorised to do this!");
+                return Unauthorized("You have to log in first!");
             }
 
             if (!ModelState.IsValid)
@@ -128,7 +130,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser is null)
             {
-                return Unauthorized("You are not authorised to do this!");
+                return Unauthorized("You have to log in first!");
             }
 
             if (!ModelState.IsValid)
@@ -145,10 +147,12 @@ namespace SponsorSphereWebAPI.Controllers
             {
                 await _unitOfWork.BeginTransactionAsync();
                 await _mediator.Send(new UpdateBlogPostCommand(blogPost));
+                await _unitOfWork.CommitTransactionAsync();
                 return Ok();
             }
             catch (Exception ex)
             {
+                await _unitOfWork.RollbackTransactionAsync();
                 return StatusCode(500, ex.Message);
             }
         }
@@ -168,7 +172,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser is null)
             {
-                return Unauthorized("You are not authorised to do this!");
+                return Unauthorized("You have to log in first!");
             }
 
             if (loggedInUser.Id != blogPost.AuthorId)

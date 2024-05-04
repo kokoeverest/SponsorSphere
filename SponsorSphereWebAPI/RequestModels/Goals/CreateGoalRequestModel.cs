@@ -1,18 +1,17 @@
 ﻿using SponsorSphere.Domain.Enums;
-using SponsorSphere.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphereWebAPI.RequestModels.Achievements
+namespace SponsorSphereWebAPI.RequestModels.Goals
 {
-    public class CreateAchievementRequestModel
+    public class CreateGoalRequestModel
     {
-
         [Required]
+        [StringLength(maximumLength: 200)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
         [EnumDataType(typeof(CountryEnum))]
-        public CountryEnum Country { get; set; }
+        public CountryEnum Country {  get; set; }
 
         [Required]
         [StringLength(maximumLength: 100)]
@@ -20,13 +19,14 @@ namespace SponsorSphereWebAPI.RequestModels.Achievements
 
         [Required]
         [EnumDataType(typeof(EventsEnum))]
-        public EventsEnum EventType { get; set; }
+        public EventsEnum EventType {  get; set; }
 
         [Required]
         [EnumDataType(typeof(SportsEnum))]
-        public SportsEnum Sport { get; set; }
+        public SportsEnum Sport {  get; set; }
 
         [Required]
-        public ushort? PlaceFinished { get; set; }
+        [Range(minimum: 0, maximum: double.MaxValue)]
+        public decimal AmountNeeded {  get; set; }
     }
 }

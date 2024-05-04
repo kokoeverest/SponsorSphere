@@ -9,6 +9,7 @@ namespace SponsorSphere.Application.Interfaces
         Task<Sponsorship> CreateAsync(Sponsorship sponsorship);
         Task<SponsorshipDto> UpdateAsync(SponsorshipDto sponsorship);
         Task<int> DeleteAsync(int athleteId, int sponsorId);
+        Task<Sponsorship?> GetSponsorshipAsync(int athleteId, int sponsorId);
         Task<List<Sponsorship>> GetByAthleteIdAsync(int athleteId);
         Task<List<Sponsorship>> GetBySponsorIdAsync(int sponsorId);
         Task<List<Sponsorship>> GetByLevelAsync(SponsorshipLevel level);

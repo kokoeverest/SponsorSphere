@@ -80,7 +80,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.Athletes
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .OrderBy(athlete => athlete.Name)
+                .OrderBy(athlete => athlete.LastName)
                 .ToListAsync();
         }
 

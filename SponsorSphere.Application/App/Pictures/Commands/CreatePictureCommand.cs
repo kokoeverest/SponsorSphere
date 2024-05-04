@@ -6,10 +6,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.Pictures.Commands;
 
-public record CreatePictureCommand(
-    string Url,
-    byte? Content
-    ) : IRequest<PictureDto>;
+public record CreatePictureCommand(Picture Picture) : IRequest<PictureDto>;
 public class CreatePictureCommandHandler : IRequestHandler<CreatePictureCommand, PictureDto>
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -21,14 +18,7 @@ public class CreatePictureCommandHandler : IRequestHandler<CreatePictureCommand,
     }
     public async Task<PictureDto> Handle(CreatePictureCommand request, CancellationToken cancellationToken)
     {
-        var picture = new Picture
-        {
-            Url = request.Url,
-            Content = request.Content,
-            Modified = DateTime.UtcNow
-        };
-
-        var newPicture = await _unitOfWork.PicturesRepository.CreateAsync(picture);
+        var newPicture = await _unitOfWork.PicturesRepository.CreateAsync(request.Picture);
         var mappedPicture = _mapper.Map<PictureDto>(newPicture);
 
         return await Task.FromResult(mappedPicture);

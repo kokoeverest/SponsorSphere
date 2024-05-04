@@ -7,13 +7,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.Sponsorships.Commands;
 
-public record CreateSponsorshipCommand(
-        DateTime Created,
-        SponsorshipLevel Level,
-        decimal Amount,
-        int AthleteId,
-        int SponsorId
-    ) : IRequest<SponsorshipDto>;
+public record CreateSponsorshipCommand(Sponsorship Sponsorship) : IRequest<SponsorshipDto>;
 public class CreateSponsorshipCommandHandler : IRequestHandler<CreateSponsorshipCommand, SponsorshipDto>
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -29,25 +23,17 @@ public class CreateSponsorshipCommandHandler : IRequestHandler<CreateSponsorship
     {
         try
         {
-            await _unitOfWork.BeginTransactionAsync();
-            var newSponsorship = _unitOfWork.SponsorshipsRepository
-                .CreateAsync(new Sponsorship
-                {
-                    Created = request.Created,
-                    Level = request.Level,
-                    Amount = request.Amount,
-                    AthleteId = request.AthleteId,
-                    SponsorId = request.SponsorId
+            //await _unitOfWork.BeginTransactionAsync();
+            var newSponsorship = _unitOfWork.SponsorshipsRepository.CreateAsync(request.Sponsorship);
 
-                });
-            await _unitOfWork.CommitTransactionAsync();
+            //await _unitOfWork.CommitTransactionAsync();
             var mappedSponsorship = _mapper.Map<SponsorshipDto>( newSponsorship );
-            return await Task.FromResult(mappedSponsorship);
 
+            return await Task.FromResult(mappedSponsorship);
         }
         catch (Exception)
         {
-            await _unitOfWork.RollbackTransactionAsync();
+            //await _unitOfWork.RollbackTransactionAsync();
             throw;
         }
     }

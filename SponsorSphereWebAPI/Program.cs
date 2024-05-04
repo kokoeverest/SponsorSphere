@@ -1,17 +1,20 @@
 using Microsoft.OpenApi.Models;
+using SponsorSphere.Application;
+using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure;
 using SponsorSphere.Infrastructure.Extensions;
 using Swashbuckle.AspNetCore.Filters;
-using SponsorSphere.Domain.Models;
-using SponsorSphere.Application;
-using SponsorSphere.Application.Interfaces;
-using SponsorSphere.Infrastructure.Repositories;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -40,7 +43,7 @@ builder.Services.AddIdentityApiEndpoints<User>(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddInfrastructure();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly));
-        
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

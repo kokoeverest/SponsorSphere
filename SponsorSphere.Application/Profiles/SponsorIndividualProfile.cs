@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SponsorSphere.Application.App.SponsorCompanies.Responses;
+using SponsorSphere.Application.App.SponsorIndividuals.Responses;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Profiles
@@ -8,7 +8,7 @@ namespace SponsorSphere.Application.Profiles
     {
         public SponsorIndividualProfile()
         {
-            CreateMap<SponsorIndividual, SponsorCompanyDto>();
+            CreateMap<SponsorIndividual, SponsorIndividualDto>();
         }
     }
 }

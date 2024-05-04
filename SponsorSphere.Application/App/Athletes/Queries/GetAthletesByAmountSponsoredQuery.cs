@@ -21,7 +21,6 @@ public class GetAthletesByAmountSponsoredQueryHandler : IRequestHandler<GetAthle
     public async Task<List<object>?> Handle(GetAthletesByAmountSponsoredQuery request, CancellationToken cancellationToken)
     {
         var athletes = await _unitOfWork.AthletesRepository.GetByAmountAsync();
-        //var mappedAthletes = _mapper.Map<List<AthleteDto>>(athletes);
 
         return await Task.FromResult(athletes);
     }

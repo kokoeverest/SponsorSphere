@@ -10,14 +10,15 @@ namespace SponsorSphereWebAPI.RequestModels.SponsorIndividuals
         public string Name { get; set; } = string.Empty;
 
         [Required]
+        [EnumDataType(typeof(CountryEnum))]
         public CountryEnum Country { get; set; }
 
         [Required]
-        [StringLength(maximumLength: 16)]
+        [Phone]
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required]
-        [StringLength(maximumLength: 100)]
+        [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
         [Required]

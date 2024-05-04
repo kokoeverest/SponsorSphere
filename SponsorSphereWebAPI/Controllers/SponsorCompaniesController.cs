@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.SponsorCompanies.Commands;
 using SponsorSphere.Application.App.SponsorCompanies.Queries;
 using SponsorSphere.Application.App.SponsorCompanies.Responses;
+using SponsorSphere.Application.App.Sponsors.Queries;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
@@ -14,24 +15,40 @@ using SponsorSphereWebAPI.RequestModels.SponsorCompanies;
 namespace SponsorSphereWebAPI.Controllers
 {
     [ApiController]
-    [Route("users/sponsors")]
+    [Route("users/sponsors/companies/")]
     public class SponsorCompaniesController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly ILogger<SponsorCompaniesController> _logger;
 
-        public SponsorCompaniesController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, IMapper mapper)
+        public SponsorCompaniesController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, ILogger<SponsorCompaniesController> logger)
         {
             _userManager = userManager;
             _mediator = mediator;
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
-        [Route("companies")]
+        [Route("moneyProvided")]
+        public async Task<IActionResult> GetSponsorsByMoneyProvided()
+        {
+            var resultList = await _mediator.Send(new GetSponsorsByMoneyProvidedQuery());
+            return Ok(resultList);
+        }
+
+        [HttpGet]
+        [Route("mostAthletes")]
+        public async Task<IActionResult> GetSponsorsByMostAthletesSponsored()
+        {
+            var resultList = await _mediator.Send(new GetSponsorsByMostAthletesQuery());
+            return Ok(resultList);
+        }
+
+        [HttpGet]
+        [Route("")]
         public async Task<IActionResult> GetAllSponsorCompanies(int pageNumber, int pageSize)
         {
             var resultList = await _mediator.Send(new GetAllSponsorCompaniesQuery(pageNumber, pageSize));
@@ -40,7 +57,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("companies/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> GetSponsorCompanyById(int id)
         {
             try
@@ -59,7 +76,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("companies/country")]
+        [Route("country")]
         public async Task<IActionResult> GetSponsorCompaniesByCountry(CountryEnum country)
         {
             var resultList = await _mediator.Send(new GetSponsorCompaniesByCountryQuery(country));
@@ -68,7 +85,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("companies/register")]
+        [Route("register")]
         public async Task<IActionResult> RegisterSponsorCompany([FromForm] RegisterSponsorCompanyRequestModel model)
         {
             if (!ModelState.IsValid)
@@ -107,9 +124,9 @@ namespace SponsorSphereWebAPI.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstants.Sponsor)]
         [HttpPatch]
-        [Route("companies/update")]
+        [Route("update")]
         public async Task<IActionResult> UpdateSponsorCompany([FromForm] SponsorCompanyDto updatedSponsorCompany)
         {
             try
@@ -119,9 +136,14 @@ namespace SponsorSphereWebAPI.Controllers
                 var sponsorCompany = HttpContext.User?.Identity?.Name ?? string.Empty;
                 var loggedInUser = await _userManager.FindByEmailAsync(sponsorCompany);
 
-                if (sponsorCompany is null || loggedInUser is null)
+                if (sponsorCompany is null)
                 {
-                    throw new InvalidDataException("User not found");
+                    return NotFound("User not found");
+                }
+
+                if (loggedInUser is null)
+                {
+                    return Unauthorized("You have to log in first!");
                 }
 
                 var result = await _mediator.Send(new UpdateSponsorCompanyCommand(updatedSponsorCompany));
@@ -138,9 +160,9 @@ namespace SponsorSphereWebAPI.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstants.Admin)]
         [HttpDelete]
-        [Route("companies/delete")]
+        [Route("delete")]
         public async Task<IActionResult> DeleteSponsorCompany()
         {
             var sponsorCompany = HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -148,7 +170,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser is null)
             {
-                return NotFound();
+                return NotFound("User not found");
             }
 
             await _mediator.Send(new DeleteSponsorCompanyCommand(loggedInUser.Id));

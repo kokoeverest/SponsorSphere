@@ -2,20 +2,11 @@
 using MediatR;
 using SponsorSphere.Application.App.Goals.Responses;
 using SponsorSphere.Application.Interfaces;
-using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.Goals.Commands;
 
-public record CreateGoalCommand(
-        string Name,
-        CountryEnum Country,
-        string EventDate,
-        EventsEnum EventType,
-        SportsEnum Sport,
-        decimal AmountNeeded,
-        int AthleteId
-    ) : IRequest<GoalDto>;
+public record CreateGoalCommand(SportEvent SportEvent, Goal Goal) : IRequest<GoalDto>;
 
 public class CreateGoalCommandHandler : IRequestHandler<CreateGoalCommand, GoalDto>
 {
@@ -30,35 +21,13 @@ public class CreateGoalCommandHandler : IRequestHandler<CreateGoalCommand, GoalD
 
     public async Task<GoalDto> Handle(CreateGoalCommand request, CancellationToken cancellationToken)
     {
-        if (DateTime.UtcNow > DateTime.Parse(request.EventDate).ToUniversalTime())
-        {
-            throw new InvalidDataException("You can't create a goal in the past");
-        }
-
         try
         {
             await _unitOfWork.BeginTransactionAsync();
 
-            var sportEvent = await _unitOfWork.SportEventsRepository
-                                        .CreateAsync(new SportEvent
-                                        {
-                                            Name = request.Name,
-                                            Country = request.Country,
-                                            EventDate = DateTime.Parse(request.EventDate).ToUniversalTime(),
-                                            Finished = false,
-                                            EventType = request.EventType,
-                                            Sport = request.Sport
-                                        });
+            var sportEvent = await _unitOfWork.SportEventsRepository.CreateAsync(request.SportEvent);
 
-            var newGoal = await _unitOfWork.GoalsRepository
-                                            .CreateAsync(new Goal
-                                            {
-                                                Date = sportEvent.EventDate,
-                                                Sport = request.Sport,
-                                                SportEventId = sportEvent.Id,
-                                                AthleteId = request.AthleteId,
-                                                AmountNeeded = request.AmountNeeded
-                                            });
+            var newGoal = await _unitOfWork.GoalsRepository.CreateAsync(request.Goal);
 
             await _unitOfWork.CommitTransactionAsync();
             var mappedGoal = _mapper.Map<GoalDto>(newGoal);

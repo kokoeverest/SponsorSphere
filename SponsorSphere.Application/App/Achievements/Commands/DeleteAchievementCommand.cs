@@ -13,8 +13,7 @@ public class DeleteAchievementCommandHandler : IRequestHandler<DeleteAchievement
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> Handle(DeleteAchievementCommand request, CancellationToken cancellationToken)
-    {
-        return await _unitOfWork.AchievementsRepository.DeleteAsync(request.SportEventId, request.AthleteId);
-    }
+    public async Task<int> Handle(DeleteAchievementCommand request, CancellationToken cancellationToken) =>
+        
+        await _unitOfWork.AchievementsRepository.DeleteAsync(request.SportEventId, request.AthleteId);
 }

@@ -15,6 +15,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Petar",
                     LastName = "Petrov",
                     Email = "5rov@mail.mail",
+                    UserName = "5rov@mail.mail",
                     Country = CountryEnum.BGR,
                     PhoneNumber = "09198",
                     BirthDate = DateTime.Parse("30/09/1983").ToUniversalTime(),
@@ -26,6 +27,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Georgi",
                     LastName = "Petkov",
                     Email = "5kov@mail.mail",
+                    UserName = "5kov@mail.mail",
                     Country = CountryEnum.BGR,
                     PhoneNumber = "09198",
                     BirthDate = DateTime.Parse("30/03/2005").ToUniversalTime(),
@@ -37,8 +39,12 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Kaloyan",
                     LastName = "Peychev",
                     Email = "kalo@mail.bg",
+                    NormalizedEmail = "kalo@mail.bg".ToUpper(),
+                    UserName = "kalo@mail.bg",
+                    NormalizedUserName = "kalo@mail.bg".ToUpper(),
                     Country = CountryEnum.BGR,
                     PhoneNumber = "123456",
+                    PasswordHash = "A1B2C3",
                     BirthDate = DateTime.Parse("15/08/1997").ToUniversalTime(),
                     Sport = SportsEnum.DownhillMountainBiking,
                     PictureId = 1,
@@ -174,9 +180,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                 new BlogPost
                 {
                     Id = 2,
-                    Content = @"I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small
-                                villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have 
-                                fascinated me throughout my life!",
+                    Content = @"I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have fascinated me throughout my life!",
                     Created = DateTime.Parse("2023.12.06").ToUniversalTime(),
                     AuthorId = 4
                 }
@@ -195,18 +199,25 @@ namespace SponsorSphere.Infrastructure.Extensions
                 });
 
             modelBuilder.Entity<UserRole>().HasData(
+                 new UserRole
+                 {
+                     Id = 1,
+                     Name = RolesEnum.Admin.ToString(),
+                     NormalizedName = RolesEnum.Admin.ToString().ToUpper()
+                 },
                 new UserRole
                 {
-                    Id = 1,
-                    Name = RolesEnum.Athlete.ToString(),
-                    NormalizedName = RolesEnum.Athlete.ToString().ToUpper()
-                },
-                new UserRole
-                {
-                    Id = 2,
+                    Id = 3,
                     Name = RolesEnum.Sponsor.ToString(),
                     NormalizedName = RolesEnum.Sponsor.ToString().ToUpper()
-                });
+                },
+               new UserRole
+               {
+                   Id = 2,
+                   Name = RolesEnum.Athlete.ToString(),
+                   NormalizedName = RolesEnum.Athlete.ToString().ToUpper()
+               }
+            );
         }
     }
 }

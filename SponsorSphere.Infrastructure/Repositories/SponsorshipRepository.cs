@@ -30,6 +30,19 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ExecuteDeleteAsync();
         }
 
+        public async Task<Sponsorship?> GetSponsorshipAsync(int athleteId, int sponsorId)
+        {
+            var sponsorship = await _context.Sponsorships
+                .FirstOrDefaultAsync(sh => sh.AthleteId == athleteId &&
+                             sh.SponsorId == sponsorId);
+
+            if (sponsorship is null)
+            {
+                throw new ApplicationException("Sponsorship not found");
+            }
+            return sponsorship;
+        }
+
         public async Task<List<Sponsorship>> GetByAthleteIdAsync(int athleteId)
         {
             return await _context.Sponsorships.Where(sh => sh.AthleteId == athleteId).ToListAsync();

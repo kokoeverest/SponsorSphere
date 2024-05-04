@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Update_0305 : Migration
+    public partial class Update_0405 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -414,8 +414,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, null, "Athlete", "ATHLETE" },
-                    { 2, null, "Sponsor", "SPONSOR" }
+                    { 1, null, "Admin", "ADMIN" },
+                    { 2, null, "Athlete", "ATHLETE" },
+                    { 3, null, "Sponsor", "SPONSOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -423,13 +424,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Country", "Created", "DeletedOn", "Email", "EmailConfirmed", "FaceBookLink", "InstagramLink", "IsDeleted", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PictureId", "SecurityStamp", "StravaLink", "TwitterLink", "TwoFactorEnabled", "UserName", "Website" },
                 values: new object[,]
                 {
-                    { 1, 0, "511418d3-48c4-405b-badb-58b67796bab1", 732800, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(721), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5rov@mail.mail", false, "", "", false, false, null, "Petar", null, null, null, "09198", false, null, null, "", "", false, null, "" },
-                    { 2, 0, "88566c97-2607-414f-8bb2-6627ed885818", 732800, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1078), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5kov@mail.mail", false, "", "", false, false, null, "Georgi", null, null, null, "09198", false, null, null, "", "", false, null, "" },
-                    { 3, 0, "3153c0c3-8f25-4e0e-93d9-2efe0ffcd8c4", 732800, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1850), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "lidl@bg.gb", false, "", "", false, false, null, "Lidl", null, null, null, "1223", false, null, null, "", "", false, null, "" },
-                    { 4, 0, "e500b14f-5ebb-41e6-823a-edfd100296d7", 2921044, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1879), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kaufland@bg.gb", false, "", "", false, false, null, "Kaufland", null, null, null, "1223", false, null, null, "", "", false, null, "" },
-                    { 5, 0, "23df8ba1-b47a-46cf-bdfe-52cfdb16d56a", 732800, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1959), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "anonimen@bg.gb", false, "", "", false, false, null, "Lazar", null, null, null, "1223", false, null, null, "", "", false, null, "" },
-                    { 6, 0, "dd5e54cc-dd8e-499d-b07b-b20777827a05", 2077456, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2050), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "michael@bg.gb", false, "", "", false, false, null, "Michael", null, null, null, "1223", false, null, null, "", "", false, null, "" },
-                    { 7, 0, "2b988167-68fb-45c7-850a-d42779f8a87d", 732800, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1139), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kalo@mail.bg", false, "", "", false, false, null, "Kaloyan", null, null, null, "123456", false, 1, null, "www.strava.co/userkaloyan", "", false, null, "" }
+                    { 1, 0, "453a2bf7-c547-4368-b27c-b9d56b623e65", 732800, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(5861), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5rov@mail.mail", false, "", "", false, false, null, "Petar", null, null, null, "09198", false, null, null, "", "", false, "5rov@mail.mail", "" },
+                    { 2, 0, "eb264eac-3b2d-43c7-b7d8-3d79638607ef", 732800, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(6348), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5kov@mail.mail", false, "", "", false, false, null, "Georgi", null, null, null, "09198", false, null, null, "", "", false, "5kov@mail.mail", "" },
+                    { 3, 0, "30e30463-d329-4b60-953d-ab17ce623597", 732800, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(7415), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "lidl@bg.gb", false, "", "", false, false, null, "Lidl", null, null, null, "1223", false, null, null, "", "", false, null, "" },
+                    { 4, 0, "97ebfffe-d1d3-4100-8931-07b03bb46de8", 2921044, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(7452), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kaufland@bg.gb", false, "", "", false, false, null, "Kaufland", null, null, null, "1223", false, null, null, "", "", false, null, "" },
+                    { 5, 0, "816d8a78-8df2-485f-9573-6c841a21660d", 732800, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(7553), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "anonimen@bg.gb", false, "", "", false, false, null, "Lazar", null, null, null, "1223", false, null, null, "", "", false, null, "" },
+                    { 6, 0, "e232fe81-7ef1-4619-bd96-e42199bf68dc", 2077456, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(7665), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "michael@bg.gb", false, "", "", false, false, null, "Michael", null, null, null, "1223", false, null, null, "", "", false, null, "" },
+                    { 7, 0, "4841cf09-b26f-4461-8015-ddda2b3c92e1", 732800, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(6428), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kalo@mail.bg", false, "", "", false, false, null, "Kaloyan", null, null, null, "123456", false, 1, null, "www.strava.co/userkaloyan", "", false, "kalo@mail.bg", "" }
                 });
 
             migrationBuilder.InsertData(
@@ -437,8 +438,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                 columns: new[] { "Id", "Content", "Modified", "Url" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2559), "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing" },
-                    { 2, null, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2561), "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing" }
+                    { 1, null, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(8180), "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing" },
+                    { 2, null, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(8182), "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing" }
                 });
 
             migrationBuilder.InsertData(
@@ -466,7 +467,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                 values: new object[,]
                 {
                     { 1, 4, "A very interesting post about a sport achievement", new DateTime(2023, 12, 5, 22, 0, 0, 0, DateTimeKind.Utc) },
-                    { 2, 4, "I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small\r\n                                villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have \r\n                                fascinated me throughout my life!", new DateTime(2023, 12, 5, 22, 0, 0, 0, DateTimeKind.Utc) }
+                    { 2, 4, "I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have fascinated me throughout my life!", new DateTime(2023, 12, 5, 22, 0, 0, 0, DateTimeKind.Utc) }
                 });
 
             migrationBuilder.InsertData(
@@ -524,7 +525,7 @@ namespace SponsorSphere.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Sponsorships",
                 columns: new[] { "AthleteId", "SponsorId", "Amount", "Created", "Level" },
-                values: new object[] { 1, 3, 2000m, new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2168), 2 });
+                values: new object[] { 1, 3, 2000m, new DateTime(2024, 5, 4, 10, 43, 16, 100, DateTimeKind.Utc).AddTicks(7777), 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

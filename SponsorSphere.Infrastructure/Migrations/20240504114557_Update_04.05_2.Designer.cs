@@ -12,8 +12,8 @@ using SponsorSphere.Infrastructure;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     [DbContext(typeof(SponsorSphereDbContext))]
-    [Migration("20240503140712_Update_03.05")]
-    partial class Update_0305
+    [Migration("20240504114557_Update_04.05_2")]
+    partial class Update_0405_2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -199,7 +199,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 2,
                             AuthorId = 4,
-                            Content = "I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small\r\n                                villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have \r\n                                fascinated me throughout my life!",
+                            Content = "I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have fascinated me throughout my life!",
                             Created = new DateTime(2023, 12, 5, 22, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
@@ -262,13 +262,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Modified = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2559),
+                            Modified = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7993),
                             Url = "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing"
                         },
                         new
                         {
                             Id = 2,
-                            Modified = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2561),
+                            Modified = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7995),
                             Url = "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing"
                         });
                 });
@@ -302,7 +302,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AthleteId = 1,
                             SponsorId = 3,
                             Amount = 2000m,
-                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2168),
+                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7604),
                             Level = 2
                         });
                 });
@@ -511,14 +511,20 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Athlete",
-                            NormalizedName = "ATHLETE"
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Sponsor",
+                            NormalizedName = "SPONSOR"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Sponsor",
-                            NormalizedName = "SPONSOR"
+                            Name = "Athlete",
+                            NormalizedName = "ATHLETE"
                         });
                 });
 
@@ -572,9 +578,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "511418d3-48c4-405b-badb-58b67796bab1",
+                            ConcurrencyStamp = "8c27d5ab-410f-41cf-9e67-be74425f3630",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(721),
+                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(5650),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5rov@mail.mail",
                             EmailConfirmed = false,
@@ -588,6 +594,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             StravaLink = "",
                             TwitterLink = "",
                             TwoFactorEnabled = false,
+                            UserName = "5rov@mail.mail",
                             Website = "",
                             BirthDate = new DateTime(1983, 9, 29, 21, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Petrov",
@@ -597,9 +604,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "88566c97-2607-414f-8bb2-6627ed885818",
+                            ConcurrencyStamp = "b15eb405-1b48-4186-8996-f94a83ad2405",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1078),
+                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(6104),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5kov@mail.mail",
                             EmailConfirmed = false,
@@ -613,6 +620,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             StravaLink = "",
                             TwitterLink = "",
                             TwoFactorEnabled = false,
+                            UserName = "5kov@mail.mail",
                             Website = "",
                             BirthDate = new DateTime(2005, 3, 29, 21, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Petkov",
@@ -622,9 +630,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 7,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2b988167-68fb-45c7-850a-d42779f8a87d",
+                            ConcurrencyStamp = "61d47f94-2709-443f-8e19-beb3c295ecef",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1139),
+                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(6194),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kalo@mail.bg",
                             EmailConfirmed = false,
@@ -633,12 +641,16 @@ namespace SponsorSphere.Infrastructure.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "Kaloyan",
+                            NormalizedEmail = "KALO@MAIL.BG",
+                            NormalizedUserName = "KALO@MAIL.BG",
+                            PasswordHash = "A1B2C3",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             PictureId = 1,
                             StravaLink = "www.strava.co/userkaloyan",
                             TwitterLink = "",
                             TwoFactorEnabled = false,
+                            UserName = "kalo@mail.bg",
                             Website = "",
                             BirthDate = new DateTime(1997, 8, 14, 21, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Peychev",
@@ -669,9 +681,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3153c0c3-8f25-4e0e-93d9-2efe0ffcd8c4",
+                            ConcurrencyStamp = "2a06fc09-5a96-4be7-b92c-da43e565b1b4",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1850),
+                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7115),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lidl@bg.gb",
                             EmailConfirmed = false,
@@ -692,9 +704,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e500b14f-5ebb-41e6-823a-edfd100296d7",
+                            ConcurrencyStamp = "9fca46ec-8b9e-48e4-9a46-af3a2dc33ab9",
                             Country = 2921044,
-                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1879),
+                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7166),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kaufland@bg.gb",
                             EmailConfirmed = false,
@@ -733,9 +745,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 5,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "23df8ba1-b47a-46cf-bdfe-52cfdb16d56a",
+                            ConcurrencyStamp = "597daa60-6a05-4696-b4bb-9778bcede9b8",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(1959),
+                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7338),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "anonimen@bg.gb",
                             EmailConfirmed = false,
@@ -757,9 +769,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 6,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dd5e54cc-dd8e-499d-b07b-b20777827a05",
+                            ConcurrencyStamp = "e80e2a84-7eed-44e5-a2cd-bc1b3aac1ca4",
                             Country = 2077456,
-                            Created = new DateTime(2024, 5, 3, 14, 7, 10, 988, DateTimeKind.Utc).AddTicks(2050),
+                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7484),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "michael@bg.gb",
                             EmailConfirmed = false,

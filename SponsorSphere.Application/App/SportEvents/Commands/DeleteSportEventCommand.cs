@@ -13,9 +13,8 @@ public class DeleteSportEventCommandHandler : IRequestHandler<DeleteSportEventCo
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> Handle(DeleteSportEventCommand request, CancellationToken cancellationToken)
-    {
-        return await _unitOfWork.SportEventsRepository.DeleteAsync(request.SportEventId);
-    }
+    public async Task<int> Handle(DeleteSportEventCommand request, CancellationToken cancellationToken) => 
+        
+        await _unitOfWork.SportEventsRepository.DeleteAsync(request.SportEventId);
 }
 

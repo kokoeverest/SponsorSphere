@@ -10,13 +10,15 @@ namespace SponsorSphereWebAPI.RequestModels.Athletes
         public string Name { get; set; } = string.Empty;
 
         [Required]
+        [EnumDataType(typeof(CountryEnum))]
         public CountryEnum Country { get; set; }
 
         [Required]
-        [StringLength(maximumLength: 16)]
+        [Phone]
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required]
+        [EmailAddress]
         [StringLength(maximumLength: 100)]
         public string Email { get; set; } = string.Empty;
 
@@ -30,6 +32,7 @@ namespace SponsorSphereWebAPI.RequestModels.Athletes
         public string LastName { get; set; } = string.Empty;
 
         [Required]
+        [EnumDataType(typeof(SportsEnum))]
         public SportsEnum Sport { get; set; }
 
         [Required]

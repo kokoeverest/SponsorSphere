@@ -13,7 +13,7 @@ using SponsorSphereWebAPI.RequestModels.Athletes;
 namespace SponsorSphereWebAPI.Controllers
 {
     [ApiController]
-    [Route("users/")]
+    [Route("users/athletes/")]
     public class AthletesController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
@@ -30,7 +30,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("athletes")]
+        [Route("")]
         public async Task<IActionResult> GetAllAthletes(int pageNumber, int pageSize)
         {
             var resultList = await _mediator.Send(new GetAllAthletesQuery(pageNumber, pageSize));
@@ -39,7 +39,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("athletes/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> GetAthleteById(int id)
         {
             try
@@ -51,14 +51,14 @@ namespace SponsorSphereWebAPI.Controllers
             {
                 return NotFound(ex.Message);
             }
-            //catch (Exception)
-            //{
-            //    return HttpRequestException(HttpStatusCode.InternalServerError);
-            //}
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet]
-        [Route("athletes/country")]
+        [Route("country")]
         public async Task<IActionResult> GetAthletesByCountry(CountryEnum country)
         {
             var resultList = await _mediator.Send(new GetAthletesByCountryQuery(country));
@@ -67,7 +67,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("athletes/sport")]
+        [Route("sport")]
         public async Task<IActionResult> GetAthletesBySport(SportsEnum sport)
         {
             var resultList = await _mediator.Send(new GetAthletesBySportQuery(sport));
@@ -76,7 +76,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("athletes/age")]
+        [Route("age")]
         public async Task<IActionResult> GetAthletesByAge(int age)
         {
             var resultList = await _mediator.Send(new GetAthletesByAgeQuery(age));
@@ -85,7 +85,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("athletes/amount")]
+        [Route("amount")]
         public async Task<IActionResult> GetAthletesByAmount()
         {
             var resultList = await _mediator.Send(new GetAthletesByAmountSponsoredQuery());
@@ -94,7 +94,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("athletes/register")]
+        [Route("register")]
         public async Task<IActionResult> RegisterAthlete([FromForm] RegisterAthleteRequestModel model)
         {
             if (!ModelState.IsValid)
@@ -135,9 +135,9 @@ namespace SponsorSphereWebAPI.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPatch]
-        [Route("athletes/update")]
+        [Route("update")]
         public async Task<IActionResult> UpdateAthlete([FromForm] AthleteDto updatedAthlete)
         {
             try
@@ -147,9 +147,14 @@ namespace SponsorSphereWebAPI.Controllers
                 var athlete = HttpContext.User?.Identity?.Name ?? string.Empty;
                 var loggedInUser = await _userManager.FindByEmailAsync(athlete);
 
-                if (athlete is null || loggedInUser is null)
+                if (athlete is null)
                 {
-                    throw new InvalidDataException("User not found");
+                    return NotFound("User not found");
+                }
+
+                if (loggedInUser is null)
+                {
+                    return Unauthorized("You have to log in first!");
                 }
 
                 var result = await _mediator.Send(new UpdateAthleteCommand(updatedAthlete));
@@ -166,17 +171,22 @@ namespace SponsorSphereWebAPI.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpDelete]
-        [Route("athletes/delete")]
+        [Route("delete")]
         public async Task<IActionResult> DeleteAthlete()
         {
             var athlete = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(athlete);
 
+            if (athlete is null)
+            {
+                return NotFound("User not found");
+            }
+
             if (loggedInUser is null)
             {
-                return NotFound();
+                return Unauthorized("You have to log in first!");
             }
 
             await _mediator.Send(new DeleteAthleteCommand(loggedInUser.Id));
