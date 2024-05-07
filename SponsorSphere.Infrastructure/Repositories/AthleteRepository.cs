@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.Athletes.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
@@ -38,18 +37,18 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ExecuteUpdateAsync(setters => setters
                 .SetProperty(ath => ath.IsDeleted, true)
                 .SetProperty(ath => ath.DeletedOn, DateTime.UtcNow));
-            
+
             return 1;
         }
         public async Task<Athlete> GetByIdAsync(int athleteId)
         {
             var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == athleteId);
-            
+
             if (athlete is null)
             {
                 throw new ApplicationException($"Athlete with id {athleteId} not found");
             }
-            
+
             athlete.BlogPosts = await _context.BlogPosts
                 .Include(bp => bp.Pictures)
                 .Where(bp => bp.AuthorId == athlete.Id)
@@ -94,8 +93,10 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<List<Athlete>> GetByAgeAsync(int age)
         {
+            var birthYearLimit = DateTime.UtcNow.Year - age;
+
             return await _context.Athletes
-                .Where(athlete => athlete.Age <= age)
+                .Where(athlete => birthYearLimit <= athlete.BirthDate.Year)
                 .OrderBy(athlete => athlete.Name)
                 .ToListAsync();
         }
@@ -122,6 +123,7 @@ namespace SponsorSphere.Infrastructure.Repositories
                             AthleteId = athleteId,
                             TotalAmount = amounts.Sum()
                         })
+                .OrderByDescending(x => x.TotalAmount)
                 .ToListAsync();
             return sponsorships.Cast<object>().ToList();
         }
@@ -134,8 +136,16 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<List<Athlete>> GetByAchievementsAsync()
         {
-            // to be modified
-            return await _context.Athletes.ToListAsync();
+            var result = await _context.Athletes
+                .Join(_context.Achievements,
+                ath => ath.Id,
+                ach => ach.AthleteId,
+                (athlete, achievement) => new { Athlete = athlete, Achievement = achievement })
+                .Where(joinResult => joinResult.Achievement.PlaceFinished == 1)
+                .Select(joinResult => joinResult.Athlete)
+                .ToListAsync();
+
+            return result;
         }
 
         public async Task<AthleteDto> UpdateAsync(AthleteDto updatedAthlete)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SponsorSphere.Infrastructure;
 
@@ -11,9 +12,11 @@ using SponsorSphere.Infrastructure;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     [DbContext(typeof(SponsorSphereDbContext))]
-    partial class SponsorSphereDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506052252_Update_06.05")]
+    partial class Update_0605
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -3,7 +3,6 @@ using SponsorSphere.Application.App.Goals.Responses;
 using SponsorSphere.Application.App.Users.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
-using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.Athletes.Responses
 {

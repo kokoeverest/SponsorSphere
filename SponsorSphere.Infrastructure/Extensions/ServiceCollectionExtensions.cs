@@ -37,7 +37,6 @@ namespace SponsorSphere.Infrastructure.Extensions
                     .AddScoped<ISponsorshipRepository, SponsorshipRepository>()
                     .AddScoped<ISportEventRepository, SportEventRepository>()
                     .AddAutoMapper(typeof(AssemblyMarker).Assembly);
-                    //.BuildServiceProvider();
         }
     }
 }

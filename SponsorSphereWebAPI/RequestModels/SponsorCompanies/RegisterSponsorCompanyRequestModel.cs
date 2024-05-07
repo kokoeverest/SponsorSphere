@@ -5,29 +5,29 @@ namespace SponsorSphereWebAPI.RequestModels.SponsorCompanies
 {
     public class RegisterSponsorCompanyRequestModel
     {
+        [StringLength(200, MinimumLength = 2)]
         [Required]
-        [StringLength(maximumLength: 200)]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
         [EnumDataType(typeof(CountryEnum))]
+        [Required]
         public CountryEnum Country { get; set; }
 
+        [RegularExpression(@"^\+?[1-9]{1,3}\s?[\s\-/0-9]+$")]
+        [StringLength(16, MinimumLength = 10)]
         [Required]
-        [Phone]
         public string PhoneNumber { get; set; } = string.Empty;
 
-        [Required]
         [EmailAddress]
+        [Required]
         public string Email { get; set; } = string.Empty;
 
+        [StringLength(200, MinimumLength = 8)]
         [Required]
-        [MinLength(8)]
-        [MaxLength(200)]
         public string Password { get; set; } = string.Empty;
 
+        [StringLength(34, MinimumLength = 15)]
         [Required]
-        [StringLength(maximumLength: 34)]
         public string IBAN { get; set; } = string.Empty;
     }
 }

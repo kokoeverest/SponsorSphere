@@ -48,6 +48,9 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<SportEvent?> SearchAsync(SportEvent sportEvent)
         {
+            var existing = await _context.SportEvents
+                .FirstOrDefaultAsync(se => se.Equals(sportEvent));
+
             return await _context.SportEvents
                 .FirstOrDefaultAsync(se => se.Name == sportEvent.Name &&
                         se.Sport == sportEvent.Sport &&

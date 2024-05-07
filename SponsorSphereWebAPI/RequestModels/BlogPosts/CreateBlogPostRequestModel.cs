@@ -7,12 +7,11 @@ namespace SponsorSphereWebAPI.RequestModels.BlogPosts
     {
         public int Id { get; set; }
 
-        [Required]
         [MinLength(50)]
+        [Required]
         public string Content { get; set; } = string.Empty;
 
-        [Required]
-        public required int AuthorId { get; set; }
+        public int AuthorId { get; set; }
         public User? Author { get; set; }
         public ICollection<Picture>? Pictures { get; set; }
     }

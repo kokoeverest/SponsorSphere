@@ -5,28 +5,28 @@ namespace SponsorSphereWebAPI.RequestModels.Goals
 {
     public class CreateGoalRequestModel
     {
+        [StringLength(200, MinimumLength = 10)]
         [Required]
-        [StringLength(maximumLength: 200)]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
         [EnumDataType(typeof(CountryEnum))]
+        [Required]
         public CountryEnum Country {  get; set; }
 
+        [Display(Name = "Date of event dd/mm/yyyy")]
+        [StringLength(100, MinimumLength = 9)]
         [Required]
-        [StringLength(maximumLength: 100)]
         public string EventDate { get; set; } = string.Empty;
 
-        [Required]
         [EnumDataType(typeof(EventsEnum))]
+        [Required]
         public EventsEnum EventType {  get; set; }
 
-        [Required]
         [EnumDataType(typeof(SportsEnum))]
+        [Required]
         public SportsEnum Sport {  get; set; }
 
-        [Required]
-        [Range(minimum: 0, maximum: double.MaxValue)]
+        [Range(minimum: 1, maximum: double.MaxValue)]
         public decimal AmountNeeded {  get; set; }
     }
 }

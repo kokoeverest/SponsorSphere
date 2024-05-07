@@ -5,33 +5,34 @@ namespace SponsorSphereWebAPI.RequestModels.SponsorIndividuals
 {
     public class RegisterSponsorIndividualRequestModel
     {
+        [StringLength(200, MinimumLength = 2)]
         [Required]
-        [StringLength(maximumLength: 200)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
         [EnumDataType(typeof(CountryEnum))]
         public CountryEnum Country { get; set; }
 
+        [RegularExpression(@"^\+?[1-9]{1,3}\s?[\s\-/0-9]+$")]
+        [StringLength(16, MinimumLength = 10)]
         [Required]
-        [Phone]
         public string PhoneNumber { get; set; } = string.Empty;
 
-        [Required]
         [EmailAddress]
+        [Required]
         public string Email { get; set; } = string.Empty;
 
+        [StringLength(200, MinimumLength = 8)]
         [Required]
-        [MinLength(8)]
-        [MaxLength(200)]
         public string Password { get; set; } = string.Empty;
 
+        [StringLength(200, MinimumLength = 5)]
         [Required]
-        [StringLength(maximumLength: 200)]
         public string LastName { get; set; } = string.Empty;
 
+        [Display(Name = "Birth date dd/mm/yyyy")]
+        [StringLength(100, MinimumLength = 9)]
         [Required]
-        [StringLength(maximumLength: 100)]
         public string BirthDate { get; set; } = string.Empty;
     }
 }

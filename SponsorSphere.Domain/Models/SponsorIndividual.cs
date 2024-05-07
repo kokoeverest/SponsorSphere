@@ -7,7 +7,7 @@ namespace SponsorSphere.Domain.Models
         public required string LastName { get; set; }
         public required DateTime BirthDate { get; set; }
 
-        [NotMapped]
-        public int Age => (int)(DateTime.UtcNow.Subtract(BirthDate).TotalDays / 365);
+        //[NotMapped]
+        public int Age => (int)(DateTime.UtcNow.Subtract(BirthDate).TotalDays / 365.2425);
     }
 }

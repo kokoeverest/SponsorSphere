@@ -27,7 +27,7 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
             await _unitOfWork.BeginTransactionAsync();
 
             var sportEvent = await _unitOfWork.SportEventsRepository.CreateAsync(request.SportEvent);
-
+            request.Achievement.SportEventId = sportEvent.Id;
             var newAchievement = await _unitOfWork.AchievementsRepository.CreateAsync(request.Achievement);
 
             await _unitOfWork.CommitTransactionAsync();

@@ -33,6 +33,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.BlogPosts
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .OrderBy(bp => bp.Created)
                 .Include(bp => bp.Pictures)
                 .Where(bp => bp.AuthorId == authorId)
                 .ToListAsync();
@@ -54,9 +55,10 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<BlogPost>> GetLatestBlogPostsAsync()
         {
             var latestPosts = await _context.BlogPosts
-                .Include(bp => bp.Pictures)
+                .Take(3)
                 .OrderByDescending(bp => bp.Created)
-                .Take(3).ToListAsync();
+                .Include(bp => bp.Pictures)
+                .ToListAsync();
 
             return latestPosts;
         }
@@ -64,10 +66,11 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<BlogPost>> GetLatestBlogPostsByAuthorIdAsync(int authorId)
         {
             var latestPosts = await _context.BlogPosts
-                .Include(bp => bp.Pictures)
                  .Where(bp => bp.AuthorId == authorId)
+                 .Take(3)
                  .OrderByDescending(bp => bp.Created)
-                 .Take(3).ToListAsync();
+                 .Include(bp => bp.Pictures)
+                 .ToListAsync();
 
             return latestPosts;
         }

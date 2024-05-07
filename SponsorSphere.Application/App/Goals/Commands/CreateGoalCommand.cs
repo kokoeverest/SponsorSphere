@@ -26,7 +26,8 @@ public class CreateGoalCommandHandler : IRequestHandler<CreateGoalCommand, GoalD
             await _unitOfWork.BeginTransactionAsync();
 
             var sportEvent = await _unitOfWork.SportEventsRepository.CreateAsync(request.SportEvent);
-
+            
+            request.Goal.SportEventId = sportEvent.Id;
             var newGoal = await _unitOfWork.GoalsRepository.CreateAsync(request.Goal);
 
             await _unitOfWork.CommitTransactionAsync();

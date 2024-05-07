@@ -9,11 +9,10 @@ namespace SponsorSphereWebAPI.RequestModels.Sponsorships
         [EnumDataType(typeof(SponsorshipLevel))]
         public SponsorshipLevel Level { get; set; }
 
-        [Required]
+        [Range(1, double.MaxValue)]
+        [DataType(DataType.Currency)]
         public decimal Amount { get; set; }
 
-        [Required]
-        [Range(minimum: 0, maximum: int.MaxValue)]
         public int AthleteId {  get; set; }
     }
 }

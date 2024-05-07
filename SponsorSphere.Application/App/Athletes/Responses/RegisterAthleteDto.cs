@@ -1,42 +1,42 @@
 ﻿using SponsorSphere.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphereWebAPI.RequestModels.Athletes
+namespace SponsorSphere.Application.App.Athletes.Responses
 {
-    public class RegisterAthleteRequestModel
+    public class RegisterAthleteDto
     {
+        [StringLength(200, MinimumLength = 2)]
         [Required]
-        [StringLength(maximumLength: 200)]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
         [EnumDataType(typeof(CountryEnum))]
+        [Required]
         public CountryEnum Country { get; set; }
 
+        [RegularExpression(@"^\+?[1-9]{1,3}\s?[\s\-/0-9]+$")]
+        [StringLength(16, MinimumLength = 10)]
         [Required]
-        [Phone]
         public string PhoneNumber { get; set; } = string.Empty;
 
-        [Required]
         [EmailAddress]
-        [StringLength(maximumLength: 100)]
+        [Required]
         public string Email { get; set; } = string.Empty;
 
+        [StringLength(200, MinimumLength = 8)]
         [Required]
-        [MinLength(8)]
-        [MaxLength(200)]
         public string Password { get; set; } = string.Empty;
 
+        [StringLength(200, MinimumLength = 5)]
         [Required]
-        [StringLength(maximumLength: 200)]
         public string LastName { get; set; } = string.Empty;
 
-        [Required]
         [EnumDataType(typeof(SportsEnum))]
+        [Required]
         public SportsEnum Sport { get; set; }
 
+        [Display(Name = "Birth date dd/mm/yyyy")]
+        [StringLength(100, MinimumLength = 9)]
         [Required]
-        [StringLength(maximumLength: 100)]
         public string BirthDate { get; set; } = string.Empty;
     }
 }

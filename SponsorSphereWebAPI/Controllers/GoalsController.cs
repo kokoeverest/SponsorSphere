@@ -7,6 +7,7 @@ using SponsorSphere.Application.App.Goals.Responses;
 using SponsorSphere.Application.App.SportEvents.Queries;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
+using SponsorSphereWebAPI.Filters;
 using SponsorSphereWebAPI.RequestModels.Goals;
 
 namespace SponsorSphereWebAPI.Controllers
@@ -31,6 +32,7 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPost]
         [Route("create")]
+        [ValidateModel]
         public async Task<IActionResult> CreateGoal([FromForm] CreateGoalRequestModel model)
         {
             var user = HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -44,11 +46,6 @@ namespace SponsorSphereWebAPI.Controllers
             if (loggedInUser is null)
             {
                 return Unauthorized("You have to log in first!");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Please enter required fields!");
             }
 
             if (DateTime.UtcNow > DateTime.Parse(model.EventDate).ToUniversalTime())

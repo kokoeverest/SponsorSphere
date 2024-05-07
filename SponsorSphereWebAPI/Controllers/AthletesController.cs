@@ -1,36 +1,34 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Application.App.Athletes.Responses;
-using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
-using SponsorSphereWebAPI.RequestModels.Athletes;
 
 namespace SponsorSphereWebAPI.Controllers
 {
     [ApiController]
     [Route("users/athletes/")]
+    [HttpLogging(HttpLoggingFields.All)]
     public class AthletesController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<AthletesController> _logger;
 
-        public AthletesController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, ILogger<AthletesController> logger)
+
+        public AthletesController(UserManager<User> userManager, IMediator mediator)
         {
             _userManager = userManager;
             _mediator = mediator;
-            _unitOfWork = unitOfWork;
-            _logger = logger;
         }
 
         [HttpGet]
         [Route("")]
+        [HttpLogging(HttpLoggingFields.Duration)]
         public async Task<IActionResult> GetAllAthletes(int pageNumber, int pageSize)
         {
             var resultList = await _mediator.Send(new GetAllAthletesQuery(pageNumber, pageSize));
@@ -85,6 +83,15 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("achievements")]
+        public async Task<IActionResult> GetAthletesByAchievements()
+        {
+            var resultList = await _mediator.Send(new GetAthletesByAchievementsQuery());
+
+            return Ok(resultList);
+        }
+
+        [HttpGet]
         [Route("amount")]
         public async Task<IActionResult> GetAthletesByAmount()
         {
@@ -95,42 +102,17 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> RegisterAthlete([FromForm] RegisterAthleteRequestModel model)
+        //[ValidateModel]
+        public async Task<IActionResult> RegisterAthlete([FromForm] RegisterAthleteDto model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Cannot create profile without required fields! Check your input!");
-            }
-
-            var athlete = new Athlete
-            {
-                Name = model.Name,
-                UserName = model.Email,
-                LastName = model.LastName,
-                Email = model.Email,
-                Country = model.Country,
-                PhoneNumber = model.PhoneNumber,
-                BirthDate = DateTime.Parse(model.BirthDate).ToUniversalTime(),
-                Sport = model.Sport
-            };
-
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
-                // Phone validation not implemented
-
-                var newAthlete = await _userManager.CreateAsync(athlete, model.Password);
-
-                var result = await _userManager.AddToRoleAsync(athlete, RoleConstants.Athlete);
-
-                await _unitOfWork.CommitTransactionAsync();
-
-                return Created();
+                var result = await _mediator.Send(new CreateAthleteCommand(model));
+                return Created(string.Empty, result);
             }
 
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
                 return BadRequest(ex.Message);
             }
         }
@@ -138,35 +120,31 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPatch]
         [Route("update")]
+        //[ValidateModel]
         public async Task<IActionResult> UpdateAthlete([FromForm] AthleteDto updatedAthlete)
         {
+            var athlete = HttpContext.User?.Identity?.Name ?? string.Empty;
+            var loggedInUser = await _userManager.FindByEmailAsync(athlete);
+
+            if (athlete is null)
+            {
+                return NotFound("User not found");
+            }
+
+            if (loggedInUser is null)
+            {
+                return Unauthorized("You have to log in first!");
+            }
+
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
-
-                var athlete = HttpContext.User?.Identity?.Name ?? string.Empty;
-                var loggedInUser = await _userManager.FindByEmailAsync(athlete);
-
-                if (athlete is null)
-                {
-                    return NotFound("User not found");
-                }
-
-                if (loggedInUser is null)
-                {
-                    return Unauthorized("You have to log in first!");
-                }
-
                 var result = await _mediator.Send(new UpdateAthleteCommand(updatedAthlete));
-
-                await _unitOfWork.CommitTransactionAsync();
 
                 return Accepted(result);
             }
 
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
                 return BadRequest(ex.Message);
             }
         }
@@ -174,6 +152,7 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpDelete]
         [Route("delete")]
+        //[ValidateModel]
         public async Task<IActionResult> DeleteAthlete()
         {
             var athlete = HttpContext.User?.Identity?.Name ?? string.Empty;

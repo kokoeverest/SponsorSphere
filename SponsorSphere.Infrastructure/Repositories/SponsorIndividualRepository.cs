@@ -64,14 +64,18 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<SponsorIndividual>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await _context.SponsorIndividuals
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
 
         public async Task<List<SponsorIndividual>> GetByAgeAsync(int age)
         {
+            var birthYearLimit = DateTime.UtcNow.Year - age;
+
             return await _context.SponsorIndividuals
-                .Where(sponsorIndividual => sponsorIndividual.Age <= age)
+                .Where(sponsorIndividual => birthYearLimit <= sponsorIndividual.BirthDate.Year)
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }

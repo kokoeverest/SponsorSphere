@@ -7,6 +7,7 @@ using SponsorSphere.Application.App.BlogPosts.Queries;
 using SponsorSphere.Application.App.BlogPosts.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
+using SponsorSphereWebAPI.Filters;
 using SponsorSphereWebAPI.RequestModels.BlogPosts;
 
 namespace SponsorSphereWebAPI.Controllers
@@ -75,6 +76,7 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize]
         [HttpPost]
         [Route("create")]
+        [ValidateModel]
         public async Task<IActionResult> CreateBlogPost([FromForm] CreateBlogPostRequestModel model)
         {
             var user = this.HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -88,11 +90,6 @@ namespace SponsorSphereWebAPI.Controllers
             if (loggedInUser is null)
             {
                 return Unauthorized("You have to log in first!");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("The content should be at least 50 symbols!");
             }
 
             var blogPost = new BlogPost
@@ -118,6 +115,7 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize]
         [HttpPatch]
         [Route("update")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateBlogPost([FromForm] BlogPostDto blogPost)
         {
             var user = this.HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -131,11 +129,6 @@ namespace SponsorSphereWebAPI.Controllers
             if (loggedInUser is null)
             {
                 return Unauthorized("You have to log in first!");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("The content should be at least 50 symbols!");
             }
 
             if (loggedInUser.Id != blogPost.AuthorId)

@@ -65,6 +65,8 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<SponsorCompany>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await _context.SponsorCompanies
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }

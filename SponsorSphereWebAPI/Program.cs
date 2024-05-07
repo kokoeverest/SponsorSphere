@@ -36,6 +36,7 @@ builder.Services.AddIdentityApiEndpoints<User>(options =>
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = false;
+    options.Lockout.MaxFailedAccessAttempts = 5;
 })
 .AddRoles<UserRole>()
 .AddEntityFrameworkStores<SponsorSphereDbContext>();
