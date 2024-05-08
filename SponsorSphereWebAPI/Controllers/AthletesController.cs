@@ -13,7 +13,6 @@ namespace SponsorSphereWebAPI.Controllers
 {
     [ApiController]
     [Route("users/athletes/")]
-    [HttpLogging(HttpLoggingFields.All)]
     public class AthletesController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
@@ -28,7 +27,6 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("")]
-        [HttpLogging(HttpLoggingFields.Duration)]
         public async Task<IActionResult> GetAllAthletes(int pageNumber, int pageSize)
         {
             var resultList = await _mediator.Send(new GetAllAthletesQuery(pageNumber, pageSize));

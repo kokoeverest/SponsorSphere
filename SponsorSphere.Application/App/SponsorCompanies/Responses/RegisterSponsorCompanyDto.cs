@@ -1,9 +1,9 @@
 ﻿using SponsorSphere.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphereWebAPI.RequestModels.SponsorCompanies
+namespace SponsorSphere.Application.App.SponsorCompanies.Responses
 {
-    public class RegisterSponsorCompanyRequestModel
+    public class RegisterSponsorCompanyDto
     {
         [StringLength(200, MinimumLength = 2)]
         [Required]

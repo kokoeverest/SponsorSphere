@@ -5,10 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Sponsorships.Commands;
 using SponsorSphere.Application.App.Sponsorships.Queries;
 using SponsorSphere.Application.App.Sponsorships.Responses;
-using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
-using SponsorSphereWebAPI.RequestModels.Sponsorships;
 
 namespace SponsorSphereWebAPI.Controllers
 {
@@ -18,15 +16,11 @@ namespace SponsorSphereWebAPI.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<AchievementsController> _logger;
 
-        public SponsorshipsController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, ILogger<AchievementsController> logger)
+        public SponsorshipsController(UserManager<User> userManager, IMediator mediator)
         {
             _userManager = userManager;
             _mediator = mediator;
-            _unitOfWork = unitOfWork;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -41,7 +35,7 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize(Roles = RoleConstants.Sponsor)]
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateSponsorship([FromForm] CreateSponsorshipRequestModel model)
+        public async Task<IActionResult> CreateSponsorship([FromForm] CreateSponsorshipDto model)
         {
             var user = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
@@ -56,25 +50,10 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You are not authorised to do this!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Please enter required fields!");
-            }
-
-            var sponsorship = new Sponsorship
-            {
-                AthleteId = model.AthleteId,
-                SponsorId = loggedInUser.Id,
-                Level = model.Level,
-                Amount = model.Amount
-            };
-
             try
             {
-                // Add a check - if the sponsorship level is Single payment => check if the athlete has a
-                // Goal and if he has => reduce the AmountNeeded of the Goal with the sponsorship amount
-                await _mediator.Send(new CreateSponsorshipCommand(sponsorship));
-                return Created();
+                var result = await _mediator.Send(new CreateSponsorshipCommand(model, loggedInUser.Id));
+                return Created(string.Empty, result);
             }
             catch (Exception ex)
             {
@@ -116,17 +95,12 @@ namespace SponsorSphereWebAPI.Controllers
 
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
-
                 await _mediator.Send(new DeleteSponsorshipCommand(athleteId, loggedInUser.Id));
-
-                await _unitOfWork.CommitTransactionAsync();
                 return NoContent();
             }
 
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
                 return StatusCode(500, ex.Message);
             }
         }
@@ -156,14 +130,11 @@ namespace SponsorSphereWebAPI.Controllers
 
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
                 var result = await _mediator.Send(new UpdateSponsorshipCommand(updatedSponsorship));
-                await _unitOfWork.CommitTransactionAsync();
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
                 return StatusCode(500, ex.Message);
             }
         }

@@ -14,7 +14,21 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<BlogPostDto> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken) =>
- 
-        await _unitOfWork.BlogPostsRepository.UpdateAsync(request.BlogPostToUpdate);
+    public async Task<BlogPostDto> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var result = await _unitOfWork.BlogPostsRepository.UpdateAsync(request.BlogPostToUpdate);
+            await _unitOfWork.CommitTransactionAsync();
+            return result;
+        }
+
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
+    }
+
 }

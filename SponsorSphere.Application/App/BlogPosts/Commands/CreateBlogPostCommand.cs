@@ -6,7 +6,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.BlogPosts.Commands;
 
-public record CreateBlogPostCommand(BlogPost BlogPost) : IRequest<BlogPostDto>;
+public record CreateBlogPostCommand(CreateBlogPostDto BlogPost) : IRequest<BlogPostDto>;
 
 public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostCommand, BlogPostDto>
 {
@@ -21,9 +21,27 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
 
     public async Task<BlogPostDto> Handle(CreateBlogPostCommand request, CancellationToken cancellationToken)
     {
-        var newBlogPost = _unitOfWork.BlogPostsRepository.CreateAsync(request.BlogPost);
-        var mappedBlogPost = _mapper.Map<BlogPostDto>(newBlogPost);
+        var blogPost = new BlogPost
+        {
+            Content = request.BlogPost.Content,
+            AuthorId = request.BlogPost.AuthorId,
+            Author = request.BlogPost.Author
+        };
 
-        return await Task.FromResult(mappedBlogPost);
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var newBlogPost = _unitOfWork.BlogPostsRepository.CreateAsync(blogPost);
+            await _unitOfWork.CommitTransactionAsync();
+
+            var mappedBlogPost = _mapper.Map<BlogPostDto>(newBlogPost);
+            return await Task.FromResult(mappedBlogPost);
+        }
+
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 }

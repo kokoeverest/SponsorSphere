@@ -27,10 +27,6 @@ namespace SponsorSphereWebAPI.Filters
 
                 context.Result = new BadRequestObjectResult(apiError);
             }
-            else
-            {
-                Console.WriteLine($"Action {context.ActionDescriptor.DisplayName}, Controller {context.Controller}");
-            }
         }
     }
 }

@@ -15,6 +15,18 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
 
     public async Task<int> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.BlogPostsRepository.DeleteAsync(request.AuthorId);
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var result = await _unitOfWork.BlogPostsRepository.DeleteAsync(request.AuthorId);
+            await _unitOfWork.CommitTransactionAsync();
+
+            return result;
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 }

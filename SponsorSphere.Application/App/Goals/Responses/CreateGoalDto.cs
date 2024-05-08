@@ -1,9 +1,9 @@
 ﻿using SponsorSphere.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphereWebAPI.RequestModels.Goals
+namespace SponsorSphere.Application.App.Goals.Responses
 {
-    public class CreateGoalRequestModel
+    public class CreateGoalDto
     {
         [StringLength(200, MinimumLength = 10)]
         [Required]

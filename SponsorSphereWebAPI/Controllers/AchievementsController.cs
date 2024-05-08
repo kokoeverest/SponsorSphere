@@ -4,11 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Achievements.Commands;
 using SponsorSphere.Application.App.Achievements.Responses;
-using SponsorSphere.Application.App.SportEvents.Queries;
-using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 using SponsorSphereWebAPI.Filters;
-using SponsorSphereWebAPI.RequestModels.Achievements;
 
 namespace SponsorSphereWebAPI.Controllers
 {
@@ -18,22 +15,18 @@ namespace SponsorSphereWebAPI.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<AchievementsController> _logger;
 
-        public AchievementsController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, ILogger<AchievementsController> logger)
+        public AchievementsController(UserManager<User> userManager, IMediator mediator)
         {
             _userManager = userManager;
             _mediator = mediator;
-            _unitOfWork = unitOfWork;
-            _logger = logger;
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPost]
         [Route("create")]
         [ValidateModel]
-        public async Task<IActionResult> CreateAchievement([FromForm] CreateAchievementRequestModel model)
+        public async Task<IActionResult> CreateAchievement([FromForm] CreateAchievementDto model)
         {
             var user = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
@@ -48,37 +41,14 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            if (DateTime.UtcNow < DateTime.Parse(model.EventDate).ToUniversalTime())
-            {
-                return BadRequest("You can't create an achievement in the future");
-            }
-
-            var sportEvent = new SportEvent
-            {
-                Name = model.Name,
-                Country = model.Country,
-                EventDate = DateTime.Parse(model.EventDate).ToUniversalTime(),
-                Finished = true,
-                EventType = model.EventType,
-                Sport = model.Sport
-            };
-
-            var achievement = new Achievement
-            {
-                Sport = model.Sport,
-                SportEventId = sportEvent.Id,
-                AthleteId = loggedInUser.Id,
-                PlaceFinished = model.PlaceFinished
-            };
-
             try
             {
-                await _mediator.Send(new CreateAchievementCommand(sportEvent, achievement));
+                var achievement = await _mediator.Send(new CreateAchievementCommand(model, loggedInUser.Id));
                 return Created(string.Empty, achievement);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Achievement already exists!");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -102,17 +72,12 @@ namespace SponsorSphereWebAPI.Controllers
 
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
-
                 await _mediator.Send(new DeleteAchievementCommand(sportEventId, athleteId));
-
-                await _unitOfWork.CommitTransactionAsync();
                 return NoContent();
             }
 
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
                 return StatusCode(500, ex.Message);
             }
 
@@ -136,28 +101,24 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            var sportEvent = await _mediator.Send(new GetSportEventByIdQuery(updatedAchievement.SportEventId));
-
-            if (sportEvent is null)
-            {
-                return NotFound("Sport event not found. You should create it first.");
-            }
-
-            if (DateTime.UtcNow < sportEvent.EventDate.ToUniversalTime())
-            {
-                return BadRequest("The sport event can't be in the future");
-            }
-
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
                 var result = await _mediator.Send(new UpdateAchievementCommand(updatedAchievement));
-                await _unitOfWork.CommitTransactionAsync();
                 return Ok(result);
             }
+
+            catch (InvalidDataException exc)
+            {
+                return NotFound(exc.Message);
+            }
+
+            catch (ApplicationException exa)
+            {
+                return BadRequest(exa.Message);
+            }
+
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
                 return StatusCode(500, ex.Message);
             }
         }

@@ -21,8 +21,4 @@
     <ProjectReference Include="..\SponsorSphere.Infrastructure\SponsorSphere.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="RequestModels\Athletes\" />
-  </ItemGroup>
-
 </Project>

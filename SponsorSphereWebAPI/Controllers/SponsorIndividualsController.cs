@@ -1,15 +1,12 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.SponsorIndividuals.Commands;
 using SponsorSphere.Application.App.SponsorIndividuals.Queries;
 using SponsorSphere.Application.App.SponsorIndividuals.Responses;
-using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
-using SponsorSphereWebAPI.RequestModels.SponsorIndividuals;
 
 namespace SponsorSphereWebAPI.Controllers
 {
@@ -19,15 +16,11 @@ namespace SponsorSphereWebAPI.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<SponsorIndividualsController> _logger;
 
-        public SponsorIndividualsController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, ILogger<SponsorIndividualsController> logger)
+        public SponsorIndividualsController(UserManager<User> userManager, IMediator mediator)
         {
             _userManager = userManager;
             _mediator = mediator;
-            _unitOfWork = unitOfWork;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -78,42 +71,22 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> RegisterSponsorIndividual([FromForm] RegisterSponsorIndividualRequestModel model)
+        public async Task<IActionResult> RegisterSponsorIndividual([FromForm] RegisterSponsorIndividualDto model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Cannot create profile without required fields! Check your input!");
-            }
-
-            var sponsorIndividual = new SponsorIndividual
-            {
-                Name = model.Name,
-                UserName = model.Email,
-                LastName = model.LastName,
-                Email = model.Email,
-                Country = model.Country,
-                PhoneNumber = model.PhoneNumber,
-                BirthDate = DateTime.Parse(model.BirthDate).ToUniversalTime(),
-            };
-
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
-                // Phone validation not implemented
+                var result = await _mediator.Send(new CreateSponsorIndividualCommand(model));
+                return Created(string.Empty, result);
+            }
 
-                await _userManager.CreateAsync(sponsorIndividual, model.Password);
-
-                await _userManager.AddToRoleAsync(sponsorIndividual, RoleConstants.Sponsor);
-
-                await _unitOfWork.CommitTransactionAsync();
-
-                return Created();
+            catch (InvalidDataException ex)
+            {
+                return BadRequest(ex.Message);
             }
 
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -122,33 +95,26 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("update")]
         public async Task<IActionResult> UpdateSponsorIndividual([FromForm] SponsorIndividualDto updatedSponsorIndividual)
         {
-            try
+            var sponsorIndividual = HttpContext.User?.Identity?.Name ?? string.Empty;
+            var loggedInUser = await _userManager.FindByEmailAsync(sponsorIndividual);
+
+            if (sponsorIndividual is null)
             {
-                await _unitOfWork.BeginTransactionAsync();
-
-                var sponsorIndividual = HttpContext.User?.Identity?.Name ?? string.Empty;
-                var loggedInUser = await _userManager.FindByEmailAsync(sponsorIndividual);
-
-                if (sponsorIndividual is null)
-                {
-                    return NotFound("User not found");
-                }
-
-                if (loggedInUser is null)
-                {
-                    return Unauthorized("You have to log in first!");
-                }
-
-                var result = await _mediator.Send(new UpdateSponsorIndividualCommand(updatedSponsorIndividual));
-
-                await _unitOfWork.CommitTransactionAsync();
-
-                return Accepted(result);
+                return NotFound("User not found");
             }
 
+            if (loggedInUser is null)
+            {
+                return Unauthorized("You have to log in first!");
+            }
+
+            try
+            {
+                var result = await _mediator.Send(new UpdateSponsorIndividualCommand(updatedSponsorIndividual));
+                return Accepted(result);
+            }
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
                 return BadRequest(ex.Message);
             }
         }

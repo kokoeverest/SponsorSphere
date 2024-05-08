@@ -20,10 +20,19 @@ public class UpdateSponsorCompanyCommandHandler : IRequestHandler<UpdateSponsorC
 
     public async Task<SponsorCompanyDto> Handle(UpdateSponsorCompanyCommand request, CancellationToken cancellationToken)
     {
-        var updatedSponsorCompany = _unitOfWork.SponsorCompaniesRepository.UpdateAsync(request.SponsorCompanyToUpdate);
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var result = await _unitOfWork.SponsorCompaniesRepository.UpdateAsync(request.SponsorCompanyToUpdate);
+            await _unitOfWork.CommitTransactionAsync();
 
-        var updatedSponsorCompanyDto = _mapper.Map<SponsorCompanyDto>(updatedSponsorCompany);
+            return result;
+        }
 
-        return await Task.FromResult(updatedSponsorCompanyDto);
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 }

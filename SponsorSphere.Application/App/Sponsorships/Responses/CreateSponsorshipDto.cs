@@ -1,9 +1,9 @@
 ﻿using SponsorSphere.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphereWebAPI.RequestModels.Sponsorships
+namespace SponsorSphere.Application.App.Sponsorships.Responses
 {
-    public class CreateSponsorshipRequestModel
+    public class CreateSponsorshipDto
     {
         [Required]
         [EnumDataType(typeof(SponsorshipLevel))]

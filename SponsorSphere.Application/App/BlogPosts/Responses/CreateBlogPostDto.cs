@@ -1,9 +1,9 @@
 ﻿using SponsorSphere.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphereWebAPI.RequestModels.BlogPosts
+namespace SponsorSphere.Application.App.BlogPosts.Responses
 {
-    public class CreateBlogPostRequestModel
+    public class CreateBlogPostDto
     {
         public int Id { get; set; }
 

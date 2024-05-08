@@ -4,8 +4,8 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Pictures.Commands;
 
-public record DeletePictureCommand(PictureDto Picture) : IRequest<int>;
-public class DeletePictureCommandHandler : IRequestHandler<DeletePictureCommand, int>
+public record DeletePictureCommand(PictureDto Picture) : IRequest;
+public class DeletePictureCommandHandler : IRequestHandler<DeletePictureCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -14,9 +14,20 @@ public class DeletePictureCommandHandler : IRequestHandler<DeletePictureCommand,
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> Handle(DeletePictureCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeletePictureCommand request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.PicturesRepository.DeleteAsync(request.Picture);
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            await _unitOfWork.PicturesRepository.DeleteAsync(request.Picture);
+            await _unitOfWork.CommitTransactionAsync();
+        }
+
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 }
 

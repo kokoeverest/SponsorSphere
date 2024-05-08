@@ -16,8 +16,19 @@ public class UpdateSponsorshipCommandHandler : IRequestHandler<UpdateSponsorship
 
     public async Task<SponsorshipDto> Handle(UpdateSponsorshipCommand request, CancellationToken cancellationToken)
     {
-        var updatedSponsorship = await _unitOfWork.SponsorshipsRepository.UpdateAsync(request.SponsorshipToUpdate);
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var updatedSponsorship = await _unitOfWork.SponsorshipsRepository.UpdateAsync(request.SponsorshipToUpdate);
+            await _unitOfWork.CommitTransactionAsync();
+            return await Task.FromResult(updatedSponsorship);
+        }
 
-        return await Task.FromResult(updatedSponsorship);
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
+
     }
 }

@@ -3,10 +3,11 @@ using MediatR;
 using SponsorSphere.Application.App.Goals.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
+using System.Reflection;
 
 namespace SponsorSphere.Application.App.Goals.Commands;
 
-public record CreateGoalCommand(SportEvent SportEvent, Goal Goal) : IRequest<GoalDto>;
+public record CreateGoalCommand(CreateGoalDto Model, int AthleteId) : IRequest<GoalDto>;
 
 public class CreateGoalCommandHandler : IRequestHandler<CreateGoalCommand, GoalDto>
 {
@@ -21,17 +22,39 @@ public class CreateGoalCommandHandler : IRequestHandler<CreateGoalCommand, GoalD
 
     public async Task<GoalDto> Handle(CreateGoalCommand request, CancellationToken cancellationToken)
     {
+        if (DateTime.UtcNow > DateTime.Parse(request.Model.EventDate).ToUniversalTime())
+        {
+            throw new InvalidDataException("You can't create a goal in the past");
+        }
+
+        var sportEvent = new SportEvent
+        {
+            Name = request.Model.Name,
+            Country = request.Model.Country,
+            EventDate = DateTime.Parse(request.Model.EventDate).ToUniversalTime(),
+            Finished = true,
+            EventType = request.Model.EventType,
+            Sport = request.Model.Sport
+        };
+
         try
         {
             await _unitOfWork.BeginTransactionAsync();
+            await _unitOfWork.SportEventsRepository.CreateAsync(sportEvent);
 
-            var sportEvent = await _unitOfWork.SportEventsRepository.CreateAsync(request.SportEvent);
+            var goal = new Goal
+            {
+                Sport = request.Model.Sport,
+                SportEventId = sportEvent.Id,
+                AthleteId = request.AthleteId,
+                Date = sportEvent.EventDate,
+                AmountNeeded = request.Model.AmountNeeded
+            };
             
-            request.Goal.SportEventId = sportEvent.Id;
-            var newGoal = await _unitOfWork.GoalsRepository.CreateAsync(request.Goal);
-
+            await _unitOfWork.GoalsRepository.CreateAsync(goal);
             await _unitOfWork.CommitTransactionAsync();
-            var mappedGoal = _mapper.Map<GoalDto>(newGoal);
+
+            var mappedGoal = _mapper.Map<GoalDto>(goal);
 
             return await Task.FromResult(mappedGoal);
         }

@@ -14,7 +14,26 @@ public class UpdateGoalCommandHandler : IRequestHandler<UpdateGoalCommand, GoalD
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<GoalDto> Handle(UpdateGoalCommand request, CancellationToken cancellationToken) => 
-        
-        await _unitOfWork.GoalsRepository.UpdateAsync(request.GoalToUpdate);
+    public async Task<GoalDto> Handle(UpdateGoalCommand request, CancellationToken cancellationToken)
+    {
+        if (DateTime.UtcNow > request.GoalToUpdate.Date.ToUniversalTime())
+        {
+            throw new InvalidDataException("You can't create a goal in the past");
+        }
+
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var result = await _unitOfWork.GoalsRepository.UpdateAsync(request.GoalToUpdate);
+            await _unitOfWork.CommitTransactionAsync();
+
+            return result;
+        }
+
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
+    } 
 }

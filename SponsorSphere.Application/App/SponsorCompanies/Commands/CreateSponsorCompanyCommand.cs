@@ -1,79 +1,53 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SponsorSphere.Application.App.SponsorCompanies.Responses;
 using SponsorSphere.Application.Interfaces;
-using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SponsorCompanies.Commands;
 
-public record CreateSponsorCompanyCommand(
-    string Name,
-    string Email,
-    string Password,
-    CountryEnum Country,
-    string PhoneNumber,
-    string Iban
-    ) : IRequest<SponsorCompanyDto>;
+public record CreateSponsorCompanyCommand(RegisterSponsorCompanyDto SponsorCompany) : IRequest<SponsorCompanyDto>;
 
 public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorCompanyCommand, SponsorCompanyDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public CreateSponsorCompanyCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly UserManager<User> _userManager;
+    public CreateSponsorCompanyCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<SponsorCompanyDto> Handle(CreateSponsorCompanyCommand request, CancellationToken cancellationToken)
     {
-        IEnumerable<string> strings =
-        [
-            request.Name,
-            request.Email,
-            request.Password,
-            request.Country.ToString(),
-            request.PhoneNumber,
-            request.Iban
-        ];
-
-        if (strings.Any(string.IsNullOrEmpty))
+        var sponsorCompany = new SponsorCompany
         {
-            throw new InvalidDataException("Cannot create profile without required fields! Check your input!");
-        }
+            Name = request.SponsorCompany.Name,
+            UserName = request.SponsorCompany.Email,
+            Email = request.SponsorCompany.Email,
+            Country = request.SponsorCompany.Country,
+            PhoneNumber = request.SponsorCompany.PhoneNumber,
+            IBAN = request.SponsorCompany.IBAN
+        };
 
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            // Phone, Email and Password validations
 
-            var sponsorCompany = new SponsorCompany
-            {
-                Name = request.Name,
-                Email = request.Email,
-                //Password = request.Password,
-                Country = request.Country,
-                PhoneNumber = request.PhoneNumber,
-                IBAN = request.Iban
-            };
+            await _userManager.CreateAsync(sponsorCompany, request.SponsorCompany.Password);
+            await _userManager.AddToRoleAsync(sponsorCompany, RoleConstants.Sponsor);
 
-            var newSponsorCompany = await _unitOfWork.SponsorCompaniesRepository.CreateAsync(sponsorCompany);
             await _unitOfWork.CommitTransactionAsync();
 
-            var sponsorCompanyDto = _mapper.Map<SponsorCompanyDto>(newSponsorCompany);
+            var sponsorCompanyDto = _mapper.Map<SponsorCompanyDto>(sponsorCompany);
             return await Task.FromResult(sponsorCompanyDto);
         }
 
-        catch (InvalidDataException e)
+        catch (Exception)
         {
-            await Console.Out.WriteLineAsync(e.Message);
-            throw;
-        }
-
-        catch (Exception ex)
-        {
-            await Console.Out.WriteLineAsync(ex.Message);
             await _unitOfWork.RollbackTransactionAsync();
             throw;
         }

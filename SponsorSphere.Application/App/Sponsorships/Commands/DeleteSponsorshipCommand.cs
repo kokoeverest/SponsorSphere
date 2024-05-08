@@ -3,8 +3,8 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Sponsorships.Commands;
 
-public record DeleteSponsorshipCommand(int AthleteId, int SponsorId) : IRequest<int>;
-public class DeleteSponsorshipCommandHandler : IRequestHandler<DeleteSponsorshipCommand, int>
+public record DeleteSponsorshipCommand(int AthleteId, int SponsorId) : IRequest;
+public class DeleteSponsorshipCommandHandler : IRequestHandler<DeleteSponsorshipCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -13,8 +13,19 @@ public class DeleteSponsorshipCommandHandler : IRequestHandler<DeleteSponsorship
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> Handle(DeleteSponsorshipCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteSponsorshipCommand request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.SponsorshipsRepository.DeleteAsync(request.AthleteId, request.SponsorId);
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            await _unitOfWork.SponsorshipsRepository.DeleteAsync(request.AthleteId, request.SponsorId);
+            await _unitOfWork.CommitTransactionAsync();
+        }
+
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 }

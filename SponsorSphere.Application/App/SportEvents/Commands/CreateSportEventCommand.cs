@@ -6,7 +6,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SportEvents.Commands;
 
-public record CreateSportEventCommand(SportEvent SportEvent) : IRequest<SportEventDto>;
+public record CreateSportEventCommand(CreateSportEventDto SportEvent) : IRequest<SportEventDto>;
 public class CreateSportEventCommandHandler : IRequestHandler<CreateSportEventCommand, SportEventDto>
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -18,11 +18,30 @@ public class CreateSportEventCommandHandler : IRequestHandler<CreateSportEventCo
     }
     public async Task<SportEventDto> Handle(CreateSportEventCommand request, CancellationToken cancellationToken)
     {
-        request.SportEvent.Finished = true && request.SportEvent.EventDate < DateTime.UtcNow.Subtract(TimeSpan.FromDays(1));
+        var sportEvent = new SportEvent
+        {
+            Name = request.SportEvent.Name,
+            Country = request.SportEvent.Country,
+            EventDate = DateTime.Parse(request.SportEvent.EventDate).ToUniversalTime(),
+            EventType = request.SportEvent.EventType,
+            Sport = request.SportEvent.Sport
+        };
 
-        var newSportEvent = await _unitOfWork.SportEventsRepository.CreateAsync(request.SportEvent);
-        var mappedSportEvent = _mapper.Map<SportEventDto>(newSportEvent);
+        sportEvent.Finished = true && sportEvent.EventDate < DateTime.UtcNow.Subtract(TimeSpan.FromDays(1));
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var newSportEvent = await _unitOfWork.SportEventsRepository.CreateAsync(sportEvent);
+            await _unitOfWork.CommitTransactionAsync();
 
-        return await Task.FromResult(mappedSportEvent);
+            var mappedSportEvent = _mapper.Map<SportEventDto>(newSportEvent);
+            return await Task.FromResult(mappedSportEvent);
+        }
+
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 }

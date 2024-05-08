@@ -5,10 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.BlogPosts.Commands;
 using SponsorSphere.Application.App.BlogPosts.Queries;
 using SponsorSphere.Application.App.BlogPosts.Responses;
-using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
-using SponsorSphereWebAPI.Filters;
-using SponsorSphereWebAPI.RequestModels.BlogPosts;
 
 namespace SponsorSphereWebAPI.Controllers
 {
@@ -18,16 +15,11 @@ namespace SponsorSphereWebAPI.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<BlogPostsController> _logger;
 
-
-        public BlogPostsController(UserManager<User> userManager, IMediator mediator, IUnitOfWork unitOfWork, ILogger<BlogPostsController> logger)
+        public BlogPostsController(UserManager<User> userManager, IMediator mediator)
         {
             _userManager = userManager;
             _mediator = mediator;
-            _unitOfWork = unitOfWork;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -76,8 +68,8 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize]
         [HttpPost]
         [Route("create")]
-        [ValidateModel]
-        public async Task<IActionResult> CreateBlogPost([FromForm] CreateBlogPostRequestModel model)
+        //[ValidateModel]
+        public async Task<IActionResult> CreateBlogPost([FromForm] CreateBlogPostDto model)
         {
             var user = this.HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
@@ -92,30 +84,24 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            var blogPost = new BlogPost
-            {
-                Content = model.Content,
-                AuthorId = loggedInUser.Id,
-                Author = loggedInUser
-            };
+            model.AuthorId = loggedInUser.Id;
+            model.Author = loggedInUser;
 
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
-                await _mediator.Send(new CreateBlogPostCommand(blogPost));
-                return Ok();
+                var result = await _mediator.Send(new CreateBlogPostCommand(model));
+                return Created(string.Empty, result);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-
         }
 
         [Authorize]
         [HttpPatch]
         [Route("update")]
-        [ValidateModel]
+        //[ValidateModel]
         public async Task<IActionResult> UpdateBlogPost([FromForm] BlogPostDto blogPost)
         {
             var user = this.HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -133,19 +119,16 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser.Id != blogPost.AuthorId)
             {
-                return Unauthorized("You are not the author of this post!");
+                return Forbid("You are not the author of this post!");
             }
 
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
-                await _mediator.Send(new UpdateBlogPostCommand(blogPost));
-                await _unitOfWork.CommitTransactionAsync();
-                return Ok();
+                var result = await _mediator.Send(new UpdateBlogPostCommand(blogPost));
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
                 return StatusCode(500, ex.Message);
             }
         }
@@ -170,14 +153,13 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser.Id != blogPost.AuthorId)
             {
-                return Unauthorized("You are not the author of this post!");
+                return Forbid("You are not the author of this post!");
             }
 
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
                 await _mediator.Send(new DeleteBlogPostCommand(blogPost.Id));
-                return Ok();
+                return NoContent();
             }
             catch (Exception ex)
             {

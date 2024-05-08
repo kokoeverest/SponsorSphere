@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphereWebAPI.RequestModels.Pictures
+namespace SponsorSphere.Application.App.Pictures.Responses
 {
-    public class CreatePictureRequestModel
+    public class CreatePictureDto
     {
         public int Id { get; set; }
 

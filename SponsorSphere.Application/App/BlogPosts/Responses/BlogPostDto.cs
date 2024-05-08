@@ -1,5 +1,4 @@
-﻿using SponsorSphere.Application.App.Users.Responses;
-using SponsorSphere.Domain.Models;
+﻿using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.BlogPosts.Responses
 {

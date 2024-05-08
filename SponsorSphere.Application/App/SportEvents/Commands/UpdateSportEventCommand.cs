@@ -17,9 +17,18 @@ public class UpdateSportEventCommandHandler : IRequestHandler<UpdateSportEventCo
     public async Task<SportEventDto> Handle(UpdateSportEventCommand request, CancellationToken cancellationToken)
     {
         request.SportEventToUpdate.Finished = true && request.SportEventToUpdate.EventDate < DateTime.UtcNow.Subtract(TimeSpan.FromDays(1));
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var updatedSportEvent = await _unitOfWork.SportEventsRepository.UpdateAsync(request.SportEventToUpdate);
+            await _unitOfWork.CommitTransactionAsync();
+            return await Task.FromResult(updatedSportEvent);
+        }
 
-        var updatedSportEvent = await _unitOfWork.SportEventsRepository.UpdateAsync(request.SportEventToUpdate);
-
-        return await Task.FromResult(updatedSportEvent);
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 }

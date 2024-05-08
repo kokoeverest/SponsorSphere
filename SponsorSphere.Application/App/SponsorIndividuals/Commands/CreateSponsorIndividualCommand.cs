@@ -1,40 +1,58 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using SponsorSphere.Application.App.SponsorCompanies.Responses;
 using SponsorSphere.Application.App.SponsorIndividuals.Responses;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
+using System.Reflection;
 
 namespace SponsorSphere.Application.App.SponsorIndividuals.Commands;
-public record CreateSponsorIndividualCommand(SponsorIndividual SponsorIndividual) : IRequest<SponsorIndividualDto>;
+public record CreateSponsorIndividualCommand(RegisterSponsorIndividualDto SponsorIndividual) : IRequest<SponsorIndividualDto>;
 
 public class CreateSponsorIndividualCommandHandler : IRequestHandler<CreateSponsorIndividualCommand, SponsorIndividualDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public CreateSponsorIndividualCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly UserManager<User> _userManager;
+
+    public CreateSponsorIndividualCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<SponsorIndividualDto> Handle(CreateSponsorIndividualCommand request, CancellationToken cancellationToken)
     {
+        var sponsorIndividual = new SponsorIndividual
+        {
+            Name = request.SponsorIndividual.Name,
+            UserName = request.SponsorIndividual.Email,
+            Email = request.SponsorIndividual.Email,
+            Country = request.SponsorIndividual.Country,
+            PhoneNumber = request.SponsorIndividual.PhoneNumber,
+            LastName = request.SponsorIndividual.LastName,
+            BirthDate = DateTime.Parse(request.SponsorIndividual.BirthDate).ToUniversalTime()
+        };
+
         try
         {
-            var newSponsorIndividual = await _unitOfWork.SponsorIndividualsRepository.CreateAsync(request.SponsorIndividual);
+            await _unitOfWork.BeginTransactionAsync();
 
-            var sponsorIndividualDto = _mapper.Map<SponsorIndividualDto>(newSponsorIndividual);
+            await _userManager.CreateAsync(sponsorIndividual, request.SponsorIndividual.Password);
+            await _userManager.AddToRoleAsync(sponsorIndividual, RoleConstants.Sponsor);
+
+            await _unitOfWork.CommitTransactionAsync();
+
+            var sponsorIndividualDto = _mapper.Map<SponsorIndividualDto>(sponsorIndividual);
             return await Task.FromResult(sponsorIndividualDto);
-        }
-
-        catch (InvalidDataException)
-        {
-            throw;
         }
 
         catch (Exception)
         {
+            await _unitOfWork.RollbackTransactionAsync();
             throw;
         }
     }
