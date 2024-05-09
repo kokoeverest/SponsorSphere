@@ -6,7 +6,6 @@ using SponsorSphere.Application.App.Goals.Commands;
 using SponsorSphere.Application.App.Goals.Responses;
 using SponsorSphere.Application.App.SportEvents.Queries;
 using SponsorSphere.Domain.Models;
-using SponsorSphereWebAPI.Filters;
 
 namespace SponsorSphereWebAPI.Controllers
 {
@@ -26,7 +25,6 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPost]
         [Route("create")]
-        [ValidateModel]
         public async Task<IActionResult> CreateGoal([FromForm] CreateGoalDto model)
         {
             var user = HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -42,22 +40,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new CreateGoalCommand(model, loggedInUser.Id));
-                return Created(string.Empty, result);
-            }
-
-            catch (InvalidDataException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-
+            var result = await _mediator.Send(new CreateGoalCommand(model, loggedInUser.Id));
+            return Created(string.Empty, result);
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
@@ -78,17 +62,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                await _mediator.Send(new DeleteGoalCommand(sportEventId, athleteId));
-                return NoContent();
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-
+            await _mediator.Send(new DeleteGoalCommand(sportEventId, athleteId));
+            return NoContent();
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
@@ -116,21 +91,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return NotFound("Sport event not found. You should create it first.");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new UpdateGoalCommand(updatedGoal));
-                return Ok(result);
-            }
-
-            catch (InvalidDataException exc)
-            {
-                return BadRequest(exc.Message);
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new UpdateGoalCommand(updatedGoal));
+            return Ok(result);
         }
     }
 }

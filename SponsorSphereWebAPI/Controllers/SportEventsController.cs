@@ -28,7 +28,6 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetSportEventById(int id)
         {
             var sportEvents = await _mediator.Send(new GetSportEventByIdQuery(id));
-
             return Ok(sportEvents);
         }
 
@@ -50,15 +49,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You are not authorised to do this!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new CreateSportEventCommand(model));
-                return Created(string.Empty, result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new CreateSportEventCommand(model));
+            return Created(string.Empty, result);
         }
 
         [Authorize(Roles = RoleConstants.Admin)]
@@ -79,25 +71,10 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var existingSportEvent = await _mediator.Send(new GetSportEventByIdQuery(sportEventId));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            await _mediator.Send(new GetSportEventByIdQuery(sportEventId));
 
-            try
-            {
-                await _mediator.Send(new DeleteSportEventCommand(sportEventId));
-                return NoContent();
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            await _mediator.Send(new DeleteSportEventCommand(sportEventId));
+            return NoContent();
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
@@ -118,15 +95,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new UpdateSportEventCommand(updatedSportEvent));
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new UpdateSportEventCommand(updatedSportEvent));
+            return Ok(result);
         }
     }
 }

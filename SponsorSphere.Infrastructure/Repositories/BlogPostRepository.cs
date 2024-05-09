@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.BlogPosts.Responses;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -30,6 +31,8 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int pageNumber, int pageSize, int authorId)
         {
+            var author = _context.Users.FirstOrDefault(u => u.Id == authorId) ?? throw new NotFoundException($"User with id {authorId} not found");
+
             return await _context.BlogPosts
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -49,14 +52,14 @@ namespace SponsorSphere.Infrastructure.Repositories
             {
                 return blogPost;
             }
-            throw new ApplicationException($"Post with id {blogPostId} not found");
+            throw new NotFoundException($"Post with id {blogPostId} not found");
         }
 
         public async Task<List<BlogPost>> GetLatestBlogPostsAsync()
         {
             var latestPosts = await _context.BlogPosts
                 .Take(3)
-                .OrderByDescending(bp => bp.Created)
+                .OrderByDescending(bp => bp.Created) // orderbydescending
                 .Include(bp => bp.Pictures)
                 .ToListAsync();
 
@@ -65,10 +68,12 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<List<BlogPost>> GetLatestBlogPostsByAuthorIdAsync(int authorId)
         {
+            var author = _context.Users.FirstOrDefault(u => u.Id == authorId) ?? throw new NotFoundException($"User with id {authorId} not found");
+
             var latestPosts = await _context.BlogPosts
                  .Where(bp => bp.AuthorId == authorId)
                  .Take(3)
-                 .OrderByDescending(bp => bp.Created)
+                 .OrderByDescending(bp => bp.Created) // orderbydescending
                  .Include(bp => bp.Pictures)
                  .ToListAsync();
 

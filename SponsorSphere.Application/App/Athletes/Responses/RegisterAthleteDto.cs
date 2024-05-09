@@ -26,7 +26,7 @@ namespace SponsorSphere.Application.App.Athletes.Responses
         [Required]
         public string Password { get; set; } = string.Empty;
 
-        [StringLength(200, MinimumLength = 5)]
+        [StringLength(200, MinimumLength = 2)]
         [Required]
         public string LastName { get; set; } = string.Empty;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.SportEvents.Responses;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -43,7 +44,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             {
                 return sportEvent;
             }
-            throw new ApplicationException($"SportEvent with id {sportEventId} not found");
+            throw new NotFoundException($"SportEvent with id {sportEventId} not found");
         }
 
         public async Task<SportEvent?> SearchAsync(SportEvent sportEvent)

@@ -3,6 +3,8 @@ using SponsorSphere.Application;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure;
 using SponsorSphere.Infrastructure.Extensions;
+using SponsorSphereWebAPI.Extensions;
+using SponsorSphereWebAPI.Filters;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text.Json.Serialization;
 
@@ -10,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options => options.Filters.Add<DurationLogActionFilter>())
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -55,7 +57,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapIdentityApi<User>();
-
+app.UseExceptionHandling();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -26,21 +26,13 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetBlogPostsById(int id)
         {
-            try
-            {
-                var blogPost = await _mediator.Send(new GetBlogPostByIdQuery(id));
-                return Ok(blogPost);
-            }
-
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var blogPost = await _mediator.Send(new GetBlogPostByIdQuery(id));
+            return Ok(blogPost);
         }
 
         [HttpGet]
         [Route("author/{authorId}")]
-        public async Task<IActionResult> GetBlogPostsByAuthorId(int pageNumber, int pageSize, int authorId)
+        public async Task<IActionResult> GetBlogPostsByAuthorId(int authorId, int pageNumber = 1, int pageSize = 10)
         {
             var blogPosts = await _mediator.Send(new GetBlogPostByAuthorIdQuery(pageNumber, pageSize, authorId));
             return Ok(blogPosts);
@@ -52,7 +44,6 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetLatestBlogPosts()
         {
             var latestBlogPosts = await _mediator.Send(new GetLatestBlogPostsQuery());
-
             return Ok(latestBlogPosts);
         }
 
@@ -61,14 +52,12 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetLatestBlogPostsByAuthorId(int authorId)
         {
             var latestBlogPosts = await _mediator.Send(new GetLatestBlogPostsByAuthorIdQuery(authorId));
-
             return Ok(latestBlogPosts);
         }
 
         [Authorize]
         [HttpPost]
         [Route("create")]
-        //[ValidateModel]
         public async Task<IActionResult> CreateBlogPost([FromForm] CreateBlogPostDto model)
         {
             var user = this.HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -87,21 +76,13 @@ namespace SponsorSphereWebAPI.Controllers
             model.AuthorId = loggedInUser.Id;
             model.Author = loggedInUser;
 
-            try
-            {
-                var result = await _mediator.Send(new CreateBlogPostCommand(model));
-                return Created(string.Empty, result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new CreateBlogPostCommand(model));
+            return Created(string.Empty, result);
         }
 
         [Authorize]
         [HttpPatch]
         [Route("update")]
-        //[ValidateModel]
         public async Task<IActionResult> UpdateBlogPost([FromForm] BlogPostDto blogPost)
         {
             var user = this.HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -122,15 +103,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Forbid("You are not the author of this post!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new UpdateBlogPostCommand(blogPost));
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new UpdateBlogPostCommand(blogPost));
+            return Ok(result);
         }
 
         [Authorize]
@@ -156,15 +130,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Forbid("You are not the author of this post!");
             }
 
-            try
-            {
-                await _mediator.Send(new DeleteBlogPostCommand(blogPost.Id));
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            await _mediator.Send(new DeleteBlogPostCommand(blogPost.Id));
+            return NoContent();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.SponsorIndividuals.Responses;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
@@ -46,7 +47,7 @@ namespace SponsorSphere.Infrastructure.Repositories
 
             if (sponsorIndividual is null)
             {
-                throw new ApplicationException($"Sponsor with id {userId} not found");
+                throw new NotFoundException($"Sponsor with id {userId} not found");
             }
 
             sponsorIndividual.BlogPosts = await _context.BlogPosts

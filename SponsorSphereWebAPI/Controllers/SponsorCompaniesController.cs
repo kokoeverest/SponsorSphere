@@ -42,10 +42,9 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetAllSponsorCompanies(int pageNumber, int pageSize)
+        public async Task<IActionResult> GetAllSponsorCompanies(int pageNumber = 1, int pageSize = 10)
         {
             var resultList = await _mediator.Send(new GetAllSponsorCompaniesQuery(pageNumber, pageSize));
-
             return Ok(resultList);
         }
 
@@ -53,19 +52,8 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetSponsorCompanyById(int id)
         {
-            try
-            {
-                var result = await _mediator.Send(new GetSponsorCompanyByIdQuery(id));
-                return Ok(result);
-            }
-            catch (ApplicationException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new GetSponsorCompanyByIdQuery(id));
+            return Ok(result);
         }
 
         [HttpGet]
@@ -73,7 +61,6 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetSponsorCompaniesByCountry(CountryEnum country)
         {
             var resultList = await _mediator.Send(new GetSponsorCompaniesByCountryQuery(country));
-
             return Ok(resultList);
         }
 
@@ -81,21 +68,8 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("register")]
         public async Task<IActionResult> RegisterSponsorCompany([FromForm] RegisterSponsorCompanyDto model)
         {
-            try
-            {
-                var result = await _mediator.Send(new CreateSponsorCompanyCommand(model));
-                return Created(string.Empty, result);
-            }
-
-            catch (InvalidDataException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new CreateSponsorCompanyCommand(model));
+            return Created(string.Empty, result);
         }
 
         [Authorize(Roles = RoleConstants.Sponsor)]
@@ -116,15 +90,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new UpdateSponsorCompanyCommand(updatedSponsorCompany));
-                return Accepted(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _mediator.Send(new UpdateSponsorCompanyCommand(updatedSponsorCompany));
+            return Accepted(result);
         }
 
         [Authorize(Roles = RoleConstants.Admin)]

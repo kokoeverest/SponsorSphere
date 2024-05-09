@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.App.Athletes.Responses;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
@@ -46,7 +47,7 @@ namespace SponsorSphere.Infrastructure.Repositories
 
             if (athlete is null)
             {
-                throw new ApplicationException($"Athlete with id {athleteId} not found");
+                throw new NotFoundException($"Athlete with id {athleteId} not found");
             }
 
             athlete.BlogPosts = await _context.BlogPosts

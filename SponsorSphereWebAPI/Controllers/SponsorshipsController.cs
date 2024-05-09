@@ -28,7 +28,6 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetSponsorshipsByLevel(SponsorshipLevel level)
         {
             var sponsorships = await _mediator.Send(new GetSponsorshipsByLevelQuery(level));
-
             return Ok(sponsorships);
         }
 
@@ -50,15 +49,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You are not authorised to do this!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new CreateSponsorshipCommand(model, loggedInUser.Id));
-                return Created(string.Empty, result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new CreateSponsorshipCommand(model, loggedInUser.Id));
+            return Created(string.Empty, result);
         }
 
         [Authorize(Roles = RoleConstants.Sponsor)]
@@ -79,30 +71,15 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var existingSponsorship = await _mediator.Send(new GetSponsorshipQuery(athleteId, loggedInUser.Id));
+            var existingSponsorship = await _mediator.Send(new GetSponsorshipQuery(athleteId, loggedInUser.Id));
 
-                if (loggedInUser.Id != existingSponsorship.SponsorId)
-                {
-                    return Unauthorized("You are not authorised to do this!");
-                }
-            }
-            catch (Exception ex)
+            if (loggedInUser.Id != existingSponsorship.SponsorId)
             {
-                return NotFound(ex.Message);
+                return Unauthorized("You are not authorised to do this!");
             }
 
-            try
-            {
-                await _mediator.Send(new DeleteSponsorshipCommand(athleteId, loggedInUser.Id));
-                return NoContent();
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            await _mediator.Send(new DeleteSponsorshipCommand(athleteId, loggedInUser.Id));
+            return NoContent();
         }
 
         [Authorize(Roles = RoleConstants.Sponsor)]
@@ -128,15 +105,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You are not authorised to do this!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new UpdateSponsorshipCommand(updatedSponsorship));
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new UpdateSponsorshipCommand(updatedSponsorship));
+            return Ok(result);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Athletes.Commands;
@@ -27,10 +26,9 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetAllAthletes(int pageNumber, int pageSize)
+        public async Task<IActionResult> GetAllAthletes(int pageNumber = 1, int pageSize = 10)
         {
             var resultList = await _mediator.Send(new GetAllAthletesQuery(pageNumber, pageSize));
-
             return Ok(resultList);
         }
 
@@ -38,19 +36,8 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetAthleteById(int id)
         {
-            try
-            {
-                var result = await _mediator.Send(new GetAthleteByIdQuery(id));
-                return Ok(result);
-            }
-            catch (ApplicationException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new GetAthleteByIdQuery(id));
+            return Ok(result);
         }
 
         [HttpGet]
@@ -58,7 +45,6 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetAthletesByCountry(CountryEnum country)
         {
             var resultList = await _mediator.Send(new GetAthletesByCountryQuery(country));
-
             return Ok(resultList);
         }
 
@@ -67,7 +53,6 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetAthletesBySport(SportsEnum sport)
         {
             var resultList = await _mediator.Send(new GetAthletesBySportQuery(sport));
-
             return Ok(resultList);
         }
 
@@ -76,7 +61,6 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetAthletesByAge(int age)
         {
             var resultList = await _mediator.Send(new GetAthletesByAgeQuery(age));
-
             return Ok(resultList);
         }
 
@@ -85,7 +69,6 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetAthletesByAchievements()
         {
             var resultList = await _mediator.Send(new GetAthletesByAchievementsQuery());
-
             return Ok(resultList);
         }
 
@@ -94,31 +77,20 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetAthletesByAmount()
         {
             var resultList = await _mediator.Send(new GetAthletesByAmountSponsoredQuery());
-
             return Ok(resultList);
         }
 
         [HttpPost]
         [Route("register")]
-        //[ValidateModel]
         public async Task<IActionResult> RegisterAthlete([FromForm] RegisterAthleteDto model)
         {
-            try
-            {
-                var result = await _mediator.Send(new CreateAthleteCommand(model));
-                return Created(string.Empty, result);
-            }
-
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _mediator.Send(new CreateAthleteCommand(model));
+            return Created(string.Empty, result);
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPatch]
         [Route("update")]
-        //[ValidateModel]
         public async Task<IActionResult> UpdateAthlete([FromForm] AthleteDto updatedAthlete)
         {
             var athlete = HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -134,23 +106,13 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new UpdateAthleteCommand(updatedAthlete));
-
-                return Accepted(result);
-            }
-
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _mediator.Send(new UpdateAthleteCommand(updatedAthlete));
+            return Accepted(result);
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpDelete]
         [Route("delete")]
-        //[ValidateModel]
         public async Task<IActionResult> DeleteAthlete()
         {
             var athlete = HttpContext.User?.Identity?.Name ?? string.Empty;

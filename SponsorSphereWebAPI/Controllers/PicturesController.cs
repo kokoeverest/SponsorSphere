@@ -39,15 +39,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new CreatePictureCommand(model));
-                return Created(string.Empty, result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new CreatePictureCommand(model));
+            return Created(string.Empty, result);
         }
 
         [Authorize(Roles = RoleConstants.Admin)]
@@ -68,16 +61,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                await _mediator.Send(new DeletePictureCommand(picture));
-                return NoContent();
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            await _mediator.Send(new DeletePictureCommand(picture));
+            return NoContent();
         }
 
         [Authorize]
@@ -98,15 +83,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new UpdatePictureCommand(updatedPicture));
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new UpdatePictureCommand(updatedPicture));
+            return Ok(result);
         }
     }
 }

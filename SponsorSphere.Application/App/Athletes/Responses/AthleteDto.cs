@@ -1,4 +1,4 @@
-﻿using SponsorSphere.Application.App.Achievements.Responses;
+﻿using SponsorSphere.Application.App.Achievements.Dtos;
 using SponsorSphere.Application.App.Goals.Responses;
 using SponsorSphere.Application.App.Users.Responses;
 using SponsorSphere.Application.Interfaces;

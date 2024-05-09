@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Achievements.Commands;
-using SponsorSphere.Application.App.Achievements.Responses;
+using SponsorSphere.Application.App.Achievements.Dtos;
 using SponsorSphere.Domain.Models;
-using SponsorSphereWebAPI.Filters;
 
 namespace SponsorSphereWebAPI.Controllers
 {
@@ -25,7 +24,6 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPost]
         [Route("create")]
-        [ValidateModel]
         public async Task<IActionResult> CreateAchievement([FromForm] CreateAchievementDto model)
         {
             var user = HttpContext.User?.Identity?.Name ?? string.Empty;
@@ -41,15 +39,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var achievement = await _mediator.Send(new CreateAchievementCommand(model, loggedInUser.Id));
-                return Created(string.Empty, achievement);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var achievement = await _mediator.Send(new CreateAchievementCommand(model, loggedInUser.Id));
+            return Created(string.Empty, achievement);
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
@@ -70,17 +61,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                await _mediator.Send(new DeleteAchievementCommand(sportEventId, athleteId));
-                return NoContent();
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-
+            await _mediator.Send(new DeleteAchievementCommand(sportEventId, athleteId));
+            return NoContent();
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
@@ -101,26 +83,8 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
-            try
-            {
-                var result = await _mediator.Send(new UpdateAchievementCommand(updatedAchievement));
-                return Ok(result);
-            }
-
-            catch (InvalidDataException exc)
-            {
-                return NotFound(exc.Message);
-            }
-
-            catch (ApplicationException exa)
-            {
-                return BadRequest(exa.Message);
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new UpdateAchievementCommand(updatedAchievement));
+            return Ok(result);
         }
     }
 }
