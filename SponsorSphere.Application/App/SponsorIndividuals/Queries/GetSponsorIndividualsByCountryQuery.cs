@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using SponsorSphere.Application.App.SponsorIndividuals.Responses;
+using SponsorSphere.Application.App.SponsorIndividuals.Dtos;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace SponsorSphereWebAPI.Filters
 {
@@ -9,7 +10,8 @@ namespace SponsorSphereWebAPI.Filters
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            Console.WriteLine($">>>>> Action: {context.ActionDescriptor.DisplayName} ({StopWatch?.ElapsedMilliseconds}ms) at {DateTime.UtcNow:f}");
+            string format = "yyyyMMdd";
+            Console.WriteLine($">>>>> Action: {context.ActionDescriptor.DisplayName} ({StopWatch?.ElapsedMilliseconds}ms) at {DateTime.UtcNow.ToString(format, CultureInfo.InvariantCulture)}");
         }
 
         public void OnActionExecuting(ActionExecutingContext context)

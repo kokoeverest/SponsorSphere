@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using SponsorSphere.Application.App.SponsorCompanies.Responses;
+using SponsorSphere.Application.App.SponsorCompanies.Dtos;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 

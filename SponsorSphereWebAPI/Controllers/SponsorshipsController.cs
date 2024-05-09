@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Sponsorships.Commands;
+using SponsorSphere.Application.App.Sponsorships.Dtos;
 using SponsorSphere.Application.App.Sponsorships.Queries;
-using SponsorSphere.Application.App.Sponsorships.Responses;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 

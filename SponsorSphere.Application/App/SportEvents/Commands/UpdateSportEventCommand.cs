@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SponsorSphere.Application.App.SportEvents.Responses;
+using SponsorSphere.Application.App.SportEvents.Dtos;
 using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.SportEvents.Commands;

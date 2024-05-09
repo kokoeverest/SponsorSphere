@@ -1,4 +1,4 @@
-﻿using SponsorSphere.Application.App.SponsorCompanies.Responses;
+﻿using SponsorSphere.Application.App.SponsorCompanies.Dtos;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 

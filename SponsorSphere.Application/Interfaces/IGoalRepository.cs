@@ -1,4 +1,4 @@
-﻿using SponsorSphere.Application.App.Goals.Responses;
+﻿using SponsorSphere.Application.App.Goals.Dtos;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Interfaces

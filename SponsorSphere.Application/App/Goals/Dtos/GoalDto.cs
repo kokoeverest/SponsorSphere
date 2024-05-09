@@ -1,9 +1,6 @@
-﻿using SponsorSphere.Application.App.SportEvents.Responses;
-using SponsorSphere.Application.App.Users.Responses;
-using SponsorSphere.Domain.Enums;
-using SponsorSphere.Domain.Models;
+﻿using SponsorSphere.Domain.Enums;
 
-namespace SponsorSphere.Application.App.Goals.Responses
+namespace SponsorSphere.Application.App.Goals.Dtos
 {
     public class GoalDto
     {

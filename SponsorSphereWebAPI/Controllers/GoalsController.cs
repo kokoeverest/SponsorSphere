@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Goals.Commands;
-using SponsorSphere.Application.App.Goals.Responses;
+using SponsorSphere.Application.App.Goals.Dtos;
 using SponsorSphere.Application.App.SportEvents.Queries;
 using SponsorSphere.Domain.Models;
 

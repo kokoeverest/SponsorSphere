@@ -1,6 +1,4 @@
-﻿using SponsorSphere.Domain.Models;
-
-namespace SponsorSphere.Application.App.Pictures.Responses
+﻿namespace SponsorSphere.Application.App.Pictures.Dtos
 {
     public class PictureDto
     {

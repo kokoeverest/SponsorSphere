@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SponsorSphere.Application.App.Athletes.Responses;
+using SponsorSphere.Application.App.Athletes.Dtos;
 
 namespace SponsorSphere.Application.App.Athletes.Queries;
 

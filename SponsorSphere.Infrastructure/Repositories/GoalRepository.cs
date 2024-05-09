@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SponsorSphere.Application.App.Goals.Responses;
+using SponsorSphere.Application.App.Goals.Dtos;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 

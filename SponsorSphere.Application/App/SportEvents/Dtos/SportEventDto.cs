@@ -1,6 +1,6 @@
 ﻿using SponsorSphere.Domain.Enums;
 
-namespace SponsorSphere.Application.App.SportEvents.Responses
+namespace SponsorSphere.Application.App.SportEvents.Dtos
 {
     public class SportEventDto
     {

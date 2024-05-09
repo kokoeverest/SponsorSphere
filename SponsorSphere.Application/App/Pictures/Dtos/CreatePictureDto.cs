@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphere.Application.App.Pictures.Responses
+namespace SponsorSphere.Application.App.Pictures.Dtos
 {
     public class CreatePictureDto
     {

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SponsorSphere.Application.App.Pictures.Responses;
+using SponsorSphere.Application.App.Pictures.Dtos;
 using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Pictures.Commands;

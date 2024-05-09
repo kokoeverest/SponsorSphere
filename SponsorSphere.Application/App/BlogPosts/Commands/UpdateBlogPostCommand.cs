@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SponsorSphere.Application.App.BlogPosts.Responses;
+using SponsorSphere.Application.App.BlogPosts.Dtos;
 using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.BlogPosts.Commands;

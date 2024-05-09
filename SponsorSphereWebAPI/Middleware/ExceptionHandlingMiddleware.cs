@@ -34,8 +34,8 @@ namespace SponsorSphereWebAPI.Middleware
 
             await CreateExceptionResponseAsync(context, ex);
             }
-
         }
+
         private static Task CreateExceptionResponseAsync(HttpContext context, Exception ex)
         {
             context.Response.ContentType = "application/json";

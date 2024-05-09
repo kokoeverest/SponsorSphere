@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using SponsorSphere.Application.App.Athletes.Responses;
 using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Athletes.Queries;

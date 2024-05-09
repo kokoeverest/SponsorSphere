@@ -1,4 +1,4 @@
-﻿using SponsorSphere.Application.App.BlogPosts.Responses;
+﻿using SponsorSphere.Application.App.BlogPosts.Dtos;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Interfaces

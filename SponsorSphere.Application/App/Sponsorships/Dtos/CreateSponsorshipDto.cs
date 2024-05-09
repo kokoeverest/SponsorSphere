@@ -1,7 +1,7 @@
 ﻿using SponsorSphere.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphere.Application.App.Sponsorships.Responses
+namespace SponsorSphere.Application.App.Sponsorships.Dtos
 {
     public class CreateSponsorshipDto
     {
@@ -13,6 +13,6 @@ namespace SponsorSphere.Application.App.Sponsorships.Responses
         [DataType(DataType.Currency)]
         public decimal Amount { get; set; }
 
-        public int AthleteId {  get; set; }
+        public int AthleteId { get; set; }
     }
 }

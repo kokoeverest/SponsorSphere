@@ -1,7 +1,7 @@
 ﻿using SponsorSphere.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphere.Application.App.SportEvents.Responses
+namespace SponsorSphere.Application.App.SportEvents.Dtos
 {
     public class CreateSportEventDto
     {
@@ -18,7 +18,7 @@ namespace SponsorSphere.Application.App.SportEvents.Responses
         [Required]
         public string EventDate { get; set; } = string.Empty;
 
-        [EnumDataType (typeof(EventsEnum))]
+        [EnumDataType(typeof(EventsEnum))]
         [Required]
         public EventsEnum EventType { get; set; }
 

@@ -1,5 +1,5 @@
-﻿using SponsorSphere.Application.App.BlogPosts.Responses;
-using SponsorSphere.Application.App.Sponsorships.Responses;
+﻿using SponsorSphere.Application.App.BlogPosts.Dtos;
+using SponsorSphere.Application.App.Sponsorships.Dtos;
 using SponsorSphere.Domain.Enums;
 
 namespace SponsorSphere.Application.Interfaces

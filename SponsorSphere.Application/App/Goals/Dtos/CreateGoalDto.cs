@@ -1,7 +1,7 @@
 ﻿using SponsorSphere.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphere.Application.App.Goals.Responses
+namespace SponsorSphere.Application.App.Goals.Dtos
 {
     public class CreateGoalDto
     {
@@ -11,7 +11,7 @@ namespace SponsorSphere.Application.App.Goals.Responses
 
         [EnumDataType(typeof(CountryEnum))]
         [Required]
-        public CountryEnum Country {  get; set; }
+        public CountryEnum Country { get; set; }
 
         [Display(Name = "Date of event dd/mm/yyyy")]
         [StringLength(100, MinimumLength = 9)]
@@ -20,13 +20,13 @@ namespace SponsorSphere.Application.App.Goals.Responses
 
         [EnumDataType(typeof(EventsEnum))]
         [Required]
-        public EventsEnum EventType {  get; set; }
+        public EventsEnum EventType { get; set; }
 
         [EnumDataType(typeof(SportsEnum))]
         [Required]
-        public SportsEnum Sport {  get; set; }
+        public SportsEnum Sport { get; set; }
 
         [Range(minimum: 1, maximum: double.MaxValue)]
-        public decimal AmountNeeded {  get; set; }
+        public decimal AmountNeeded { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-﻿using SponsorSphere.Application.App.Sponsors.Responses;
+﻿using SponsorSphere.Application.App.Sponsors.Dtos;
 
-namespace SponsorSphere.Application.App.SponsorIndividuals.Responses
+namespace SponsorSphere.Application.App.SponsorIndividuals.Dtos
 {
     public class SponsorIndividualDto : SponsorDto
     {

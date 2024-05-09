@@ -1,7 +1,6 @@
-﻿using SponsorSphere.Domain.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SponsorSphere.Infrastructure
+namespace SponsorSphere.Domain.Models
 {
     public class BlogPostPicture
     {

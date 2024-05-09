@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using SponsorSphere.Application.App.Pictures.Responses;
+using SponsorSphere.Application.App.Pictures.Dtos;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 

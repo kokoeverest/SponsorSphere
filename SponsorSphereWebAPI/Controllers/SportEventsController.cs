@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.SportEvents.Commands;
+using SponsorSphere.Application.App.SportEvents.Dtos;
 using SponsorSphere.Application.App.SportEvents.Queries;
-using SponsorSphere.Application.App.SportEvents.Responses;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers

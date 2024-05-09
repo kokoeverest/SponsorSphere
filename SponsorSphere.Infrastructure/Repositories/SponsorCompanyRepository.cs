@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
 using Microsoft.EntityFrameworkCore;
-using SponsorSphere.Application.App.SponsorCompanies.Responses;
+using SponsorSphere.Application.App.SponsorCompanies.Dtos;
 using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;

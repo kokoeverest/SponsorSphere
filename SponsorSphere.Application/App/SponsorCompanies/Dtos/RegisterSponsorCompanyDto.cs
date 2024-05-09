@@ -1,7 +1,7 @@
 ﻿using SponsorSphere.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphere.Application.App.SponsorCompanies.Responses
+namespace SponsorSphere.Application.App.SponsorCompanies.Dtos
 {
     public class RegisterSponsorCompanyDto
     {

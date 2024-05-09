@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SponsorSphere.Application.App.BlogPosts.Responses;
+using SponsorSphere.Application.App.BlogPosts.Dtos;
 using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;

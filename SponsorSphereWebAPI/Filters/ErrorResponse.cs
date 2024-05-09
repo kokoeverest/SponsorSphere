@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace SponsorSphereWebAPI.Filters
 {
@@ -8,7 +7,7 @@ namespace SponsorSphereWebAPI.Filters
         public int StatusCode { get; set; }
         public string? StatusPhrase { get; set; }
         public DateTime Timestamp { get; set; }
-        
+
         public override string ToString()
         {
             return JsonSerializer.Serialize(this);

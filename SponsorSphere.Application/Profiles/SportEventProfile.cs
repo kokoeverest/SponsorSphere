@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SponsorSphere.Application.App.SportEvents.Responses;
+using SponsorSphere.Application.App.SportEvents.Dtos;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Profiles

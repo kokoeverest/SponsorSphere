@@ -1,6 +1,7 @@
-﻿using SponsorSphere.Domain.Models;
+﻿using SponsorSphere.Application.App.Pictures.Dtos;
+using SponsorSphere.Domain.Models;
 
-namespace SponsorSphere.Application.App.BlogPosts.Responses
+namespace SponsorSphere.Application.App.BlogPosts.Dtos
 {
     public class BlogPostDto
     {
@@ -8,7 +9,6 @@ namespace SponsorSphere.Application.App.BlogPosts.Responses
         public DateTime Created { get; set; }
         public string Content { get; set; } = string.Empty;
         public required int AuthorId { get; set; }
-        //public UserDto? Author { get; set; }
         public ICollection<Picture>? Pictures { get; set; }
     }
 }

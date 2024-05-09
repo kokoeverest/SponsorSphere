@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using SponsorSphere.Application.App.Sponsors.Responses;
 using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Sponsors.Queries;

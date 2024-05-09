@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Pictures.Commands;
-using SponsorSphere.Application.App.Pictures.Responses;
+using SponsorSphere.Application.App.Pictures.Dtos;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers

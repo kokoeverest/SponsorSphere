@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SponsorSphere.Application.App.Athletes.Responses;
+using SponsorSphere.Application.App.Athletes.Dtos;
 using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;

@@ -1,7 +1,7 @@
 ﻿using SponsorSphere.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace SponsorSphere.Application.App.BlogPosts.Responses
+namespace SponsorSphere.Application.App.BlogPosts.Dtos
 {
     public class CreateBlogPostDto
     {

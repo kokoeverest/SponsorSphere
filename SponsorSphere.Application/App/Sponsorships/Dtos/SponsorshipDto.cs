@@ -1,7 +1,6 @@
-﻿using SponsorSphere.Application.App.Users.Responses;
-using SponsorSphere.Domain.Enums;
+﻿using SponsorSphere.Domain.Enums;
 
-namespace SponsorSphere.Application.App.Sponsorships.Responses
+namespace SponsorSphere.Application.App.Sponsorships.Dtos
 {
     public class SponsorshipDto
     {

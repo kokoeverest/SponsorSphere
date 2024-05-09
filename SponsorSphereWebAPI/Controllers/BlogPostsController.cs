@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.BlogPosts.Commands;
+using SponsorSphere.Application.App.BlogPosts.Dtos;
 using SponsorSphere.Application.App.BlogPosts.Queries;
-using SponsorSphere.Application.App.BlogPosts.Responses;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers

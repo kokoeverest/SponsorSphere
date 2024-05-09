@@ -1,10 +1,10 @@
 ﻿using SponsorSphere.Application.App.Achievements.Dtos;
-using SponsorSphere.Application.App.Goals.Responses;
-using SponsorSphere.Application.App.Users.Responses;
+using SponsorSphere.Application.App.Goals.Dtos;
+using SponsorSphere.Application.App.Users.Dtos;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 
-namespace SponsorSphere.Application.App.Athletes.Responses
+namespace SponsorSphere.Application.App.Athletes.Dtos
 {
     public class AthleteDto : UserDto, IUserDto
     {
