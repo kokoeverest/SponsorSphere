@@ -9,6 +9,7 @@ namespace SponsorSphere.Application.Profiles
         public BlogPostProfile()
         {
             CreateMap<BlogPost, BlogPostDto>();
+            CreateMap<CreateBlogPostDto, BlogPost>();
         }
     }
 }

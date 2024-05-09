@@ -12,6 +12,6 @@ namespace SponsorSphere.Application.App.Pictures.Dtos
         public byte? Content { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime Modified { get; set; }
+        public DateTime? Modified { get; set; }
     }
 }

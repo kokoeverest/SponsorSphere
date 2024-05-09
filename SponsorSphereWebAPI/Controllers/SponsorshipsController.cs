@@ -48,8 +48,9 @@ namespace SponsorSphereWebAPI.Controllers
             {
                 return Unauthorized("You are not authorised to do this!");
             }
+            model.SponsorId = loggedInUser.Id;
 
-            var result = await _mediator.Send(new CreateSponsorshipCommand(model, loggedInUser.Id));
+            var result = await _mediator.Send(new CreateSponsorshipCommand(model));
             return Created(string.Empty, result);
         }
 

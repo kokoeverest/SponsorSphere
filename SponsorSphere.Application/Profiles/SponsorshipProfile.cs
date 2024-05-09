@@ -9,6 +9,7 @@ namespace SponsorSphere.Application.Profiles
         public SponsorshipProfile()
         {
             CreateMap<Sponsorship, SponsorshipDto>();
+            CreateMap<CreateSponsorshipDto, Sponsorship>();
         }
     }
 }

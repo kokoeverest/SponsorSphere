@@ -18,12 +18,7 @@ public class CreatePictureCommandHandler : IRequestHandler<CreatePictureCommand,
     }
     public async Task<PictureDto> Handle(CreatePictureCommand request, CancellationToken cancellationToken)
     {
-        var picture = new Picture
-        {
-            Url = request.Picture.Url,
-            Content = request.Picture.Content,
-            Modified = DateTime.UtcNow
-        };
+        var picture = _mapper.Map<Picture>(request.Picture);
 
         await _unitOfWork.PicturesRepository.CreateAsync(picture);
         var mappedPicture = _mapper.Map<PictureDto>(picture);

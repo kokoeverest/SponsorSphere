@@ -23,16 +23,7 @@ public class CreateSponsorIndividualCommandHandler : IRequestHandler<CreateSpons
 
     public async Task<SponsorIndividualDto> Handle(CreateSponsorIndividualCommand request, CancellationToken cancellationToken)
     {
-        var sponsorIndividual = new SponsorIndividual
-        {
-            Name = request.SponsorIndividual.Name,
-            UserName = request.SponsorIndividual.Email,
-            Email = request.SponsorIndividual.Email,
-            Country = request.SponsorIndividual.Country,
-            PhoneNumber = request.SponsorIndividual.PhoneNumber,
-            LastName = request.SponsorIndividual.LastName,
-            BirthDate = DateTime.Parse(request.SponsorIndividual.BirthDate).ToUniversalTime()
-        };
+        var sponsorIndividual = _mapper.Map<SponsorIndividual>(request.SponsorIndividual);
 
         try
         {

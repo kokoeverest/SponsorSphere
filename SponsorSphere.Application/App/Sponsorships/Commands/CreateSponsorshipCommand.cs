@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace SponsorSphere.Application.App.Sponsorships.Commands;
 
-public record CreateSponsorshipCommand(CreateSponsorshipDto Sponsorship, int SponsorId) : IRequest<SponsorshipDto>;
+public record CreateSponsorshipCommand(CreateSponsorshipDto Sponsorship) : IRequest<SponsorshipDto>;
 public class CreateSponsorshipCommandHandler : IRequestHandler<CreateSponsorshipCommand, SponsorshipDto>
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -25,13 +25,7 @@ public class CreateSponsorshipCommandHandler : IRequestHandler<CreateSponsorship
         // Add a check - if the sponsorship level is Single payment => check if the athlete has a
         // Goal and if he has => reduce the AmountNeeded of the Goal with the sponsorship amount
 
-        var sponsorship = new Sponsorship
-        {
-            AthleteId = request.Sponsorship.AthleteId,
-            SponsorId = request.SponsorId,
-            Level = request.Sponsorship.Level,
-            Amount = request.Sponsorship.Amount
-        };
+        var sponsorship = _mapper.Map<Sponsorship>(request.Sponsorship);
 
         try
         {

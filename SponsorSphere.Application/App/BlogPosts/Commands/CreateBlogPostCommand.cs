@@ -21,12 +21,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
 
     public async Task<BlogPostDto> Handle(CreateBlogPostCommand request, CancellationToken cancellationToken)
     {
-        var blogPost = new BlogPost
-        {
-            Content = request.BlogPost.Content,
-            AuthorId = request.BlogPost.AuthorId,
-            Author = request.BlogPost.Author
-        };
+        var blogPost = _mapper.Map<BlogPost>(request.BlogPost);
 
         try
         {

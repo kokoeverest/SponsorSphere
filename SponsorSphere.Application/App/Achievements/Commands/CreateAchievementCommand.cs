@@ -21,20 +21,15 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
 
     public async Task<AchievementDto> Handle(CreateAchievementCommand request, CancellationToken cancellationToken)
     {
-        if (DateTime.UtcNow < DateTime.Parse(request.Model.EventDate).ToUniversalTime())
+        var eventDate = DateTime.Parse(request.Model.EventDate).ToUniversalTime();
+
+        if (DateTime.UtcNow < eventDate)
         {
             throw new ApplicationException("You can't create an achievement in the future");
         }
 
-        var sportEvent = new SportEvent
-        {
-            Name = request.Model.Name,
-            Country = request.Model.Country,
-            EventDate = DateTime.Parse(request.Model.EventDate).ToUniversalTime(),
-            Finished = true,
-            EventType = request.Model.EventType,
-            Sport = request.Model.Sport
-        };
+        var sportEvent = _mapper.Map<SportEvent>(request.Model);
+        sportEvent.Finished = true;
 
         var achievement = new Achievement
         {
@@ -43,7 +38,6 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
             AthleteId = request.AthleteId,
             PlaceFinished = request.Model.PlaceFinished
         };
-
 
         try
         {

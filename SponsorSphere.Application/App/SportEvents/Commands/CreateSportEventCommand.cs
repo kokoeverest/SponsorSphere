@@ -18,14 +18,7 @@ public class CreateSportEventCommandHandler : IRequestHandler<CreateSportEventCo
     }
     public async Task<SportEventDto> Handle(CreateSportEventCommand request, CancellationToken cancellationToken)
     {
-        var sportEvent = new SportEvent
-        {
-            Name = request.SportEvent.Name,
-            Country = request.SportEvent.Country,
-            EventDate = DateTime.Parse(request.SportEvent.EventDate).ToUniversalTime(),
-            EventType = request.SportEvent.EventType,
-            Sport = request.SportEvent.Sport
-        };
+        var sportEvent = _mapper.Map<SportEvent>(request.SportEvent);
 
         sportEvent.Finished = true && sportEvent.EventDate < DateTime.UtcNow.Subtract(TimeSpan.FromDays(1));
         try

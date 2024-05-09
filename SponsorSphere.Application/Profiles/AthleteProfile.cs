@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SponsorSphere.Application.App.Athletes.Dtos;
+using SponsorSphere.Application.Common.Converters;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Profiles
@@ -9,10 +10,9 @@ namespace SponsorSphere.Application.Profiles
         public AthleteProfile()
         {
             CreateMap<Athlete, AthleteDto>();
-                //.ForMember(
-                //dest => dest.LastNameDto,
-                //opt => opt.MapFrom(src => src.LastName)
-                //);
+
+            CreateMap<RegisterAthleteDto, Athlete>()
+                .ForMember(dest => dest.BirthDate, opt => opt.ConvertUsing(new StringToDateConverter()));
         }
     }
 }

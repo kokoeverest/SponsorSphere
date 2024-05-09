@@ -23,17 +23,7 @@ public class CreateAthleteCommandHandler : IRequestHandler<CreateAthleteCommand,
 
     public async Task<AthleteDto> Handle(CreateAthleteCommand request, CancellationToken cancellationToken)
     {
-        var athlete = new Athlete
-        {
-            Name = request.Athlete.Name,
-            UserName = request.Athlete.Email,
-            LastName = request.Athlete.LastName,
-            Email = request.Athlete.Email,
-            Country = request.Athlete.Country,
-            PhoneNumber = request.Athlete.PhoneNumber,
-            BirthDate = DateTime.Parse(request.Athlete.BirthDate).ToUniversalTime(),
-            Sport = request.Athlete.Sport
-        };
+        var athlete = _mapper.Map<Athlete>(request.Athlete);
 
         try
         {

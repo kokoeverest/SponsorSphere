@@ -14,5 +14,6 @@ namespace SponsorSphere.Application.App.Sponsorships.Dtos
         public decimal Amount { get; set; }
 
         public int AthleteId { get; set; }
+        public int? SponsorId { get; set; }
     }
 }

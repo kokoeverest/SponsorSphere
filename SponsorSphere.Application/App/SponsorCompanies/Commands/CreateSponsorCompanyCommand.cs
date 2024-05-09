@@ -23,15 +23,7 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
 
     public async Task<SponsorCompanyDto> Handle(CreateSponsorCompanyCommand request, CancellationToken cancellationToken)
     {
-        var sponsorCompany = new SponsorCompany
-        {
-            Name = request.SponsorCompany.Name,
-            UserName = request.SponsorCompany.Email,
-            Email = request.SponsorCompany.Email,
-            Country = request.SponsorCompany.Country,
-            PhoneNumber = request.SponsorCompany.PhoneNumber,
-            IBAN = request.SponsorCompany.IBAN
-        };
+        var sponsorCompany = _mapper.Map<SponsorCompany>(request.SponsorCompany);
 
         try
         {
