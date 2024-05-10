@@ -30,8 +30,12 @@ public class CreateAthleteCommandHandler : IRequestHandler<CreateAthleteCommand,
             await _unitOfWork.BeginTransactionAsync();
 
             var newAthlete = await _userManager.CreateAsync(athlete, request.Athlete.Password);
-
             var result = await _userManager.AddToRoleAsync(athlete, RoleConstants.Athlete);
+
+            if (!result.Succeeded) 
+            {
+                throw new InvalidDataException();
+            }
 
             await _unitOfWork.CommitTransactionAsync();
             var mapped = _mapper.Map<AthleteDto>(athlete);

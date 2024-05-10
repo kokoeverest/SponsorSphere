@@ -76,7 +76,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser.Id != existingSponsorship.SponsorId)
             {
-                return Unauthorized("You are not authorised to do this!");
+                return Forbid("You are not authorised to do this!");
             }
 
             await _mediator.Send(new DeleteSponsorshipCommand(athleteId, loggedInUser.Id));
@@ -103,7 +103,7 @@ namespace SponsorSphereWebAPI.Controllers
 
             if (loggedInUser.Id != updatedSponsorship.SponsorId)
             {
-                return Unauthorized("You are not authorised to do this!");
+                return Forbid("You are not authorised to do this!");
             }
 
             var result = await _mediator.Send(new UpdateSponsorshipCommand(updatedSponsorship));

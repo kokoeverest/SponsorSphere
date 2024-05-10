@@ -26,10 +26,10 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            var newBlogPost = _unitOfWork.BlogPostsRepository.CreateAsync(blogPost);
+            await _unitOfWork.BlogPostsRepository.CreateAsync(blogPost);
             await _unitOfWork.CommitTransactionAsync();
 
-            var mappedBlogPost = _mapper.Map<BlogPostDto>(newBlogPost);
+            var mappedBlogPost = _mapper.Map<BlogPostDto>(blogPost);
             return await Task.FromResult(mappedBlogPost);
         }
 

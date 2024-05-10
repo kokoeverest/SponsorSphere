@@ -74,7 +74,6 @@ namespace SponsorSphereWebAPI.Controllers
             }
 
             model.AuthorId = loggedInUser.Id;
-            model.Author = loggedInUser;
 
             var result = await _mediator.Send(new CreateBlogPostCommand(model));
             return Created(string.Empty, result);

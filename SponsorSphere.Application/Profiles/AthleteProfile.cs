@@ -12,7 +12,8 @@ namespace SponsorSphere.Application.Profiles
             CreateMap<Athlete, AthleteDto>();
 
             CreateMap<RegisterAthleteDto, Athlete>()
-                .ForMember(dest => dest.BirthDate, opt => opt.ConvertUsing(new StringToDateConverter()));
+                .ForMember(dest => dest.BirthDate, opt => opt.ConvertUsing(new StringToDateConverter()))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
         }
     }
 }

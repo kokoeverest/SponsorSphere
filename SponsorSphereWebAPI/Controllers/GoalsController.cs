@@ -62,6 +62,11 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
+            if (loggedInUser.Id != athleteId)
+            {
+                return Forbid("You are not the owner of this goal!");
+            }
+
             await _mediator.Send(new DeleteGoalCommand(sportEventId, athleteId));
             return NoContent();
         }
@@ -82,6 +87,11 @@ namespace SponsorSphereWebAPI.Controllers
             if (loggedInUser is null)
             {
                 return Unauthorized("You have to log in first!");
+            }
+
+            if (loggedInUser.Id != updatedGoal.AthleteId)
+            {
+                return Forbid("You are not the owner of this goal!");
             }
 
             var sportEvent = await _mediator.Send(new GetSportEventByIdQuery(updatedGoal.SportEventId));

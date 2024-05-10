@@ -61,6 +61,11 @@ namespace SponsorSphereWebAPI.Controllers
                 return Unauthorized("You have to log in first!");
             }
 
+            if (loggedInUser.Id != athleteId)
+            {
+                return Forbid("You are not the owner of this achievement!");
+            }
+
             await _mediator.Send(new DeleteAchievementCommand(sportEventId, athleteId));
             return NoContent();
         }
@@ -81,6 +86,11 @@ namespace SponsorSphereWebAPI.Controllers
             if (loggedInUser is null)
             {
                 return Unauthorized("You have to log in first!");
+            }
+
+            if (loggedInUser.Id != updatedAchievement.AthleteId)
+            {
+                return Forbid("You are not the owner of this achievement!");
             }
 
             var result = await _mediator.Send(new UpdateAchievementCommand(updatedAchievement));

@@ -11,7 +11,8 @@ namespace SponsorSphere.Application.Profiles
         {
             CreateMap<SponsorIndividual, SponsorIndividualDto>();
             CreateMap<RegisterSponsorIndividualDto, SponsorIndividual>()
-                .ForMember(dest => dest.BirthDate, opt => opt.ConvertUsing(new StringToDateConverter())); ;
+                .ForMember(dest => dest.BirthDate, opt => opt.ConvertUsing(new StringToDateConverter()))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
         }
     }
 }

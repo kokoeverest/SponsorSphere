@@ -43,13 +43,8 @@ namespace SponsorSphere.Infrastructure.Repositories
         }
         public async Task<Athlete> GetByIdAsync(int athleteId)
         {
-            var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == athleteId);
-
-            if (athlete is null)
-            {
-                throw new NotFoundException($"Athlete with id {athleteId} not found");
-            }
-
+            var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == athleteId) ?? throw new NotFoundException($"Athlete with id {athleteId} not found");
+            
             athlete.BlogPosts = await _context.BlogPosts
                 .Include(bp => bp.Pictures)
                 .Where(bp => bp.AuthorId == athlete.Id)
@@ -154,6 +149,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             await _context.Users.Where(u => u.Id == updatedAthlete.Id)
                 .ExecuteUpdateAsync(setters => setters
                 .SetProperty(ath => ath.Name, updatedAthlete.Name)
+                .SetProperty(ath => ath.UserName, updatedAthlete.Email)
                 .SetProperty(ath => ath.Email, updatedAthlete.Email)
                 .SetProperty(ath => ath.Country, updatedAthlete.Country)
                 .SetProperty(ath => ath.PhoneNumber, updatedAthlete.PhoneNumber)

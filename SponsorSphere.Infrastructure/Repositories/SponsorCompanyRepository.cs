@@ -84,6 +84,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             await _context.Users.Where(u => u.Id == updatedSponsorCompany.Id)
                 .ExecuteUpdateAsync(setters => setters
                 .SetProperty(sc => sc.Name, updatedSponsorCompany.Name)
+                .SetProperty(sc => sc.UserName, updatedSponsorCompany.Email)
                 .SetProperty(sc => sc.Email, updatedSponsorCompany.Email)
                 .SetProperty(sc => sc.Country, updatedSponsorCompany.Country)
                 .SetProperty(sc => sc.PhoneNumber, updatedSponsorCompany.PhoneNumber)

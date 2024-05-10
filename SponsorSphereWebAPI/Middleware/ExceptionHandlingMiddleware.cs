@@ -1,4 +1,5 @@
-﻿using SponsorSphere.Application.Common.Exceptions;
+﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphereWebAPI.Filters;
 using System.Net;
 
@@ -28,6 +29,7 @@ namespace SponsorSphereWebAPI.Middleware
                 context.Response.StatusCode = ex switch
                 {
                     NotFoundException => (int)HttpStatusCode.NotFound,
+                    DbUpdateException => (int)HttpStatusCode.BadRequest,
                     ApplicationException => (int)HttpStatusCode.BadRequest,
                     _ => (int)HttpStatusCode.InternalServerError,
                 };
