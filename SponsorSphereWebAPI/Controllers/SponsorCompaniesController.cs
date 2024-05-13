@@ -26,17 +26,17 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("moneyProvided")]
-        public async Task<IActionResult> GetSponsorsByMoneyProvided()
+        public async Task<IActionResult> GetSponsorsByMoneyProvided(int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetSponsorsByMoneyProvidedQuery());
+            var resultList = await _mediator.Send(new GetSponsorsByMoneyProvidedQuery(pageNumber, pageSize));
             return Ok(resultList);
         }
 
         [HttpGet]
         [Route("mostAthletes")]
-        public async Task<IActionResult> GetSponsorsByMostAthletesSponsored()
+        public async Task<IActionResult> GetSponsorsByMostAthletesSponsored(int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetSponsorsByMostAthletesQuery());
+            var resultList = await _mediator.Send(new GetSponsorsByMostAthletesQuery(pageNumber, pageSize));
             return Ok(resultList);
         }
 
@@ -58,9 +58,9 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("country")]
-        public async Task<IActionResult> GetSponsorCompaniesByCountry(CountryEnum country)
+        public async Task<IActionResult> GetSponsorCompaniesByCountry(CountryEnum country, int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetSponsorCompaniesByCountryQuery(country));
+            var resultList = await _mediator.Send(new GetSponsorCompaniesByCountryQuery(country, pageNumber, pageSize));
             return Ok(resultList);
         }
 

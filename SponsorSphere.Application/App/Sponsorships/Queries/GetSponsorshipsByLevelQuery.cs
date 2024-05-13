@@ -6,7 +6,7 @@ using SponsorSphere.Domain.Enums;
 
 namespace SponsorSphere.Application.App.Sponsorships.Queries;
 
-public record GetSponsorshipsByLevelQuery(SponsorshipLevel Level) : IRequest<List<SponsorshipDto>>;
+public record GetSponsorshipsByLevelQuery(SponsorshipLevel Level, int PageNumber, int PageSize) : IRequest<List<SponsorshipDto>>;
 
 public class GetSponsorshipsByLevelQueryHandler : IRequestHandler<GetSponsorshipsByLevelQuery, List<SponsorshipDto>>
 {
@@ -21,7 +21,7 @@ public class GetSponsorshipsByLevelQueryHandler : IRequestHandler<GetSponsorship
 
     public async Task<List<SponsorshipDto>> Handle(GetSponsorshipsByLevelQuery request, CancellationToken cancellationToken)
     {
-        var sponsorships = await _unitOfWork.SponsorshipsRepository.GetByLevelAsync(request.Level);
+        var sponsorships = await _unitOfWork.SponsorshipsRepository.GetByLevelAsync(request.Level, request.PageNumber, request.PageSize);
         var mappedSponsorships = _mapper.Map<List<SponsorshipDto>>(sponsorships);
         return mappedSponsorships;
     }

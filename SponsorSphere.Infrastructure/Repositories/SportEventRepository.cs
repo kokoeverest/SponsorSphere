@@ -2,6 +2,7 @@
 using SponsorSphere.Application.App.SportEvents.Dtos;
 using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Infrastructure.Repositories
@@ -36,16 +37,35 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ExecuteDeleteAsync();
         }
 
+        public async Task<List<SportEvent>> GetFinishedSportEventsAsync(SportsEnum sport, int pageNumber, int pageSize) =>
+
+            await _context.SportEvents
+            .Where(se => se.Finished)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+         
+        public async Task<List<SportEvent>> GetUnfinishedSportEventsAsync(SportsEnum sport, int pageNumber, int pageSize) =>
+             await _context.SportEvents
+            .Where(se => !se.Finished)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
         public async Task<SportEvent> GetByIdAsync(int sportEventId)
         {
-            var sportEvent = await _context.SportEvents.FirstOrDefaultAsync(se => se.Id == sportEventId);
+            var sportEvent = await _context.SportEvents.FirstOrDefaultAsync(se => se.Id == sportEventId) 
+                ?? throw new NotFoundException($"SportEvent with id {sportEventId} not found");
 
-            if (sportEvent is not null)
-            {
-                return sportEvent;
-            }
-            throw new NotFoundException($"SportEvent with id {sportEventId} not found");
+            return sportEvent;
         }
+
+        public async Task<List<SportEvent>> GetBySportAsync(SportsEnum sport, int pageNumber, int pageSize) =>
+            await _context.SportEvents
+            .Where(se => se.Sport == sport)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
         public async Task<SportEvent?> SearchAsync(SportEvent sportEvent)
         {

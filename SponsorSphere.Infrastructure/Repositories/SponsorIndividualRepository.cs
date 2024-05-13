@@ -43,21 +43,19 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<SponsorIndividual> GetByIdAsync(int userId)
         {
-            var sponsorIndividual = await _context.SponsorIndividuals.FirstOrDefaultAsync(si => si.Id == userId);
+            var sponsorIndividual = await _context.SponsorIndividuals
+                .Include(si => si.BlogPosts)
+                    .ThenInclude(bp => bp.Pictures)
+                .Include(si => si.Sponsorships)
+                .FirstOrDefaultAsync(si => si.Id == userId) ?? throw new NotFoundException($"Sponsor with id {userId} not found");
+            //sponsorIndividual.BlogPosts = await _context.BlogPosts
+            //    .Include(bp => bp.Pictures)
+            //    .Where(bp => bp.AuthorId == sponsorIndividual.Id)
+            //    .ToListAsync();
 
-            if (sponsorIndividual is null)
-            {
-                throw new NotFoundException($"Sponsor with id {userId} not found");
-            }
-
-            sponsorIndividual.BlogPosts = await _context.BlogPosts
-                .Include(bp => bp.Pictures)
-                .Where(bp => bp.AuthorId == sponsorIndividual.Id)
-                .ToListAsync();
-
-            sponsorIndividual.Sponsorships = await _context.Sponsorships
-                .Where(sh => sh.SponsorId == sponsorIndividual.Id)
-                .ToListAsync();
+            //sponsorIndividual.Sponsorships = await _context.Sponsorships
+            //    .Where(sh => sh.SponsorId == sponsorIndividual.Id)
+            //    .ToListAsync();
 
             return sponsorIndividual;
         }
@@ -71,20 +69,24 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<SponsorIndividual>> GetByAgeAsync(int age)
+        public async Task<List<SponsorIndividual>> GetByAgeAsync(int age, int pageNumber, int pageSize)
         {
             var birthYearLimit = DateTime.UtcNow.Year - age;
 
             return await _context.SponsorIndividuals
                 .Where(sponsorIndividual => birthYearLimit <= sponsorIndividual.BirthDate.Year)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
 
-        public async Task<List<SponsorIndividual>> GetByCountryAsync(CountryEnum country)
+        public async Task<List<SponsorIndividual>> GetByCountryAsync(CountryEnum country, int pageNumber, int pageSize)
         {
             return await _context.SponsorIndividuals
                 .Where(sponsorIndividual => sponsorIndividual.Country == country)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }

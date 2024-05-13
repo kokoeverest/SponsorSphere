@@ -5,7 +5,7 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Athletes.Queries;
 
-public record GetAthletesByAgeQuery(int Age) : IRequest<List<AthleteDto>>;
+public record GetAthletesByAgeQuery(int Age, int PageNumber, int PageSize) : IRequest<List<AthleteDto>>;
 
 public class GetAthletesByAgeQueryHandler : IRequestHandler<GetAthletesByAgeQuery, List<AthleteDto>>
 {
@@ -20,7 +20,7 @@ public class GetAthletesByAgeQueryHandler : IRequestHandler<GetAthletesByAgeQuer
 
     public async Task<List<AthleteDto>> Handle(GetAthletesByAgeQuery request, CancellationToken cancellationToken)
     {
-        var athletes = await _unitOfWork.AthletesRepository.GetByAgeAsync(request.Age);
+        var athletes = await _unitOfWork.AthletesRepository.GetByAgeAsync(request.Age, request.PageNumber, request.PageSize);
         var mappedAthletes = _mapper.Map<List<AthleteDto>>(athletes);
 
         return await Task.FromResult(mappedAthletes);

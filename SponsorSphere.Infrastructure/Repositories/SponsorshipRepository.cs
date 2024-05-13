@@ -44,19 +44,31 @@ namespace SponsorSphere.Infrastructure.Repositories
             return sponsorship;
         }
 
-        public async Task<List<Sponsorship>> GetByAthleteIdAsync(int athleteId)
+        public async Task<List<Sponsorship>> GetByAthleteIdAsync(int athleteId, int pageNumber, int pageSize)
         {
-            return await _context.Sponsorships.Where(sh => sh.AthleteId == athleteId).ToListAsync();
+            return await _context.Sponsorships
+                .Where(sh => sh.AthleteId == athleteId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
-        public async Task<List<Sponsorship>> GetByLevelAsync(SponsorshipLevel level)
+        public async Task<List<Sponsorship>> GetByLevelAsync(SponsorshipLevel level, int pageNumber, int pageSize)
         {
-            return await _context.Sponsorships.Where(sh => sh.Level == level).ToListAsync();
+            return await _context.Sponsorships
+                .Where(sh => sh.Level == level)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
-        public async Task<List<Sponsorship>> GetBySponsorIdAsync(int sponsorId)
+        public async Task<List<Sponsorship>> GetBySponsorIdAsync(int sponsorId, int pageNumber, int pageSize)
         {
-            return await _context.Sponsorships.Where(sh => sh.SponsorId == sponsorId).ToListAsync();
+            return await _context.Sponsorships
+                .Where(sh => sh.SponsorId == sponsorId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public async Task<SponsorshipDto> UpdateAsync(SponsorshipDto sponsorship)

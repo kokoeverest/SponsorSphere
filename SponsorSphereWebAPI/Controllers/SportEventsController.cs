@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.SportEvents.Commands;
 using SponsorSphere.Application.App.SportEvents.Dtos;
 using SponsorSphere.Application.App.SportEvents.Queries;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers
@@ -28,6 +29,22 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetSportEventById(int id)
         {
             var sportEvents = await _mediator.Send(new GetSportEventByIdQuery(id));
+            return Ok(sportEvents);
+        }
+
+        [HttpGet]
+        [Route("finished")]
+        public async Task<IActionResult> GetFinishedSportEvents(SportsEnum sport, int pageNumber = 1, int pageSize = 10)
+        {
+            var sportEvents = await _mediator.Send(new GetFinishedSportEventsQuery(sport, pageNumber, pageSize));
+            return Ok(sportEvents);
+        }
+
+        [HttpGet]
+        [Route("unfinished")]
+        public async Task<IActionResult> GetUnfinishedSportEvents(SportsEnum sport, int pageNumber = 1, int pageSize = 10)
+        {
+            var sportEvents = await _mediator.Send(new GetUnfinishedSportEventsQuery(sport, pageNumber, pageSize));
             return Ok(sportEvents);
         }
 
@@ -77,7 +94,7 @@ namespace SponsorSphereWebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = RoleConstants.Athlete)]
+        [Authorize(Roles = RoleConstants.Admin)]
         [HttpPatch]
         [Route("update")]
         public async Task<IActionResult> UpdateSportEvent([FromForm] SportEventDto updatedSportEvent)

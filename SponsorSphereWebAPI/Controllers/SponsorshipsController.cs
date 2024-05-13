@@ -25,9 +25,9 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("level")]
-        public async Task<IActionResult> GetSponsorshipsByLevel(SponsorshipLevel level)
+        public async Task<IActionResult> GetSponsorshipsByLevel(SponsorshipLevel level, int pageNumber = 1, int pageSize = 10)
         {
-            var sponsorships = await _mediator.Send(new GetSponsorshipsByLevelQuery(level));
+            var sponsorships = await _mediator.Send(new GetSponsorshipsByLevelQuery(level, pageNumber, pageSize));
             return Ok(sponsorships);
         }
 

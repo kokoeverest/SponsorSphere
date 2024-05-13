@@ -41,35 +41,41 @@ namespace SponsorSphere.Infrastructure.Repositories
 
             return 1;
         }
+
         public async Task<Athlete> GetByIdAsync(int athleteId)
         {
-            var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == athleteId) ?? throw new NotFoundException($"Athlete with id {athleteId} not found");
-            
-            athlete.BlogPosts = await _context.BlogPosts
-                .Include(bp => bp.Pictures)
-                .Where(bp => bp.AuthorId == athlete.Id)
-                .ToListAsync();
-
-            athlete.Sponsorships = await _context.Sponsorships
-                .Where(sh => sh.AthleteId == athlete.Id)
-                .ToListAsync();
-
-            athlete.Goals = await _context.Goals
-                .Where(goal => goal.AthleteId == athlete.Id)
-                .ToListAsync();
-
-            athlete.Achievements = await _context.Achievements
-                .Where(ach => ach.AthleteId == athlete.Id)
-                .ToListAsync();
+            var athlete = await _context.Athletes
+                .Include(ath => ath.BlogPosts)
+                    .ThenInclude(bp => bp.Pictures)
+                .Include(ath => ath.Sponsorships)
+                .Include(ath => ath.Goals)
+                .Include(ath => ath.Achievements)
+                .FirstOrDefaultAsync(ath => ath.Id == athleteId)
+                ?? throw new NotFoundException($"Athlete with id {athleteId} not found");
 
             return athlete;
+            //var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == athleteId) ?? throw new NotFoundException($"Athlete with id {athleteId} not found");
+
+            //athlete.BlogPosts = await _context.BlogPosts
+            //    .Include(bp => bp.Pictures)
+            //    .Where(bp => bp.AuthorId == athlete.Id)
+            //    .ToListAsync();
+
+            //athlete.Sponsorships = await _context.Sponsorships
+            //    .Where(sh => sh.AthleteId == athlete.Id)
+            //    .ToListAsync();
+
+            //athlete.Goals = await _context.Goals
+            //    .Where(goal => goal.AthleteId == athlete.Id)
+            //    .ToListAsync();
+
+            //athlete.Achievements = await _context.Achievements
+            //    .Where(ach => ach.AthleteId == athlete.Id)
+            //    .ToListAsync();
+
+            //return athlete;
         }
-        public async Task<List<Athlete>> GetAllAsync()
-        {
-            return await _context.Athletes
-                .OrderBy(athlete => athlete.Name)
-                .ToListAsync();
-        }
+
         public async Task<List<Athlete>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await _context.Athletes
@@ -79,33 +85,39 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Athlete>> GetByCountryAsync(CountryEnum country)
+        public async Task<List<Athlete>> GetByCountryAsync(CountryEnum country, int pageNumber, int pageSize)
         {
             return await _context.Athletes
                 .Where(athlete => athlete.Country == country)
-                .OrderBy(athlete => athlete.Name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .OrderBy(athlete => athlete.LastName)
                 .ToListAsync();
         }
 
-        public async Task<List<Athlete>> GetByAgeAsync(int age)
+        public async Task<List<Athlete>> GetByAgeAsync(int age, int pageNumber, int pageSize)
         {
             var birthYearLimit = DateTime.UtcNow.Year - age;
 
             return await _context.Athletes
                 .Where(athlete => birthYearLimit <= athlete.BirthDate.Year)
-                .OrderBy(athlete => athlete.Name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .OrderBy(athlete => athlete.LastName)
                 .ToListAsync();
         }
 
-        public async Task<List<Athlete>> GetBySportAsync(SportsEnum sport)
+        public async Task<List<Athlete>> GetBySportAsync(SportsEnum sport, int pageNumber, int pageSize)
         {
             return await _context.Athletes
                 .Where(athlete => athlete.Sport == sport)
-                .OrderBy(athlete => athlete.Name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .OrderBy(athlete => athlete.LastName)
                 .ToListAsync();
         }
 
-        public async Task<List<object>> GetByAmountAsync()
+        public async Task<List<object>> GetByAmountAsync(int pageNumber, int pageSize)
         {
             var sponsorships = await _context.Athletes
                 .Join(_context.Sponsorships,
@@ -119,6 +131,8 @@ namespace SponsorSphere.Infrastructure.Repositories
                             AthleteId = athleteId,
                             TotalAmount = amounts.Sum()
                         })
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .OrderByDescending(x => x.TotalAmount)
                 .ToListAsync();
             return sponsorships.Cast<object>().ToList();
@@ -130,7 +144,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             return await _context.Athletes.ToListAsync();
         }
 
-        public async Task<List<Athlete>> GetByAchievementsAsync()
+        public async Task<List<Athlete>> GetByAchievementsAsync(int pageNumber, int pageSize)
         {
             var result = await _context.Athletes
                 .Join(_context.Achievements,
@@ -139,6 +153,9 @@ namespace SponsorSphere.Infrastructure.Repositories
                 (athlete, achievement) => new { Athlete = athlete, Achievement = achievement })
                 .Where(joinResult => joinResult.Achievement.PlaceFinished == 1)
                 .Select(joinResult => joinResult.Athlete)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .OrderBy(joinResult => joinResult.LastName)
                 .ToListAsync();
 
             return result;

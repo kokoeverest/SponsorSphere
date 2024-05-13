@@ -12,7 +12,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<List<object>> GetByMostAthletesAsync()
+        public async Task<List<object>> GetByMostAthletesAsync(int pageNumber, int pageSize)
         {
             var sponsors = await _context.Sponsors
                 .Join(_context.Sponsorships,
@@ -26,13 +26,15 @@ namespace SponsorSphere.Infrastructure.Repositories
                             SponsorId = sponsorId,
                             TotalAmount = amounts.Count()
                         })
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .OrderByDescending(x => x.TotalAmount)
                 .ToListAsync();
 
             return sponsors.Cast<object>().ToList();
         }
 
-        public async Task<List<object>> GetByMoneyProvidedAsync()
+        public async Task<List<object>> GetByMoneyProvidedAsync(int pageNumber, int pageSize)
         {
             var sponsorships = await _context.Sponsors
                 .Join(_context.Sponsorships,
@@ -46,6 +48,8 @@ namespace SponsorSphere.Infrastructure.Repositories
                             SponsorId = sponsorId,
                             TotalAmount = amounts.Sum()
                         })
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .OrderByDescending(x => x.TotalAmount)
                 .ToListAsync();
             return sponsorships.Cast<object>().ToList();

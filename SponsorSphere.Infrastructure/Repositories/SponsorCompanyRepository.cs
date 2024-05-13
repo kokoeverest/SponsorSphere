@@ -44,21 +44,19 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<SponsorCompany> GetByIdAsync(int userId)
         {
-            var sponsorCompany = await _context.SponsorCompanies.FirstOrDefaultAsync(sc => sc.Id == userId);
+            var sponsorCompany = await _context.SponsorCompanies
+                .Include(sc => sc.BlogPosts)
+                    .ThenInclude(bp => bp.Pictures)
+                .Include(sc => sc.Sponsorships)
+                .FirstOrDefaultAsync(sc => sc.Id == userId) ?? throw new NotFoundException($"Sponsor with id {userId} not found");
+            //sponsorCompany.BlogPosts = await _context.BlogPosts
+            //    .Include(bp => bp.Pictures)
+            //    .Where(bp => bp.AuthorId == sponsorCompany.Id)
+            //    .ToListAsync();
 
-            if (sponsorCompany is null)
-            {
-                throw new NotFoundException($"Sponsor with id {userId} not found");
-            }
-
-            sponsorCompany.BlogPosts = await _context.BlogPosts
-                .Include(bp => bp.Pictures)
-                .Where(bp => bp.AuthorId == sponsorCompany.Id)
-                .ToListAsync();
-
-            sponsorCompany.Sponsorships = await _context.Sponsorships
-                .Where(sh => sh.SponsorId == sponsorCompany.Id)
-                .ToListAsync();
+            //sponsorCompany.Sponsorships = await _context.Sponsorships
+            //    .Where(sh => sh.SponsorId == sponsorCompany.Id)
+            //    .ToListAsync();
 
             return sponsorCompany;
         }
@@ -72,10 +70,12 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<SponsorCompany>> GetByCountryAsync(CountryEnum country)
+        public async Task<List<SponsorCompany>> GetByCountryAsync(CountryEnum country, int pageNumber, int pageSize)
         {
             return await _context.SponsorCompanies
                 .Where(sponsorCompany => sponsorCompany.Country == country)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }

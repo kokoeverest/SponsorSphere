@@ -42,41 +42,41 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("country")]
-        public async Task<IActionResult> GetAthletesByCountry(CountryEnum country)
+        public async Task<IActionResult> GetAthletesByCountry(CountryEnum country, int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetAthletesByCountryQuery(country));
+            var resultList = await _mediator.Send(new GetAthletesByCountryQuery(country, pageNumber, pageSize));
             return Ok(resultList);
         }
 
         [HttpGet]
         [Route("sport")]
-        public async Task<IActionResult> GetAthletesBySport(SportsEnum sport)
+        public async Task<IActionResult> GetAthletesBySport(SportsEnum sport, int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetAthletesBySportQuery(sport));
+            var resultList = await _mediator.Send(new GetAthletesBySportQuery(sport, pageNumber, pageSize));
             return Ok(resultList);
         }
 
         [HttpGet]
         [Route("age")]
-        public async Task<IActionResult> GetAthletesByAge(int age)
+        public async Task<IActionResult> GetAthletesByAge(int age, int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetAthletesByAgeQuery(age));
+            var resultList = await _mediator.Send(new GetAthletesByAgeQuery(age, pageNumber, pageSize));
             return Ok(resultList);
         }
 
         [HttpGet]
         [Route("achievements")]
-        public async Task<IActionResult> GetAthletesByAchievements()
+        public async Task<IActionResult> GetAthletesByAchievements(int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetAthletesByAchievementsQuery());
+            var resultList = await _mediator.Send(new GetAthletesByAchievementsQuery(pageNumber, pageSize));
             return Ok(resultList);
         }
 
         [HttpGet]
         [Route("amount")]
-        public async Task<IActionResult> GetAthletesByAmount()
+        public async Task<IActionResult> GetAthletesByAmount(int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetAthletesByAmountSponsoredQuery());
+            var resultList = await _mediator.Send(new GetAthletesByAmountSponsoredQuery(pageNumber, pageSize));
             return Ok(resultList);
         }
 

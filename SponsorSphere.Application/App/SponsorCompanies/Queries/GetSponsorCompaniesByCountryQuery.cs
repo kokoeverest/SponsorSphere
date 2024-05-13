@@ -6,7 +6,7 @@ using SponsorSphere.Domain.Enums;
 
 namespace SponsorSphere.Application.App.SponsorCompanies.Queries;
 
-public record GetSponsorCompaniesByCountryQuery(CountryEnum Country) : IRequest<List<SponsorCompanyDto>>;
+public record GetSponsorCompaniesByCountryQuery(CountryEnum Country, int PageNumber, int PageSize) : IRequest<List<SponsorCompanyDto>>;
 
 public class GetSponsorCompaniesByCountryQueryHandler : IRequestHandler<GetSponsorCompaniesByCountryQuery, List<SponsorCompanyDto>>
 {
@@ -21,7 +21,7 @@ public class GetSponsorCompaniesByCountryQueryHandler : IRequestHandler<GetSpons
 
     public async Task<List<SponsorCompanyDto>> Handle(GetSponsorCompaniesByCountryQuery request, CancellationToken cancellationToken)
     {
-        var sponsorCompanies = await _unitOfWork.SponsorCompaniesRepository.GetByCountryAsync(request.Country);
+        var sponsorCompanies = await _unitOfWork.SponsorCompaniesRepository.GetByCountryAsync(request.Country, request.PageNumber, request.PageSize);
         var mappedSponsorCompanies = _mapper.Map<List<SponsorCompanyDto>>(sponsorCompanies);
 
         return await Task.FromResult(mappedSponsorCompanies);

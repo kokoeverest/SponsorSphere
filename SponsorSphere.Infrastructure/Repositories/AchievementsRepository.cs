@@ -20,28 +20,31 @@ public class AchievementsRepository : IAchievementRepository
         return achievement;
     }
 
-    public async Task<int> DeleteAsync(int sportEventId, int athleteId)
-    {
-        return await _context.Achievements
+    public async Task<int> DeleteAsync(int sportEventId, int athleteId) =>
+        
+        await _context.Achievements
                 .Where(ach => ach.AthleteId == athleteId &&
                               ach.SportEventId == sportEventId)
                 .ExecuteDeleteAsync();
-    }
 
-    public async Task<List<Achievement>> GetAllAsync(int athleteId) => 
+    public async Task<List<Achievement>> GetAllAsync(int athleteId, int pageNumber, int pageSize) => 
+
         await _context.Achievements
-            .Where(ach => ach.AthleteId == athleteId).ToListAsync();
+            .Where(ach => ach.AthleteId == athleteId)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     
 
     public async Task<AchievementDto> UpdateAsync(AchievementDto updatedAchievement)
     {
         await _context.Achievements
-                .Where(ach => ach.AthleteId == updatedAchievement.AthleteId && 
-                              ach.SportEventId == updatedAchievement.SportEventId)
-                .ExecuteUpdateAsync(setters => setters
-                .SetProperty(ach => ach.Sport, updatedAchievement.Sport)
-                .SetProperty(bp => bp.PlaceFinished, updatedAchievement.PlaceFinished)
-                );
+            .Where(ach => ach.AthleteId == updatedAchievement.AthleteId && 
+                            ach.SportEventId == updatedAchievement.SportEventId)
+            .ExecuteUpdateAsync(setters => setters
+            .SetProperty(ach => ach.Sport, updatedAchievement.Sport)
+            .SetProperty(bp => bp.PlaceFinished, updatedAchievement.PlaceFinished)
+            );
 
         return updatedAchievement;
     }

@@ -5,7 +5,7 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Goals.Queries;
 
-public record GetGoalsByAthleteIdQuery(int AthleteId) : IRequest<ICollection<GoalDto>>;
+public record GetGoalsByAthleteIdQuery(int AthleteId, int PageNumber, int PageSize) : IRequest<ICollection<GoalDto>>;
 
 public class GetGoalsByAthleteIdQueryHandler : IRequestHandler<GetGoalsByAthleteIdQuery, ICollection<GoalDto>>
 {
@@ -20,7 +20,7 @@ public class GetGoalsByAthleteIdQueryHandler : IRequestHandler<GetGoalsByAthlete
 
     public async Task<ICollection<GoalDto>> Handle(GetGoalsByAthleteIdQuery request, CancellationToken cancellationToken)
     {
-        var achievements = await _unitOfWork.GoalsRepository.GetAllAsync(request.AthleteId);
+        var achievements = await _unitOfWork.GoalsRepository.GetAllAsync(request.AthleteId, request.PageNumber, request.PageSize);
         var mappedAchievements = _mapper.Map<ICollection<GoalDto>>(achievements);
 
         return mappedAchievements;

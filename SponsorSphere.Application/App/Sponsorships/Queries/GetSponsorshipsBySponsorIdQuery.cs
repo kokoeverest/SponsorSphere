@@ -5,7 +5,7 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Sponsorships.Queries;
 
-public record GetSponsorshipsBySponsorIdQuery(int SponsorId) : IRequest<List<SponsorshipDto>>;
+public record GetSponsorshipsBySponsorIdQuery(int SponsorId, int PageNumber, int PageSize) : IRequest<List<SponsorshipDto>>;
 
 public class GetSponsorshipsBySponsorIdQueryHandler : IRequestHandler<GetSponsorshipsBySponsorIdQuery, List<SponsorshipDto>>
 {
@@ -20,7 +20,7 @@ public class GetSponsorshipsBySponsorIdQueryHandler : IRequestHandler<GetSponsor
 
     public async Task<List<SponsorshipDto>> Handle(GetSponsorshipsBySponsorIdQuery request, CancellationToken cancellationToken)
     {
-        var sponsorships = await _unitOfWork.SponsorshipsRepository.GetBySponsorIdAsync(request.SponsorId);
+        var sponsorships = await _unitOfWork.SponsorshipsRepository.GetBySponsorIdAsync(request.SponsorId, request.PageNumber, request.PageSize);
         var mappedSponsorships = _mapper.Map<List<SponsorshipDto>>(sponsorships);
         return mappedSponsorships;
     }

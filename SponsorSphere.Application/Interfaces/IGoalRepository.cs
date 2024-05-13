@@ -6,7 +6,7 @@ namespace SponsorSphere.Application.Interfaces
     public interface IGoalRepository
     {
         Task<Goal> CreateAsync(Goal goal);
-        Task<List<Goal>> GetAllAsync(int athleteId);
+        Task<List<Goal>> GetAllAsync(int athleteId, int pageNumber, int pageSize);
         Task<int> DeleteAsync(int sportEventId, int athleteId);
         Task<GoalDto> UpdateAsync(GoalDto goal);
     }

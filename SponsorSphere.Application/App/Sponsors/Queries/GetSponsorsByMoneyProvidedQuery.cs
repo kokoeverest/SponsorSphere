@@ -4,7 +4,7 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Sponsors.Queries;
 
-public record GetSponsorsByMoneyProvidedQuery() : IRequest<List<object>?>;
+public record GetSponsorsByMoneyProvidedQuery(int PageNumber, int PageSize) : IRequest<List<object>?>;
 
 public class GetSponsorsByMoneyProvidedQueryHandler : IRequestHandler<GetSponsorsByMoneyProvidedQuery, List<object>?>
 {
@@ -19,7 +19,7 @@ public class GetSponsorsByMoneyProvidedQueryHandler : IRequestHandler<GetSponsor
 
     public async Task<List<object>?> Handle(GetSponsorsByMoneyProvidedQuery request, CancellationToken cancellationToken)
     {
-        var sponsors = await _unitOfWork.SponsorsRepository.GetByMoneyProvidedAsync();
+        var sponsors = await _unitOfWork.SponsorsRepository.GetByMoneyProvidedAsync(request.PageNumber, request.PageSize);
 
         return await Task.FromResult(sponsors);
     }

@@ -41,17 +41,17 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("country")]
-        public async Task<IActionResult> GetSponsorIndividualsByCountry(CountryEnum country)
+        public async Task<IActionResult> GetSponsorIndividualsByCountry(CountryEnum country, int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetSponsorIndividualsByCountryQuery(country));
+            var resultList = await _mediator.Send(new GetSponsorIndividualsByCountryQuery(country, pageNumber, pageSize));
             return Ok(resultList);
         }
 
         [HttpGet]
         [Route("age")]
-        public async Task<IActionResult> GetSponsorIndividualsByAge(int age)
+        public async Task<IActionResult> GetSponsorIndividualsByAge(int age, int pageNumber = 1, int pageSize = 10)
         {
-            var resultList = await _mediator.Send(new GetSponsorIndividualsByAgeQuery(age));
+            var resultList = await _mediator.Send(new GetSponsorIndividualsByAgeQuery(age, pageNumber, pageSize));
             return Ok(resultList);
         }
 

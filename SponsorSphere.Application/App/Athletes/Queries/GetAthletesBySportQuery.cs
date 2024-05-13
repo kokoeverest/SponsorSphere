@@ -6,7 +6,7 @@ using SponsorSphere.Domain.Enums;
 
 namespace SponsorSphere.Application.App.Athletes.Queries;
 
-public record GetAthletesBySportQuery(SportsEnum Sport) : IRequest<List<AthleteDto>>;
+public record GetAthletesBySportQuery(SportsEnum Sport, int PageNumber, int PageSize) : IRequest<List<AthleteDto>>;
 
 public class GetAthletesBySportHandler : IRequestHandler<GetAthletesBySportQuery, List<AthleteDto>>
 {
@@ -21,7 +21,7 @@ public class GetAthletesBySportHandler : IRequestHandler<GetAthletesBySportQuery
 
     public async Task<List<AthleteDto>> Handle(GetAthletesBySportQuery request, CancellationToken cancellationToken)
     {
-        var athletes = await _unitOfWork.AthletesRepository.GetBySportAsync(request.Sport);
+        var athletes = await _unitOfWork.AthletesRepository.GetBySportAsync(request.Sport, request.PageNumber, request.PageSize);
         var mappedAthletes = _mapper.Map<List<AthleteDto>>(athletes);
 
         return await Task.FromResult(mappedAthletes);
