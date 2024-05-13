@@ -12,8 +12,8 @@ using SponsorSphere.Infrastructure;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     [DbContext(typeof(SponsorSphereDbContext))]
-    [Migration("20240504114557_Update_04.05_2")]
-    partial class Update_0405_2
+    [Migration("20240513083710_Update_13.05")]
+    partial class Update_1305
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,14 +149,14 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            AthleteId = 2,
+                            AthleteId = 4,
                             SportEventId = 1,
                             PlaceFinished = 1,
                             Sport = 13
                         },
                         new
                         {
-                            AthleteId = 1,
+                            AthleteId = 5,
                             SportEventId = 1,
                             PlaceFinished = 2,
                             Sport = 14
@@ -204,6 +204,33 @@ namespace SponsorSphere.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SponsorSphere.Domain.Models.BlogPostPicture", b =>
+                {
+                    b.Property<int>("BlogPostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BlogPostId", "PictureId");
+
+                    b.HasIndex("PictureId");
+
+                    b.ToTable("BlogPostPictures", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            BlogPostId = 1,
+                            PictureId = 1
+                        },
+                        new
+                        {
+                            BlogPostId = 1,
+                            PictureId = 2
+                        });
+                });
+
             modelBuilder.Entity("SponsorSphere.Domain.Models.Goal", b =>
                 {
                     b.Property<int>("AthleteId")
@@ -228,7 +255,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            AthleteId = 2,
+                            AthleteId = 4,
                             SportEventId = 2,
                             AmountNeeded = 5000m,
                             Date = new DateTime(2024, 8, 15, 21, 0, 0, 0, DateTimeKind.Utc),
@@ -244,8 +271,8 @@ namespace SponsorSphere.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<byte?>("Content")
-                        .HasColumnType("tinyint");
+                    b.Property<byte[]>("Content")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -262,13 +289,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Modified = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7993),
+                            Modified = new DateTime(2024, 5, 13, 8, 37, 9, 952, DateTimeKind.Utc).AddTicks(1607),
                             Url = "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing"
                         },
                         new
                         {
                             Id = 2,
-                            Modified = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7995),
+                            Modified = new DateTime(2024, 5, 13, 8, 37, 9, 952, DateTimeKind.Utc).AddTicks(1609),
                             Url = "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing"
                         });
                 });
@@ -299,10 +326,10 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            AthleteId = 1,
+                            AthleteId = 4,
                             SponsorId = 3,
                             Amount = 2000m,
-                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7604),
+                            Created = new DateTime(2024, 5, 13, 8, 37, 9, 952, DateTimeKind.Utc).AddTicks(1258),
                             Level = 2
                         });
                 });
@@ -335,6 +362,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Property<int>("Sport")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("SportEvents");
@@ -348,7 +378,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                             EventType = 0,
                             Finished = true,
                             Name = "Persenk ultra",
-                            Sport = 14
+                            Sport = 14,
+                            Status = 0
                         },
                         new
                         {
@@ -358,7 +389,8 @@ namespace SponsorSphere.Infrastructure.Migrations
                             EventType = 0,
                             Finished = false,
                             Name = "Zegama Aizkori",
-                            Sport = 13
+                            Sport = 13,
+                            Status = 0
                         });
                 });
 
@@ -528,33 +560,6 @@ namespace SponsorSphere.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SponsorSphere.Infrastructure.BlogPostPicture", b =>
-                {
-                    b.Property<int>("BlogPostId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PictureId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BlogPostId", "PictureId");
-
-                    b.HasIndex("PictureId");
-
-                    b.ToTable("BlogPostPictures", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            BlogPostId = 1,
-                            PictureId = 1
-                        },
-                        new
-                        {
-                            BlogPostId = 1,
-                            PictureId = 2
-                        });
-                });
-
             modelBuilder.Entity("SponsorSphere.Domain.Models.Athlete", b =>
                 {
                     b.HasBaseType("SponsorSphere.Domain.Models.User");
@@ -578,9 +583,39 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8c27d5ab-410f-41cf-9e67-be74425f3630",
+                            ConcurrencyStamp = "3796ce5e-367e-44ec-9d01-585896975260",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(5650),
+                            Created = new DateTime(2024, 5, 13, 8, 37, 9, 951, DateTimeKind.Utc).AddTicks(9813),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "athlete@admin.admin",
+                            EmailConfirmed = false,
+                            FaceBookLink = "",
+                            InstagramLink = "",
+                            IsDeleted = false,
+                            LockoutEnabled = false,
+                            Name = "administrator",
+                            NormalizedEmail = "ATHLETE@ADMIN.ADMIN",
+                            NormalizedUserName = "ATHLETE@ADMIN.ADMIN",
+                            PasswordHash = "a1d2m3i4n5i6s7t8r9a0t1o2r3",
+                            PhoneNumber = "0123456789",
+                            PhoneNumberConfirmed = false,
+                            PictureId = 1,
+                            StravaLink = "",
+                            TwitterLink = "",
+                            TwoFactorEnabled = false,
+                            UserName = "athlete@admin.admin",
+                            Website = "",
+                            BirthDate = new DateTime(1997, 8, 14, 21, 0, 0, 0, DateTimeKind.Utc),
+                            LastName = "administrator",
+                            Sport = 11
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "6f774a91-2fe1-47c7-830b-dd012bcc7e4e",
+                            Country = 732800,
+                            Created = new DateTime(2024, 5, 13, 8, 37, 9, 952, DateTimeKind.Utc).AddTicks(229),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5rov@mail.mail",
                             EmailConfirmed = false,
@@ -589,9 +624,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "Petar",
-                            PhoneNumber = "09198",
+                            PhoneNumber = "0123456789",
                             PhoneNumberConfirmed = false,
-                            StravaLink = "",
+                            StravaLink = "www.strava.co/userpetar",
                             TwitterLink = "",
                             TwoFactorEnabled = false,
                             UserName = "5rov@mail.mail",
@@ -602,11 +637,11 @@ namespace SponsorSphere.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 5,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b15eb405-1b48-4186-8996-f94a83ad2405",
+                            ConcurrencyStamp = "6071d62f-aac3-4fca-be89-196da17f0f38",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(6104),
+                            Created = new DateTime(2024, 5, 13, 8, 37, 9, 952, DateTimeKind.Utc).AddTicks(273),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5kov@mail.mail",
                             EmailConfirmed = false,
@@ -615,7 +650,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "Georgi",
-                            PhoneNumber = "09198",
+                            PhoneNumber = "0123456789",
                             PhoneNumberConfirmed = false,
                             StravaLink = "",
                             TwitterLink = "",
@@ -625,36 +660,6 @@ namespace SponsorSphere.Infrastructure.Migrations
                             BirthDate = new DateTime(2005, 3, 29, 21, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Petkov",
                             Sport = 4
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "61d47f94-2709-443f-8e19-beb3c295ecef",
-                            Country = 732800,
-                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(6194),
-                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "kalo@mail.bg",
-                            EmailConfirmed = false,
-                            FaceBookLink = "",
-                            InstagramLink = "",
-                            IsDeleted = false,
-                            LockoutEnabled = false,
-                            Name = "Kaloyan",
-                            NormalizedEmail = "KALO@MAIL.BG",
-                            NormalizedUserName = "KALO@MAIL.BG",
-                            PasswordHash = "A1B2C3",
-                            PhoneNumber = "123456",
-                            PhoneNumberConfirmed = false,
-                            PictureId = 1,
-                            StravaLink = "www.strava.co/userkaloyan",
-                            TwitterLink = "",
-                            TwoFactorEnabled = false,
-                            UserName = "kalo@mail.bg",
-                            Website = "",
-                            BirthDate = new DateTime(1997, 8, 14, 21, 0, 0, 0, DateTimeKind.Utc),
-                            LastName = "Peychev",
-                            Sport = 11
                         });
                 });
 
@@ -679,20 +684,21 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 3,
+                            Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2a06fc09-5a96-4be7-b92c-da43e565b1b4",
+                            ConcurrencyStamp = "a304faf4-ca98-4a41-b09d-4f4e9cb490c3",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7115),
+                            Created = new DateTime(2024, 5, 13, 8, 37, 9, 952, DateTimeKind.Utc).AddTicks(767),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "lidl@bg.gb",
+                            Email = "sponsor@admin.admin",
                             EmailConfirmed = false,
                             FaceBookLink = "",
                             InstagramLink = "",
                             IsDeleted = false,
                             LockoutEnabled = false,
-                            Name = "Lidl",
-                            PhoneNumber = "1223",
+                            Name = "administrator",
+                            PasswordHash = "a1d2m3i4n5i6s7t8r9a0t1o2r3",
+                            PhoneNumber = "0123456789",
                             PhoneNumberConfirmed = false,
                             StravaLink = "",
                             TwitterLink = "",
@@ -702,11 +708,11 @@ namespace SponsorSphere.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9fca46ec-8b9e-48e4-9a46-af3a2dc33ab9",
+                            ConcurrencyStamp = "18bdc874-f854-44eb-a354-874588c6ddb4",
                             Country = 2921044,
-                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7166),
+                            Created = new DateTime(2024, 5, 13, 8, 37, 9, 952, DateTimeKind.Utc).AddTicks(793),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kaufland@bg.gb",
                             EmailConfirmed = false,
@@ -715,7 +721,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "Kaufland",
-                            PhoneNumber = "1223",
+                            PhoneNumber = "0123456789",
                             PhoneNumberConfirmed = false,
                             StravaLink = "",
                             TwitterLink = "",
@@ -743,11 +749,11 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 5,
+                            Id = 7,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "597daa60-6a05-4696-b4bb-9778bcede9b8",
+                            ConcurrencyStamp = "4236424a-f1e4-4365-aa4b-d84d2f6900c3",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7338),
+                            Created = new DateTime(2024, 5, 13, 8, 37, 9, 952, DateTimeKind.Utc).AddTicks(893),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "anonimen@bg.gb",
                             EmailConfirmed = false,
@@ -756,7 +762,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "Lazar",
-                            PhoneNumber = "1223",
+                            PhoneNumber = "0123456789",
                             PhoneNumberConfirmed = false,
                             StravaLink = "",
                             TwitterLink = "",
@@ -769,9 +775,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 6,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e80e2a84-7eed-44e5-a2cd-bc1b3aac1ca4",
+                            ConcurrencyStamp = "22e6f74d-ff50-4998-8281-1c5458f5e83b",
                             Country = 2077456,
-                            Created = new DateTime(2024, 5, 4, 11, 45, 55, 104, DateTimeKind.Utc).AddTicks(7484),
+                            Created = new DateTime(2024, 5, 13, 8, 37, 9, 952, DateTimeKind.Utc).AddTicks(957),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "michael@bg.gb",
                             EmailConfirmed = false,
@@ -870,6 +876,25 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("SponsorSphere.Domain.Models.BlogPostPicture", b =>
+                {
+                    b.HasOne("SponsorSphere.Domain.Models.BlogPost", "BlogPost")
+                        .WithMany()
+                        .HasForeignKey("BlogPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SponsorSphere.Domain.Models.Picture", "Picture")
+                        .WithMany()
+                        .HasForeignKey("PictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BlogPost");
+
+                    b.Navigation("Picture");
+                });
+
             modelBuilder.Entity("SponsorSphere.Domain.Models.Goal", b =>
                 {
                     b.HasOne("SponsorSphere.Domain.Models.Athlete", null)
@@ -916,25 +941,6 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.Navigation("Athlete");
 
                     b.Navigation("Sponsor");
-                });
-
-            modelBuilder.Entity("SponsorSphere.Infrastructure.BlogPostPicture", b =>
-                {
-                    b.HasOne("SponsorSphere.Domain.Models.BlogPost", "BlogPost")
-                        .WithMany()
-                        .HasForeignKey("BlogPostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SponsorSphere.Domain.Models.Picture", "Picture")
-                        .WithMany()
-                        .HasForeignKey("PictureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BlogPost");
-
-                    b.Navigation("Picture");
                 });
 
             modelBuilder.Entity("SponsorSphere.Domain.Models.Athlete", b =>

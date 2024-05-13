@@ -2,6 +2,8 @@
 {
     public enum EventsEnum
     {
-        Race, SelfOrganized, Training
+        Race, 
+        SelfOrganized, 
+        Training
     }
 }

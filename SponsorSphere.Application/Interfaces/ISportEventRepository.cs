@@ -8,7 +8,8 @@ namespace SponsorSphere.Application.Interfaces
     {
         Task<SportEvent> CreateAsync(SportEvent sportEvent);
         Task<SportEvent> GetByIdAsync(int sportEventId);
-        Task<List<SportEvent>> GetBySportAsync(SportsEnum sport, int pageNumber, int pageSize);
+        Task<List<SportEvent>> GetPendingSportEventsAsync(int pageNumber, int pageSize);
+        Task<int> GetPendingSportEventsCountAsync();
         Task<List<SportEvent>> GetFinishedSportEventsAsync(SportsEnum sport, int pageNumber, int pageSize);
         Task<List<SportEvent>> GetUnfinishedSportEventsAsync(SportsEnum sport, int pageNumber, int pageSize);
         Task<SportEvent?> SearchAsync(SportEvent sportEvent);

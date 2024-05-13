@@ -11,5 +11,6 @@ namespace SponsorSphere.Domain.Models
         public bool Finished { get; set; }
         public EventsEnum EventType { get; set; }
         public SportsEnum Sport { get; set; }
+        public SportEventStatus Status { get; set; }
     }
 }

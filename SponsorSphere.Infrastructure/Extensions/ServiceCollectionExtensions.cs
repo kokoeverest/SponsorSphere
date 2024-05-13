@@ -20,7 +20,8 @@ namespace SponsorSphere.Infrastructure.Extensions
                 options.UseSqlServer(dbOptions.Value.ConnectionString);
             });
 
-            services.AddOptions<DbOptions>().Configure<IConfiguration>((settings, configuration) =>
+            services.AddOptions<DbOptions>()
+                .Configure<IConfiguration>((settings, configuration) =>
             {
                 settings.ConnectionString = configuration["ConnectionString"] ?? string.Empty;
             });

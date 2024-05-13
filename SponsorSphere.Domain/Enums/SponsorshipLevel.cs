@@ -2,6 +2,9 @@
 {
     public enum SponsorshipLevel
     {
-        Monthly, Annual, SinglePayment, FundRaiser
+        Monthly, 
+        Annual, 
+        SinglePayment, 
+        FundRaiser
     }
 }

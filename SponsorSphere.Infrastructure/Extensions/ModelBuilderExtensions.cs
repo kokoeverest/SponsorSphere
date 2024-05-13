@@ -6,69 +6,79 @@ namespace SponsorSphere.Infrastructure.Extensions
 {
     internal static class ModelBuilderExtensions
     {
+        private const string _athleteAdminEmail = "athlete@admin.admin";
+        private const string _adminName = "administrator";
+        private const string _phoneNumber = "0123456789";
+        private const string _passwordHash = "a1d2m3i4n5i6s7t8r9a0t1o2r3";
+        private const string _sponsorAdminEmail = "sponsor@admin.admin";
+
         internal static void Seed(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Athlete>().HasData(
                 new Athlete
                 {
                     Id = 1,
+                    Name = _adminName,
+                    LastName = _adminName,
+                    Email = _athleteAdminEmail,
+                    NormalizedEmail = _athleteAdminEmail.ToUpper(),
+                    UserName = _athleteAdminEmail,
+                    NormalizedUserName = _athleteAdminEmail.ToUpper(),
+                    Country = CountryEnum.BGR,
+                    PhoneNumber = _phoneNumber,
+                    PasswordHash = _passwordHash,
+                    BirthDate = DateTime.Parse("15/08/1997").ToUniversalTime(),
+                    Sport = SportsEnum.DownhillMountainBiking,
+                    PictureId = 1,
+                },
+                new Athlete
+                {
+                    Id = 4,
                     Name = "Petar",
                     LastName = "Petrov",
                     Email = "5rov@mail.mail",
                     UserName = "5rov@mail.mail",
                     Country = CountryEnum.BGR,
-                    PhoneNumber = "09198",
+                    PhoneNumber = _phoneNumber,
                     BirthDate = DateTime.Parse("30/09/1983").ToUniversalTime(),
-                    Sport = SportsEnum.MountainRunning
+                    Sport = SportsEnum.MountainRunning,
+                    StravaLink = "www.strava.co/userpetar"
                 },
                 new Athlete
                 {
-                    Id = 2,
+                    Id = 5,
                     Name = "Georgi",
                     LastName = "Petkov",
                     Email = "5kov@mail.mail",
                     UserName = "5kov@mail.mail",
                     Country = CountryEnum.BGR,
-                    PhoneNumber = "09198",
+                    PhoneNumber = _phoneNumber,
                     BirthDate = DateTime.Parse("30/03/2005").ToUniversalTime(),
                     Sport = SportsEnum.Golf
-                },
-                new Athlete
-                {
-                    Id = 7,
-                    Name = "Kaloyan",
-                    LastName = "Peychev",
-                    Email = "kalo@mail.bg",
-                    NormalizedEmail = "kalo@mail.bg".ToUpper(),
-                    UserName = "kalo@mail.bg",
-                    NormalizedUserName = "kalo@mail.bg".ToUpper(),
-                    Country = CountryEnum.BGR,
-                    PhoneNumber = "123456",
-                    PasswordHash = "A1B2C3",
-                    BirthDate = DateTime.Parse("15/08/1997").ToUniversalTime(),
-                    Sport = SportsEnum.DownhillMountainBiking,
-                    PictureId = 1,
-                    StravaLink = "www.strava.co/userkaloyan"
                 }
             );
 
             modelBuilder.Entity<SponsorCompany>().HasData(
                 new SponsorCompany
                 {
-                    Id = 3,
-                    Name = "Lidl",
-                    Email = "lidl@bg.gb",
+                    Id = 2,
+                    Name = _adminName,
+                    Email = _sponsorAdminEmail,
+                    UserName = _sponsorAdminEmail,
+                    NormalizedEmail = _sponsorAdminEmail.ToUpper(),
+                    NormalizedUserName = _sponsorAdminEmail.ToUpper(),
                     Country = CountryEnum.BGR,
-                    PhoneNumber = "1223",
+                    PhoneNumber = _phoneNumber,
+                    PasswordHash = _passwordHash,
                     IBAN = "BG12345"
                 },
                 new SponsorCompany
                 {
-                    Id = 4,
+                    Id = 3,
                     Name = "Kaufland",
                     Email = "kaufland@bg.gb",
                     Country = CountryEnum.DEU,
-                    PhoneNumber = "1223",
+                    PhoneNumber = _phoneNumber,
                     IBAN = "DE32215"
                 }
             );
@@ -76,11 +86,11 @@ namespace SponsorSphere.Infrastructure.Extensions
             modelBuilder.Entity<SponsorIndividual>().HasData(
                 new SponsorIndividual
                 {
-                    Id = 5,
+                    Id = 7,
                     Name = "Lazar",
                     Email = "anonimen@bg.gb",
                     Country = CountryEnum.BGR,
-                    PhoneNumber = "1223",
+                    PhoneNumber = _phoneNumber,
                     LastName = "Randov",
                     BirthDate = DateTime.Parse("03/01/1990").ToUniversalTime(),
                 },
@@ -99,7 +109,7 @@ namespace SponsorSphere.Infrastructure.Extensions
             modelBuilder.Entity<Sponsorship>().HasData(
                 new Sponsorship
                 {
-                    AthleteId = 1,
+                    AthleteId = 4,
                     SponsorId = 3,
                     Amount = 2000,
                     Level = SponsorshipLevel.SinglePayment,
@@ -114,7 +124,8 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Finished = true,
                     EventType = EventsEnum.Race,
                     EventDate = DateTime.Parse("2020/08/16").ToUniversalTime(),
-                    Country = CountryEnum.BGR
+                    Country = CountryEnum.BGR,
+                    Status = SportEventStatus.Approved
                 },
                 new SportEvent
                 {
@@ -124,21 +135,22 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Finished = false,
                     EventType = EventsEnum.Race,
                     EventDate = DateTime.Parse("2024/08/16").ToUniversalTime(),
-                    Country = CountryEnum.ESP
+                    Country = CountryEnum.ESP,
+                    Status = SportEventStatus.Approved
                 }
             );
 
             modelBuilder.Entity<Achievement>().HasData(
                 new Achievement
                 {
-                    AthleteId = 2,
+                    AthleteId = 4,
                     Sport = SportsEnum.SkyRunning,
                     SportEventId = 1,
                     PlaceFinished = 1
                 },
                 new Achievement
                 {
-                    AthleteId = 1,
+                    AthleteId = 5,
                     Sport = SportsEnum.MountainRunning,
                     SportEventId = 1,
                     PlaceFinished = 2
@@ -148,7 +160,7 @@ namespace SponsorSphere.Infrastructure.Extensions
             modelBuilder.Entity<Goal>().HasData(
                 new Goal
                 {
-                    AthleteId = 2,
+                    AthleteId = 4,
                     Sport = SportsEnum.SkyRunning,
                     SportEventId = 2,
                     Date = DateTime.Parse("2024/08/16").ToUniversalTime(),

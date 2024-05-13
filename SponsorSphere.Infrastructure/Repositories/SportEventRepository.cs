@@ -60,12 +60,17 @@ namespace SponsorSphere.Infrastructure.Repositories
             return sportEvent;
         }
 
-        public async Task<List<SportEvent>> GetBySportAsync(SportsEnum sport, int pageNumber, int pageSize) =>
+        public async Task<List<SportEvent>> GetPendingSportEventsAsync(int pageNumber, int pageSize) =>
             await _context.SportEvents
-            .Where(se => se.Sport == sport)
+            .Where(se => se.Status == SportEventStatus.Pending)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
+        public async Task<int> GetPendingSportEventsCountAsync() =>
+            await _context.SportEvents
+            .Where(se => se.Status == SportEventStatus.Pending)
+            .CountAsync();
 
         public async Task<SportEvent?> SearchAsync(SportEvent sportEvent)
         {

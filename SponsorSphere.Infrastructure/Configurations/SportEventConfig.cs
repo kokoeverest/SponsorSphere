@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Infrastructure.Configurations
@@ -22,6 +23,11 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.Property(se => se.Country)
                 .IsRequired(true)
                 .HasConversion<int>();
+
+            builder.Property(se => se.Status)
+                .HasConversion<int>();
+
+            builder.HasQueryFilter(s => s.Status == SportEventStatus.Approved);
         }
     }
 }

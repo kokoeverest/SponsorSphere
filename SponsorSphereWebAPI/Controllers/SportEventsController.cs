@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SponsorSphere.Application.App.SportEvents;
 using SponsorSphere.Application.App.SportEvents.Commands;
 using SponsorSphere.Application.App.SportEvents.Dtos;
 using SponsorSphere.Application.App.SportEvents.Queries;
@@ -32,6 +33,7 @@ namespace SponsorSphereWebAPI.Controllers
             return Ok(sportEvents);
         }
 
+        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpGet]
         [Route("finished")]
         public async Task<IActionResult> GetFinishedSportEvents(SportsEnum sport, int pageNumber = 1, int pageSize = 10)
@@ -40,12 +42,31 @@ namespace SponsorSphereWebAPI.Controllers
             return Ok(sportEvents);
         }
 
+        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpGet]
         [Route("unfinished")]
         public async Task<IActionResult> GetUnfinishedSportEvents(SportsEnum sport, int pageNumber = 1, int pageSize = 10)
         {
             var sportEvents = await _mediator.Send(new GetUnfinishedSportEventsQuery(sport, pageNumber, pageSize));
             return Ok(sportEvents);
+        }
+
+        [Authorize(Roles = RoleConstants.Admin)]
+        [HttpGet]
+        [Route("pending")]
+        public async Task<IActionResult> GetPendingSportEvents(int pageNumber = 1, int pageSize = 10)
+        {
+            var sportEvents = await _mediator.Send(new GetPendingSportEventsQuery(pageNumber, pageSize));
+            return Ok(sportEvents);
+        }
+
+        [Authorize(Roles = RoleConstants.Admin)]
+        [HttpGet]
+        [Route("pendingCount")]
+        public async Task<IActionResult> GetPendingSportEventsCount()
+        {
+            var sportEventsCount = await _mediator.Send(new GetPendingSportEventsCountQuery());
+            return Ok(sportEventsCount);
         }
 
         [Authorize(Roles = RoleConstants.Athlete)]
