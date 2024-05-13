@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.SportEvents;
@@ -11,6 +12,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers
 {
+    [HttpLogging(HttpLoggingFields.All)]
     [ApiController]
     [Route("sportEvents/")]
     public class SportEventsController : ControllerBase

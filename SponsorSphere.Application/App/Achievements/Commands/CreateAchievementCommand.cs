@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Achievements.Dtos;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -12,20 +14,25 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly ILogger<CreateAchievementCommandHandler> _logger;
 
-    public CreateAchievementCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateAchievementCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<CreateAchievementCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<AchievementDto> Handle(CreateAchievementCommand request, CancellationToken cancellationToken)
     {
+        var start = DateTime.Now;
+        _logger.LogInformation("Action: {Action}", request.ToString());
+
         var eventDate = DateTime.Parse(request.Model.EventDate).ToUniversalTime();
 
         if (DateTime.UtcNow < eventDate)
         {
-            throw new ApplicationException("You can't create an achievement in the future");
+            throw new BadRequestException("You can't create an achievement in the future");
         }
 
         var sportEvent = _mapper.Map<SportEvent>(request.Model);
@@ -51,12 +58,14 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
             await _unitOfWork.CommitTransactionAsync();
             var mappedAchievement = _mapper.Map<AchievementDto>(newAchievement);
 
+            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mappedAchievement);
         }
 
         catch (Exception)
         {
             await _unitOfWork.RollbackTransactionAsync();
+            _logger.LogError("Action: {Action} failed", request.ToString());
             throw;
         }
     }

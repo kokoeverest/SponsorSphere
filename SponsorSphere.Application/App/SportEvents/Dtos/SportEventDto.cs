@@ -11,5 +11,6 @@ namespace SponsorSphere.Application.App.SportEvents.Dtos
         public DateTime EventDate { get; set; }
         public EventsEnum EventType { get; set; }
         public SportsEnum Sport { get; set; }
+        public SportEventStatus Status { get; set; }
     }
 }

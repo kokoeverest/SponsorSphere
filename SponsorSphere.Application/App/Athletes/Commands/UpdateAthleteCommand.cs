@@ -29,16 +29,21 @@ public class UpdateAthleteCommandHandler : IRequestHandler<UpdateAthleteCommand,
     {
         try
         {
+            var start = DateTime.Now;
+            _logger.LogInformation("Action: {Action}", request.ToString());
+
             await _unitOfWork.BeginTransactionAsync();
             var result = await _unitOfWork.AthletesRepository.UpdateAsync(request.AthleteToUpdate);
             await _unitOfWork.CommitTransactionAsync();
 
+            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return result;
         }
 
         catch (Exception)
         {
             await _unitOfWork.RollbackTransactionAsync();
+            _logger.LogError("Action: {Action} failed", request.ToString());
             throw;
         }
     } 

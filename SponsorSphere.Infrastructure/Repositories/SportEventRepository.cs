@@ -40,14 +40,14 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<SportEvent>> GetFinishedSportEventsAsync(SportsEnum sport, int pageNumber, int pageSize) =>
 
             await _context.SportEvents
-            .Where(se => se.Finished)
+            .Where(se => se.Finished && se.Sport == sport)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
          
         public async Task<List<SportEvent>> GetUnfinishedSportEventsAsync(SportsEnum sport, int pageNumber, int pageSize) =>
              await _context.SportEvents
-            .Where(se => !se.Finished)
+            .Where(se => !se.Finished && se.Sport == sport)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -89,6 +89,8 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .SetProperty(se => se.Name, sportEvent.Name)
                 .SetProperty(se => se.Sport, sportEvent.Sport)
                 .SetProperty(se => se.Country, sportEvent.Country)
+                .SetProperty(se => se.Finished, sportEvent.Finished)
+                .SetProperty(se => se.Status, sportEvent.Status)
                 .SetProperty(se => se.EventType, sportEvent.EventType)
                 .SetProperty(se => se.EventDate, sportEvent.EventDate)
             );

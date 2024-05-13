@@ -25,5 +25,8 @@ namespace SponsorSphere.Application.App.SportEvents.Dtos
         [EnumDataType(typeof(SportsEnum))]
         [Required]
         public SportsEnum Sport { get; set; }
+
+        [EnumDataType(typeof(SportEventStatus))]
+        public SportEventStatus Status { get; set; } = SportEventStatus.Pending;
     }
 }

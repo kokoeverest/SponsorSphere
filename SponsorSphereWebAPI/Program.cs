@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using Serilog;
 using SponsorSphere.Application;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure;
@@ -46,6 +47,7 @@ builder.Services.AddIdentityApiEndpoints<User>(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddInfrastructure();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly));
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) => { loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration); });
 
 var app = builder.Build();
 
@@ -59,9 +61,9 @@ if (app.Environment.IsDevelopment())
 app.MapIdentityApi<User>();
 app.UseExceptionHandling();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
+await app.CreateAdmin();
 
 app.Run();

@@ -2,7 +2,7 @@
 using MediatR;
 using SponsorSphere.Application.Interfaces;
 
-namespace SponsorSphere.Application.App.SportEvents;
+namespace SponsorSphere.Application.App.SportEvents.Queries;
 
 public record GetPendingSportEventsCountQuery : IRequest<int>;
 
@@ -15,6 +15,6 @@ public class GetPendingSportEventsCountQueryHandler : IRequestHandler<GetPending
         _unitOfWork = unitOfWork;
     }
     public async Task<int> Handle(GetPendingSportEventsCountQuery request, CancellationToken cancellationToken) =>
-        
+
         await _unitOfWork.SportEventsRepository.GetPendingSportEventsCountAsync();
 }
