@@ -26,8 +26,6 @@ namespace SponsorSphere.Infrastructure.Configurations
 
             builder.Property(se => se.Status)
                 .HasConversion<int>();
-
-            builder.HasQueryFilter(s => s.Status == SportEventStatus.Approved);
         }
     }
 }

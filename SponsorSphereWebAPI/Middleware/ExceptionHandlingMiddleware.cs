@@ -10,10 +10,10 @@ namespace SponsorSphereWebAPI.Middleware
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public ExceptionHandlingMiddleware(ILoggerFactory loggerFactory, RequestDelegate next)
         {
-            _next = next;
             _logger = loggerFactory.CreateLogger<ExceptionHandlingMiddleware>();
+            _next = next;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -30,7 +30,7 @@ namespace SponsorSphereWebAPI.Middleware
                 {
                     NotFoundException => (int)HttpStatusCode.NotFound,
                     DbUpdateException => (int)HttpStatusCode.BadRequest,
-                    ApplicationException => (int)HttpStatusCode.BadRequest,
+                    BadRequestException => (int)HttpStatusCode.BadRequest,
                     _ => (int)HttpStatusCode.InternalServerError,
                 };
 

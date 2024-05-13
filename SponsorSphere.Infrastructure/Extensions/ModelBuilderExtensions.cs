@@ -6,38 +6,42 @@ namespace SponsorSphere.Infrastructure.Extensions
 {
     internal static class ModelBuilderExtensions
     {
-        private const string _athleteAdminEmail = "athlete@admin.admin";
-        private const string _adminName = "administrator";
+        private const string _adminEmail = "admin@admin.admin";
+        private const string _adminName = "admin";
         private const string _phoneNumber = "0123456789";
-        private const string _passwordHash = "a1d2m3i4n5i6s7t8r9a0t1o2r3";
-        private const string _sponsorAdminEmail = "sponsor@admin.admin";
+        private const string _adminPasswordHash = "AQAAAAIAAYagAAAAEAMtTb2zDg89LI4duiOV4i0cA2n7maewb+Zwz5cDLpp2TEUvG2X2WWxUTa8e/UKe4w==";
+        private const string _adminSecurityStamp = "SXUZT2PQFBXQJAQUPDFAWRY6J4OWNV4K";
+        private const string _adminConcurrencyStamp = "884782f4-6894-440f-a180-a44a65e24b86";
 
         internal static void Seed(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Athlete>().HasData(
-                new Athlete
+            modelBuilder.Entity<User>().HasData(
+                new User
                 {
                     Id = 1,
                     Name = _adminName,
-                    LastName = _adminName,
-                    Email = _athleteAdminEmail,
-                    NormalizedEmail = _athleteAdminEmail.ToUpper(),
-                    UserName = _athleteAdminEmail,
-                    NormalizedUserName = _athleteAdminEmail.ToUpper(),
+                    Email = _adminEmail,
+                    NormalizedEmail = _adminEmail.ToUpper(),
+                    UserName = _adminEmail,
+                    NormalizedUserName = _adminEmail.ToUpper(),
+                    SecurityStamp = _adminSecurityStamp,
+                    ConcurrencyStamp = _adminConcurrencyStamp,
                     Country = CountryEnum.BGR,
                     PhoneNumber = _phoneNumber,
-                    PasswordHash = _passwordHash,
-                    BirthDate = DateTime.Parse("15/08/1997").ToUniversalTime(),
-                    Sport = SportsEnum.DownhillMountainBiking,
-                    PictureId = 1,
-                },
+                    PasswordHash = _adminPasswordHash,
+                });
+
+            modelBuilder.Entity<Athlete>().HasData(
+                
                 new Athlete
                 {
-                    Id = 4,
+                    Id = 5,
                     Name = "Petar",
                     LastName = "Petrov",
-                    Email = "5rov@mail.mail",
-                    UserName = "5rov@mail.mail",
+                    Email = "test@mail.bg",
+                    UserName = "test@mail.bg",
+                    NormalizedEmail = "test@mail.bg".ToUpper(),
+                    NormalizedUserName = "test@mail.bg".ToUpper(),
                     Country = CountryEnum.BGR,
                     PhoneNumber = _phoneNumber,
                     BirthDate = DateTime.Parse("30/09/1983").ToUniversalTime(),
@@ -46,7 +50,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                 },
                 new Athlete
                 {
-                    Id = 5,
+                    Id = 6,
                     Name = "Georgi",
                     LastName = "Petkov",
                     Email = "5kov@mail.mail",
@@ -54,27 +58,27 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Country = CountryEnum.BGR,
                     PhoneNumber = _phoneNumber,
                     BirthDate = DateTime.Parse("30/03/2005").ToUniversalTime(),
-                    Sport = SportsEnum.Golf
+                    Sport = SportsEnum.DownhillMountainBiking
                 }
             );
 
             modelBuilder.Entity<SponsorCompany>().HasData(
                 new SponsorCompany
                 {
-                    Id = 2,
-                    Name = _adminName,
-                    Email = _sponsorAdminEmail,
-                    UserName = _sponsorAdminEmail,
-                    NormalizedEmail = _sponsorAdminEmail.ToUpper(),
-                    NormalizedUserName = _sponsorAdminEmail.ToUpper(),
+                    Id = 3,
+                    Name = "Lidl",
+                    Email = "lidl@mail.bg",
+                    UserName = "lidl@mail.bg",
+                    NormalizedEmail = "lidl@mail.bg".ToUpper(),
+                    NormalizedUserName = "lidl@mail.bg".ToUpper(),
                     Country = CountryEnum.BGR,
                     PhoneNumber = _phoneNumber,
-                    PasswordHash = _passwordHash,
+                    PasswordHash = _adminPasswordHash,
                     IBAN = "BG12345"
                 },
                 new SponsorCompany
                 {
-                    Id = 3,
+                    Id = 4,
                     Name = "Kaufland",
                     Email = "kaufland@bg.gb",
                     Country = CountryEnum.DEU,
@@ -86,7 +90,7 @@ namespace SponsorSphere.Infrastructure.Extensions
             modelBuilder.Entity<SponsorIndividual>().HasData(
                 new SponsorIndividual
                 {
-                    Id = 7,
+                    Id = 8,
                     Name = "Lazar",
                     Email = "anonimen@bg.gb",
                     Country = CountryEnum.BGR,
@@ -96,7 +100,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                 },
                 new SponsorIndividual
                 {
-                    Id = 6,
+                    Id = 7,
                     Name = "Michael",
                     Email = "michael@bg.gb",
                     Country = CountryEnum.AUS,
@@ -109,7 +113,7 @@ namespace SponsorSphere.Infrastructure.Extensions
             modelBuilder.Entity<Sponsorship>().HasData(
                 new Sponsorship
                 {
-                    AthleteId = 4,
+                    AthleteId = 6,
                     SponsorId = 3,
                     Amount = 2000,
                     Level = SponsorshipLevel.SinglePayment,
@@ -136,14 +140,14 @@ namespace SponsorSphere.Infrastructure.Extensions
                     EventType = EventsEnum.Race,
                     EventDate = DateTime.Parse("2024/08/16").ToUniversalTime(),
                     Country = CountryEnum.ESP,
-                    Status = SportEventStatus.Approved
+                    Status = SportEventStatus.Pending
                 }
             );
 
             modelBuilder.Entity<Achievement>().HasData(
                 new Achievement
                 {
-                    AthleteId = 4,
+                    AthleteId = 6,
                     Sport = SportsEnum.SkyRunning,
                     SportEventId = 1,
                     PlaceFinished = 1
@@ -160,7 +164,7 @@ namespace SponsorSphere.Infrastructure.Extensions
             modelBuilder.Entity<Goal>().HasData(
                 new Goal
                 {
-                    AthleteId = 4,
+                    AthleteId = 6,
                     Sport = SportsEnum.SkyRunning,
                     SportEventId = 2,
                     Date = DateTime.Parse("2024/08/16").ToUniversalTime(),
@@ -187,14 +191,14 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Id = 1,
                     Content = "A very interesting post about a sport achievement",
                     Created = DateTime.Parse("2023.12.06").ToUniversalTime(),
-                    AuthorId = 4
+                    AuthorId = 6
                 },
                 new BlogPost
                 {
                     Id = 2,
                     Content = @"I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have fascinated me throughout my life!",
                     Created = DateTime.Parse("2023.12.06").ToUniversalTime(),
-                    AuthorId = 4
+                    AuthorId = 6
                 }
                 );
 
