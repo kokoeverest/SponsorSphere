@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.SponsorIndividuals.Dtos;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
@@ -13,16 +14,21 @@ public class CreateSponsorIndividualCommandHandler : IRequestHandler<CreateSpons
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
+    private readonly ILogger<CreateSponsorIndividualCommandHandler> _logger;
 
-    public CreateSponsorIndividualCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
+    public CreateSponsorIndividualCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, ILogger<CreateSponsorIndividualCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _userManager = userManager;
+        _logger = logger;
     }
 
     public async Task<SponsorIndividualDto> Handle(CreateSponsorIndividualCommand request, CancellationToken cancellationToken)
     {
+        var start = DateTime.Now;
+        _logger.LogInformation("Action: {Action}", request.ToString());
+
         var sponsorIndividual = _mapper.Map<SponsorIndividual>(request.SponsorIndividual);
 
         try
@@ -35,12 +41,14 @@ public class CreateSponsorIndividualCommandHandler : IRequestHandler<CreateSpons
             await _unitOfWork.CommitTransactionAsync();
 
             var sponsorIndividualDto = _mapper.Map<SponsorIndividualDto>(sponsorIndividual);
+            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(sponsorIndividualDto);
         }
 
         catch (Exception)
         {
             await _unitOfWork.RollbackTransactionAsync();
+            _logger.LogError("Action: {Action} failed", request.ToString());
             throw;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.SponsorCompanies.Commands;
@@ -7,13 +8,21 @@ public record DeleteSponsorCompanyCommand(int SponsorCompanyId) : IRequest<int>;
 public class DeleteSponsorCompanyCommandHandler : IRequestHandler<DeleteSponsorCompanyCommand, int>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public DeleteSponsorCompanyCommandHandler(IUnitOfWork unitOfWork)
+    private readonly ILogger<DeleteSponsorCompanyCommandHandler> _logger;
+    public DeleteSponsorCompanyCommandHandler(IUnitOfWork unitOfWork, ILogger<DeleteSponsorCompanyCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<int> Handle(DeleteSponsorCompanyCommand request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.SponsorCompaniesRepository.DeleteAsync(request.SponsorCompanyId);
+        var start = DateTime.Now;
+        _logger.LogInformation("Action: {Action}", request.ToString());
+
+        var result = await _unitOfWork.SponsorCompaniesRepository.DeleteAsync(request.SponsorCompanyId);
+
+        _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+        return result;
     }
 }

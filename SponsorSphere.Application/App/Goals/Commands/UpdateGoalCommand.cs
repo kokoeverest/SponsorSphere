@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Goals.Dtos;
 using SponsorSphere.Application.Interfaces;
 
@@ -8,10 +9,12 @@ public record UpdateGoalCommand(GoalDto GoalToUpdate) : IRequest<GoalDto>;
 public class UpdateGoalCommandHandler : IRequestHandler<UpdateGoalCommand, GoalDto>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<UpdateGoalCommandHandler> _logger;
 
-    public UpdateGoalCommandHandler(IUnitOfWork unitOfWork)
+    public UpdateGoalCommandHandler(IUnitOfWork unitOfWork, ILogger<UpdateGoalCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<GoalDto> Handle(UpdateGoalCommand request, CancellationToken cancellationToken)
@@ -21,18 +24,23 @@ public class UpdateGoalCommandHandler : IRequestHandler<UpdateGoalCommand, GoalD
             throw new InvalidDataException("You can't create a goal in the past");
         }
 
+        var start = DateTime.Now;
+        _logger.LogInformation("Action: {Action}", request.ToString());
+
         try
         {
             await _unitOfWork.BeginTransactionAsync();
             var result = await _unitOfWork.GoalsRepository.UpdateAsync(request.GoalToUpdate);
             await _unitOfWork.CommitTransactionAsync();
 
+            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return result;
         }
 
         catch (Exception)
         {
             await _unitOfWork.RollbackTransactionAsync();
+            _logger.LogError("Action: {Action} failed", request.ToString());
             throw;
         }
     } 

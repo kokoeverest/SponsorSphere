@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.SponsorCompanies.Dtos;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
@@ -14,15 +15,20 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
-    public CreateSponsorCompanyCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
+    private readonly ILogger<CreateSponsorCompanyCommandHandler> _logger;
+    public CreateSponsorCompanyCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, ILogger<CreateSponsorCompanyCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _userManager = userManager;
+        _logger = logger;
     }
 
     public async Task<SponsorCompanyDto> Handle(CreateSponsorCompanyCommand request, CancellationToken cancellationToken)
     {
+        var start = DateTime.Now;
+        _logger.LogInformation("Action: {Action}", request.ToString());
+
         var sponsorCompany = _mapper.Map<SponsorCompany>(request.SponsorCompany);
 
         try
@@ -35,12 +41,14 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
             await _unitOfWork.CommitTransactionAsync();
 
             var sponsorCompanyDto = _mapper.Map<SponsorCompanyDto>(sponsorCompany);
+            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(sponsorCompanyDto);
         }
 
         catch (Exception)
         {
             await _unitOfWork.RollbackTransactionAsync();
+            _logger.LogError("Action: {Action} failed", request.ToString());
             throw;
         }
     }
