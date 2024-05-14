@@ -11,6 +11,8 @@ namespace SponsorSphere.Application.Profiles
             CreateMap<Picture, PictureDto>();
             CreateMap<CreatePictureDto, Picture>()
                 .ForMember(p => p.Modified, opt => opt.NullSubstitute(DateTime.UtcNow));
+            //CreateMap<PictureDto, Picture>()
+            //    .ForMember(p => p.Modified, opt => opt.NullSubstitute(DateTime.UtcNow));
         }
     }
 }

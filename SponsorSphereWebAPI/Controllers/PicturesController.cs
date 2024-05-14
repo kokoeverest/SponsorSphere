@@ -26,19 +26,6 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("create")]
         public async Task<IActionResult> CreatePicture([FromForm] CreatePictureDto model)
         {
-            var user = HttpContext.User?.Identity?.Name ?? string.Empty;
-            var loggedInUser = await _userManager.FindByEmailAsync(user);
-
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
-
             var result = await _mediator.Send(new CreatePictureCommand(model));
             return Created(string.Empty, result);
         }
@@ -48,19 +35,6 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("delete")]
         public async Task<IActionResult> DeletePicture(PictureDto picture)
         {
-            var user = HttpContext.User?.Identity?.Name ?? string.Empty;
-            var loggedInUser = await _userManager.FindByEmailAsync(user);
-
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
-
             await _mediator.Send(new DeletePictureCommand(picture));
             return NoContent();
         }
@@ -70,19 +44,6 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("update")]
         public async Task<IActionResult> UpdatePicture([FromForm] PictureDto updatedPicture)
         {
-            var user = HttpContext.User?.Identity?.Name ?? string.Empty;
-            var loggedInUser = await _userManager.FindByEmailAsync(user);
-
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
-
             var result = await _mediator.Send(new UpdatePictureCommand(updatedPicture));
             return Ok(result);
         }

@@ -2,6 +2,8 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Pictures.Dtos;
+using SponsorSphere.Application.Common.Constants;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -24,12 +26,27 @@ public class CreatePictureCommandHandler : IRequestHandler<CreatePictureCommand,
         var start = DateTime.Now;
         _logger.LogInformation("Action: {Action}", request.ToString());
 
-        var picture = _mapper.Map<Picture>(request.Picture);
+        using var memoryStream = new MemoryStream();
+        
+        await request.Picture.FormFile.CopyToAsync(memoryStream, cancellationToken);
 
-        await _unitOfWork.PicturesRepository.CreateAsync(picture);
-        var mappedPicture = _mapper.Map<PictureDto>(picture);
+        if (memoryStream.Length < FileConstants.FileMaxSize)
+        {
+            var picture = new Picture
+            {
+                Content = memoryStream.ToArray(),
+            };
 
-        _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
-        return await Task.FromResult(mappedPicture);
+            await _unitOfWork.PicturesRepository.CreateAsync(picture);
+            var mappedPicture = _mapper.Map<PictureDto>(picture);
+
+            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            return await Task.FromResult(mappedPicture);
+        }
+        else
+        {
+            _logger.LogError("Action: {Action} failed", request.ToString());
+            throw new BadRequestException("The file is too large.");
+        }
     }
 }

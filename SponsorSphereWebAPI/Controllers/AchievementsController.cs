@@ -29,15 +29,8 @@ namespace SponsorSphereWebAPI.Controllers
             var user = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
 
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
+            //if (user is null) return NotFound("User not found!");
+            //if (loggedInUser is null) return Unauthorized("You have to log in first!");
 
             var achievement = await _mediator.Send(new CreateAchievementCommand(model, loggedInUser.Id));
             return Created(string.Empty, achievement);

@@ -1,17 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace SponsorSphere.Application.App.Pictures.Dtos
 {
     public class CreatePictureDto
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
-        [Url]
-        [Required]
-        public string Url { get; set; } = string.Empty;
-        public byte? Content { get; set; }
+        //[Url]
+        //[Required]
+        //public string Url { get; set; } = string.Empty;
+        //public byte[]? Content { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? Modified { get; set; }
+
+        [Required]
+        [Display(Name = "File")]
+        public required IFormFile FormFile { get; set; }
     }
 }
