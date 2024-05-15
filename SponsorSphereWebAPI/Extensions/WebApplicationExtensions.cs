@@ -8,7 +8,8 @@ namespace SponsorSphereWebAPI.Extensions
     {
         public static async Task CreateAdmin(this WebApplication webApplication)
         {
-            var scope = webApplication.Services.CreateScope();
+            using var scope = webApplication.Services.CreateScope();
+
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
             var admin = await userManager.FindByEmailAsync(UserConstants.AdminUserEmail);
 

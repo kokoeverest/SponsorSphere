@@ -45,7 +45,6 @@ public class CreatePictureCommandHandler : IRequestHandler<CreatePictureCommand,
         }
         else
         {
-            _logger.LogError("Action: {Action} failed", request.ToString());
             throw new BadRequestException("The file is too large.");
         }
     }

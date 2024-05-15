@@ -25,7 +25,7 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder
-                .HasQueryFilter(s => !s.Athlete.IsDeleted);
+                .HasQueryFilter(s => !s.Athlete!.IsDeleted);
 
             builder
                 .HasOne(s => s.Sponsor)
@@ -34,7 +34,7 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .HasPrincipalKey(u => u.Id)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasQueryFilter(s => !s.Sponsor.IsDeleted);
+            builder.HasQueryFilter(s => !s.Sponsor!.IsDeleted);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace SponsorSphere.Infrastructure.Configurations
                    });
 
             builder
-                .HasQueryFilter(bp => !bp.Author.IsDeleted);
+                .HasQueryFilter(bp => !bp.Author!.IsDeleted);
         }
     }
 }

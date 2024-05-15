@@ -48,7 +48,6 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
         catch (Exception)
         {
             await _unitOfWork.RollbackTransactionAsync();
-            _logger.LogError("Action: {Action} failed", request.ToString());
             throw;
         }
     }

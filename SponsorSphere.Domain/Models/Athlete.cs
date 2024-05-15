@@ -10,8 +10,6 @@ namespace SponsorSphere.Domain.Models
         public DateTime BirthDate { get; set; }
         public ICollection<Achievement> Achievements { get; set; } = [];
         public ICollection<Goal> Goals { get; set; } = [];
-
-        //[NotMapped]
         public int Age => (int)(DateTime.UtcNow.Subtract(BirthDate).TotalDays / 365.2425);
     }
 }

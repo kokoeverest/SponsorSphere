@@ -47,15 +47,8 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .Include(si => si.BlogPosts)
                     .ThenInclude(bp => bp.Pictures)
                 .Include(si => si.Sponsorships)
-                .FirstOrDefaultAsync(si => si.Id == userId) ?? throw new NotFoundException($"Sponsor with id {userId} not found");
-            //sponsorIndividual.BlogPosts = await _context.BlogPosts
-            //    .Include(bp => bp.Pictures)
-            //    .Where(bp => bp.AuthorId == sponsorIndividual.Id)
-            //    .ToListAsync();
-
-            //sponsorIndividual.Sponsorships = await _context.Sponsorships
-            //    .Where(sh => sh.SponsorId == sponsorIndividual.Id)
-            //    .ToListAsync();
+                .FirstOrDefaultAsync(si => si.Id == userId)
+                    ?? throw new NotFoundException($"Sponsor with id {userId} not found");
 
             return sponsorIndividual;
         }
@@ -90,6 +83,7 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .OrderBy(sponsor => sponsor.Name)
                 .ToListAsync();
         }
+
         public async Task<SponsorIndividualDto> UpdateAsync(SponsorIndividualDto updatedSponsorIndividual)
         {
             await _context.Users.Where(u => u.Id == updatedSponsorIndividual.Id)

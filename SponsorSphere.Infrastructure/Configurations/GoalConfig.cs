@@ -25,7 +25,7 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .HasPrincipalKey(u => u.Id);
 
             builder
-                .HasQueryFilter(g => !g.Athlete.IsDeleted);
+                .HasQueryFilter(g => !g.Athlete!.IsDeleted);
 
         }
     }

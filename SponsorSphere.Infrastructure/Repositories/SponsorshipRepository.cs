@@ -35,12 +35,9 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             var sponsorship = await _context.Sponsorships
                 .FirstOrDefaultAsync(sh => sh.AthleteId == athleteId &&
-                             sh.SponsorId == sponsorId);
-
-            if (sponsorship is null)
-            {
-                throw new NotFoundException("Sponsorship not found");
-            }
+                             sh.SponsorId == sponsorId)
+                ?? throw new NotFoundException("Sponsorship not found");
+            
             return sponsorship;
         }
 

@@ -12,7 +12,7 @@ namespace SponsorSphere.Infrastructure.Configurations
 
             builder.HasKey(bp => new { bp.BlogPostId, bp.PictureId });
             builder
-                .HasQueryFilter(bp => !bp.BlogPost.Author.IsDeleted);
+                .HasQueryFilter(bp => !bp.BlogPost!.Author!.IsDeleted);
         }
     }
 }

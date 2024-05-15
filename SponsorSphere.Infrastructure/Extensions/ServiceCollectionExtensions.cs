@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using SponsorSphere.Infrastructure.Options;
-using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Application.Interfaces;
-using SponsorSphere.Application;
+using SponsorSphere.Infrastructure.Options;
 using SponsorSphere.Infrastructure.Repositories;
 
 namespace SponsorSphere.Infrastructure.Extensions
@@ -37,7 +36,6 @@ namespace SponsorSphere.Infrastructure.Extensions
                     .AddScoped<ISponsorIndividualRepository, SponsorIndividualRepository>()
                     .AddScoped<ISponsorshipRepository, SponsorshipRepository>()
                     .AddScoped<ISportEventRepository, SportEventRepository>()
-                    //.AddAutoMapper(typeof(AssemblyMarker).Assembly);
                     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
     }

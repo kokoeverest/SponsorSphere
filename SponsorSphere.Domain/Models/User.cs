@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SponsorSphere.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SponsorSphere.Domain.Models

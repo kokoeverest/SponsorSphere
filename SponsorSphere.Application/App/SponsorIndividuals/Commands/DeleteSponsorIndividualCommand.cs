@@ -22,7 +22,7 @@ public class DeleteSponsorIndividualCommandHandler : IRequestHandler<DeleteSpons
 
         var result = await _unitOfWork.SponsorIndividualsRepository.DeleteAsync(request.SponsorIndividualId);
 
-        _logger.LogError("Action: {Action} failed", request.ToString());
+        _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
         return result;
     }
 }

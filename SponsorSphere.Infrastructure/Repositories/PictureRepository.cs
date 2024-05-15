@@ -18,6 +18,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             await _context.Pictures.AddAsync(picture);
             await _context.SaveChangesAsync();
+            
             return picture;
         }
 

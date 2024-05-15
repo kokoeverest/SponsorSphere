@@ -39,16 +39,7 @@ namespace SponsorSphereWebAPI.Controllers
             var user = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
 
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You are not authorised to do this!");
-            }
-            model.SponsorId = loggedInUser.Id;
+            model.SponsorId = loggedInUser!.Id;
 
             var result = await _mediator.Send(new CreateSponsorshipCommand(model));
             return Created(string.Empty, result);
@@ -62,17 +53,7 @@ namespace SponsorSphereWebAPI.Controllers
             var user = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
 
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
-
-            var existingSponsorship = await _mediator.Send(new GetSponsorshipQuery(athleteId, loggedInUser.Id));
+            var existingSponsorship = await _mediator.Send(new GetSponsorshipQuery(athleteId, loggedInUser!.Id));
 
             if (loggedInUser.Id != existingSponsorship.SponsorId)
             {
@@ -91,17 +72,7 @@ namespace SponsorSphereWebAPI.Controllers
             var user = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
 
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
-
-            if (loggedInUser.Id != updatedSponsorship.SponsorId)
+            if (loggedInUser!.Id != updatedSponsorship.SponsorId)
             {
                 return Forbid("You are not authorised to do this!");
             }

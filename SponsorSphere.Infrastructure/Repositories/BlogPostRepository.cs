@@ -31,7 +31,8 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<List<BlogPost>> GetBlogPostsByAuthorIdAsync(int pageNumber, int pageSize, int authorId)
         {
-            var author = _context.Users.FirstOrDefault(u => u.Id == authorId) ?? throw new NotFoundException($"User with id {authorId} not found");
+            var author = _context.Users.FirstOrDefault(u => u.Id == authorId)
+                ?? throw new NotFoundException($"User with id {authorId} not found");
 
             return await _context.BlogPosts
                 .Skip((pageNumber - 1) * pageSize)
@@ -46,20 +47,17 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             var blogPost = await _context.BlogPosts
                 .Include(bp => bp.Pictures)
-                .FirstOrDefaultAsync(bp => bp.Id == blogPostId);
-
-            if (blogPost is not null)
-            {
-                return blogPost;
-            }
-            throw new NotFoundException($"Post with id {blogPostId} not found");
+                .FirstOrDefaultAsync(bp => bp.Id == blogPostId) 
+                    ?? throw new NotFoundException($"Post with id {blogPostId} not found");
+            
+            return blogPost;
         }
 
         public async Task<List<BlogPost>> GetLatestBlogPostsAsync()
         {
             var latestPosts = await _context.BlogPosts
                 .Take(3)
-                .OrderByDescending(bp => bp.Created) // orderbydescending
+                .OrderByDescending(bp => bp.Created)
                 .Include(bp => bp.Pictures)
                 .ToListAsync();
 
@@ -68,12 +66,13 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<List<BlogPost>> GetLatestBlogPostsByAuthorIdAsync(int authorId)
         {
-            var author = _context.Users.FirstOrDefault(u => u.Id == authorId) ?? throw new NotFoundException($"User with id {authorId} not found");
+            var author = _context.Users.FirstOrDefault(u => u.Id == authorId)
+                ?? throw new NotFoundException($"User with id {authorId} not found");
 
             var latestPosts = await _context.BlogPosts
                  .Where(bp => bp.AuthorId == authorId)
                  .Take(3)
-                 .OrderByDescending(bp => bp.Created) // orderbydescending
+                 .OrderByDescending(bp => bp.Created)
                  .Include(bp => bp.Pictures)
                  .ToListAsync();
 

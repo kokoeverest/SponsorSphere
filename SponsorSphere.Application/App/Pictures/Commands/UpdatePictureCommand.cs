@@ -35,7 +35,6 @@ public class UpdatePictureCommandHandler : IRequestHandler<UpdatePictureCommand,
         catch (Exception)
         {
             await _unitOfWork.RollbackTransactionAsync();
-            _logger.LogError("Action: {Action} failed", request.ToString());
             throw;
         }
     }

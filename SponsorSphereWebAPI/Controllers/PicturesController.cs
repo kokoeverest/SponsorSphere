@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Pictures.Commands;
 using SponsorSphere.Application.App.Pictures.Dtos;
@@ -12,18 +11,16 @@ namespace SponsorSphereWebAPI.Controllers
     [Route("pictures/")]
     public class PicturesController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
 
-        public PicturesController(UserManager<User> userManager, IMediator mediator)
+        public PicturesController(IMediator mediator)
         {
-            _userManager = userManager;
             _mediator = mediator;
         }
 
         [Authorize]
         [HttpPost]
-        [Route("create")]
+        [Route("upload")]
         public async Task<IActionResult> CreatePicture([FromForm] CreatePictureDto model)
         {
             var result = await _mediator.Send(new CreatePictureCommand(model));

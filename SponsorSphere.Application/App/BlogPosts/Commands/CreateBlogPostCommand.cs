@@ -44,7 +44,6 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
         catch (Exception)
         {
             await _unitOfWork.RollbackTransactionAsync();
-            _logger.LogError("Action: {Action} failed", request.ToString());
             throw;
         }
     }

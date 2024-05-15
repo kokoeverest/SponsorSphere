@@ -1,6 +1,4 @@
-﻿using SponsorSphere.Domain.Models;
-
-namespace SponsorSphere.Application.Interfaces
+﻿namespace SponsorSphere.Application.Interfaces
 {
     public interface ISponsorRepository
     {

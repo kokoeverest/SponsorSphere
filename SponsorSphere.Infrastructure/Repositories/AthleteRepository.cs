@@ -54,26 +54,6 @@ namespace SponsorSphere.Infrastructure.Repositories
                 ?? throw new NotFoundException($"Athlete with id {athleteId} not found");
 
             return athlete;
-            //var athlete = await _context.Athletes.FirstOrDefaultAsync(athlete => athlete.Id == athleteId) ?? throw new NotFoundException($"Athlete with id {athleteId} not found");
-
-            //athlete.BlogPosts = await _context.BlogPosts
-            //    .Include(bp => bp.Pictures)
-            //    .Where(bp => bp.AuthorId == athlete.Id)
-            //    .ToListAsync();
-
-            //athlete.Sponsorships = await _context.Sponsorships
-            //    .Where(sh => sh.AthleteId == athlete.Id)
-            //    .ToListAsync();
-
-            //athlete.Goals = await _context.Goals
-            //    .Where(goal => goal.AthleteId == athlete.Id)
-            //    .ToListAsync();
-
-            //athlete.Achievements = await _context.Achievements
-            //    .Where(ach => ach.AthleteId == athlete.Id)
-            //    .ToListAsync();
-
-            //return athlete;
         }
 
         public async Task<List<Athlete>> GetAllAsync(int pageNumber, int pageSize)
@@ -135,6 +115,7 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .Take(pageSize)
                 .OrderByDescending(x => x.TotalAmount)
                 .ToListAsync();
+
             return sponsorships.Cast<object>().ToList();
         }
 

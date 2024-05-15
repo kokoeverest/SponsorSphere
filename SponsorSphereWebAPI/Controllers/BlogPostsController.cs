@@ -60,20 +60,10 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateBlogPost([FromForm] CreateBlogPostDto model)
         {
-            var user = this.HttpContext.User?.Identity?.Name ?? string.Empty;
+            var user = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
 
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
-
-            model.AuthorId = loggedInUser.Id;
+            model.AuthorId = loggedInUser!.Id;
 
             var result = await _mediator.Send(new CreateBlogPostCommand(model));
             return Created(string.Empty, result);
@@ -84,20 +74,10 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("update")]
         public async Task<IActionResult> UpdateBlogPost([FromForm] BlogPostDto blogPost)
         {
-            var user = this.HttpContext.User?.Identity?.Name ?? string.Empty;
+            var user = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
 
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
-
-            if (loggedInUser.Id != blogPost.AuthorId)
+            if (loggedInUser!.Id != blogPost.AuthorId)
             {
                 return Forbid("You are not the author of this post!");
             }
@@ -111,20 +91,10 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("delete")]
         public async Task<IActionResult> DeleteBlogPost(BlogPostDto blogPost)
         {
-            var user = this.HttpContext.User?.Identity?.Name ?? string.Empty;
+            var user = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(user);
 
-            if (user is null)
-            {
-                return NotFound("User not found!");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
-
-            if (loggedInUser.Id != blogPost.AuthorId)
+            if (loggedInUser!.Id != blogPost.AuthorId)
             {
                 return Forbid("You are not the author of this post!");
             }

@@ -77,19 +77,6 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("update")]
         public async Task<IActionResult> UpdateSponsorCompany([FromForm] SponsorCompanyDto updatedSponsorCompany)
         {
-            var sponsorCompany = HttpContext.User?.Identity?.Name ?? string.Empty;
-            var loggedInUser = await _userManager.FindByEmailAsync(sponsorCompany);
-
-            if (sponsorCompany is null)
-            {
-                return NotFound("User not found");
-            }
-
-            if (loggedInUser is null)
-            {
-                return Unauthorized("You have to log in first!");
-            }
-
             var result = await _mediator.Send(new UpdateSponsorCompanyCommand(updatedSponsorCompany));
             return Accepted(result);
         }
@@ -102,12 +89,7 @@ namespace SponsorSphereWebAPI.Controllers
             var sponsorCompany = HttpContext.User?.Identity?.Name ?? string.Empty;
             var loggedInUser = await _userManager.FindByEmailAsync(sponsorCompany);
 
-            if (loggedInUser is null)
-            {
-                return NotFound("User not found");
-            }
-
-            await _mediator.Send(new DeleteSponsorCompanyCommand(loggedInUser.Id));
+            await _mediator.Send(new DeleteSponsorCompanyCommand(loggedInUser!.Id));
             return NoContent();
         }
     }

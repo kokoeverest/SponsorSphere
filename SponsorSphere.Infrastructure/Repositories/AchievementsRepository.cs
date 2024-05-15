@@ -34,7 +34,6 @@ public class AchievementsRepository : IAchievementRepository
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
-    
 
     public async Task<AchievementDto> UpdateAsync(AchievementDto updatedAchievement)
     {

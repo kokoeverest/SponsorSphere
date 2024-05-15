@@ -19,6 +19,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             await _context.AddAsync(goal);
             await _context.SaveChangesAsync();
+            
             return goal;
         }
 
@@ -33,10 +34,10 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<Goal>> GetAllAsync(int athleteId, int pageNumber, int pageSize)
         {
             return await _context.Goals
-            .Where(goal => goal.AthleteId == athleteId)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+                .Where(goal => goal.AthleteId == athleteId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public async Task<GoalDto> UpdateAsync(GoalDto updatedGoal)

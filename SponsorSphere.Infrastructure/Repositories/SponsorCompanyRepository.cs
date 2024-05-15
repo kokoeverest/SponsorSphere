@@ -48,15 +48,8 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .Include(sc => sc.BlogPosts)
                     .ThenInclude(bp => bp.Pictures)
                 .Include(sc => sc.Sponsorships)
-                .FirstOrDefaultAsync(sc => sc.Id == userId) ?? throw new NotFoundException($"Sponsor with id {userId} not found");
-            //sponsorCompany.BlogPosts = await _context.BlogPosts
-            //    .Include(bp => bp.Pictures)
-            //    .Where(bp => bp.AuthorId == sponsorCompany.Id)
-            //    .ToListAsync();
-
-            //sponsorCompany.Sponsorships = await _context.Sponsorships
-            //    .Where(sh => sh.SponsorId == sponsorCompany.Id)
-            //    .ToListAsync();
+                .FirstOrDefaultAsync(sc => sc.Id == userId)
+                    ?? throw new NotFoundException($"Sponsor with id {userId} not found");
 
             return sponsorCompany;
         }

@@ -59,7 +59,6 @@ public class CreateGoalCommandHandler : IRequestHandler<CreateGoalCommand, GoalD
         catch (Exception)
         {
             await _unitOfWork.RollbackTransactionAsync();
-            _logger.LogError("Action: {Action} failed", request.ToString());
             throw;
         }
     }
