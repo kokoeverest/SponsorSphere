@@ -28,19 +28,18 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
         var start = DateTime.Now;
         _logger.LogInformation("Action: {Action}", request.ToString());
 
-        var eventDate = DateTime.Parse(request.Model.EventDate).ToUniversalTime();
+        var sportEvent = await _unitOfWork.SportEventsRepository.GetByIdAsync(request.Model.SportEventId);
 
-        if (DateTime.UtcNow < eventDate)
+        if (DateTime.UtcNow < sportEvent.EventDate)
         {
             throw new BadRequestException("You can't create an achievement in the future");
         }
 
-        var sportEvent = _mapper.Map<SportEvent>(request.Model);
         sportEvent.Finished = true;
 
         var achievement = new Achievement
         {
-            Sport = request.Model.Sport,
+            Sport = sportEvent.Sport,
             SportEventId = sportEvent.Id,
             AthleteId = request.AthleteId,
             PlaceFinished = request.Model.PlaceFinished
@@ -50,13 +49,10 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
         {
             await _unitOfWork.BeginTransactionAsync();
 
-            sportEvent = await _unitOfWork.SportEventsRepository.CreateAsync(sportEvent);
-
-            achievement.SportEventId = sportEvent.Id;
-            var newAchievement = await _unitOfWork.AchievementsRepository.CreateAsync(achievement);
+            await _unitOfWork.AchievementsRepository.CreateAsync(achievement);
 
             await _unitOfWork.CommitTransactionAsync();
-            var mappedAchievement = _mapper.Map<AchievementDto>(newAchievement);
+            var mappedAchievement = _mapper.Map<AchievementDto>(achievement);
 
             _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mappedAchievement);

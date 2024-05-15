@@ -25,32 +25,28 @@ public class CreateGoalCommandHandler : IRequestHandler<CreateGoalCommand, GoalD
 
     public async Task<GoalDto> Handle(CreateGoalCommand request, CancellationToken cancellationToken)
     {
-        var eventDate = DateTime.Parse(request.Model.EventDate).ToUniversalTime();
+        var start = DateTime.Now;
+        _logger.LogInformation("Action: {Action}", request.ToString());
 
-        if (DateTime.UtcNow > eventDate)
+        var sportEvent = await _unitOfWork.SportEventsRepository.GetByIdAsync(request.Model.SportEventId);
+        
+        if (DateTime.UtcNow > sportEvent.EventDate)
         {
             throw new InvalidDataException("You can't create a goal in the past");
         }
 
-        var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        var goal = new Goal
+        {
+            Sport = sportEvent.Sport,
+            SportEventId = sportEvent.Id,
+            AthleteId = request.AthleteId,
+            Date = sportEvent.EventDate,
+            AmountNeeded = request.Model.AmountNeeded
+        };
 
-        var sportEvent = _mapper.Map<SportEvent>(request.Model);
-        
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            await _unitOfWork.SportEventsRepository.CreateAsync(sportEvent);
-
-            var goal = new Goal
-            {
-                Sport = request.Model.Sport,
-                SportEventId = sportEvent.Id,
-                AthleteId = request.AthleteId,
-                Date = sportEvent.EventDate,
-                AmountNeeded = request.Model.AmountNeeded
-            };
-            
             await _unitOfWork.GoalsRepository.CreateAsync(goal);
             await _unitOfWork.CommitTransactionAsync();
 

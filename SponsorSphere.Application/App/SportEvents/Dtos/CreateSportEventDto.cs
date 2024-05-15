@@ -15,8 +15,7 @@ namespace SponsorSphere.Application.App.SportEvents.Dtos
         public CountryEnum Country { get; set; }
 
         [Display(Name = "Date of event dd/mm/yyyy")]
-        [Required]
-        public string EventDate { get; set; } = string.Empty;
+        public DateTime EventDate { get; set; }
 
         [EnumDataType(typeof(EventsEnum))]
         [Required]

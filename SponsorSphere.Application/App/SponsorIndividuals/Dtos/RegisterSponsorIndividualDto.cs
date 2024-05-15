@@ -31,8 +31,6 @@ namespace SponsorSphere.Application.App.SponsorIndividuals.Dtos
         public string LastName { get; set; } = string.Empty;
 
         [Display(Name = "Birth date dd/mm/yyyy")]
-        [StringLength(100, MinimumLength = 9)]
-        [Required]
-        public string BirthDate { get; set; } = string.Empty;
+        public DateTime BirthDate { get; set; }
     }
 }
