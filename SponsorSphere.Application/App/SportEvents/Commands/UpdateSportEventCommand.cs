@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.SportEvents.Dtos;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.SportEvents.Commands;
