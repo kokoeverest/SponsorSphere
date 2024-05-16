@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.SportEvents.Dtos;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -22,7 +23,7 @@ public class CreateSportEventCommandHandler : IRequestHandler<CreateSportEventCo
     public async Task<SportEventDto> Handle(CreateSportEventCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var sportEvent = _mapper.Map<SportEvent>(request.SportEvent);
 
@@ -34,7 +35,7 @@ public class CreateSportEventCommandHandler : IRequestHandler<CreateSportEventCo
             await _unitOfWork.CommitTransactionAsync();
 
             var mappedSportEvent = _mapper.Map<SportEventDto>(newSportEvent);
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mappedSportEvent);
         }
 

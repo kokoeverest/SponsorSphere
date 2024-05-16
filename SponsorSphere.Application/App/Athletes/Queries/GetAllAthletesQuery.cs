@@ -24,11 +24,11 @@ public class GetAllAthletesQueryHandler : IRequestHandler<GetAllAthletesQuery, L
     public async Task<List<AthleteDto>> Handle(GetAllAthletesQuery request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
         var athletes = await _unitOfWork.AthletesRepository.GetAllAsync(request.PageNumber, request.PageSize);
         var mappedAthletes = _mapper.Map<List<AthleteDto>>(athletes);
 
-        _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+        _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
         return await Task.FromResult(mappedAthletes);
     }
 }

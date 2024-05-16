@@ -25,12 +25,12 @@ public class GetAthleteByIdQueryHandler : IRequestHandler<GetAthleteByIdQuery, A
     public async Task<AthleteDto> Handle(GetAthleteByIdQuery request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var athlete = await _unitOfWork.AthletesRepository.GetByIdAsync(request.AthleteId);
         var mappedAthlete = _mapper.Map<AthleteDto>(athlete);
 
-        _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+        _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
         return await Task.FromResult(mappedAthlete);
     }
 }

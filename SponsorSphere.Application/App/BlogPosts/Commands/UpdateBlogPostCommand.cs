@@ -20,7 +20,7 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
     public async Task<BlogPostDto> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         try
         {
@@ -28,7 +28,7 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
             var result = await _unitOfWork.BlogPostsRepository.UpdateAsync(request.BlogPostToUpdate);
             await _unitOfWork.CommitTransactionAsync();
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return result;
         }
 

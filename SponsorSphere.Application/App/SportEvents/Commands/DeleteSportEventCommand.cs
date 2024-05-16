@@ -19,14 +19,14 @@ public class DeleteSportEventCommandHandler : IRequestHandler<DeleteSportEventCo
     public async Task Handle(DeleteSportEventCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         try
         {
             await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.SportEventsRepository.DeleteAsync(request.SportEventId);
             await _unitOfWork.CommitTransactionAsync();
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
         }
 
         catch (Exception) 

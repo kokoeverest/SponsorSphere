@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Achievements.Dtos;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
@@ -26,7 +27,7 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
     public async Task<AchievementDto> Handle(CreateAchievementCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var sportEvent = await _unitOfWork.SportEventsRepository.GetByIdAsync(request.Model.SportEventId);
 
@@ -54,7 +55,7 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
             await _unitOfWork.CommitTransactionAsync();
             var mappedAchievement = _mapper.Map<AchievementDto>(achievement);
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mappedAchievement);
         }
 

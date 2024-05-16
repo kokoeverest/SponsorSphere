@@ -18,11 +18,11 @@ public class DeleteSponsorCompanyCommandHandler : IRequestHandler<DeleteSponsorC
     public async Task<int> Handle(DeleteSponsorCompanyCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var result = await _unitOfWork.SponsorCompaniesRepository.DeleteAsync(request.SponsorCompanyId);
 
-        _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+        _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
         return result;
     }
 }

@@ -20,7 +20,7 @@ public class UpdatePictureCommandHandler : IRequestHandler<UpdatePictureCommand,
     public async Task<PictureDto> Handle(UpdatePictureCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         try
         {
@@ -28,7 +28,7 @@ public class UpdatePictureCommandHandler : IRequestHandler<UpdatePictureCommand,
             var result = await _unitOfWork.PicturesRepository.UpdateAsync(request.PictureToUpdate);
             await _unitOfWork.CommitTransactionAsync();
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return result;
         }
 

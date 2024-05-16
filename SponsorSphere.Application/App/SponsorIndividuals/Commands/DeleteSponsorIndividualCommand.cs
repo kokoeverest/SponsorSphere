@@ -18,11 +18,11 @@ public class DeleteSponsorIndividualCommandHandler : IRequestHandler<DeleteSpons
     public async Task<int> Handle(DeleteSponsorIndividualCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var result = await _unitOfWork.SponsorIndividualsRepository.DeleteAsync(request.SponsorIndividualId);
 
-        _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+        _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
         return result;
     }
 }

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.SponsorCompanies.Dtos;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -27,7 +28,7 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
     public async Task<SponsorCompanyDto> Handle(CreateSponsorCompanyCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var sponsorCompany = _mapper.Map<SponsorCompany>(request.SponsorCompany);
 
@@ -41,7 +42,7 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
             await _unitOfWork.CommitTransactionAsync();
 
             var sponsorCompanyDto = _mapper.Map<SponsorCompanyDto>(sponsorCompany);
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(sponsorCompanyDto);
         }
 

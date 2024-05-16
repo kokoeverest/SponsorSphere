@@ -24,13 +24,13 @@ public class UpdateSponsorIndividualCommandHandler : IRequestHandler<UpdateSpons
     public async Task<SponsorIndividualDto> Handle(UpdateSponsorIndividualCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var updatedSponsorIndividual = _unitOfWork.SponsorIndividualsRepository.UpdateAsync(request.SponsorIndividualToUpdate);
 
         var updatedSponsorCompanyDto = _mapper.Map<SponsorIndividualDto>(updatedSponsorIndividual);
 
-        _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+        _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
         return await Task.FromResult(updatedSponsorCompanyDto);
     }
 }

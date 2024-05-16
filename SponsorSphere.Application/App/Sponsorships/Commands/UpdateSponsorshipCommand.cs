@@ -20,7 +20,7 @@ public class UpdateSponsorshipCommandHandler : IRequestHandler<UpdateSponsorship
     public async Task<SponsorshipDto> Handle(UpdateSponsorshipCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         try
         {
@@ -28,7 +28,7 @@ public class UpdateSponsorshipCommandHandler : IRequestHandler<UpdateSponsorship
             var updatedSponsorship = await _unitOfWork.SponsorshipsRepository.UpdateAsync(request.SponsorshipToUpdate);
             await _unitOfWork.CommitTransactionAsync();
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(updatedSponsorship);
         }
         catch (Exception)

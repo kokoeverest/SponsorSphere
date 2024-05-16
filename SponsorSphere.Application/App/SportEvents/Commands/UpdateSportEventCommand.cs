@@ -20,7 +20,7 @@ public class UpdateSportEventCommandHandler : IRequestHandler<UpdateSportEventCo
     public async Task<SportEventDto> Handle(UpdateSportEventCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         request.SportEventToUpdate.Finished = true && request.SportEventToUpdate.EventDate < DateTime.UtcNow.Subtract(TimeSpan.FromDays(1));
         try
@@ -29,7 +29,7 @@ public class UpdateSportEventCommandHandler : IRequestHandler<UpdateSportEventCo
             var updatedSportEvent = await _unitOfWork.SportEventsRepository.UpdateAsync(request.SportEventToUpdate);
             await _unitOfWork.CommitTransactionAsync();
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(updatedSportEvent);
         }
 

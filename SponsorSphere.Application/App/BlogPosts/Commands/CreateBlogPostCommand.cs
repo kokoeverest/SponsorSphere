@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.BlogPosts.Dtos;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -25,7 +26,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
     public async Task<BlogPostDto> Handle(CreateBlogPostCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var blogPost = _mapper.Map<BlogPost>(request.BlogPost);
 
@@ -37,7 +38,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
 
             var mappedBlogPost = _mapper.Map<BlogPostDto>(blogPost);
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mappedBlogPost);
         }
 

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Goals.Dtos;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 using System.Reflection;
@@ -26,7 +27,7 @@ public class CreateGoalCommandHandler : IRequestHandler<CreateGoalCommand, GoalD
     public async Task<GoalDto> Handle(CreateGoalCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var sportEvent = await _unitOfWork.SportEventsRepository.GetByIdAsync(request.Model.SportEventId);
         
@@ -52,7 +53,7 @@ public class CreateGoalCommandHandler : IRequestHandler<CreateGoalCommand, GoalD
 
             var mappedGoal = _mapper.Map<GoalDto>(goal);
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mappedGoal);
         }
 

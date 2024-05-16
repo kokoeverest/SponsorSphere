@@ -19,7 +19,7 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
     public async Task<int> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         try
         {
@@ -27,7 +27,7 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
             var result = await _unitOfWork.BlogPostsRepository.DeleteAsync(request.AuthorId);
             await _unitOfWork.CommitTransactionAsync();
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return result;
         }
         catch (Exception)

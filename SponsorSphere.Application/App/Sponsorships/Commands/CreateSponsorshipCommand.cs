@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Sponsorships.Dtos;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
@@ -29,7 +30,7 @@ public class CreateSponsorshipCommandHandler : IRequestHandler<CreateSponsorship
         // Goal and if he has => reduce the AmountNeeded of the Goal with the sponsorship amount
 
         var start = DateTime.Now;
-        _logger.LogInformation("Action: {Action}", request.ToString());
+        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
         var sponsorship = _mapper.Map<Sponsorship>(request.Sponsorship);
 
@@ -41,7 +42,7 @@ public class CreateSponsorshipCommandHandler : IRequestHandler<CreateSponsorship
             await _unitOfWork.CommitTransactionAsync();
             var mappedSponsorship = _mapper.Map<SponsorshipDto>( newSponsorship );
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mappedSponsorship);
         }
         catch (Exception)

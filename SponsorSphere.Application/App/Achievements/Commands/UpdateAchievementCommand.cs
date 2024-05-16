@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Achievements.Dtos;
 using SponsorSphere.Application.App.SportEvents.Queries;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 
@@ -32,13 +33,13 @@ public class UpdateAchievementCommandHandler : IRequestHandler<UpdateAchievement
         try
         {
             var start = DateTime.Now;
-            _logger.LogInformation("Action: {Action}", request.ToString());
+            _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
             await _unitOfWork.BeginTransactionAsync();
             var result = await _unitOfWork.AchievementsRepository.UpdateAsync(request.AchievementToUpdate);
             await _unitOfWork.CommitTransactionAsync();
             
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return result;
         }
         catch (Exception)

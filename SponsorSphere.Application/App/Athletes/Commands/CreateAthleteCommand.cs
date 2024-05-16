@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Athletes.Dtos;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -31,7 +32,7 @@ public class CreateAthleteCommandHandler : IRequestHandler<CreateAthleteCommand,
         try
         {
             var start = DateTime.Now;
-            _logger.LogInformation("Action: {Action}", request.ToString());
+            _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
             await _unitOfWork.BeginTransactionAsync();
 
@@ -46,7 +47,7 @@ public class CreateAthleteCommandHandler : IRequestHandler<CreateAthleteCommand,
             await _unitOfWork.CommitTransactionAsync();
             var mapped = _mapper.Map<AthleteDto>(athlete);
 
-            _logger.LogInformation("Action: {Action}, ({DT})ms", request.ToString(), (DateTime.Now - start).TotalMilliseconds);
+            _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mapped);
         }
 
