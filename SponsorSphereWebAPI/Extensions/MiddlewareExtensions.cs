@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using SponsorSphereWebAPI.Middleware;
+﻿using SponsorSphereWebAPI.Middleware;
 
 namespace SponsorSphereWebAPI.Extensions
 {

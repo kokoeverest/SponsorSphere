@@ -11,6 +11,7 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.ToTable("BlogPostPictures");
 
             builder.HasKey(bp => new { bp.BlogPostId, bp.PictureId });
+
             builder
                 .HasQueryFilter(bp => !bp.BlogPost!.Author!.IsDeleted);
         }
