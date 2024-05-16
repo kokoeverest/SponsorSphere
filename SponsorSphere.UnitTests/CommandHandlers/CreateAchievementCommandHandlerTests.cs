@@ -1,11 +1,12 @@
 using AutoMapper;
-using Castle.Core.Logging;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using SponsorSphere.Application.App.Achievements.Commands;
 using SponsorSphere.Application.App.Achievements.Dtos;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
+using SponsorSphere.UnitTests.Helpers;
 
 namespace SponsorSphere.UnitTests.CommandHandlers
 {
@@ -26,62 +27,56 @@ namespace SponsorSphere.UnitTests.CommandHandlers
         public async Task CreateAchievement_ValidCommand_ShouldCreateAchievement()
         {
             // Arrange
-            var athleteId = 2;
-            var sportEvent = new SportEvent
-            {
-                Id = 3,
-                Name = "Test sport event name",
-                Sport = Domain.Enums.SportsEnum.Football,
-                Country = Domain.Enums.CountryEnum.BGR,
-                Finished = true,
-                Status = Domain.Enums.SportEventStatus.Approved
-            };
-
-
             _unitOfWorkMock.SportEventsRepository
                 .GetByIdAsync(Arg.Any<int>())
-                .Returns(Task.FromResult(sportEvent));
-
-            var requestDto = new CreateAchievementDto
-            {
-                SportEventId = sportEvent.Id,
-                PlaceFinished = 1
-            };
-            var expectedAchievement = new Achievement
-            {
-                Sport = sportEvent.Sport,
-                SportEventId = sportEvent.Id,
-                AthleteId = athleteId
-            };
-
-            var achievement = new Achievement
-            {
-                Sport = sportEvent.Sport,
-                SportEventId = sportEvent.Id,
-                AthleteId = athleteId,
-                PlaceFinished = requestDto.PlaceFinished
-            };
+                .Returns(await Task.FromResult(TestData.FakeSportEvent));
 
             _unitOfWorkMock.AchievementsRepository
                 .CreateAsync(Arg.Any<Achievement>())
-                .Returns(Task.FromResult(expectedAchievement));
+                .Returns(await Task.FromResult(TestData.FakeAchievement));
+
+            _mapperMock.Map<AchievementDto>(Arg.Any<Achievement>()).Returns(TestData.FakeAchievementDto);
 
             var handler = new CreateAchievementCommandHandler(_unitOfWorkMock, _mapperMock, _loggerMock);
-            var command = new CreateAchievementCommand(requestDto, athleteId);
+            var command = new CreateAchievementCommand(TestData.FakeCreateAchievementDto, TestData.FakeAthleteId);
 
             // Act
             var actualResult = await handler.Handle(command, default);
 
             // Assert
-            await _unitOfWorkMock.Received(1).SaveAsync();
+            Assert.Equal(TestData.FakeAchievementDto, actualResult);
+            Assert.Equal(TestData.FakeAchievementDto.PlaceFinished, actualResult.PlaceFinished);
 
             await _unitOfWorkMock.AchievementsRepository.Received(1)
                 .CreateAsync(Arg.Is<Achievement>(ach =>
-                    ach.PlaceFinished == expectedAchievement.PlaceFinished &&
-                    ach.SportEventId == expectedAchievement.SportEventId));
+                    ach.PlaceFinished == TestData.FakeAchievement.PlaceFinished &&
+                    ach.SportEventId == TestData.FakeAchievement.SportEventId));
+        }
 
-            Assert.Equal(expectedAchievement.Sport, actualResult.Sport);
-            Assert.Equal(requestDto.PlaceFinished, actualResult.PlaceFinished);
+        [Fact]
+        public async Task CreateAchievement_FutureSportEvent_RaisesBadRequestException()
+        {
+            // Arrange
+            SportEvent futureSportEvent = new ()
+            {
+                Id = 3,
+                Name = "Test sport event name",
+                Sport = Domain.Enums.SportsEnum.Football,
+                Country = Domain.Enums.CountryEnum.BGR,
+                EventDate = new DateTime(year: 2025, month: 9, day: 20),
+                Finished = true,
+                Status = Domain.Enums.SportEventStatus.Approved
+            };
+
+            _unitOfWorkMock.SportEventsRepository
+                .GetByIdAsync(Arg.Any<int>())
+                .Returns(await Task.FromResult(futureSportEvent));
+
+            var handler = new CreateAchievementCommandHandler(_unitOfWorkMock, _mapperMock, _loggerMock);
+            var command = new CreateAchievementCommand(TestData.FakeCreateAchievementDto, TestData.FakeAthleteId);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<BadRequestException>(() => handler.Handle(command, default));
         }
     }
 }
