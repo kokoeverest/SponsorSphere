@@ -7,6 +7,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("pictures/")]
     public class PicturesController : ControllerBase
@@ -18,7 +19,6 @@ namespace SponsorSphereWebAPI.Controllers
             _mediator = mediator;
         }
 
-        [Authorize]
         [HttpPost]
         [Route("upload")]
         public async Task<IActionResult> CreatePicture([FromForm] CreatePictureDto model)
@@ -36,7 +36,6 @@ namespace SponsorSphereWebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize]
         [HttpPatch]
         [Route("update")]
         public async Task<IActionResult> UpdatePicture([FromForm] PictureDto updatedPicture)

@@ -64,6 +64,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-await app.CreateAdmin();
 
 app.Run();

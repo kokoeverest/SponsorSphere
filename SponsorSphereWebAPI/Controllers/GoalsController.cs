@@ -9,6 +9,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers
 {
+    [Authorize(Roles = RoleConstants.Athlete)]
     [ApiController]
     [Route("goals/")]
     public class GoalsController : ControllerBase
@@ -22,7 +23,6 @@ namespace SponsorSphereWebAPI.Controllers
             _mediator = mediator;
         }
 
-        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> CreateGoal([FromForm] CreateGoalDto model)
@@ -34,7 +34,6 @@ namespace SponsorSphereWebAPI.Controllers
             return Created(string.Empty, result);
         }
 
-        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpDelete]
         [Route("delete")]
         public async Task<IActionResult> DeleteGoal(int sportEventId, int athleteId)
@@ -51,7 +50,6 @@ namespace SponsorSphereWebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPatch]
         [Route("update")]
         public async Task<IActionResult> UpdateGoal([FromForm] GoalDto updatedGoal)

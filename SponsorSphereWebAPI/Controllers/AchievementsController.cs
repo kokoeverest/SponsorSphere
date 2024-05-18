@@ -8,6 +8,7 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers
 {
+    [Authorize(Roles = RoleConstants.Athlete)]
     [ApiController]
     [Route("achievements/")]
     public class AchievementsController : ControllerBase
@@ -21,7 +22,6 @@ namespace SponsorSphereWebAPI.Controllers
             _mediator = mediator;
         }
 
-        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> CreateAchievement([FromForm] CreateAchievementDto model)
@@ -33,7 +33,6 @@ namespace SponsorSphereWebAPI.Controllers
             return Created(string.Empty, achievement);
         }
 
-        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpDelete]
         [Route("delete")]
         public async Task<IActionResult> DeleteAchievement(int sportEventId, int athleteId)
@@ -50,7 +49,6 @@ namespace SponsorSphereWebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPatch]
         [Route("update")]
         public async Task<IActionResult> UpdateAchievement([FromForm] AchievementDto updatedAchievement)
