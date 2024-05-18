@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Athletes.Dtos;
-using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.Athletes.Queries;
@@ -13,23 +11,18 @@ public class GetAllAthletesQueryHandler : IRequestHandler<GetAllAthletesQuery, L
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly ILogger<GetAllAthletesQueryHandler> _logger;
 
-    public GetAllAthletesQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<GetAllAthletesQueryHandler> logger)
+    public GetAllAthletesQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _logger = logger;
     }
 
     public async Task<List<AthleteDto>> Handle(GetAllAthletesQuery request, CancellationToken cancellationToken)
     {
-        var start = DateTime.Now;
-        _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
         var athletes = await _unitOfWork.AthletesRepository.GetAllAsync(request.PageNumber, request.PageSize);
         var mappedAthletes = _mapper.Map<List<AthleteDto>>(athletes);
 
-        _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
         return await Task.FromResult(mappedAthletes);
     }
 }

@@ -10,8 +10,11 @@ namespace SponsorSphereWebAPI.Filters
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            string format = "yyyyMMdd";
-            Console.WriteLine($">>>>> Action: {context.ActionDescriptor.DisplayName} ({StopWatch?.ElapsedMilliseconds}ms) at {DateTime.UtcNow.ToString(format, CultureInfo.InvariantCulture)}");
+            CultureInfo invariant = CultureInfo.InvariantCulture;
+            string format = "hh:mm:ss";
+            string controller = context.ActionDescriptor.DisplayName!;
+
+            Console.WriteLine($"[{DateTime.Now.ToString(format, invariant)} INF] Controller: {controller}, total execution time ({StopWatch!.ElapsedMilliseconds}ms)");
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
