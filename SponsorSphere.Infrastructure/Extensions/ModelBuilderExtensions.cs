@@ -1,34 +1,36 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
+using SponsorSphere.Infrastructure.Constants;
 
 namespace SponsorSphere.Infrastructure.Extensions
 {
     internal static class ModelBuilderExtensions
     {
-        private const string _adminEmail = "admin@admin.admin";
-        private const string _adminName = "admin";
-        private const string _phoneNumber = "0123456789";
-        private const string _adminPasswordHash = "AQAAAAIAAYagAAAAEAMtTb2zDg89LI4duiOV4i0cA2n7maewb+Zwz5cDLpp2TEUvG2X2WWxUTa8e/UKe4w==";
-        private const string _adminSecurityStamp = "SXUZT2PQFBXQJAQUPDFAWRY6J4OWNV4K";
-        private const string _adminConcurrencyStamp = "884782f4-6894-440f-a180-a44a65e24b86";
-
         internal static void Seed(this ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<IdentityUserRole<int>>().HasData(
+                new IdentityUserRole<int>
+                {
+                    RoleId = 1,
+                    UserId = 1
+                });
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
                     Id = 1,
-                    Name = _adminName,
-                    Email = _adminEmail,
-                    NormalizedEmail = _adminEmail.ToUpper(),
-                    UserName = _adminEmail,
-                    NormalizedUserName = _adminEmail.ToUpper(),
-                    SecurityStamp = _adminSecurityStamp,
-                    ConcurrencyStamp = _adminConcurrencyStamp,
+                    Name = UserConstants.AdminName,
+                    Email = UserConstants.AdminEmail,
+                    NormalizedEmail = UserConstants.AdminEmail.ToUpper(),
+                    UserName = UserConstants.AdminEmail,
+                    NormalizedUserName = UserConstants.AdminEmail.ToUpper(),
+                    SecurityStamp = UserConstants.AdminSecurityStamp,
+                    ConcurrencyStamp = UserConstants.AdminConcurrencyStamp,
                     Country = CountryEnum.BGR,
-                    PhoneNumber = _phoneNumber,
-                    PasswordHash = _adminPasswordHash,
+                    PhoneNumber = UserConstants.PhoneNumber,
+                    PasswordHash = UserConstants.AdminPasswordHash,
                 });
 
             modelBuilder.Entity<Athlete>().HasData(
@@ -43,7 +45,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     NormalizedEmail = "test@mail.bg".ToUpper(),
                     NormalizedUserName = "test@mail.bg".ToUpper(),
                     Country = CountryEnum.BGR,
-                    PhoneNumber = _phoneNumber,
+                    PhoneNumber = UserConstants.PhoneNumber,
                     BirthDate = DateTime.Parse("30/09/1983").ToUniversalTime(),
                     Sport = SportsEnum.MountainRunning,
                     StravaLink = "www.strava.co/userpetar"
@@ -56,7 +58,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Email = "5kov@mail.mail",
                     UserName = "5kov@mail.mail",
                     Country = CountryEnum.BGR,
-                    PhoneNumber = _phoneNumber,
+                    PhoneNumber = UserConstants.PhoneNumber,
                     BirthDate = DateTime.Parse("30/03/2005").ToUniversalTime(),
                     Sport = SportsEnum.DownhillMountainBiking
                 }
@@ -72,8 +74,8 @@ namespace SponsorSphere.Infrastructure.Extensions
                     NormalizedEmail = "lidl@mail.bg".ToUpper(),
                     NormalizedUserName = "lidl@mail.bg".ToUpper(),
                     Country = CountryEnum.BGR,
-                    PhoneNumber = _phoneNumber,
-                    PasswordHash = _adminPasswordHash,
+                    PhoneNumber = UserConstants.PhoneNumber,
+                    PasswordHash = UserConstants.AdminPasswordHash,
                     IBAN = "BG12345"
                 },
                 new SponsorCompany
@@ -82,7 +84,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Kaufland",
                     Email = "kaufland@bg.gb",
                     Country = CountryEnum.DEU,
-                    PhoneNumber = _phoneNumber,
+                    PhoneNumber = UserConstants.PhoneNumber,
                     IBAN = "DE32215"
                 }
             );
@@ -94,7 +96,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Lazar",
                     Email = "anonimen@bg.gb",
                     Country = CountryEnum.BGR,
-                    PhoneNumber = _phoneNumber,
+                    PhoneNumber = UserConstants.PhoneNumber,
                     LastName = "Randov",
                     BirthDate = DateTime.Parse("03/01/1990").ToUniversalTime(),
                 },

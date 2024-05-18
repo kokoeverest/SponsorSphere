@@ -12,8 +12,8 @@ using SponsorSphere.Infrastructure;
 namespace SponsorSphere.Infrastructure.Migrations
 {
     [DbContext(typeof(SponsorSphereDbContext))]
-    [Migration("20240513103146_Update_13.05_1")]
-    partial class Update_1305_1
+    [Migration("20240517122422_Update_17.05")]
+    partial class Update_1705
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,6 +107,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -289,13 +296,13 @@ namespace SponsorSphere.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Modified = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(9951),
+                            Modified = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(1828),
                             Url = "https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing"
                         },
                         new
                         {
                             Id = 2,
-                            Modified = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(9954),
+                            Modified = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(1830),
                             Url = "https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing"
                         });
                 });
@@ -329,7 +336,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AthleteId = 6,
                             SponsorId = 3,
                             Amount = 2000m,
-                            Created = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(9622),
+                            Created = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(1512),
                             Level = 2
                         });
                 });
@@ -516,7 +523,7 @@ namespace SponsorSphere.Infrastructure.Migrations
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "884782f4-6894-440f-a180-a44a65e24b86",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(7768),
+                            Created = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(552),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@admin.admin",
                             EmailConfirmed = false,
@@ -612,9 +619,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 5,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "30b2c1e3-ee05-4f6c-be3c-d5ecead55417",
+                            ConcurrencyStamp = "f8c57746-f6fa-4516-841a-efb6dc420350",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(8884),
+                            Created = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(767),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "test@mail.bg",
                             EmailConfirmed = false,
@@ -640,9 +647,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 6,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "49419c45-9e03-4757-a694-f516a4fc4108",
+                            ConcurrencyStamp = "bf1dbdb3-408b-4dd6-be3c-b00bbd565c00",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(9204),
+                            Created = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(979),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "5kov@mail.mail",
                             EmailConfirmed = false,
@@ -687,9 +694,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7456954b-6698-44f4-8aab-51ba06ec14cf",
+                            ConcurrencyStamp = "0ba7d63d-07b9-4786-924a-5c97af3bcb06",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(9367),
+                            Created = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(1086),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lidl@mail.bg",
                             EmailConfirmed = false,
@@ -714,9 +721,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c72cf10a-8bd4-42d0-ae36-05757257534b",
+                            ConcurrencyStamp = "07333eb2-71af-4828-9a9c-dc5eb91f64e4",
                             Country = 2921044,
-                            Created = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(9397),
+                            Created = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(1105),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kaufland@bg.gb",
                             EmailConfirmed = false,
@@ -755,9 +762,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 8,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d71f5f99-8f8d-42d0-a6a1-ff13e0836c40",
+                            ConcurrencyStamp = "0b9b6895-050e-4887-97fb-a9ad1a9b970b",
                             Country = 732800,
-                            Created = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(9484),
+                            Created = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(1219),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "anonimen@bg.gb",
                             EmailConfirmed = false,
@@ -779,9 +786,9 @@ namespace SponsorSphere.Infrastructure.Migrations
                         {
                             Id = 7,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "68aaff64-95ef-4409-8177-afd27353ff7b",
+                            ConcurrencyStamp = "fc339a67-d515-4818-ba0c-257e403634df",
                             Country = 2077456,
-                            Created = new DateTime(2024, 5, 13, 10, 31, 45, 566, DateTimeKind.Utc).AddTicks(9527),
+                            Created = new DateTime(2024, 5, 17, 12, 24, 21, 35, DateTimeKind.Utc).AddTicks(1280),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "michael@bg.gb",
                             EmailConfirmed = false,

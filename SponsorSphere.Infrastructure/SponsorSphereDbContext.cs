@@ -23,15 +23,7 @@ namespace SponsorSphere.Infrastructure
 
         public SponsorSphereDbContext(DbContextOptions options) : base(options) { }
 
-        public SponsorSphereDbContext() { }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=SponsorSphereTest")
-                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },
-                    LogLevel.Debug);
-        }
+        //public SponsorSphereDbContext() { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
