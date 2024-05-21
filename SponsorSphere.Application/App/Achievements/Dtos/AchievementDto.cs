@@ -7,6 +7,7 @@ namespace SponsorSphere.Application.App.Achievements.Dtos
         public SportsEnum Sport { get; set; }
         public int SportEventId { get; set; }
         public ushort? PlaceFinished { get; set; }
+        public string? Description { get; set; }
         public int AthleteId { get; set; }
     }
 }

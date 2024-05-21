@@ -29,6 +29,7 @@ namespace SponsorSphereWebAPI.Middleware
                 context.Response.StatusCode = ex switch
                 {
                     NotFoundException => (int)HttpStatusCode.NotFound,
+                    InvalidDataException => (int)HttpStatusCode.BadRequest,
                     DbUpdateException => (int)HttpStatusCode.BadRequest,
                     BadRequestException => (int)HttpStatusCode.BadRequest,
                     _ => (int)HttpStatusCode.InternalServerError,
@@ -45,7 +46,7 @@ namespace SponsorSphereWebAPI.Middleware
             return context.Response.WriteAsync(new ErrorResponse()
             {
                 StatusCode = context.Response.StatusCode,
-                StatusPhrase = ex.Message,
+                Message = ex.Message,
                 Timestamp = DateTime.UtcNow
             }.ToString());
         }
