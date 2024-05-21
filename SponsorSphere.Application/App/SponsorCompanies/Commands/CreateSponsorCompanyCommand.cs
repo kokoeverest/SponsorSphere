@@ -37,7 +37,12 @@ public class CreateSponsorCompanyCommandHandler : IRequestHandler<CreateSponsorC
             await _unitOfWork.BeginTransactionAsync();
 
             await _userManager.CreateAsync(sponsorCompany, request.SponsorCompany.Password);
-            await _userManager.AddToRoleAsync(sponsorCompany, RoleConstants.Sponsor);
+            var result = await _userManager.AddToRoleAsync(sponsorCompany, RoleConstants.Sponsor);
+
+            if (!result.Succeeded)
+            {
+                throw new InvalidDataException(result.Errors.First().Description);
+            }
 
             await _unitOfWork.CommitTransactionAsync();
 

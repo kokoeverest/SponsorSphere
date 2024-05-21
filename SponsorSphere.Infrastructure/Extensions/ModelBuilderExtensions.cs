@@ -46,7 +46,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     NormalizedUserName = "test@mail.bg".ToUpper(),
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
-                    BirthDate = DateTime.Parse("30/09/1983").ToUniversalTime(),
+                    BirthDate = new DateTime(1983, 9, 30),
                     Sport = SportsEnum.MountainRunning,
                     StravaLink = "www.strava.co/userpetar"
                 },
@@ -59,7 +59,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     UserName = "5kov@mail.mail",
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
-                    BirthDate = DateTime.Parse("30/03/2005").ToUniversalTime(),
+                    BirthDate = new DateTime(2005, 3, 30),
                     Sport = SportsEnum.DownhillMountainBiking
                 }
             );
@@ -98,7 +98,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
                     LastName = "Randov",
-                    BirthDate = DateTime.Parse("03/01/1990").ToUniversalTime(),
+                    BirthDate = new DateTime(1990, 1, 3),
                 },
                 new SponsorIndividual
                 {
@@ -108,7 +108,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Country = CountryEnum.AUS,
                     PhoneNumber = "1223",
                     LastName = "Uzunov",
-                    BirthDate = DateTime.Parse("30/03/1975").ToUniversalTime(),
+                    BirthDate = new DateTime(1975, 3, 5),
                 }
             );
 
@@ -129,7 +129,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Persenk ultra",
                     Finished = true,
                     EventType = EventsEnum.Race,
-                    EventDate = DateTime.Parse("2020/08/16").ToUniversalTime(),
+                    EventDate = new DateTime(2020, 8, 16),
                     Country = CountryEnum.BGR,
                     Status = SportEventStatus.Approved
                 },
@@ -140,9 +140,20 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Name = "Zegama Aizkori",
                     Finished = false,
                     EventType = EventsEnum.Race,
-                    EventDate = DateTime.Parse("2024/08/16").ToUniversalTime(),
+                    EventDate = new DateTime(2024, 8, 16),
                     Country = CountryEnum.ESP,
                     Status = SportEventStatus.Pending
+                },
+                new SportEvent
+                {
+                    Id = 3,
+                    Sport = SportsEnum.MountainRunning,
+                    Name = "Vitosha 24h challenge",
+                    Finished = false,
+                    EventType = EventsEnum.Training,
+                    EventDate = new DateTime(2019, 9, 9),
+                    Country = CountryEnum.BGR,
+                    Status = SportEventStatus.Approved
                 }
             );
 
@@ -160,6 +171,13 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Sport = SportsEnum.MountainRunning,
                     SportEventId = 1,
                     PlaceFinished = 2
+                },
+                new Achievement
+                {
+                    AthleteId = 5,
+                    Sport = SportsEnum.MountainRunning,
+                    SportEventId = 3,
+                    Description = "I was able to run 24 hours in Vitosha mountain"
                 }
                 );
 
@@ -169,7 +187,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     AthleteId = 6,
                     Sport = SportsEnum.SkyRunning,
                     SportEventId = 2,
-                    Date = DateTime.Parse("2024/08/16").ToUniversalTime(),
+                    Date = new DateTime(2024, 8, 16),
                     AmountNeeded = 5000
                 });
 
@@ -192,14 +210,14 @@ namespace SponsorSphere.Infrastructure.Extensions
                 {
                     Id = 1,
                     Content = "A very interesting post about a sport achievement",
-                    Created = DateTime.Parse("2023.12.06").ToUniversalTime(),
+                    Created = new DateTime(2016, 6, 12),
                     AuthorId = 6
                 },
                 new BlogPost
                 {
                     Id = 2,
                     Content = @"I want to share about my experience as a downhill mountain biker. I was born in 1997 and grew up in a small villeag in the Swiss Alps. The name of the village is Zinal and it has some quite nice mountians around, which have fascinated me throughout my life!",
-                    Created = DateTime.Parse("2023.12.06").ToUniversalTime(),
+                    Created = new DateTime(2023, 12,6),
                     AuthorId = 6
                 }
                 );

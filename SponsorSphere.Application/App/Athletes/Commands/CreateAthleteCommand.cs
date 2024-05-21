@@ -36,12 +36,12 @@ public class CreateAthleteCommandHandler : IRequestHandler<CreateAthleteCommand,
 
             await _unitOfWork.BeginTransactionAsync();
 
-            var newAthlete = await _userManager.CreateAsync(athlete, request.Athlete.Password);
+            await _userManager.CreateAsync(athlete, request.Athlete.Password);
             var result = await _userManager.AddToRoleAsync(athlete, RoleConstants.Athlete);
 
-            if (!result.Succeeded) 
+            if (!result.Succeeded)
             {
-                throw new InvalidDataException();
+                throw new InvalidDataException(result.Errors.First().Description);
             }
 
             await _unitOfWork.CommitTransactionAsync();
