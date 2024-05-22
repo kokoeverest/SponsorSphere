@@ -1,9 +1,16 @@
-﻿namespace SponsorSphere.Domain.Enums
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SponsorSphere.Domain.Enums
 {
     public enum EventsEnum
     {
-        Race, 
-        SelfOrganized, 
+        [Display(Name = "Race")]
+        Race,
+
+        [Display(Name = "Self Organized")]
+        SelfOrganized,
+
+        [Display(Name = "Training")]
         Training
     }
 }
