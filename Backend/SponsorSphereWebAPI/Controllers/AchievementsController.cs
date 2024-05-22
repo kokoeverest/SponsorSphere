@@ -22,6 +22,10 @@ namespace SponsorSphereWebAPI.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        [Route("{id}")]
+
+
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> CreateAchievement([FromForm] CreateAchievementDto model)

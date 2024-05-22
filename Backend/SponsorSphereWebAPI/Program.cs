@@ -7,6 +7,7 @@ using SponsorSphere.Infrastructure.Extensions;
 using SponsorSphereWebAPI.Extensions;
 using SponsorSphereWebAPI.Filters;
 using Swashbuckle.AspNetCore.Filters;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddControllers(options => options.Filters.Add<DurationLogAction
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -45,6 +47,18 @@ builder.Services.AddIdentityApiEndpoints<User>(options =>
 .AddEntityFrameworkStores<SponsorSphereDbContext>();
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+});
+
 builder.Services.AddInfrastructure();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly));
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) => { loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration); });
@@ -60,6 +74,22 @@ if (app.Environment.IsDevelopment())
 
 app.MapIdentityApi<User>();
 app.UseExceptionHandling();
+
+// Debug CORS headers
+app.Use(async (context, next) =>
+{
+    await next.Invoke();
+    if (context.Response.Headers.TryGetValue("Access-Control-Allow-Origin", out Microsoft.Extensions.Primitives.StringValues value))
+    {
+        var corsHeaders = value;
+        Console.WriteLine("CORS headers: " + corsHeaders);
+    }
+    else
+    {
+        Console.WriteLine("CORS headers are not set.");
+    }
+});
+app.UseCors("AllowSpecificOrigins");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
