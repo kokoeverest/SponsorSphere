@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../styles/LoginForm.css';
+import StyledButton from '../controls/Button';
 
 const LoginForm: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -47,7 +48,7 @@ const LoginForm: React.FC = () => {
                         required
                     />
                 </div>
-                <button type="submit">Login</button>
+                <StyledButton type="submit" name='Login'></StyledButton>
             </form>
         </div>
     );

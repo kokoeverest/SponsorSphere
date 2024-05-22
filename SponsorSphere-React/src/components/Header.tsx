@@ -1,6 +1,7 @@
 // src/components/Header.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import StyledButton from './controls/Button';
 
 interface HeaderProps {
   isLoggedIn: boolean;
@@ -21,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
   return (
     <div className="header">
       <h1 className='headerTitle' onClick={handleTitleClick}>SponsorSphere</h1>
-      {!isLoggedIn && <button className="loginButton" onClick={handleLoginClick}>Login</button>}
+      {!isLoggedIn && <StyledButton className="loginButton" onClick={handleLoginClick} name='Login'></StyledButton>}
     </div>
   );
 };

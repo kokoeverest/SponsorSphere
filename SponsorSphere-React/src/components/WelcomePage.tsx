@@ -19,8 +19,8 @@ const WelcomePage: React.FC = () => {
             <h1>Welcome to SponsorSphere</h1>
             <p>Your one-stop platform for athlete sponsorship.</p>
             <div className="container-buttons">
-                <StyledButton onClick={handleRegisterClick}>Register</StyledButton>
-                <StyledButton onClick={handleExploreClick}>Explore</StyledButton>
+                <StyledButton onClick={handleRegisterClick} name="Register"></StyledButton>
+                <StyledButton onClick={handleExploreClick} name="Explore"></StyledButton>
             </div>
         </div>
     );
