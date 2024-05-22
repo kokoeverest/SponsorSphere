@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.tsx
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './styles/App.css';
+import AthleteList from './components/AthleteList';
+import AthleteDetail from './components/AthleteDetail';
+import Header from './components/Header';
+import LoginForm from './components/forms/LoginForm';
+import WelcomePage from './components/WelcomePage';
+import RegisterChoice from './components/RegisterChoice';
+import RegisterAthlete from './components/forms/RegisterAthleteForm';
+// import RegisterCompany from './components/forms/RegisterSponsorCompanyForm';
+// import RegisterIndividual from './components/forms/RegisterSponsorIndividualForm';
 
-function App() {
-  const [count, setCount] = useState(0)
+
+const App: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!localStorage.getItem('token'));
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <div className="main-content">
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/register" element={<RegisterChoice />} />
+          <Route path="/register/athlete" element={<RegisterAthlete />} />
+          {/* <Route path="/register/company" element={<RegisterCompany />} />
+          <Route path="/register/individual" element={<RegisterIndividual />} /> */}
+          <Route path="/athletes" element={<AthleteList />} />
+          <Route path="/athletes/:id" element={<AthleteDetail />} />
+          <Route path="/login" element={<LoginForm />} />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </Router>
+  );
+};
 
-export default App
+export default App;
