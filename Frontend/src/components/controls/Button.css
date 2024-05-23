@@ -1,19 +1,19 @@
 button {
     width: 8em;
-    height: inherit;
     border-radius: 10px;
-    border: 2px solid transparent;
+    border: 2px solid;
     padding: 0.6em 1.2em;
     font-size: 1em;
-    font-weight: 500;
+    font-weight: bold;
     font-family: inherit;
-    background-color: #1a1a1a;
+    background-color: white;
     cursor: pointer;
+    border-color: #000000;
     transition: border-color 0.25s;
 }
 
 button:hover {
-    border-color: #fa8233;
+    border-color: var(--backGroundOrange);
 }
 
 button:focus,
@@ -26,11 +26,7 @@ button:focus-visible {
     justify-content: space-evenly;
 }
 
-.container-buttons button:hover {
-    border-color: #006cf8;
-}
-
-.loginButton {
+.header button {
     position: fixed;
     right: 60px;
     top: 30px;

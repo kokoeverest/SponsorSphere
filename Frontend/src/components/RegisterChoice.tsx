@@ -1,6 +1,8 @@
 // src/components/RegisterChoice.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import StyledButton from './controls/Button';
+import { Box } from '@mui/material';
 
 const RegisterChoice: React.FC = () => {
     const navigate = useNavigate();
@@ -18,14 +20,14 @@ const RegisterChoice: React.FC = () => {
     };
 
     return (
-        <div className="register-choice">
+        <Box className="register-choice">
             <h2>Please select the correct profile you want to create:</h2>
             <div className="container-buttons">
-                <button onClick={handleRegisterAsAthlete}>I am an Athlete</button>
-                <button onClick={handleRegisterAsCompany}>I represent a Company Sponsor</button>
-                <button onClick={handleRegisterAsIndividual}>I am an Individual Sponsor</button>
+                <StyledButton onClick={handleRegisterAsAthlete}>I am an Athlete</StyledButton>
+                <StyledButton onClick={handleRegisterAsCompany}>I represent a Company Sponsor</StyledButton>
+                <StyledButton onClick={handleRegisterAsIndividual}>I am an Individual Sponsor</StyledButton>
             </div>
-        </div>
+        </Box>
     );
 };
 

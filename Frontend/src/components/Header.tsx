@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
   return (
     <div className="header">
       <h1 className='headerTitle' onClick={handleTitleClick}>SponsorSphere</h1>
-      {!isLoggedIn && <StyledButton className="loginButton" onClick={handleLoginClick} name='Login'></StyledButton>}
+      { !isLoggedIn && <StyledButton onClick={handleLoginClick}>Login</StyledButton>}
     </div>
   );
 };
