@@ -5,12 +5,12 @@ import './styles/App.css';
 import AthleteList from './components/AthleteList';
 import AthleteDetail from './components/AthleteDetail';
 import Header from './components/Header';
-import LoginForm from './components/forms/LoginForm';
+import LoginForm from './features/login/LoginForm';
 import WelcomePage from './components/WelcomePage';
 import RegisterChoice from './components/RegisterChoice';
-import RegisterAthlete from './components/forms/RegisterAthleteForm';
-// import RegisterCompany from './components/forms/RegisterSponsorCompanyForm';
-// import RegisterIndividual from './components/forms/RegisterSponsorIndividualForm';
+import RegisterAthlete from './features/athletes/registration/RegisterAthleteForm';
+import RegisterCompany from './features/sponsors/companies/registration/RegisterSponsorCompanyForm';
+import RegisterIndividual from './features/sponsors/individuals/registration/RegisterSponsorIndividualForm';
 
 
 const App: React.FC = () => {
@@ -24,8 +24,8 @@ const App: React.FC = () => {
           <Route path="/" element={<WelcomePage />} />
           <Route path="/register" element={<RegisterChoice />} />
           <Route path="/register/athlete" element={<RegisterAthlete />} />
-          {/* <Route path="/register/company" element={<RegisterCompany />} />
-          <Route path="/register/individual" element={<RegisterIndividual />} /> */}
+          <Route path="/register/company" element={<RegisterCompany />} />
+          <Route path="/register/individual" element={<RegisterIndividual />} />
           <Route path="/athletes" element={<AthleteList />} />
           <Route path="/athletes/:id" element={<AthleteDetail />} />
           <Route path="/login" element={<LoginForm />} />
