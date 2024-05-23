@@ -46,8 +46,8 @@ namespace SponsorSphere.Domain.Enums
         [Display(Name = "Sky Running")]
         SkyRunning,
 
-        [Display(Name = "Mountain Running")]
-        MountainRunning,
+        [Display(Name = "Trail Running")]
+        TrailRunning,
 
         [Display(Name = "Road Running")]
         RoadRunning

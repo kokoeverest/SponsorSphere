@@ -47,7 +47,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
                     BirthDate = new DateTime(1983, 9, 30),
-                    Sport = SportsEnum.MountainRunning,
+                    Sport = SportsEnum.TrailRunning,
                     StravaLink = "www.strava.co/userpetar"
                 },
                 new Athlete
@@ -125,7 +125,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                 new SportEvent
                 {
                     Id = 1,
-                    Sport = SportsEnum.MountainRunning,
+                    Sport = SportsEnum.TrailRunning,
                     Name = "Persenk ultra",
                     Finished = true,
                     EventType = EventsEnum.Race,
@@ -147,7 +147,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                 new SportEvent
                 {
                     Id = 3,
-                    Sport = SportsEnum.MountainRunning,
+                    Sport = SportsEnum.TrailRunning,
                     Name = "Vitosha 24h challenge",
                     Finished = false,
                     EventType = EventsEnum.Training,
@@ -168,14 +168,14 @@ namespace SponsorSphere.Infrastructure.Extensions
                 new Achievement
                 {
                     AthleteId = 5,
-                    Sport = SportsEnum.MountainRunning,
+                    Sport = SportsEnum.TrailRunning,
                     SportEventId = 1,
                     PlaceFinished = 2
                 },
                 new Achievement
                 {
                     AthleteId = 5,
-                    Sport = SportsEnum.MountainRunning,
+                    Sport = SportsEnum.TrailRunning,
                     SportEventId = 3,
                     Description = "I was able to run 24 hours in Vitosha mountain"
                 }

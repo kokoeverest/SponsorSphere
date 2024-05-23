@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-
-namespace SponsorSphere.Application.Common.Helpers
+﻿namespace SponsorSphere.Application.Common.Helpers
 {
     public static class EnumHelper
     {
@@ -10,8 +7,7 @@ namespace SponsorSphere.Application.Common.Helpers
             var attribute = value
                             .GetType()
                             .GetMember(value.ToString())
-                            .First()
-                            .GetCustomAttribute<DisplayAttribute>();
+                            .First();
 
             return attribute?.Name ?? value.ToString();
         }
