@@ -23,12 +23,12 @@ const RegisterAthleteForm: React.FC = () => {
     resolver: yupResolver(registerAthleteSchema),
   });
 
+  const [selectedCountry, setSelectedCountry] = useState('ABW');
+  const [selectedSport, setSelectedSport] = useState('Basketball');
+
   // Queries
   const countriesQuery = useQuery({ queryKey: ['getCountries'], queryFn: enumApi.getCountries });
   const sportsQuery = useQuery({ queryKey: ['getSports'], queryFn: enumApi.getSports });
-
-  const [selectedCountry] = useState(countriesQuery.data === undefined ? '' :  countriesQuery.data[0]);
-  const [selectedSport] = useState(sportsQuery.data === undefined ? '' :  sportsQuery.data[0]);
 
   // Mutations
   const mutation = useMutation({
@@ -107,6 +107,7 @@ const RegisterAthleteForm: React.FC = () => {
             error={!!errors.country}
             helperText={errors.country?.message}
             value={selectedCountry}
+            onChange={(event) => setSelectedCountry(event.target.value)}
           >
             {countriesQuery.data?.map((country) => (
               <MenuItem key={country} value={country}>
@@ -122,6 +123,7 @@ const RegisterAthleteForm: React.FC = () => {
             error={!!errors.sport}
             helperText={errors.sport?.message}
             value={selectedSport}
+            onChange={(event) => setSelectedSport(event.target.value)}
           >
             {sportsQuery.data?.map((sport) => (
               <MenuItem key={sport} value={sport}>
