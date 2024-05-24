@@ -5,19 +5,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { MenuItem, TextField } from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
+
 import StyledButton from '../../../components/controls/Button';
 import StyledForm from '../../../components/controls/Form';
-
-interface RegisterAthleteFormInput {
-    name: string;
-    lastName: string;
-    email: string;
-    password: string;
-    birthDate: string;
-    phoneNumber: string;
-    country: string;
-    sport: string;
-}
+import { RegisterAthleteFormInput } from './abstract';
+import athleteApi from '@/api/athleteApi';
 
 const registerAthleteSchema = yup.object().shape({
     name: yup.string().min(2).max(200).required('First name is required'),
@@ -30,17 +23,24 @@ const registerAthleteSchema = yup.object().shape({
     sport: yup.string().required('Sport is required'),
 });
 
-const RegisterAthlete: React.FC = () => {
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm<RegisterAthleteFormInput>({
+const RegisterAthleteForm: React.FC = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm<RegisterAthleteFormInput>({
         resolver: yupResolver(registerAthleteSchema),
     });
 
     const [countries, setCountries] = useState<string[]>([]);
     const [sports, setSports] = useState<string[]>([]);
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const [selectedSport, setSelectedSport] = useState('');
 
     const navigate = useNavigate();
+
+    // Mutations
+    const mutation = useMutation({
+        mutationFn: athleteApi.register,
+        onSuccess: (userId) => {
+            alert("You registered successfully!");
+            navigate(`/athletes/${userId}`);
+        }
+    });
 
     useEffect(() => {
         const fetchEnums = async () => {
@@ -49,8 +49,6 @@ const RegisterAthlete: React.FC = () => {
                 const sportsResponse = await axios.get('https://localhost:7026/enums/sports');
                 setCountries(countriesResponse.data);
                 setSports(sportsResponse.data);
-                setSelectedCountry(countriesResponse.data[24]);
-                setSelectedSport(sportsResponse.data[12]);
             } catch (error) {
                 console.error('Failed to fetch enum values', error);
             }
@@ -60,37 +58,14 @@ const RegisterAthlete: React.FC = () => {
     }, []);
 
     const onSubmitHandler: SubmitHandler<RegisterAthleteFormInput> = async (data) => {
-        try {
-            const response = await axios.post('https://localhost:7026/users/athletes/register', data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            const userId = response.data.id;
-            alert("You registered successfully!");
-            navigate(`/athletes/${userId}`);
-        } catch (err) {
-            console.error('Registration failed', err);
-            alert(err);
-        }
+        mutation.mutate(data);
     };
-
-    // const handleCountryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setSelectedCountry(event.target.value);
-    //     setValue('country', event.target.value);
-    // };
-
-    // const handleSportChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setSelectedSport(event.target.value);
-    //     setValue('sport', event.target.value);
-    // };
 
     return (
         <StyledForm onSubmit={ handleSubmit(onSubmitHandler) }>
             <h1>Register as Athlete</h1>
 
             <TextField
-                required
                 { ...register('name') }
                 label='First name'
                 type="text"
@@ -100,7 +75,6 @@ const RegisterAthlete: React.FC = () => {
             />
 
             <TextField
-                required
                 { ...register('lastName') }
                 label='Last name'
                 type="text"
@@ -110,7 +84,6 @@ const RegisterAthlete: React.FC = () => {
             />
 
             <TextField
-                required
                 { ...register('email') }
                 label='Email'
                 type="email"
@@ -120,7 +93,6 @@ const RegisterAthlete: React.FC = () => {
             />
 
             <TextField
-                required
                 { ...register('password') }
                 label='Password'
                 type="password"
@@ -130,7 +102,6 @@ const RegisterAthlete: React.FC = () => {
             />
 
             <TextField
-                required
                 { ...register('birthDate') }
                 type="date"
                 error={ !!errors.birthDate }
@@ -138,7 +109,6 @@ const RegisterAthlete: React.FC = () => {
             />
 
             <TextField
-                required
                 { ...register('phoneNumber') }
                 label='Phone number'
                 type="tel"
@@ -147,12 +117,9 @@ const RegisterAthlete: React.FC = () => {
             />
 
             <TextField
-                required
                 { ...register('country') }
                 select
                 label="Select country"
-                value={ selectedCountry }
-                // onChange={ handleCountryChange }
                 error={ !!errors.country }
                 helperText={ errors.country?.message }
             >
@@ -162,12 +129,9 @@ const RegisterAthlete: React.FC = () => {
             </TextField>
 
             <TextField
-                required
                 { ...register('sport') }
                 select
                 label="Select sport"
-                value={ selectedSport }
-                // onChange={ handleSportChange }
                 error={ !!errors.sport }
                 helperText={ errors.sport?.message }
             >
@@ -181,4 +145,4 @@ const RegisterAthlete: React.FC = () => {
     );
 };
 
-export default RegisterAthlete;
+export default RegisterAthleteForm;

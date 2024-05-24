@@ -1,8 +1,9 @@
 // src/components/AthleteList.tsx
 import React, { useEffect, useState } from 'react';
-import { getAthletes } from '../api/api';
-import { AthleteDto } from '../types/athlete';
 import { Link } from 'react-router-dom';
+
+import athleteApi from '@/api/athleteApi';
+import { AthleteDto } from '../../types/athlete';
 
 const AthleteList: React.FC = () => {
     const [athletes, setAthletes] = useState<AthleteDto[]>([]);
@@ -12,7 +13,7 @@ const AthleteList: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await getAthletes();
+                const result = await athleteApi.getAthletes();
                 setAthletes(result);
             } catch (error) {
                 setError("Failed to fetch athletes");

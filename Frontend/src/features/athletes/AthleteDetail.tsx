@@ -1,8 +1,8 @@
 // src/components/AthleteDetail.tsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getAthleteById } from '../api/api';
-import { AthleteDto } from '../types/athlete';
+import athleteApi from '@/api/athleteApi';
+import { AthleteDto } from '../../types/athlete';
 
 const AthleteDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,7 +13,7 @@ const AthleteDetail: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAthleteById(id!);
+        const result = await athleteApi.getAthleteById(id!);
         setAthlete(result);
       } catch (error) {
         setError("Failed to fetch athlete details");
