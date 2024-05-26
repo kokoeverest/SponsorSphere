@@ -8,6 +8,11 @@ namespace SponsorSphereWebAPI.Filters
     {
         public Stopwatch? StopWatch {  get; set; }
 
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+            StopWatch = Stopwatch.StartNew();
+        }
+
         public void OnActionExecuted(ActionExecutedContext context)
         {
             CultureInfo invariant = CultureInfo.InvariantCulture;
@@ -15,11 +20,6 @@ namespace SponsorSphereWebAPI.Filters
             string controller = context.ActionDescriptor.DisplayName!;
 
             Console.WriteLine($"[{DateTime.Now.ToString(format, invariant)} INF] Controller: {controller}, total execution time ({StopWatch!.ElapsedMilliseconds}ms)");
-        }
-
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-            StopWatch = Stopwatch.StartNew();
         }
     }
 }
