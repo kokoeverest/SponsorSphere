@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SponsorSphere.Application\SponsorSphere.Application.csproj" />
+    <ProjectReference Include="..\SponsorSphere.Infrastructure\SponsorSphere.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

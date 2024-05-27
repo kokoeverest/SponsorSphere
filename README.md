@@ -3,3 +3,7 @@
 <p align="center">
 <img src="ClassDiagram.png" alt="Class Diagram" width="70%"/>
 </p>
+
+
+- Serilog logging connected with Seq 
+

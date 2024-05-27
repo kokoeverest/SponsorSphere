@@ -50,7 +50,7 @@ h1 {
   height: 64px;
   background-color: var(--backGroundBlue);
   display: flex;
-  align-items: left;
+  align-items: normal;
   justify-content: left;
   border-bottom: 0.1px solid lightblue;
   z-index: 1000;
@@ -62,7 +62,7 @@ h1 {
   will-change: filter;
   transition: filter 600ms;
   font-size: 50px;
-  color: var(--formGrey); /* whitesmoke;*/
+  color: var(--formGrey);
 }
 .headerTitle:hover {
   filter: drop-shadow(0em -1em 0.06em var(--backGroundOrange));
