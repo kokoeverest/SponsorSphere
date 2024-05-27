@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { MenuItem, TextField } from "@mui/material";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import StyledButton from "../../../components/controls/Button";
 import StyledForm from "../../../components/controls/Form";
@@ -14,6 +14,7 @@ import { registerAthleteSchema } from "@/features/athletes/schemas";
 
 const RegisterAthleteForm: React.FC = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -23,7 +24,7 @@ const RegisterAthleteForm: React.FC = () => {
     resolver: yupResolver(registerAthleteSchema),
   });
 
-  const [selectedCountry, setSelectedCountry] = useState('ABW');
+  const [selectedCountry, setSelectedCountry] = useState('BGR');
   const [selectedSport, setSelectedSport] = useState('Basketball');
 
   // Queries
@@ -37,7 +38,7 @@ const RegisterAthleteForm: React.FC = () => {
       alert("You registered successfully!");
       navigate(`/athletes/${userId}`);
       // TODO: Invalidate and refetch
-      //queryClient.invalidateQueries({ queryKey: ['getAthletesQuery'] })
+      queryClient.invalidateQueries({ queryKey: ['getAthletes'] })
     },
   });
 

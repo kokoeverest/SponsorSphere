@@ -1,120 +1,111 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import { MenuItem, TextField } from '@mui/material';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { RegisterCompanySchema } from '../schemas';
+import { RegisterCompanyFormInput } from './abstract';
 import StyledButton from '../../../../components/controls/Button';
 import StyledForm from '../../../../components/controls/Form';
+import enumApi from '@/api/enumApi';
+import sponsorCompanyApi from '@/api/sponsorCompanyApi';
 
 const RegisterCompany: React.FC = () => {
-    const [name, setName] = useState('');
-    const [iban, setIban] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [countries, setCountries] = useState<string[]>([]);
-    const [selectedCountry, setSelectedCountry] = useState('');
-
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
-    useEffect(() => {
-        const fetchEnums = async () => {
-            try {
-                const countriesResponse = await axios.get('https://localhost:7026/enums/countries');
-                setCountries(countriesResponse.data);
-                setSelectedCountry(countriesResponse.data[24]);
-            } catch (error) {
-                console.error('Failed to fetch enum values', error);
-            }
-        };
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<RegisterCompanyFormInput>({
+        resolver: yupResolver(RegisterCompanySchema),
+    });
 
-        fetchEnums();
-    }, []);
+    const [selectedCountry, setSelectedCountry] = useState('BGR');
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            await axios.post('https://localhost:7026/users/sponsors/companies/register', {
-                Name: name,
-                Iban: iban,
-                Email: email,
-                Password: password,
-                PhoneNumber: phoneNumber,
-                Country: selectedCountry,
-            }, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+    const countriesQuery = useQuery({ queryKey: ['getCountries'], queryFn: enumApi.getCountries });
+
+    // Mutations
+    const mutation = useMutation({
+        mutationFn: sponsorCompanyApi.register,
+        onSuccess: (userId) => {
             alert("You registered successfully!");
-            navigate('/');
-        } catch (err) {
-            console.error('Registration failed', err);
-            alert(err);
-        }
-    };
+            navigate(`/sponsors/individuals/${userId}`);
+            // TODO: Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: ['getSponsorIndividuals'] });
+        },
+    });
+
+    const onSubmitHandler: SubmitHandler<RegisterCompanyFormInput> = async (data) => mutation.mutate(data);
 
     return (
-        <StyledForm onSubmit={ handleSubmit }>
+        <StyledForm onSubmit={ handleSubmit(onSubmitHandler) }>
             <h1>Register as Sponsor</h1>
-
             <TextField
                 required
-                label='Company name'
+                { ...register('name') }
+                label='First name'
                 type="text"
-                name="Name"
-                placeholder="Company name"
-                value={ name }
-                onChange={ (e) => setName(e.target.value) }
+                placeholder="First name"
+                error={ !!errors.name }
+                helperText={ errors.name?.message }
+            />
+
+            
+            <TextField
+                required
+                { ...register('email') }
+                label='Email'
+                type="email"
+                placeholder="Enter a valid email"
+                error={ !!errors.email }
+                helperText={ errors.email?.message }
             />
 
             <TextField
                 required
+                { ...register('password') }
+                label='Password'
+                type="password"
+                placeholder="Enter strong password"
+                error={ !!errors.password }
+                helperText={ errors.password?.message }
+            />
+
+            <TextField
+                required
+                { ...register('iban') }
                 label='IBAN'
                 type="text"
                 name="Iban"
                 placeholder="IBAN"
-                value={ iban }
-                onChange={ (e) => setIban(e.target.value) }
+                error={ !!errors.iban }
+                helperText={ errors.iban?.message }
             />
-
+            
             <TextField
                 required
-                label='Email'
-                type="email"
-                name="Email"
-                placeholder="Enter a valid email"
-                value={ email }
-                onChange={ (e) => setEmail(e.target.value) }
-            />
-
-            <TextField
-                required
-                label='Password'
-                type="password"
-                name="Password"
-                placeholder="Enter strong password"
-                value={ password }
-                onChange={ (e) => setPassword(e.target.value) }
-            />
-
-            <TextField
-                required
+                { ...register('phoneNumber') }
                 label='Phone number'
                 type="tel"
-                name="PhoneNumber"
-                value={ phoneNumber }
-                onChange={ (e) => setPhoneNumber(e.target.value) }
+                error={ !!errors.phoneNumber }
+                helperText={ errors.phoneNumber?.message }
             />
 
             <TextField
                 required
+                { ...register('country') }
                 select
                 label="Select country"
-                name="Country"
                 value={ selectedCountry }
-                onChange={ (e) => setSelectedCountry(e.target.value) }
+                onChange={ (event) => setSelectedCountry(event.target.value) }
+                error={ !!errors.country }
+                helperText={ errors.country?.message }
             >
-                { countries.map(country => (
+                { countriesQuery.data?.map((country) => (
                     <MenuItem key={ country } value={ country }>{ country }</MenuItem>
                 )) }
             </TextField>

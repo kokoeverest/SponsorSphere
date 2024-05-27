@@ -1,4 +1,3 @@
-// src/api/api.ts
 import { AthleteDto } from "../types/athlete";
 import { RegisterAthleteFormInput } from "@/features/athletes/registration/abstract";
 import { api } from "./api";

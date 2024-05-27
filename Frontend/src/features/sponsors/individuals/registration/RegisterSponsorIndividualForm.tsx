@@ -1,78 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { MenuItem, TextField } from '@mui/material';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { RegisterIndividualSchema } from '../schemas';
+import { RegisterIndividualFormInput } from './abstract';
 import StyledButton from '../../../../components/controls/Button';
 import StyledForm from '../../../../components/controls/Form';
+import enumApi from '@/api/enumApi';
+import sponsorIndividualApi from '@/api/sponsorIndividualApi';
 
-interface RegisterIndividualFormInput {
-    name: string;
-    lastName: string;
-    email: string;
-    password: string;
-    birthDate: string;
-    phoneNumber: string;
-    country: string;
-}
 
-const registerIndividualSchema = yup.object().shape({
-    name: yup.string().min(2).max(200).required('First name is required'),
-    lastName: yup.string().min(2).max(200).required('Last name is required'),
-    email: yup.string().email('Must be a valid email').required('Email is required'),
-    password: yup.string().min(8).max(32).required('Password is required'),
-    birthDate: yup.string().required('Birthdate is required').typeError('Invalid date format'),
-    phoneNumber: yup.string().required('Phone number is required'),
-    country: yup.string().required('Country is required'),
-});
+const RegisterIndividualForm: React.FC = () => {
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
-const RegisterIndividual: React.FC = () => {
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm<RegisterIndividualFormInput>({
-        resolver: yupResolver(registerIndividualSchema),
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<RegisterIndividualFormInput>({
+        resolver: yupResolver(RegisterIndividualSchema),
     });
 
-    // const [name, setName] = useState('');
-    // const [lastName, setLastName] = useState('');
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [birthDate, setBirthDate] = useState('');
-    // const [phoneNumber, setPhoneNumber] = useState('');
-    const [countries, setCountries] = useState<string[]>([]);
-    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState('BGR');
 
-    const navigate = useNavigate();
+    const countriesQuery = useQuery({ queryKey: ['getCountries'], queryFn: enumApi.getCountries });
 
-    useEffect(() => {
-        const fetchEnums = async () => {
-            try {
-                const countriesResponse = await axios.get('https://localhost:7026/enums/countries');
-                setCountries(countriesResponse.data);
-                setSelectedCountry(countriesResponse.data[24]);
-            } catch (error) {
-                console.error('Failed to fetch enum values', error);
-            }
-        };
-
-        fetchEnums();
-    }, []);
-
-    const onSubmitHandler: SubmitHandler<RegisterIndividualFormInput> = async (data) => {
-        try {
-            const response = await axios.post('https://localhost:7026/users/sponsors/individuals/register', data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            const userId = response.data.id;
+    // Mutations
+    const mutation = useMutation({
+        mutationFn: sponsorIndividualApi.register,
+        onSuccess: (userId) => {
             alert("You registered successfully!");
             navigate(`/sponsors/individuals/${userId}`);
-        } catch (err) {
-            console.error('Registration failed', err);
-            alert(err);
-        }
-    };
+            // TODO: Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: ['getSponsorIndividuals'] });
+        },
+    });
+
+    const onSubmitHandler: SubmitHandler<RegisterIndividualFormInput> = async (data) => mutation.mutate(data);
 
     return (
         <StyledForm onSubmit={ handleSubmit(onSubmitHandler) }>
@@ -141,11 +109,11 @@ const RegisterIndividual: React.FC = () => {
                 select
                 label="Select country"
                 value={ selectedCountry }
-                // onChange={ handleCountryChange }
+                onChange={ (event) => setSelectedCountry(event.target.value) }
                 error={ !!errors.country }
                 helperText={ errors.country?.message }
             >
-                { countries.map(country => (
+                { countriesQuery.data?.map((country) => (
                     <MenuItem key={ country } value={ country }>{ country }</MenuItem>
                 )) }
             </TextField>
@@ -157,4 +125,4 @@ const RegisterIndividual: React.FC = () => {
     );
 };
 
-export default RegisterIndividual;
+export default RegisterIndividualForm;

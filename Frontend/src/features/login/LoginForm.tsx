@@ -2,44 +2,47 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import axios from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import StyledButton from '../../components/controls/Button';
 import { TextField } from '@mui/material';
 import StyledForm from '../../components/controls/Form';
-
-interface LoginFormInput {
-    email: string;
-    password: string;
-}
-
-const loginSchema = yup.object().shape({
-    email: yup.string().email().required(),
-    password: yup.string().min(8).max(32).required(),
-});
+import { loginSchema } from './schemas';
+import { LoginFormInput } from './abstract';
+import loginApi from '@/api/loginApi';
 
 const LoginForm: React.FC = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<LoginFormInput>({
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset
+    } = useForm<LoginFormInput>({
         resolver: yupResolver(loginSchema),
     });
 
     const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
 
+    const mutation = useMutation({
+        mutationFn: loginApi.login,
+        onSuccess: (token) => {
+            localStorage.setItem('token', token);
+            reset();
+            navigate('/');
+
+            // refresh the header so the login button will disappear
+            queryClient.invalidateQueries({ queryKey: ['login'] });
+        },
+        onError: (error: any) => {
+            setError(error.response?.data?.message || 'Invalid email or password!');
+        },
+    });
     const onSubmitHandler: SubmitHandler<LoginFormInput> = async (data) => {
-        try {
-            const response = await axios.post('https://localhost:7026/login', data, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const token = response.data.token;
-            localStorage.setItem('token', token); // Store the token in local storage
-            navigate('/'); // Redirect to the home page or any protected route
-            reset(); // Reset the form after successful submission
-        } catch (err) {
-            setError('Invalid email or password');
-        }
+        setError(null);
+        mutation.mutate(data);
     };
 
     return (

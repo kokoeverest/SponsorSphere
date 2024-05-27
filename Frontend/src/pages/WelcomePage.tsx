@@ -1,4 +1,3 @@
-// src/components/WelcomePage.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import StyledButton from '../components/controls/Button';
