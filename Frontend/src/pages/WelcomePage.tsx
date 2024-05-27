@@ -1,7 +1,7 @@
 // src/components/WelcomePage.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import StyledButton from './controls/Button';
+import StyledButton from '../components/controls/Button';
 import { Box } from '@mui/material';
 
 const WelcomePage: React.FC = () => {

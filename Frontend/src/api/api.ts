@@ -1,31 +1,20 @@
-// src/api/api.ts
-import axios from 'axios';
-import { AthleteDto } from '../types/athlete';
-
-const API_BASE_URL = 'https://localhost:7026/';
+import axios from "axios";
+import { API_BASE_URL } from "@/common/constants";
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+    baseURL: API_BASE_URL,
 });
 
-export const getAthletes = async (): Promise<AthleteDto[]> => { 
-  try {
-    const response = await api.get<AthleteDto[]>('/users/athletes?pageNumber=1&pageSize=10');
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
+api.interceptors.response.use((response) => response, (error) => {
+    switch (error.response.status) {
+        case 404:
+            console.log("Not found response!");
+            alert(error.response.data);
+            break;
+        default: console.log(error.response.data);
+    }
 
-export const getAthleteById = async (id: string): Promise<AthleteDto> => {
-  try {
-    const response = await api.get<AthleteDto>(`/users/athletes/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
+    return Promise.reject(error);
+});
 
-export default api;
+export { api };
