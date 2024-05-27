@@ -28,6 +28,6 @@ namespace SponsorSphere.Application.App.SponsorCompanies.Dtos
 
         [StringLength(34, MinimumLength = 15)]
         [Required]
-        public string IBAN { get; set; } = string.Empty;
+        public string Iban { get; set; } = string.Empty;
     }
 }
