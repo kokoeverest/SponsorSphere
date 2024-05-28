@@ -1,9 +1,9 @@
 export interface SportEventDto {
-    Id: number;
-    Name: string;
-    Country: string;
-    EventDate: string;
-    EventType: string;
-    Sport: string;
-    Status: string;
+    id: number;
+    name: string;
+    country: string;
+    eventDate: string;
+    eventType: string;
+    sport: string;
+    status: string;
 }

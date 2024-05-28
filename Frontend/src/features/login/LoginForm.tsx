@@ -31,7 +31,7 @@ const LoginForm: React.FC = () => {
         onSuccess: (token) => {
             localStorage.setItem('token', token);
             reset();
-            navigate('/');
+            navigate('/dashboard');
 
             // refresh the header so the login button will disappear
             queryClient.invalidateQueries({ queryKey: ['login'] });

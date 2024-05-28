@@ -1,5 +1,5 @@
 export interface SponsorIndividualDto extends UserDto {
-    Age: number;
-    LastName: string;
-    BirthDate: string;
+    age: number;
+    lastName: string;
+    birthDate: string;
 }

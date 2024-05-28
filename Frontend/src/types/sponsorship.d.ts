@@ -1,7 +1,7 @@
 export interface SponsorshipDto {
-    Id: number;
-    Created: string;
-    Amount: number;
-    AthleteId: number;
-    SponsorId: number;
+    id: number;
+    created: string;
+    amount: number;
+    athleteId: number;
+    sponsorId: number;
 }

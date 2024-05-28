@@ -1,6 +1,6 @@
 export interface PictureDto {
-    Id: number;
-    Url: string;
-    Content: string;
-    Modified: string;
+    id: number;
+    url: string;
+    content: string;
+    modified: string;
 }

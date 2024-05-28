@@ -12,6 +12,7 @@ import RegisterAthlete from './features/athletes/registration/RegisterAthleteFor
 import RegisterCompany from './features/sponsors/companies/registration/RegisterSponsorCompanyForm';
 import RegisterIndividualForm from './features/sponsors/individuals/registration/RegisterSponsorIndividualForm';
 import './styles/App.css';
+import Dashboard from './components/Dashboard';
 
 const queryClient = new QueryClient()
 
@@ -34,6 +35,7 @@ const App: React.FC = () => {
           <Route path="/athletes" element={<AthleteList />} />
           <Route path="/athletes/:id" element={<AthleteDetail />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path='/dashboard' element={<Dashboard/>} />
         </Routes>
       </div>
     </Router>
