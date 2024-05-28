@@ -11,8 +11,9 @@ const loginApi = {
             },
         });
 
-        // localStorage.setItem('token', response.data.token);
-        return response.data.token;
+        // console.log(response.data['accessToken'])
+        localStorage.setItem('token', response.data['accessToken']);
+        return response.data['accessToken'];
     }}
 
 export default loginApi;

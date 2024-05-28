@@ -1,23 +1,32 @@
 import { useEffect, useState } from "react";
+import { getUserRole } from "@/api/userApi";
 
 interface User {
-    role: 'admin' | 'athlete' | 'sponsor' | null;
+    role: 'Admin' | 'Athlete' | 'Sponsor' | null;
 }
 
 export const useAuth = () => {
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const fetchUserRole = async () => {
 
-        if (token) {
-            const userRole = localStorage.getItem('userRole');
-            setUser({ role: userRole as User['role']});
-        } else {
-            setUser({ role: null});
-        }
+            try {
+                const role = await getUserRole();
+                setIsAuthenticated(true);
+                setUser({ role });
+            } catch (error) {
+                console.error(error);
+                setUser({ role: null });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserRole();
     }, []);
 
-    return user;
-
-}
+    return { user, loading, isAuthenticated };
+};

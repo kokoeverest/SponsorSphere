@@ -5,6 +5,12 @@ const api = axios.create({
     baseURL: API_BASE_URL,
 });
 
+const apiPrivate = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {'Content-Type': 'application/json'},
+    withCredentials: true
+});
+
 api.interceptors.response.use((response) => response, (error) => {
     switch (error.response.status) {
         case 404:
@@ -17,4 +23,4 @@ api.interceptors.response.use((response) => response, (error) => {
     return Promise.reject(error);
 });
 
-export { api };
+export { api, apiPrivate };

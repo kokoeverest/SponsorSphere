@@ -14,15 +14,22 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
   const handleTitleClick = () => {
     navigate('/');
   };
-  
+
   const handleLoginClick = () => {
     navigate('/login');
   };
 
+  const handleDashboardClick = () => {
+    navigate('/dashboard');
+  };
+
   return (
     <div className="header">
-      <h1 className='headerTitle' onClick={handleTitleClick}>SponsorSphere</h1>
-      { isLoggedIn && <LogoutButton></LogoutButton> || <StyledButton onClick={handleLoginClick}>Login</StyledButton>}
+      <h1 className='headerTitle' onClick={ handleTitleClick }>SponsorSphere</h1>
+      { isLoggedIn
+        && <StyledButton onClick={ handleDashboardClick }>Dashboard</StyledButton>
+        && <LogoutButton></LogoutButton>
+        || <StyledButton onClick={ handleLoginClick }>Login</StyledButton> }
     </div>
   );
 };

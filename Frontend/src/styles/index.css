@@ -53,7 +53,7 @@ h1 {
   align-items: normal;
   justify-content: left;
   border-bottom: 0.1px solid lightblue;
-  z-index: 1000;
+  z-index: 1;
   will-change: filter;
   transition: filter 500ms;
 }

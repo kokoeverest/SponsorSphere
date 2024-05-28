@@ -29,12 +29,13 @@ const LoginForm: React.FC = () => {
     const mutation = useMutation({
         mutationFn: loginApi.login,
         onSuccess: (token) => {
+            console.log(token);
             localStorage.setItem('token', token);
-            reset();
             navigate('/dashboard');
+            // reset();
 
             // refresh the header so the login button will disappear
-            queryClient.invalidateQueries({ queryKey: ['login'] });
+            // queryClient.invalidateQueries({ queryKey: ['login'] });
         },
         onError: (error: any) => {
             setError(error.response?.data?.message || 'Invalid email or password!');
