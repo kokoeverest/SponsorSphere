@@ -91,7 +91,7 @@ namespace SponsorSphere.Infrastructure.Repositories
 
             await _context.SponsorCompanies.Where(sc => sc.Id == updatedSponsorCompany.Id)
                 .ExecuteUpdateAsync(setters => setters
-                .SetProperty(sc => sc.IBAN, updatedSponsorCompany.IBAN)
+                .SetProperty(sc => sc.Iban, updatedSponsorCompany.Iban)
             );
 
             return updatedSponsorCompany;

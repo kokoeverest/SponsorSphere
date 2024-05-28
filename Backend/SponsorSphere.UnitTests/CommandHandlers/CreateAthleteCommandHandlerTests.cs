@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Dtos;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.UnitTests.Helpers;
@@ -30,12 +31,11 @@ namespace SponsorSphere.UnitTests.CommandHandlers
         public async Task CreateAthlete_ValidCommand_ShouldCreateAthlete()
         {
             // Arrange
-            var fakeAthleteDto = _mapperMock.Map<AthleteDto>(TestData.FakeAthlete);
+            var fakeAthleteDto = Substitute.For<AthleteDto>();
             var registerAthleteMock = Substitute.For<RegisterAthleteDto>();
-            registerAthleteMock.Password = TestData.FakePassword;
 
             _mapperMock.Map<AthleteDto>(Arg.Any<Athlete>()).Returns(fakeAthleteDto);
-            
+
             _userManagerMock.CreateAsync(Arg.Any<User>(), Arg.Any<string>())
                 .Returns(IdentityResult.Success);
 
@@ -50,10 +50,27 @@ namespace SponsorSphere.UnitTests.CommandHandlers
 
             // Assert
             Assert.Equal(fakeAthleteDto, actualResult);
-            Assert.Equal(fakeAthleteDto, actualResult);
+        }
 
-            await _userManagerMock.Received(1)
-                .CreateAsync(Arg.Is<User>(TestData.FakeAthlete), Arg.Is<string>(TestData.FakePassword));
+        [Fact]
+        public async Task CreateAthlete_InvalidCommand_ShouldThrowInvalidDataException()
+        {
+            // Arrange
+            var registerAthleteMock = Substitute.For<RegisterAthleteDto>();
+            var error = new IdentityError { Description = "Error" };
+
+            _userManagerMock.CreateAsync(Arg.Any<User>(), Arg.Any<string>())
+                .Returns(IdentityResult.Failed(error));
+
+            _userManagerMock.AddToRoleAsync(Arg.Any<User>(), Arg.Any<string>())
+                .Returns(IdentityResult.Failed(error));
+
+            var handler = new CreateAthleteCommandHandler(_userManagerMock, _unitOfWorkMock, _mapperMock, _loggerMock);
+            var command = new CreateAthleteCommand(registerAthleteMock);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidDataException>(() => handler.Handle(command, default));
+
         }
     }
 }

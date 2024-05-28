@@ -8,7 +8,7 @@ namespace SponsorSphere.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<SponsorCompany> builder)
         {
-            builder.Property(sc => sc.IBAN)
+            builder.Property(sc => sc.Iban)
                 .IsRequired(true)
                 .HasMaxLength(34);
         }

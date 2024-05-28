@@ -4,6 +4,6 @@ namespace SponsorSphere.Application.App.SponsorCompanies.Dtos
 {
     public class SponsorCompanyDto : SponsorDto
     {
-        public string IBAN { get; set; } = string.Empty;
+        public string Iban { get; set; } = string.Empty;
     }
 }

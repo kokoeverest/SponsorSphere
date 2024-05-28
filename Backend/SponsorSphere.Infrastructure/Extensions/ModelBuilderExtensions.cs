@@ -76,7 +76,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
                     PasswordHash = UserConstants.AdminPasswordHash,
-                    IBAN = "BG12345"
+                    Iban = "BG12345"
                 },
                 new SponsorCompany
                 {
@@ -85,7 +85,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Email = "kaufland@bg.gb",
                     Country = CountryEnum.DEU,
                     PhoneNumber = UserConstants.PhoneNumber,
-                    IBAN = "DE32215"
+                    Iban = "DE32215"
                 }
             );
 

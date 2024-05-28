@@ -2,6 +2,6 @@
 {
     public class SponsorCompany : Sponsor
     {
-        public required string IBAN { get; set; }
+        public required string Iban { get; set; }
     }
 }
