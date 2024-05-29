@@ -2,18 +2,20 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { logout as performLogout } from "@/utils/auth";
 
-const useLogout = () => {
+const useLogout = () =>
+{
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const logout = () => {
-        
+    const logout = () =>
+    {
+
         performLogout();
 
         queryClient.invalidateQueries();
-        
-        navigate('/');
-    }
+
+        navigate( '/' );
+    };
     return logout;
 };
 

@@ -1,16 +1,15 @@
-import { apiPrivate } from "./api";
+// import { apiPrivate } from "./apiPrivate";
+import { api } from "./api";
 
-export const getUserRole = async () => {
-    const token = localStorage.getItem('token');
-    // if (!token) throw new Error('authorisation failed');
-    const bearerString = "Bearer ${token}";
-    console.log(bearerString);
-    
-    const response = await apiPrivate.get('users/role', {
-        headers: {
-            Authorization: bearerString
-        }
-    });
+interface UserInfoResponse {
+    role: string;
+    userName: string;
+}
 
-    return response.data.role;
+export const getUserInfo = async () =>
+{
+
+    const response = await api.get<UserInfoResponse>( 'users/info' );
+
+    return response.data;
 };

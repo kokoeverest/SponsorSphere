@@ -35,6 +35,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <div>
+            <p>User role is: {user.role}</p>
             { user.role === 'Admin' && <AdminDashboard /> }
             { user.role === 'Athlete' && <AthleteDashboard /> }
             { user.role === 'Sponsor' && <SponsorDashboard /> }

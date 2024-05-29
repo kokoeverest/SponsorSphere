@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { getUserRole } from "@/api/userApi";
+import { getUserInfo } from "@/api/userApi";
 
 interface User {
-    role: 'Admin' | 'Athlete' | 'Sponsor' | null;
+    role: string | null;
+    userName: string | null;
 }
 
 export const useAuth = () => {
@@ -14,12 +15,15 @@ export const useAuth = () => {
         const fetchUserRole = async () => {
 
             try {
-                const role = await getUserRole();
+                const userInfo = await getUserInfo();
+                if (userInfo.role === 'undefined'){
+                    throw new Error("No user role available");
+                }
                 setIsAuthenticated(true);
-                setUser({ role });
+                setUser({ role: userInfo.role, userName: userInfo.userName });
             } catch (error) {
                 console.error(error);
-                setUser({ role: null });
+                setUser({ role: null, userName: null });
             } finally {
                 setLoading(false);
             }
