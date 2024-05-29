@@ -19,7 +19,7 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("role")]
+        [Route("info")]
         public async Task<IActionResult> GetUserRole()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -34,7 +34,7 @@ namespace SponsorSphereWebAPI.Controllers
                 return NotFound("No roles found for this user");
             }
 
-            return Ok(new { Role = roles.First() });
+            return Ok(new { Role = roles.First(), UserName = user.UserName });
         }
     }
 }

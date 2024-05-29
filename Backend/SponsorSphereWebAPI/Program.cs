@@ -50,12 +50,13 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigins",
-        policy =>
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
         {
-            policy.WithOrigins("http://localhost:5173")
+            builder.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
         });
 });
 
@@ -89,8 +90,12 @@ app.Use(async (context, next) =>
         Console.WriteLine("CORS headers are not set.");
     }
 });
-app.UseCors("AllowSpecificOrigins");
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseCors("AllowSpecificOrigin");
+
 app.UseAuthorization();
 
 app.MapControllers();

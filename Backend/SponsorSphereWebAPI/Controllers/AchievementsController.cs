@@ -22,8 +22,8 @@ namespace SponsorSphereWebAPI.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        //[HttpGet]
+        //[Route("{id}")]
 
 
         [HttpPost]
