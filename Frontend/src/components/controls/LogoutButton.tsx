@@ -1,12 +1,17 @@
-import React from "react";
-import useLogout from "@/hooks/useLogout";
+import React, { useContext } from "react";
 import StyledButton from "./Button";
+import AuthContext from "@/context/AuthContext";
 
 const LogoutButton: React.FC = () => {
-    const logout = useLogout();
+    const { logout } = useContext(AuthContext);
+
+    const logoutHandler = () => {
+        logout();
+        // TODO: hit endpoint in the api to invalidate the cookie.
+    }
 
     return (
-        <StyledButton onClick={logout}>Log out</StyledButton>
+        <StyledButton onClick={logoutHandler}>Log out</StyledButton>
     );
 };
 
