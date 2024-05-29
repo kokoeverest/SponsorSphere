@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StyledButton from './controls/Button';
 import LogoutButton from './controls/LogoutButton';
+import AuthContext from '@/context/AuthContext';
 
-interface HeaderProps {
-  isLoggedIn: boolean;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const Header: React.FC = () => {
+  const authData = useContext(AuthContext);
 
-const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
   const navigate = useNavigate();
 
   const handleTitleClick = () => {
@@ -26,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
   return (
     <div className="header">
       <h1 className='headerTitle' onClick={ handleTitleClick }>SponsorSphere</h1>
-      { isLoggedIn
+      { authData.isLogged
         && <StyledButton onClick={ handleDashboardClick }>Dashboard</StyledButton>
         && <LogoutButton></LogoutButton>
         || <StyledButton onClick={ handleLoginClick }>Login</StyledButton> }

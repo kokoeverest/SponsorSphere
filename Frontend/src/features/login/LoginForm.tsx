@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,10 +10,13 @@ import StyledForm from '../../components/controls/Form';
 import { loginSchema } from './schemas';
 import { LoginFormInput } from './abstract';
 import loginApi from '@/api/loginApi';
+import { getUserInfo } from '@/api/userApi';
+import AuthContext from '@/context/AuthContext';
 // import { getUserInfo } from '@/api/userApi';
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
     
     const {
         register,
@@ -29,6 +32,8 @@ const LoginForm: React.FC = () => {
     const mutation = useMutation({
         mutationFn: loginApi.login,
         onSuccess: async () => {
+            const userInfo = await getUserInfo();
+            login(userInfo);
             navigate('/');
             reset();
         },

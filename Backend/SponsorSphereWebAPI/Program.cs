@@ -92,7 +92,7 @@ app.Use(async (context, next) =>
 });
 app.UseHttpsRedirection();
 
-app.UseRouting();
+//app.UseRouting();
 
 app.UseCors("AllowSpecificOrigin");
 

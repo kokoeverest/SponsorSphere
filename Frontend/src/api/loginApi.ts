@@ -8,8 +8,7 @@ const loginApi = {
         await api.post( 'login?useCookies=true', data, {
             headers: {
                 'Content-Type': 'application/json',
-            },
-            withCredentials: true
+            }
         } );
     }
 };
