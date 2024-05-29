@@ -19,7 +19,7 @@ const AuthContextWrapper: React.FC<ReactNode> = (children) => {
 
     const logout = () => {};
 
-    return <AuthContext.Provider value={{ login, logout }}>
+    return <AuthContext.Provider value={{ isLogged, login, logout }}>
         {children}
     </AuthContext.Provider>
 };
