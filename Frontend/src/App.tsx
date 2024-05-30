@@ -13,6 +13,7 @@ import RegisterCompany from "./features/sponsors/companies/registration/Register
 import RegisterIndividualForm from "./features/sponsors/individuals/registration/RegisterSponsorIndividualForm";
 import "./styles/App.css";
 import Dashboard from "./components/Dashboard";
+import PrivateRoute from "./utils/PrivateRoute";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +32,9 @@ const App: React.FC = () => {
               <Route path="company" element={<RegisterCompany />} />
               <Route path="individual" element={<RegisterIndividualForm />} />
             </Route>
-            <Route path="/athletes" element={<AthleteList />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/athletes" element={<AthleteList />} />
+            </Route>
             <Route path="/athletes/:id" element={<AthleteDetail />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/dashboard" element={<Dashboard />} />

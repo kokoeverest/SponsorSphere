@@ -7,6 +7,10 @@ interface AuthContextWrapperProps {
 }
 
 const AuthContextWrapper: React.FC<AuthContextWrapperProps> = ({children}) => {
+
+    //TODO: Store the cookie and access token expiration dates and invalidate the auth state
+    // if any of the two has expired.
+
     const isLoggedLocalStorage = localStorage.getItem('isLogged') === "true";
     const userNameLocalStorage = localStorage.getItem('userName');
     const roleLocalStorage = localStorage.getItem('role');
