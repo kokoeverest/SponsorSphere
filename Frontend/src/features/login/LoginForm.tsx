@@ -12,7 +12,6 @@ import { LoginFormInput } from './abstract';
 import loginApi from '@/api/loginApi';
 import { getUserInfo } from '@/api/userApi';
 import AuthContext from '@/context/AuthContext';
-// import { getUserInfo } from '@/api/userApi';
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
@@ -33,8 +32,9 @@ const LoginForm: React.FC = () => {
         mutationFn: loginApi.login,
         onSuccess: async () => {
             const userInfo = await getUserInfo();
+            // console.log(userInfo);
             login(userInfo);
-            navigate('/');
+            navigate('/dashboard');
             reset();
         },
         onError: (error: any) => {
@@ -44,8 +44,6 @@ const LoginForm: React.FC = () => {
     const onSubmitHandler: SubmitHandler<LoginFormInput> = async (data) => {
         setError(null);
         mutation.mutate(data);
-        // const userData = await getUserInfo();
-        // console.log(userData);
     };
 
     return (
