@@ -4,29 +4,35 @@ import StyledButton from './controls/Button';
 import LogoutButton from './controls/LogoutButton';
 import AuthContext from '@/context/AuthContext';
 
-const Header: React.FC = () => {
-  const authData = useContext(AuthContext);
+const Header: React.FC = () =>
+{
+  const authData = useContext( AuthContext );
 
   const navigate = useNavigate();
 
-  const handleTitleClick = () => {
-    navigate('/');
+  const handleTitleClick = () =>
+  {
+    navigate( '/' );
   };
 
-  const handleLoginClick = () => {
-    navigate('/login');
+  const handleLoginClick = () =>
+  {
+    navigate( '/login' );
   };
 
-  const handleDashboardClick = () => {
-    navigate('/dashboard');
+  const handleDashboardClick = () =>
+  {
+    navigate( '/dashboard' );
   };
 
   return (
     <div className="header">
       <h1 className='headerTitle' onClick={ handleTitleClick }>SponsorSphere</h1>
       { authData.isLogged
-        && <StyledButton onClick={ handleDashboardClick }>Dashboard</StyledButton>
-        && <LogoutButton></LogoutButton>
+        && <div className="container-buttons">
+          <StyledButton onClick={ handleDashboardClick }>Dashboard</StyledButton>
+          <LogoutButton></LogoutButton>
+        </div>
         || <StyledButton onClick={ handleLoginClick }>Login</StyledButton> }
     </div>
   );

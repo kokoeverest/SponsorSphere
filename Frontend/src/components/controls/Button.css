@@ -26,7 +26,7 @@ button:focus-visible {
     justify-content: space-evenly;
 }
 
-.header button {
+.header > .container-buttons {
     position: fixed;
     right: 60px;
     top: 30px;

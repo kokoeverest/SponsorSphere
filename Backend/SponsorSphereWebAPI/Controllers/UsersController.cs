@@ -36,5 +36,13 @@ namespace SponsorSphereWebAPI.Controllers
 
             return Ok(new { Role = roles.First(), UserName = user.UserName });
         }
+
+        [HttpDelete]
+        [Route("logout")]
+        public IActionResult DeleteCookieData()
+        {
+            Response.Cookies.Delete(".AspNetCore.Identity.Application");
+            return NoContent();
+        }
     }
 }
