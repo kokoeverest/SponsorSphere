@@ -7,15 +7,15 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import StyledButton from "../../../components/controls/Button";
 import StyledForm from "../../../components/controls/Form";
-import { CreateAchievementFormInput } from "./abstract";
-import achievementApi from "@/api/achievementApi";
+import { CreateGoalFormInput } from "./abstract";
+import goalApi from "@/api/goalApi";
 import sportEventApi from "@/api/sportEventApi";
 import enumApi from "@/api/enumApi";
-import CreateAchievementSchema from "./schemas";
 import { SportEventDto } from "@/types/sportEvent";
-import { CreatePastSportEvent } from "@/features/sportEvents/CreateSportEvent";
+import { CreateFutureSportEvent } from "@/features/sportEvents/CreateSportEvent";
+import CreateGoalSchema from "./schemas";
 
-const CreateAchievementForm: React.FC = () =>
+const CreateGoalForm: React.FC = () =>
 {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -24,8 +24,8 @@ const CreateAchievementForm: React.FC = () =>
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<CreateAchievementFormInput>( {
-        resolver: yupResolver( CreateAchievementSchema ),
+    } = useForm<CreateGoalFormInput>( {
+        resolver: yupResolver( CreateGoalSchema ),
     } );
 
     const [ selectedSportEventId, setSelectedSportEventId ] = useState( '' );
@@ -39,29 +39,29 @@ const CreateAchievementForm: React.FC = () =>
 
     // Queries
     const sportsEventsQuery = useQuery(
-        { queryKey: [ "getFinishedSportEvents", queryParams ], queryFn: () => sportEventApi.getFinishedSportEvents( queryParams ), } );
+        { queryKey: [ "getUnFinishedSportEvents", queryParams ], queryFn: () => sportEventApi.getUnFinishedSportEvents( queryParams ), } );
 
     const sportsQuery = useQuery( { queryKey: [ 'getSports' ], queryFn: enumApi.getSports } );
 
     // Mutations
     const mutation = useMutation( {
-        mutationFn: achievementApi.createAchievement,
+        mutationFn: goalApi.createGoal,
         onSuccess: () =>
         {
             alert( "Successful! Thank you!" );
             navigate( `/dashboard` );
             // TODO: Invalidate and refetch
-            queryClient.invalidateQueries( { queryKey: [ 'createAchievement' ] } );
+            queryClient.invalidateQueries( { queryKey: [ 'createGoal' ] } );
         },
     } );
 
-    const onSubmitHandler: SubmitHandler<CreateAchievementFormInput> = async ( data ) => mutation.mutate( data );
+    const onSubmitHandler: SubmitHandler<CreateGoalFormInput> = async ( data ) => mutation.mutate( data );
 
     return (
         <>
             { !mutation.isError && !mutation.isPending && !sportsEventsQuery.isPending && (
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
-                    <h1>Add your achievement</h1>
+                    <h1>Add your goal</h1>
 
                     <TextField
                         select
@@ -94,33 +94,24 @@ const CreateAchievementForm: React.FC = () =>
                     </TextField>
 
                     <TextField
-                        { ...register( 'placeFinished' ) }
-                        label="Place finished"
-                        type="text"
-                        placeholder="Place finished"
-                        error={ !!errors.placeFinished }
-                        helperText={ "If your event was a race" }
-                    />
-
-                    <TextField
-                        { ...register( 'description' ) }
-                        label="Description"
-                        type="text"
-                        placeholder="Description"
-                        error={ !!errors.description }
-                        helperText={ "Describe your achievement" }
+                        { ...register( 'amountNeeded' ) }
+                        label="Goal amount needed"
+                        type='number'
+                        placeholder="Goal amount needed"
+                        error={ !!errors.amountNeeded }
+                        helperText={ "How much you need?" }
                     />
                     <br />
                     <StyledButton type="submit">Submit</StyledButton>
                     <br />
                     <h6>Link:</h6>
                     <div>
-                        <Link to={ '/achievements/sportEvents/create?eventType=achievement' }>*If you don't find the sport event in the list,
+                        <Link to={ '/achievements/sportEvents/create?eventType=goal' }>*If you don't find the sport event in the list,
                             click here to create it first*</Link>
                     </div>
                     <h6>Or a button?</h6>
                     <div>
-                        <CreatePastSportEvent></CreatePastSportEvent>
+                        <CreateFutureSportEvent></CreateFutureSportEvent>
                     </div>
                 </StyledForm>
             ) }
@@ -131,4 +122,4 @@ const CreateAchievementForm: React.FC = () =>
     );
 };
 
-export default CreateAchievementForm;
+export default CreateGoalForm;

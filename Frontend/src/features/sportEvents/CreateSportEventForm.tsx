@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MenuItem, TextField } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -9,20 +9,29 @@ import StyledButton from "../../components/controls/Button";
 import StyledForm from "../../components/controls/Form";
 import { CreateSportEventFormInput } from "./abstract";
 import enumApi from "@/api/enumApi";
-import { CreatePastSportEventSchema } from "./schemas";
+import { CreatePastSportEventSchema, CreateFutureSportEventSchema } from "./schemas";
 import sportEventApi from "@/api/sportEventApi";
 
 const CreateSportEventForm: React.FC = () =>
 {
     const navigate = useNavigate();
+    const location = useLocation();
     const queryClient = useQueryClient();
+
+    // Extract query parameter
+    const searchParams = new URLSearchParams( location.search );
+    const eventType = searchParams.get( 'eventType' );
+
+    // Determine which schema to use based on the query parameter
+    const isPastEvent = eventType === 'achievement';
+    const validationSchema = isPastEvent ? CreatePastSportEventSchema : CreateFutureSportEventSchema;
 
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<CreateSportEventFormInput>( {
-        resolver: yupResolver( CreatePastSportEventSchema ),
+        resolver: yupResolver( validationSchema ),
     } );
 
     const [ selectedCountry, setSelectedCountry ] = useState( 'BGR' );
@@ -52,7 +61,7 @@ const CreateSportEventForm: React.FC = () =>
         <>
             { !mutation.isError && !mutation.isPending && !countriesQuery.isPending && !sportsQuery.isPending && (
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
-                    <h1>Add a sport event</h1>
+                    <h1>{ isPastEvent ? 'Add a past sport event' : 'Add a future sport event' }</h1>
 
                     <TextField
                         { ...register( "name" ) }

@@ -19,6 +19,7 @@ import AdminDashboard from "./components/dashboards/AdminDashboard";
 import SponsorDashboard from "./components/dashboards/SponsorDashboard";
 import CreateSportEventForm from "./features/sportEvents/CreateSportEventForm";
 import CreateAchievementForm from "./features/athletes/achievements/CreateAchievementForm";
+import CreateGoalForm from "./features/athletes/goals/CreateGoalForm";
 
 const queryClient = new QueryClient();
 
@@ -39,15 +40,16 @@ const App: React.FC = () =>
               <Route path="company" element={ <RegisterCompany /> } />
               <Route path="individual" element={ <RegisterIndividualForm /> } />
             </Route>
-            
+
             <Route element={ <PrivateRoute /> }>
               <Route path="/athletes" element={ <AthleteList /> } />
               <Route path="/athletes/:id" element={ <AthleteDetail /> } />
               <Route path="/dashboard" element={ <Dashboard /> } />
               <Route path="/achievements/create" element={ <CreateAchievementForm /> } />
               <Route path="/achievements/sportEvents/create" element={ <CreateSportEventForm /> } />
+              <Route path='/goals/create' element={ <CreateGoalForm /> } />
             </Route>
-            
+
             <Route>
 
             </Route>

@@ -7,9 +7,7 @@ const AddAchievement: React.FC = () => {
   const navigate = useNavigate();
 
   const addAchievementHandler = () =>
-  {
-    // TODO: hit endpoint in the api to invalidate the cookie.
-    
+  {    
     navigate( '/achievements/create' );
   }
   return (
