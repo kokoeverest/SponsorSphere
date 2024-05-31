@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { MenuItem, TextField } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import StyledButton from "../../../components/controls/Button";
-import StyledForm from "../../../components/controls/Form";
-import { RegisterAthleteFormInput } from "./abstract";
-import athleteApi from "@/api/athleteApi";
+import StyledButton from "../../components/controls/Button";
+import StyledForm from "../../components/controls/Form";
+import { CreateSportEventFormInput } from "./abstract";
 import enumApi from "@/api/enumApi";
-import { registerAthleteSchema } from "@/features/athletes/schemas";
+import { CreatePastSportEventSchema } from "./schemas";
+import sportEventApi from "@/api/sportEventApi";
 
-const RegisterAthleteForm: React.FC = () =>
+const CreateSportEventForm: React.FC = () =>
 {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -21,86 +21,46 @@ const RegisterAthleteForm: React.FC = () =>
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<RegisterAthleteFormInput>( {
-        resolver: yupResolver( registerAthleteSchema ),
+    } = useForm<CreateSportEventFormInput>( {
+        resolver: yupResolver( CreatePastSportEventSchema ),
     } );
 
     const [ selectedCountry, setSelectedCountry ] = useState( 'BGR' );
-    const [ selectedSport, setSelectedSport ] = useState( 'Basketball' );
+    const [ selectedSport, setSelectedSport ] = useState( 'Football' );
+    const [ selectedEventType, setSelectedEventType] = useState('Race');
 
     // Queries
     const countriesQuery = useQuery( { queryKey: [ 'getCountries' ], queryFn: enumApi.getCountries } );
     const sportsQuery = useQuery( { queryKey: [ 'getSports' ], queryFn: enumApi.getSports } );
+    const eventTypesQuery = useQuery( { queryKey: [ 'getEventTypes' ], queryFn: enumApi.getEventTypes } );
 
     // Mutations
     const mutation = useMutation( {
-        mutationFn: athleteApi.register,
-        onSuccess: ( userId ) =>
+        mutationFn: sportEventApi.createSportEvent,
+        onSuccess: () =>
         {
-            alert( "You registered successfully!" );
-            navigate( `/athletes/${ userId }` );
+            alert( "Thank you! The event you created needs to be confirmed by admin and you'll receive a notification shortly" );
+            navigate( `/dashboard` );
             // TODO: Invalidate and refetch
-            queryClient.invalidateQueries( { queryKey: [ 'getAthletes' ] } );
+            queryClient.invalidateQueries( { queryKey: [ 'createSportEvent' ] } );
         },
     } );
 
-    const onSubmitHandler: SubmitHandler<RegisterAthleteFormInput> = async ( data ) => mutation.mutate( data );
+    const onSubmitHandler: SubmitHandler<CreateSportEventFormInput> = async ( data ) => mutation.mutate( data );
 
     return (
         <>
             { !mutation.isError && !mutation.isPending && !countriesQuery.isPending && !sportsQuery.isPending && (
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
-                    <h1>Register as Athlete</h1>
+                    <h1>Add a sport event</h1>
 
                     <TextField
                         { ...register( "name" ) }
-                        label="First name"
+                        label="Event name"
                         type="text"
-                        placeholder="First name"
+                        placeholder="Event name"
                         error={ !!errors.name }
                         helperText={ errors.name?.message }
-                    />
-
-                    <TextField
-                        { ...register( "lastName" ) }
-                        label="Last name"
-                        type="text"
-                        placeholder="Last name"
-                        error={ !!errors.lastName }
-                        helperText={ errors.lastName?.message }
-                    />
-
-                    <TextField
-                        { ...register( "email" ) }
-                        label="Email"
-                        type="email"
-                        placeholder="Enter a valid email"
-                        error={ !!errors.email }
-                        helperText={ errors.email?.message }
-                    />
-
-                    <TextField
-                        { ...register( "password" ) }
-                        label="Password"
-                        type="password"
-                        placeholder="Enter strong password"
-                        error={ !!errors.password }
-                        helperText={ errors.password?.message }
-                    />
-
-                    <TextField
-                        { ...register( "birthDate" ) }
-                        type="date"
-                        error={ !!errors.birthDate }
-                        helperText={ errors.birthDate?.message }
-                    />
-
-                    <TextField
-                        { ...register( "phoneNumber" ) }
-                        label="Phone number"
-                        type="tel"
-                        error={ !!errors.phoneNumber }
-                        helperText={ errors.phoneNumber?.message }
                     />
 
                     <TextField
@@ -115,6 +75,30 @@ const RegisterAthleteForm: React.FC = () =>
                         { countriesQuery.data?.map( ( country ) => (
                             <MenuItem key={ country } value={ country }>
                                 { country }
+                            </MenuItem>
+                        ) ) }
+                    </TextField>
+
+                    <TextField
+                        { ...register( "eventDate" ) }
+                        type="date"
+                        error={ !!errors.eventDate }
+                        helperText={ "Please enter a past date" }
+                        
+                    />
+
+                    <TextField
+                        { ...register( "eventType" ) }
+                        select
+                        label="Type of event"
+                        error={ !!errors.eventType }
+                        helperText={ errors.eventType?.message }
+                        value={ selectedEventType }
+                        onChange={ ( event ) => setSelectedEventType( event.target.value ) }
+                    >
+                        { eventTypesQuery.data?.map( ( eventType ) => (
+                            <MenuItem key={ eventType } value={ eventType }>
+                                { eventType }
                             </MenuItem>
                         ) ) }
                     </TextField>
@@ -136,14 +120,14 @@ const RegisterAthleteForm: React.FC = () =>
                     </TextField>
                     <br />
 
-                    <StyledButton type="submit">Register</StyledButton>
+                    <StyledButton type="submit">Submit</StyledButton>
                 </StyledForm>
             ) }
 
             { mutation.isError && <h3>Error</h3> }
-            { ( countriesQuery.isPending || sportsQuery.isPending || mutation.isPending ) && <h3>Loading Spinner...</h3> }
+            { ( countriesQuery.isPending || sportsQuery.isPending || mutation.isPending || eventTypesQuery.isPending ) && <h3>Loading Spinner...</h3> }
         </>
     );
 };
 
-export default RegisterAthleteForm;
+export default CreateSportEventForm;

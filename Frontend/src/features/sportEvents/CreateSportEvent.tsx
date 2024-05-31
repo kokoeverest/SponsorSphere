@@ -1,14 +1,15 @@
 import React from 'react';
 import StyledButton from '@/components/controls/Button';
-import sportEventApi from '@/api/sportEventApi';
+import { useNavigate } from 'react-router-dom';
 
 const CreateSportEvent: React.FC = () =>
     {
+        const navigate = useNavigate();
         const createSportEventHandler  = () => {
-            sportEventApi.createSportEvent()
+            navigate('/achievements/sportEvents/create')
         };
     return (
-        <StyledButton onClick={createSportEventHandler}>Create new sport event</StyledButton>
+        <StyledButton onClick={createSportEventHandler}>Create sport event</StyledButton>
     );
 };
 

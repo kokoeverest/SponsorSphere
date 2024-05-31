@@ -3,7 +3,7 @@ export interface RegisterAthleteFormInput {
     lastName: string;
     email: string;
     password: string;
-    birthDate: string;
+    birthDate: Date;
     phoneNumber: string;
     country: string;
     sport: string;

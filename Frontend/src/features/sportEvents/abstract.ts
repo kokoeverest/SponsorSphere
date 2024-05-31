@@ -2,8 +2,7 @@ export interface CreateSportEventFormInput
 {
     name: string;
     country: string;
-    eventDate: string;
+    eventDate: Date;
     eventType: string;
     sport: string;
-    status: string;
 }
