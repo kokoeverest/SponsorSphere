@@ -1,4 +1,3 @@
-// src/components/AthleteList.tsx
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -9,11 +8,18 @@ const AthleteList: React.FC = () => {
     const [athletes, setAthletes] = useState<AthleteDto[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [pageNumber, setPageNumber] = useState('1')
+    const [ queryParams, setQueryParams ] = useState( '?sport=Football' );
+
+    useEffect( () =>
+    {
+        setQueryParams( `?pageNumber=${ pageNumber }&pageSize=10` );
+    }, [ pageNumber ] );
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await athleteApi.getAthletes();
+                const result = await athleteApi.getAthletes(queryParams);
                 setAthletes(result);
             } catch (error) {
                 setError("Failed to fetch athletes");

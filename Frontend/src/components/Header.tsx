@@ -33,7 +33,10 @@ const Header: React.FC = () =>
           <StyledButton onClick={ handleDashboardClick }>Dashboard</StyledButton>
           <LogoutButton></LogoutButton>
         </div>
-        || <StyledButton onClick={ handleLoginClick }>Login</StyledButton> }
+        || <div className='container-buttons'>
+          <StyledButton onClick={ handleLoginClick }>Login</StyledButton>
+        </div>
+      }
     </div>
   );
 };

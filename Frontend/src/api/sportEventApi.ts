@@ -12,23 +12,23 @@ const sportEventApi = {
         return response.data;
     },
 
-    getFinishedSportEvents: async (): Promise<SportEventDto[]> =>
+    getFinishedSportEvents: async (queryParams: string): Promise<SportEventDto[]> =>
     {
-        const response: AxiosResponse<SportEventDto[]> = await api.get( "sportEvents/finished" );
+        const response: AxiosResponse<SportEventDto[]> = await api.get( `sportEvents/finished${queryParams}` );
 
         return response.data;
     },
 
-    getUnFinishedSportEvents: async (): Promise<SportEventDto[]> =>
+    getUnFinishedSportEvents: async ( queryParams: string ): Promise<SportEventDto[]> =>
     {
-        const response: AxiosResponse<SportEventDto[]> = await api.get( "sportEvents/unfinished" );
+        const response: AxiosResponse<SportEventDto[]> = await api.get( `sportEvents/unfinished${queryParams}` );
 
         return response.data;
     },
 
-    getPendingSportEvents: async (): Promise<SportEventDto[]> =>
+    getPendingSportEvents: async ( queryParams: string ): Promise<SportEventDto[]> =>
     {
-        const response: AxiosResponse<SportEventDto[]> = await api.get( "sportEvents/pending" );
+        const response: AxiosResponse<SportEventDto[]> = await api.get( `sportEvents/pending${queryParams}` );
 
         return response.data;
     },
