@@ -126,7 +126,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                 {
                     Id = 1,
                     Sport = SportsEnum.TrailRunning,
-                    Name = "Persenk ultra",
+                    Name = "Persenk ultra 2020",
                     Finished = true,
                     EventType = EventsEnum.Race,
                     EventDate = new DateTime(2020, 8, 16),
@@ -137,7 +137,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                 {
                     Id = 2,
                     Sport = SportsEnum.SkyRunning,
-                    Name = "Zegama Aizkori",
+                    Name = "Zegama Aizkori 2024",
                     Finished = false,
                     EventType = EventsEnum.Race,
                     EventDate = new DateTime(2024, 8, 16),
@@ -148,8 +148,8 @@ namespace SponsorSphere.Infrastructure.Extensions
                 {
                     Id = 3,
                     Sport = SportsEnum.TrailRunning,
-                    Name = "Vitosha 24h challenge",
-                    Finished = false,
+                    Name = "Vitosha 24h challenge 2019",
+                    Finished = true,
                     EventType = EventsEnum.Training,
                     EventDate = new DateTime(2019, 9, 9),
                     Country = CountryEnum.BGR,

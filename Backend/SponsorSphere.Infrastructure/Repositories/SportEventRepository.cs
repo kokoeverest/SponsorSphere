@@ -24,6 +24,9 @@ namespace SponsorSphere.Infrastructure.Repositories
             {
                 return existingSportEvent;
             }
+            var suffixToAdd = $" {sportEvent.EventDate.Year}";
+
+            sportEvent.Name += suffixToAdd;
 
             await _context.SportEvents.AddAsync(sportEvent);
             await _context.SaveChangesAsync();
