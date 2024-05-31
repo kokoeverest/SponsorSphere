@@ -13,8 +13,8 @@ const athleteApi = {
       return response.data.id;
   },
 
-  getAthletes: async (): Promise<AthleteDto[]> => {
-      const response = await api.get<AthleteDto[]>("/users/athletes?pageNumber=1&pageSize=10");
+  getAthletes: async ( queryParams: string ): Promise<AthleteDto[]> => {
+      const response = await api.get<AthleteDto[]>(`/users/athletes${queryParams}`);
 
       return response.data;
   },

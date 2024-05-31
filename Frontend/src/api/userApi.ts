@@ -1,14 +1,13 @@
 // import { apiPrivate } from "./apiPrivate";
 import { api } from "./api";
 
-interface UserInfoResponse {
+export interface UserInfoResponse {
     role: string;
     userName: string;
 }
 
-export const getUserInfo = async () =>
+export const getUserInfo = async (): Promise<UserInfoResponse> =>
 {
-
     const response = await api.get<UserInfoResponse>( 'users/info' );
 
     return response.data;

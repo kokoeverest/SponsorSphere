@@ -1,35 +1,42 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StyledButton from './controls/Button';
 import LogoutButton from './controls/LogoutButton';
+import AuthContext from '@/context/AuthContext';
 
-interface HeaderProps {
-  isLoggedIn: boolean;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const Header: React.FC = () =>
+{
+  const authData = useContext( AuthContext );
 
-const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
   const navigate = useNavigate();
 
-  const handleTitleClick = () => {
-    navigate('/');
+  const handleTitleClick = () =>
+  {
+    navigate( '/' );
   };
 
-  const handleLoginClick = () => {
-    navigate('/login');
+  const handleLoginClick = () =>
+  {
+    navigate( '/login' );
   };
 
-  const handleDashboardClick = () => {
-    navigate('/dashboard');
+  const handleDashboardClick = () =>
+  {
+    navigate( '/dashboard' );
   };
 
   return (
     <div className="header">
       <h1 className='headerTitle' onClick={ handleTitleClick }>SponsorSphere</h1>
-      { isLoggedIn
-        && <StyledButton onClick={ handleDashboardClick }>Dashboard</StyledButton>
-        && <LogoutButton></LogoutButton>
-        || <StyledButton onClick={ handleLoginClick }>Login</StyledButton> }
+      { authData.isLogged
+        && <div className="container-buttons">
+          <StyledButton onClick={ handleDashboardClick }>Dashboard</StyledButton>
+          <LogoutButton></LogoutButton>
+        </div>
+        || <div className='container-buttons'>
+          <StyledButton onClick={ handleLoginClick }>Login</StyledButton>
+        </div>
+      }
     </div>
   );
 };

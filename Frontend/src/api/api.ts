@@ -4,7 +4,6 @@ import { API_BASE_URL } from "@/common/constants";
 const api = axios.create( {
     baseURL: API_BASE_URL,
     withCredentials: true
-
 } );
 
 api.interceptors.response.use( ( response ) => response, ( error ) =>
