@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SponsorSphere.Application.App.Achievements.Queries;
 using SponsorSphere.Application.App.Goals.Commands;
 using SponsorSphere.Application.App.Goals.Dtos;
+using SponsorSphere.Application.App.Goals.Queries;
 using SponsorSphere.Application.App.SportEvents.Queries;
 using SponsorSphere.Domain.Models;
 
@@ -21,6 +23,14 @@ namespace SponsorSphereWebAPI.Controllers
         {
             _userManager = userManager;
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        [Route("{athleteId}")]
+        public async Task<IActionResult> GetAthleteGoals(int athleteId, int pageNumber = 1, int pageSize = 10)
+        {
+            var resultList = await _mediator.Send(new GetGoalsByAthleteIdQuery(athleteId, pageNumber, pageSize));
+            return Ok(resultList);
         }
 
         [HttpPost]

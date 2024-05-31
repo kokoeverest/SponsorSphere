@@ -11,6 +11,9 @@ namespace SponsorSphere.Domain.Enums
         SelfOrganized,
 
         [Display(Name = "Training")]
-        Training
+        Training,
+
+        [Display(Name = "Knockout")]
+        Knockout
     }
 }

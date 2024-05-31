@@ -1,5 +1,4 @@
-﻿using SponsorSphere.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SponsorSphere.Application.App.Goals.Dtos
 {

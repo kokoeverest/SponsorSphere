@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Achievements.Commands;
 using SponsorSphere.Application.App.Achievements.Dtos;
+using SponsorSphere.Application.App.Achievements.Queries;
+using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers
@@ -22,8 +24,13 @@ namespace SponsorSphereWebAPI.Controllers
             _mediator = mediator;
         }
 
-        //[HttpGet]
-        //[Route("{id}")]
+        [HttpGet]
+        [Route("{athleteId}")]
+        public async Task<IActionResult> GetAthleteAchievements(int athleteId, int pageNumber = 1, int pageSize = 10)
+        {
+            var resultList = await _mediator.Send(new GetAchievementsByAthleteIdQuery(athleteId, pageNumber, pageSize));
+            return Ok(resultList);
+        }
 
 
         [HttpPost]
