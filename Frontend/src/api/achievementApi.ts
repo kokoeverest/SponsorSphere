@@ -6,7 +6,7 @@ import { AxiosResponse } from "axios";
 const achievementApi = {
 
 
-    create : async (data: CreateAchievementFormInput): Promise<AchievementDto> => {
+    createAchievement : async (data: CreateAchievementFormInput): Promise<AchievementDto> => {
         const response: AxiosResponse<AchievementDto> = await api.post( 'achievements/create', data, {
             headers: {
                 "Content-Type": "multipart/form-data",

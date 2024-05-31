@@ -9,7 +9,7 @@ const registerAthleteSchema = yup.object().shape({
     .required("Email is required"),
   password: yup.string().min(8).max(32).required("Password is required"),
   birthDate: yup
-    .string()
+    .date()
     .required("Birthdate is required")
     .typeError("Invalid date format"),
   phoneNumber: yup.string().required("Phone number is required"),

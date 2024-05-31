@@ -14,34 +14,48 @@ import RegisterIndividualForm from "./features/sponsors/individuals/registration
 import "./styles/App.css";
 import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./utils/PrivateRoute";
+import AthleteDashboard from "./components/dashboards/AthleteDashboard";
+import AdminDashboard from "./components/dashboards/AdminDashboard";
+import SponsorDashboard from "./components/dashboards/SponsorDashboard";
+import CreateSportEventForm from "./features/sportEvents/CreateSportEventForm";
+import CreateAchievementForm from "./features/athletes/achievements/CreateAchievementForm";
 
 const queryClient = new QueryClient();
 
-const App: React.FC = () => {
+const App: React.FC = () =>
+{
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={ queryClient }>
       <Router>
         <Header />
         <div className="main-content">
           <Routes>
-            <Route path="/" element={<WelcomePage />} />
+            <Route path="/" element={ <WelcomePage /> } />
+
             <Route path="register">
-              <Route index element={<RegisterChoice />} />
-              <Route path="athlete" element={<RegisterAthlete />} />
-              <Route path="company" element={<RegisterCompany />} />
-              <Route path="individual" element={<RegisterIndividualForm />} />
+              <Route index element={ <RegisterChoice /> } />
+              <Route path="athlete" element={ <RegisterAthlete /> } />
+              <Route path="company" element={ <RegisterCompany /> } />
+              <Route path="individual" element={ <RegisterIndividualForm /> } />
             </Route>
-            <Route element={<PrivateRoute />}>
-              <Route path="/athletes" element={<AthleteList />} />
+            
+            <Route element={ <PrivateRoute /> }>
+              <Route path="/athletes" element={ <AthleteList /> } />
+              <Route path="/athletes/:id" element={ <AthleteDetail /> } />
+              <Route path="/dashboard" element={ <Dashboard /> } />
+              <Route path="/achievements/create" element={ <CreateAchievementForm /> } />
+              <Route path="/achievements/sportEvents/create" element={ <CreateSportEventForm /> } />
             </Route>
-            <Route path="/athletes/:id" element={<AthleteDetail />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            
+            <Route>
+
+            </Route>
+            <Route path="/login" element={ <LoginForm /> } />
           </Routes>
         </div>
       </Router>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={ false } />
     </QueryClientProvider>
   );
 };
