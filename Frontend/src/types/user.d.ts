@@ -1,4 +1,3 @@
-// src/types/user.ts
 import { BlogPostDto } from "./blogPost";
 
 export interface UserDto {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getUserInfo } from "@/api/userApi";
 
 interface User {
+    id: string | null;
     role: string | null;
     userName: string | null;
 }
@@ -20,10 +21,10 @@ export const useAuth = () => {
                     throw new Error("No user role available");
                 }
                 setIsAuthenticated(true);
-                setUser({ role: userInfo.role, userName: userInfo.userName });
+                setUser({ id: userInfo.id, role: userInfo.role, userName: userInfo.userName });
             } catch (error) {
                 console.error(error);
-                setUser({ role: null, userName: null });
+                setUser({ id: null, role: null, userName: null });
             } finally {
                 setLoading(false);
             }

@@ -5,30 +5,30 @@ import Avatar from '@mui/material/Avatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import { List, ListItem, CircularProgress, Alert } from '@mui/material';
 import { PAGE_SIZE as pageSize } from '@/common/constants';
-import athleteApi from '@/api/athleteApi';
-import { AthleteDto } from '../../types/athlete';
+import sponsorCompanyApi from '@/api/sponsorCompanyApi';
+import { SponsorCompanyDto } from '../../../types/sponsorCompany';
 import StyledPagination from '@/components/controls/Pagination';
 
 const AthleteList: React.FC = () =>
 {
-    const [ athletes, setAthletes ] = useState<AthleteDto[]>( [] );
+    const [ sponsorCompanies, setSponsorCompanies ] = useState<SponsorCompanyDto[]>( [] );
     const [ loading, setLoading ] = useState<boolean>( true );
     const [ error, setError ] = useState<string | null>( null );
     const [ pageNumber, setPageNumber ] = useState<number>( 1 );
     const [ totalPages, setTotalPages ] = useState<number>( 1 );
 
-    const fetchAthletes = async ( page: number ) =>
+    const fetchCompanies = async ( page: number ) =>
     {
         setLoading( true );
         setError( null );
         try
         {
             const queryParams = `?pageNumber=${ page }&pageSize=${ pageSize }&sport=Football`;
-            const result: AthleteDto[] = await athleteApi.getAthletes( queryParams );
-            setAthletes( result );
+            const result: SponsorCompanyDto[] = await sponsorCompanyApi.getSponsorCompanies( queryParams );
+            setSponsorCompanies( result );
         } catch ( error )
         {
-            setError( "Failed to fetch athletes" );
+            setError( "Failed to fetch companies" );
             console.error( error );
         } finally
         {
@@ -36,23 +36,23 @@ const AthleteList: React.FC = () =>
         }
     };
 
-    const fetchAthleteCount = async () =>
+    const fetchCompaniesCount = async () =>
     {
         try
         {
-            const count: number = await athleteApi.getAthletesCount();
+            const count: number = await sponsorCompanyApi.getCompaniesCount();
             setTotalPages( Math.ceil( count / pageSize ) );
         } catch ( error )
         {
-            setError( "Failed to fetch athlete count" );
+            setError( "Failed to fetch companies count" );
             console.error( error );
         }
     };
 
     useEffect( () =>
     {
-        fetchAthletes( pageNumber );
-        fetchAthleteCount();
+        fetchCompanies( pageNumber );
+        fetchCompaniesCount();
     }, [ pageNumber ] );
 
     const handlePageChange = ( _: React.ChangeEvent<unknown>, value: number ) =>
@@ -65,16 +65,16 @@ const AthleteList: React.FC = () =>
 
     return (
         <>
-            { athletes.map( athlete => (
-                <List key={ athlete.id } dense={ true }>
+            { sponsorCompanies.map( sponsorCompany => (
+                <List key={ sponsorCompany.id } dense={ true }>
                     <ListItem>
                         <ListItemAvatar>
                             <Avatar>
                                 <ArrowForwardIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemButton href={ `/athletes/${ athlete.id }` }>
-                            { athlete.name } { athlete.lastName }, Age: { athlete.age }, Sport: { athlete.sport }, Country: { athlete.country }
+                        <ListItemButton href={ `/sponsors/companies/${ sponsorCompany.id }` }>
+                            { sponsorCompany.name }, Country: { sponsorCompany.country }
                         </ListItemButton>
                     </ListItem>
                 </List>

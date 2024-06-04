@@ -12,7 +12,8 @@ interface StyledPaginationProps
 
 const StyledPagination: React.FC<StyledPaginationProps> = ( { pageCount, pageNumber, onPageChange } ) => (
     <Pagination
-        variant='text'
+        className='pagination-buttons'
+        variant='outlined'
         shape='circular'
         size='small'
         showFirstButton

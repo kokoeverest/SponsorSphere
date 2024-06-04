@@ -2,6 +2,7 @@
 import { api } from "./api";
 
 export interface UserInfoResponse {
+    id: string;
     role: string;
     userName: string;
 }

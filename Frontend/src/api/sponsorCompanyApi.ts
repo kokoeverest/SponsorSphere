@@ -13,14 +13,20 @@ const sponsorCompanyApi = {
         return response.data.id;
     },
 
-    getSponsorIndividuals: async (): Promise<SponsorCompanyDto[]> => {
-        const response = await api.get<SponsorCompanyDto[]>("/users/sponsors/companies?pageNumber=1&pageSize=10");
+    getSponsorCompanies: async (queryParams: string): Promise<SponsorCompanyDto[]> => {
+        const response = await api.get<SponsorCompanyDto[]>(`/users/sponsors/companies${queryParams}`);
 
         return response.data;
     },
 
-    getSponsorIndividualById: async (id: string): Promise<SponsorCompanyDto> => {
+    getSponsorCompanyById: async (id: string): Promise<SponsorCompanyDto> => {
         const response = await api.get<SponsorCompanyDto>(`/users/sponsors/companies/${id}`);
+        return response.data;
+    },
+
+    getCompaniesCount: async () =>
+    {
+        const response = await api.get<number>( '/users/sponsors/companies/count' );
         return response.data;
     }
 };

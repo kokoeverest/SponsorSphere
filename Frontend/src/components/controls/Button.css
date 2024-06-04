@@ -31,3 +31,13 @@ button:focus-visible {
     right: 60px;
     top: 30px;
 }
+
+.pagination-buttons button {
+    width: 1em;
+    padding: 1rem;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    background-color: var(--formGrey);
+}

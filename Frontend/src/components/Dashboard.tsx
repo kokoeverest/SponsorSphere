@@ -41,6 +41,7 @@ const Dashboard: React.FC = () =>
             default:
                 navigate( '/' );
         }
+        navigate( '/feed' );
     };
 
     return (

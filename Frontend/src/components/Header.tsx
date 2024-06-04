@@ -15,11 +15,6 @@ const Header: React.FC = () =>
     navigate( '/' );
   };
 
-  const handleLoginClick = () =>
-  {
-    navigate( '/login' );
-  };
-
   const handleDashboardClick = () =>
   {
     navigate( '/dashboard' );
@@ -32,9 +27,6 @@ const Header: React.FC = () =>
         && <div className="container-buttons">
           <StyledButton onClick={ handleDashboardClick }>Dashboard</StyledButton>
           <LogoutButton></LogoutButton>
-        </div>
-        || <div className='container-buttons'>
-          <StyledButton onClick={ handleLoginClick }>Login</StyledButton>
         </div>
       }
     </div>

@@ -5,30 +5,30 @@ import Avatar from '@mui/material/Avatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import { List, ListItem, CircularProgress, Alert } from '@mui/material';
 import { PAGE_SIZE as pageSize } from '@/common/constants';
-import athleteApi from '@/api/athleteApi';
-import { AthleteDto } from '../../types/athlete';
 import StyledPagination from '@/components/controls/Pagination';
+import { SportEventDto } from '@/types/sportEvent';
+import sportEventApi from '@/api/sportEventApi';
 
-const AthleteList: React.FC = () =>
+const PendingSportEventsList: React.FC = () =>
 {
-    const [ athletes, setAthletes ] = useState<AthleteDto[]>( [] );
+    const [ sportEvents, setSportEvents ] = useState<SportEventDto[]>( [] );
     const [ loading, setLoading ] = useState<boolean>( true );
     const [ error, setError ] = useState<string | null>( null );
     const [ pageNumber, setPageNumber ] = useState<number>( 1 );
     const [ totalPages, setTotalPages ] = useState<number>( 1 );
 
-    const fetchAthletes = async ( page: number ) =>
+    const fetchSportEvents = async ( page: number ) =>
     {
         setLoading( true );
         setError( null );
         try
         {
-            const queryParams = `?pageNumber=${ page }&pageSize=${ pageSize }&sport=Football`;
-            const result: AthleteDto[] = await athleteApi.getAthletes( queryParams );
-            setAthletes( result );
+            const queryParams = `?pageNumber=${ page }&pageSize=${ pageSize }`;
+            const result: SportEventDto[] = await sportEventApi.getPendingSportEvents( queryParams );
+            setSportEvents( result );
         } catch ( error )
         {
-            setError( "Failed to fetch athletes" );
+            setError( "Failed to fetch sport events" );
             console.error( error );
         } finally
         {
@@ -36,23 +36,23 @@ const AthleteList: React.FC = () =>
         }
     };
 
-    const fetchAthleteCount = async () =>
+    const fetchSportEventsCount = async () =>
     {
         try
         {
-            const count: number = await athleteApi.getAthletesCount();
+            const count: number = await sportEventApi.getPendingSportEventsCount();
             setTotalPages( Math.ceil( count / pageSize ) );
         } catch ( error )
         {
-            setError( "Failed to fetch athlete count" );
+            setError( "Failed to fetch sport events count" );
             console.error( error );
         }
     };
 
     useEffect( () =>
     {
-        fetchAthletes( pageNumber );
-        fetchAthleteCount();
+        fetchSportEvents( pageNumber );
+        fetchSportEventsCount();
     }, [ pageNumber ] );
 
     const handlePageChange = ( _: React.ChangeEvent<unknown>, value: number ) =>
@@ -65,16 +65,16 @@ const AthleteList: React.FC = () =>
 
     return (
         <>
-            { athletes.map( athlete => (
-                <List key={ athlete.id } dense={ true }>
+            { sportEvents.map( sportEvent => (
+                <List key={ sportEvent.id } dense={ true }>
                     <ListItem>
                         <ListItemAvatar>
                             <Avatar>
                                 <ArrowForwardIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemButton href={ `/athletes/${ athlete.id }` }>
-                            { athlete.name } { athlete.lastName }, Age: { athlete.age }, Sport: { athlete.sport }, Country: { athlete.country }
+                        <ListItemButton href={ `/sportEvents/${ sportEvent.id }` }>
+                            { sportEvent.name }, Sport: { sportEvent.sport }, Country: { sportEvent.country }
                         </ListItemButton>
                     </ListItem>
                 </List>
@@ -88,4 +88,4 @@ const AthleteList: React.FC = () =>
     );
 };
 
-export default AthleteList;
+export default PendingSportEventsList;

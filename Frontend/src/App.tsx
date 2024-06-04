@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -18,19 +18,21 @@ import CreateSportEventForm from "./features/sportEvents/CreateSportEventForm";
 import CreateAchievementForm from "./features/athletes/achievements/CreateAchievementForm";
 import CreateGoalForm from "./features/athletes/goals/CreateGoalForm";
 import { Box } from "@mui/material";
-import { useAuth } from "./hooks/useAuth";
+import Feed from "./components/Feed";
+import AuthContext from "./context/AuthContext";
+import PendingSportEventsList from "./features/admins/PendingSportEventsList";
 
 const queryClient = new QueryClient();
 
 const App: React.FC = () =>
-  {
-    const { isAuthenticated } = useAuth();
-    
+{
+  const { isLogged } = useContext(AuthContext);
+
   return (
     <QueryClientProvider client={ queryClient }>
       <Router>
         <Header />
-        { isAuthenticated && <Dashboard />}
+        { isLogged && <Dashboard /> }
         <Box className="main-content">
           <Routes>
             <Route path="/" element={ <WelcomePage /> } />
@@ -43,12 +45,15 @@ const App: React.FC = () =>
             </Route>
 
             <Route element={ <PrivateRoute /> }>
+              <Route path="/feed" element={ <Feed /> } />
               <Route path="/athletes" element={ <AthleteList /> } />
               <Route path="/athletes/:id" element={ <AthleteDetail /> } />
               <Route path="/dashboard" element={ <Dashboard /> } />
               <Route path="/achievements/create" element={ <CreateAchievementForm /> } />
               <Route path="/achievements/sportEvents/create" element={ <CreateSportEventForm /> } />
               <Route path='/goals/create' element={ <CreateGoalForm /> } />
+              <Route path='/sportEvents/pending' element={<PendingSportEventsList />}/>
+
             </Route>
 
             <Route>
