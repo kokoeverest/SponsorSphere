@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import athleteApi from '@/api/athleteApi';
 import { AthleteDto } from '../../types/athlete';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const AthleteDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,7 +26,7 @@ const AthleteDetail: React.FC = () => {
     fetchData();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if ( loading ) return <CircularProgress />;
   if (error) return <p>{error}</p>;
 
   if (!athlete) return <p>No athlete found</p>;

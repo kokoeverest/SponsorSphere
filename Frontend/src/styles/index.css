@@ -1,18 +1,13 @@
 :root {
   --backGroundOrange: #fa8233;
-  --backGroundBlue: #0e19f0;
+  --backGroundBlue: #1976d2;
   --formGrey: rgb(235, 229, 229);
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  margin-top: 60px;
-  margin-left: 80px;
-  margin-right: 80px;
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: var(--backGroundOrange);
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,6 +19,7 @@ a {
   color: var(--backGroundBlue);
   text-decoration: inherit;
 }
+
 a:hover {
   color: #363a88;
 }
@@ -39,6 +35,11 @@ body {
 h1 {
   font-size: 40px;
   line-height: 1.2;
+}
+
+.main-content {
+  margin-top: 70px;
+  padding-left: 240px auto;
 }
 
 .header {
@@ -63,12 +64,10 @@ h1 {
   transition: filter 600ms;
   font-size: 50px;
   color: var(--formGrey);
+  z-index: calc('.header' + 1);
 }
+
 .headerTitle:hover {
   filter: drop-shadow(0em -1em 0.06em var(--backGroundOrange));
   cursor: pointer;
-}
-
-li > p {
-  font-weight: 500;
 }

@@ -22,7 +22,12 @@ const athleteApi = {
   getAthleteById: async (id: string): Promise<AthleteDto> => {
       const response = await api.get<AthleteDto>(`/users/athletes/${id}`);
       return response.data;
-    }
+  },
+
+  getAthletesCount: async () => {
+    const response = await api.get<number>('/users/athletes/count');
+    return response.data;
+  }
 };
 
 export default athleteApi;

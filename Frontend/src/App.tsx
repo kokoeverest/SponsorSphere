@@ -14,23 +14,24 @@ import RegisterIndividualForm from "./features/sponsors/individuals/registration
 import "./styles/App.css";
 import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./utils/PrivateRoute";
-import AthleteDashboard from "./components/dashboards/AthleteDashboard";
-import AdminDashboard from "./components/dashboards/AdminDashboard";
-import SponsorDashboard from "./components/dashboards/SponsorDashboard";
 import CreateSportEventForm from "./features/sportEvents/CreateSportEventForm";
 import CreateAchievementForm from "./features/athletes/achievements/CreateAchievementForm";
 import CreateGoalForm from "./features/athletes/goals/CreateGoalForm";
+import { Box } from "@mui/material";
+import { useAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
 
 const App: React.FC = () =>
-{
-
+  {
+    const { isAuthenticated } = useAuth();
+    
   return (
     <QueryClientProvider client={ queryClient }>
       <Router>
         <Header />
-        <div className="main-content">
+        { isAuthenticated && <Dashboard />}
+        <Box className="main-content">
           <Routes>
             <Route path="/" element={ <WelcomePage /> } />
 
@@ -55,7 +56,7 @@ const App: React.FC = () =>
             </Route>
             <Route path="/login" element={ <LoginForm /> } />
           </Routes>
-        </div>
+        </Box>
       </Router>
       <ReactQueryDevtools initialIsOpen={ false } />
     </QueryClientProvider>

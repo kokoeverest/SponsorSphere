@@ -1,14 +1,20 @@
 import React from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { Typography, CircularProgress, Container, Drawer, Toolbar, Box } from "@mui/material";
 import AdminDashboard from "./dashboards/AdminDashboard";
 import SponsorDashboard from "./dashboards/SponsorDashboard";
 import AthleteDashboard from "./dashboards/AthleteDashboard";
-import { useAuth } from "@/hooks/useAuth";
-import { Typography, CircularProgress, Container } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const Dashboard: React.FC = () => {
+const drawerWidth = 240;
+
+const Dashboard: React.FC = () =>
+{
     const { user, loading, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
 
-    if (loading) {
+    if ( loading )
+    {
         return (
             <Container>
                 <CircularProgress />
@@ -17,30 +23,38 @@ const Dashboard: React.FC = () => {
         );
     }
 
-    if (!isAuthenticated) {
-        return (
-            <Container>
-                <Typography variant="h6">You need to log in.</Typography>
-            </Container>
-        );
+    if ( !user || !user.role || !isAuthenticated )
+    {
+        navigate( '/login' );
     }
 
-    if (!user || user.role === null) {
-        return (
-            <Container>
-                <Typography variant="h6">Role information is not available.</Typography>
-            </Container>
-        );
-    }
+    const renderDashboard = () =>
+    {
+        switch ( user!.role )
+        {
+            case 'Admin':
+                return <AdminDashboard />;
+            case 'Athlete':
+                return <AthleteDashboard />;
+            case 'Sponsor':
+                return <SponsorDashboard />;
+            default:
+                navigate( '/login' );
+        }
+    };
 
     return (
-        <div>
-            <h3>Welcome to your {user.role}</h3>
-            { user.role === 'Admin' && <AdminDashboard /> }
-            { user.role === 'Athlete' && <AthleteDashboard /> }
-            { user.role === 'Sponsor' && <SponsorDashboard /> }
-        </div>
+        <Drawer variant="permanent" sx={ {
+            width: drawerWidth,
+            flexShrink: 0,
+            [ `& .MuiDrawer-paper` ]: { marginTop: 14, width: drawerWidth, backgroundColor: 'var(--backGroundBlue)' },
+        } }>
+            <Toolbar />
+            <Box>
+                { renderDashboard() }
+            </Box>
+        </Drawer>
     );
-}
+};
 
 export default Dashboard;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useLocation, useNavigate } from "react-router-dom";
-import { MenuItem, TextField } from "@mui/material";
+import { CircularProgress, MenuItem, TextField } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import StyledButton from "../../components/controls/Button";
@@ -134,7 +134,7 @@ const CreateSportEventForm: React.FC = () =>
             ) }
 
             { mutation.isError && <h3>Error</h3> }
-            { ( countriesQuery.isPending || sportsQuery.isPending || mutation.isPending || eventTypesQuery.isPending ) && <h3>Loading Spinner...</h3> }
+            { ( countriesQuery.isPending || sportsQuery.isPending || mutation.isPending || eventTypesQuery.isPending ) && <CircularProgress /> }
         </>
     );
 };

@@ -10,7 +10,6 @@ const LogoutButton: React.FC = () => {
     const navigate = useNavigate();
 
     const logoutHandler = () => {
-        // TODO: hit endpoint in the api to invalidate the cookie.
         api.delete(LOGOUT_URL);
         logout();
         navigate('/');

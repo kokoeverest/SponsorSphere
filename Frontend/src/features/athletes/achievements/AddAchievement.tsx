@@ -11,10 +11,7 @@ const AddAchievement: React.FC = () => {
     navigate( '/achievements/create' );
   }
   return (
-    <>
-    
-    <StyledButton onClick={addAchievementHandler}> Add achievement</StyledButton>
-    </>
+    <StyledButton onClick={addAchievementHandler} sx={{backgroundColor: 'var(--backGroundOrange)'}}> Add achievement</StyledButton>
   );
 };
 

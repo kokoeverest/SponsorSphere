@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
-import { MenuItem, TextField } from "@mui/material";
+import { CircularProgress, MenuItem, TextField } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import StyledButton from "../../../components/controls/Button";
@@ -29,7 +29,7 @@ const CreateAchievementForm: React.FC = () =>
     } );
 
     const [ selectedSportEventId, setSelectedSportEventId ] = useState( '' );
-    const [ selectedSport, setSelectedSport ] = useState( '' );
+    const [ selectedSport, setSelectedSport ] = useState( 'Football' );
     const [ queryParams, setQueryParams ] = useState( '?sport=Football' );
 
     useEffect( () =>
@@ -126,7 +126,7 @@ const CreateAchievementForm: React.FC = () =>
             ) }
 
             { mutation.isError && <h3>Error</h3> }
-            { ( sportsEventsQuery.isPending || mutation.isPending ) && <h3>Loading Spinner...</h3> }
+            { ( sportsEventsQuery.isPending || mutation.isPending ) && <CircularProgress /> }
         </>
     );
 };
