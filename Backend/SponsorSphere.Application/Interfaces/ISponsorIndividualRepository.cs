@@ -21,6 +21,8 @@ namespace SponsorSphere.Application.Interfaces
         /// <returns>A paginated list of <see cref="SponsorIndividual"/> entities.</returns>
         Task<List<SponsorIndividual>> GetAllAsync(int pageNumber, int pageSize);
 
+        Task<int> GetSponsorIndividualsCount();
+
         /// <summary>
         /// Asynchronously retrieves a sponsor individual by its unique identifier.
         /// </summary>

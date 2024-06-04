@@ -96,5 +96,11 @@ namespace SponsorSphere.Infrastructure.Repositories
 
             return updatedSponsorCompany;
         }
+
+        public async Task<int> GetSponsorCompaniesCount()
+        {
+            var result = await _context.SponsorCompanies.CountAsync();
+            return result;
+        }
     }
 }

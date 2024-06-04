@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Application.App.SponsorIndividuals.Commands;
 using SponsorSphere.Application.App.SponsorIndividuals.Dtos;
 using SponsorSphere.Application.App.SponsorIndividuals.Queries;
@@ -36,6 +37,15 @@ namespace SponsorSphereWebAPI.Controllers
         public async Task<IActionResult> GetSponsorIndividualById(int id)
         {
             var result = await _mediator.Send(new GetSponsorIndividualByIdQuery(id));
+            return Ok(result);
+        }
+
+
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetIndividualsCount()
+        {
+            var result = await _mediator.Send(new GetSponsorIndividualsCountQuery());
             return Ok(result);
         }
 

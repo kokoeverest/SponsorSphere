@@ -108,5 +108,11 @@ namespace SponsorSphere.Infrastructure.Repositories
             );
             return updatedSponsorIndividual;
         }
+
+        public async Task<int> GetSponsorIndividualsCount()
+        {
+            var result = await _context.SponsorIndividuals.CountAsync();
+            return result;
+        }
     }
 }

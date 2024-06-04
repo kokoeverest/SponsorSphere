@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Application.App.SponsorCompanies.Commands;
 using SponsorSphere.Application.App.SponsorCompanies.Dtos;
 using SponsorSphere.Application.App.SponsorCompanies.Queries;
@@ -46,6 +47,14 @@ namespace SponsorSphereWebAPI.Controllers
         {
             var resultList = await _mediator.Send(new GetAllSponsorCompaniesQuery(pageNumber, pageSize));
             return Ok(resultList);
+        }
+
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetCompaniesCount()
+        {
+            var result = await _mediator.Send(new GetSponsorCompaniesCountQuery());
+            return Ok(result);
         }
 
         [HttpGet]
