@@ -24,7 +24,7 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetBlogPostsById(int id)
+        public async Task<IActionResult> GetBlogPostById(int id)
         {
             var blogPost = await _mediator.Send(new GetBlogPostByIdQuery(id));
             return Ok(blogPost);

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Achievements.Commands;
 using SponsorSphere.Application.App.Achievements.Dtos;
 using SponsorSphere.Application.App.Achievements.Queries;
-using SponsorSphere.Application.App.Athletes.Queries;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers
