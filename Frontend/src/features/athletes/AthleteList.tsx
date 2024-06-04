@@ -5,7 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import { Box, List, ListItem, CircularProgress, Alert } from '@mui/material';
-
+import { PAGE_SIZE as pageSize } from '@/common/constants';
 import athleteApi from '@/api/athleteApi';
 import { AthleteDto } from '../../types/athlete';
 import StyledPagination from '@/components/controls/Pagination';
@@ -17,8 +17,6 @@ const AthleteList: React.FC = () =>
     const [ error, setError ] = useState<string | null>( null );
     const [ pageNumber, setPageNumber ] = useState<number>( 1 );
     const [ totalPages, setTotalPages ] = useState<number>( 1 );
-
-    const pageSize = 10;
 
     const fetchAthletes = async ( page: number ) =>
     {

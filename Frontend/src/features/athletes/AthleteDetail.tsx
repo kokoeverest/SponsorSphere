@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import athleteApi from '@/api/athleteApi';
 import { AthleteDto } from '../../types/athlete';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Alert } from '@mui/material';
 
 const AthleteDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,7 +28,7 @@ const AthleteDetail: React.FC = () => {
   }, [id]);
 
   if ( loading ) return <CircularProgress />;
-  if (error) return <p>{error}</p>;
+  if ( error ) return <Alert severity='error' variant='filled'>{ error } </Alert>;
 
   if (!athlete) return <p>No athlete found</p>;
 

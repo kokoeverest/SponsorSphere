@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
 
 import StyledButton from '../../components/controls/Button';
-import { TextField } from '@mui/material';
+import { Alert, TextField } from '@mui/material';
 import StyledForm from '../../components/controls/Form';
 import { loginSchema } from './schemas';
 import { LoginFormInput } from './abstract';
@@ -32,13 +32,12 @@ const LoginForm: React.FC = () => {
         mutationFn: loginApi.login,
         onSuccess: async () => {
             const userInfo = await getUserInfo();
-            // console.log(userInfo);
             login(userInfo);
             navigate('/dashboard');
             reset();
         },
         onError: (error: any) => {
-            setError(error.response?.data?.message || 'Invalid email or password!');
+            setError( error.response?.data?.message || <Alert severity='error' variant='filled'>Invalid email or password!</Alert>);
         },
     });
     const onSubmitHandler: SubmitHandler<LoginFormInput> = async (data) => {

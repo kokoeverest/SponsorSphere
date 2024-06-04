@@ -1,10 +1,21 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 
 const AdminDashboard: React.FC = () => (
     <div>
-        <Typography variant='h4'>Admin Dashboard</Typography>
-        {/* More components */}
+        <Stack spacing={ 2 }>
+            <Typography variant='h4'>Admin Dashboard</Typography>
+
+            <Grid item>
+
+            </Grid>
+            <Grid item>
+
+            </Grid>
+            <Grid item>
+
+            </Grid>
+        </Stack>
     </div>
 );
 export default AdminDashboard;

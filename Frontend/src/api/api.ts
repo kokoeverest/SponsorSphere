@@ -19,6 +19,9 @@ api.interceptors.response.use( ( response ) => response, ( error ) =>
         case 404:
             console.log( "Not found response!" );
             break;
+        case 403:
+            console.log('Forbidden!');
+            break;
         case 401:
             console.log( "Unauthorized!" );
             break;

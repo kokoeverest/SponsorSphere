@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useLocation, useNavigate } from "react-router-dom";
-import { CircularProgress, MenuItem, TextField } from "@mui/material";
+import { Alert, CircularProgress, MenuItem, TextField } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import StyledButton from "../../components/controls/Button";
@@ -18,11 +18,9 @@ const CreateSportEventForm: React.FC = () =>
     const location = useLocation();
     const queryClient = useQueryClient();
 
-    // Extract query parameter
     const searchParams = new URLSearchParams( location.search );
     const eventType = searchParams.get( 'eventType' );
 
-    // Determine which schema to use based on the query parameter
     const isPastEvent = eventType === 'achievement';
     const validationSchema = isPastEvent ? CreatePastSportEventSchema : CreateFutureSportEventSchema;
 
@@ -36,7 +34,7 @@ const CreateSportEventForm: React.FC = () =>
 
     const [ selectedCountry, setSelectedCountry ] = useState( 'BGR' );
     const [ selectedSport, setSelectedSport ] = useState( 'Football' );
-    const [ selectedEventType, setSelectedEventType] = useState('Race');
+    const [ selectedEventType, setSelectedEventType ] = useState( 'Race' );
 
     // Queries
     const countriesQuery = useQuery( { queryKey: [ 'getCountries' ], queryFn: enumApi.getCountries } );
@@ -48,9 +46,10 @@ const CreateSportEventForm: React.FC = () =>
         mutationFn: sportEventApi.createSportEvent,
         onSuccess: () =>
         {
-            alert( "Thank you! The event you created needs to be confirmed by admin and you'll receive a notification shortly" );
+            <Alert severity='success' variant='filled'>
+                Thank you! The event you created needs to be confirmed by admin and you'll receive a notification shortly
+            </Alert>;
             navigate( `/dashboard` );
-            // TODO: Invalidate and refetch
             queryClient.invalidateQueries( { queryKey: [ 'createSportEvent' ] } );
         },
     } );
@@ -93,7 +92,7 @@ const CreateSportEventForm: React.FC = () =>
                         type="date"
                         error={ !!errors.eventDate }
                         helperText={ "Please enter a past date" }
-                        
+
                     />
 
                     <TextField

@@ -1,9 +1,15 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 
 const SponsorDashboard: React.FC = () => (
     <div>
-        <Typography variant='h4'>Sponsor Dashboard</Typography>
+        <Stack spacing={ 2 }>
+            <Typography variant='h4'>Sponsor Dashboard</Typography>
+
+            <Grid item>
+
+            </Grid>
+        </Stack>
     </div>
 );
 

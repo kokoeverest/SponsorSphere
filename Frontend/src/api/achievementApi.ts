@@ -2,12 +2,13 @@ import { AchievementDto } from "@/types/achievement";
 import { api } from "./api";
 import { CreateAchievementFormInput } from "@/features/athletes/achievements/abstract";
 import { AxiosResponse } from "axios";
+import { PAGE_SIZE } from "@/common/constants";
 
 const achievementApi = {
 
     getAthleteAchievements: async ( athleteId: number, pageNumber: number ) =>
     {
-        const response: AxiosResponse<AchievementDto[]> = await api.get( `achievements/${ athleteId }?pageNumber=${ pageNumber }&pageSize=10` );
+        const response: AxiosResponse<AchievementDto[]> = await api.get( `achievements/${ athleteId }?pageNumber=${ pageNumber }&pageSize=${PAGE_SIZE}` );
 
         return response.data;
     },

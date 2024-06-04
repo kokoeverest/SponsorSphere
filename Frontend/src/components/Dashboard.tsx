@@ -39,7 +39,7 @@ const Dashboard: React.FC = () =>
             case 'Sponsor':
                 return <SponsorDashboard />;
             default:
-                navigate( '/login' );
+                navigate( '/' );
         }
     };
 

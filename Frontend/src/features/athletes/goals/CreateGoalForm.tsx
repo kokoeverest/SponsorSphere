@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
-import { CircularProgress, MenuItem, TextField } from "@mui/material";
+import { Alert, CircularProgress, MenuItem, TextField } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
+import { PAGE_SIZE as pageSize } from "@/common/constants";
 import StyledButton from "../../../components/controls/Button";
 import StyledForm from "../../../components/controls/Form";
 import { CreateGoalFormInput } from "./abstract";
@@ -32,9 +32,10 @@ const CreateGoalForm: React.FC = () =>
     const [ selectedSport, setSelectedSport ] = useState( 'Football' );
     const [ queryParams, setQueryParams ] = useState( '?sport=Football' );
 
+    // TODO: Pagination
     useEffect( () =>
     {
-        setQueryParams( `?sport=${ selectedSport }&pageNumber=1&pageSize=10` );
+        setQueryParams( `?sport=${ selectedSport }&pageNumber=1&pageSize=${pageSize}` );
     }, [ selectedSport ] );
 
     // Queries
@@ -48,9 +49,8 @@ const CreateGoalForm: React.FC = () =>
         mutationFn: goalApi.createGoal,
         onSuccess: () =>
         {
-            alert( "Successful! Thank you!" );
+            <Alert severity='success' variant='filled'>Successful! Thank you!</Alert>
             navigate( `/dashboard` );
-            // TODO: Invalidate and refetch
             queryClient.invalidateQueries( { queryKey: [ 'createGoal' ] } );
         },
     } );

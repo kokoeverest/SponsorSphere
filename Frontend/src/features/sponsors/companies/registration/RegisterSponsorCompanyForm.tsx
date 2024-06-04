@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
-import { MenuItem, TextField } from '@mui/material';
+import { Alert, MenuItem, TextField } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { RegisterCompanySchema } from '../schemas';
@@ -32,9 +32,9 @@ const RegisterCompany: React.FC = () => {
     const mutation = useMutation({
         mutationFn: sponsorCompanyApi.register,
         onSuccess: (userId) => {
-            alert("You registered successfully!");
+
+            <Alert severity='info' variant='filled'>You registered successfully!</Alert>;
             navigate(`/sponsors/individuals/${userId}`);
-            // TODO: Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: ['getSponsorIndividuals'] });
         },
     });
