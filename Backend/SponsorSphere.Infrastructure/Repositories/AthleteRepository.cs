@@ -168,5 +168,11 @@ namespace SponsorSphere.Infrastructure.Repositories
 
             return updatedAthlete;
         }
+
+        public async Task<int> GetAthletesCount()
+        {
+            var result = await _context.Athletes.CountAsync();
+            return result;
+        }
     }
 }

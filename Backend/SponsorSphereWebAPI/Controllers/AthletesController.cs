@@ -25,6 +25,14 @@ namespace SponsorSphereWebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetAthletesCount()
+        {
+            var result = await _mediator.Send(new GetAthletesCountQuery());
+            return Ok(result);
+        }
+
+        [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllAthletes(int pageNumber = 1, int pageSize = 10)
         {

@@ -28,6 +28,8 @@ namespace SponsorSphere.Application.Interfaces
         /// <returns>A list of <see cref="Athlete"/> entities.</returns>
         Task<List<Athlete>> GetAllAsync(int pageNumber, int pageSize);
 
+        Task<int> GetAthletesCount();
+
         /// <summary>
         /// Asynchronously retrieves an athlete by their user ID.
         /// </summary>
