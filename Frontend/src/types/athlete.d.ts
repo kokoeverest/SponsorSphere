@@ -5,7 +5,7 @@ import { AchievementDto } from './achievement';
 export interface AthleteDto extends UserDto {
     age: number;
     lastName: string;
-    birthDate: string;
+    birthDate: Date;
     sport: string;
     achievements: AchievementDto[];
     goals: GoalDto[];

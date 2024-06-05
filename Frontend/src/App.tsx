@@ -22,6 +22,7 @@ import Feed from "./components/Feed";
 import AuthContext from "./context/AuthContext";
 import PendingSportEventsList from "./features/admins/PendingSportEventsList";
 import UpdateSportEventForm from "./features/sportEvents/updateSportEventForm";
+import CreateBlogPostForm from "./features/blogPosts/CreateBlogPostForm";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App: React.FC = () =>
               <Route path='/goals/create' element={ <CreateGoalForm /> } />
               <Route path='/sportEvents/pending' element={<PendingSportEventsList />}/>
               <Route path='/sportEvents/update' element={<UpdateSportEventForm />}/>
+              <Route path='/blogposts/create' element={<CreateBlogPostForm/>} />
 
             </Route>
 

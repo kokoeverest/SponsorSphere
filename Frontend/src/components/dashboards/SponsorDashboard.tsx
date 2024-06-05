@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Stack, Typography } from "@mui/material";
 import FeedButton from "../controls/FeedButton";
+import CreateBlogPost from "@/features/blogPosts/CreateBlogPost";
 
 const SponsorDashboard: React.FC = () => (
     <div>
@@ -9,6 +10,12 @@ const SponsorDashboard: React.FC = () => (
             <Grid item>
                 <FeedButton />
             </Grid>
+
+            <Grid item>
+                <CreateBlogPost />
+            </Grid>
+
+
             <Grid item>
 
             </Grid>

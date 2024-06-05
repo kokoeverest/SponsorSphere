@@ -2,7 +2,7 @@ import { PictureDto } from "./picture";
 
 export interface BlogPostDto {
     id: number;
-    created: string;
+    created: Date;
     content: string;
     authorId: number;
     pictures: PictureDto[];

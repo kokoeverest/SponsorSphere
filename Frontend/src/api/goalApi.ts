@@ -27,9 +27,9 @@ const goalApi = {
         await api.delete( `goals/delete?sportEventId=${ sportEventId }&athleteId=${ athleteId }` );
     },
 
-    updateGoal: async ( achievement: CreateGoalFormInput ): Promise<GoalDto> =>
+    updateGoal: async ( goal: CreateGoalFormInput ): Promise<GoalDto> =>
     {
-        const response: AxiosResponse<GoalDto> = await api.patch( 'goals/update', achievement, {
+        const response: AxiosResponse<GoalDto> = await api.patch( 'goals/update', goal, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },

@@ -6,7 +6,7 @@ export interface UserDto {
     email: string;
     country: string;
     phoneNumber: string;
-    created: string;
+    created: Date;
     pictureId: number;
     website: string;
     faceBookLink: string;
