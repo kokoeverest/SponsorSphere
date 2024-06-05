@@ -1,7 +1,7 @@
 import { SportEventDto } from "@/types/sportEvent";
 import { api } from "./api";
 import { AxiosResponse } from "axios";
-import { CreateSportEventFormInput } from "@/features/sportEvents/abstract";
+import { CreateSportEventFormInput, UpdateSportEventFormInput } from "@/features/sportEvents/abstract";
 
 
 const sportEventApi = {
@@ -55,7 +55,7 @@ const sportEventApi = {
         await api.delete( `sportEvents/delete?sportEventId=${ id }` );
     },
 
-    updateSportEvent: async ( sportEvent: CreateSportEventFormInput ): Promise<SportEventDto> =>
+    updateSportEvent: async ( sportEvent: UpdateSportEventFormInput ): Promise<SportEventDto> =>
     {
         const response: AxiosResponse<SportEventDto> = await api.patch( 'sportEvents/update', sportEvent, {
             headers: {

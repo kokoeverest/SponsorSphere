@@ -8,6 +8,7 @@ import { PAGE_SIZE as pageSize } from '@/common/constants';
 import StyledPagination from '@/components/controls/Pagination';
 import { SportEventDto } from '@/types/sportEvent';
 import sportEventApi from '@/api/sportEventApi';
+import { useNavigate } from 'react-router-dom';
 
 const PendingSportEventsList: React.FC = () =>
 {
@@ -16,6 +17,7 @@ const PendingSportEventsList: React.FC = () =>
     const [ error, setError ] = useState<string | null>( null );
     const [ pageNumber, setPageNumber ] = useState<number>( 1 );
     const [ totalPages, setTotalPages ] = useState<number>( 1 );
+    const navigate = useNavigate();
 
     const fetchSportEvents = async ( page: number ) =>
     {
@@ -73,7 +75,7 @@ const PendingSportEventsList: React.FC = () =>
                                 <ArrowForwardIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemButton href={ `/sportEvents/${ sportEvent.id }` }>
+                        <ListItemButton onClick={ () => navigate( `/sportEvents/update`, { state: sportEvent } ) }>
                             { sportEvent.name }, Sport: { sportEvent.sport }, Country: { sportEvent.country }
                         </ListItemButton>
                     </ListItem>

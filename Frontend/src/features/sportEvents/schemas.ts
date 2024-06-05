@@ -21,3 +21,16 @@ export const CreateFutureSportEventSchema = yup.object().shape( {
     eventType: yup.string().required( 'Event type is required' ),
     sport: yup.string().required( 'Sport is required' ),
 } );
+
+export const UpdateSportEventSchema = yup.object().shape( {
+    id: yup.number().required('Id is required'),
+    name: yup.string().min( 2 ).max( 200 ).required( 'Name is required' ),
+    country: yup.string().required( 'Country is required' ),
+    eventDate: yup.date()
+        .required( 'Event date is required' )
+        .typeError( 'Event date must be a valid date' )
+        .min( new Date(), 'Event date must be in the future' ),
+    eventType: yup.string().required( 'Event type is required' ),
+    sport: yup.string().required( 'Sport is required' ),
+    status: yup.string().required('Status is required'),
+} );

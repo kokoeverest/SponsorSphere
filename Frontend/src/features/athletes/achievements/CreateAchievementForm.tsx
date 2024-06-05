@@ -13,7 +13,6 @@ import sportEventApi from "@/api/sportEventApi";
 import enumApi from "@/api/enumApi";
 import CreateAchievementSchema from "./schemas";
 import { SportEventDto } from "@/types/sportEvent";
-import { CreatePastSportEvent } from "@/features/sportEvents/CreateSportEvent";
 
 const CreateAchievementForm: React.FC = () =>
 {
@@ -62,6 +61,11 @@ const CreateAchievementForm: React.FC = () =>
             { !mutation.isError && !mutation.isPending && !sportsEventsQuery.isPending && (
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
                     <h1>Add your achievement</h1>
+
+                    <div>
+                        <Link to={ '/achievements/sportEvents/create?eventType=achievement' }>*If you don't find the sport event in the list,
+                            click here to create it first*</Link>
+                    </div>
 
                     <TextField
                         select
@@ -112,16 +116,7 @@ const CreateAchievementForm: React.FC = () =>
                     />
                     <br />
                     <StyledButton type="submit">Submit</StyledButton>
-                    <br />
-                    <h6>Link:</h6>
-                    <div>
-                        <Link to={ '/achievements/sportEvents/create?eventType=achievement' }>*If you don't find the sport event in the list,
-                            click here to create it first*</Link>
-                    </div>
-                    <h6>Or a button?</h6>
-                    <div>
-                        <CreatePastSportEvent></CreatePastSportEvent>
-                    </div>
+                    
                 </StyledForm>
             ) }
 

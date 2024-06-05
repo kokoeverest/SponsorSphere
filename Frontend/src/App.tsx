@@ -21,6 +21,7 @@ import { Box } from "@mui/material";
 import Feed from "./components/Feed";
 import AuthContext from "./context/AuthContext";
 import PendingSportEventsList from "./features/admins/PendingSportEventsList";
+import UpdateSportEventForm from "./features/sportEvents/updateSportEventForm";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App: React.FC = () =>
               <Route path="/achievements/sportEvents/create" element={ <CreateSportEventForm /> } />
               <Route path='/goals/create' element={ <CreateGoalForm /> } />
               <Route path='/sportEvents/pending' element={<PendingSportEventsList />}/>
+              <Route path='/sportEvents/update' element={<UpdateSportEventForm />}/>
 
             </Route>
 

@@ -19,7 +19,7 @@ interface TabPanelProps
 function CustomTabPanel ( props: TabPanelProps )
 {
     const { children, value, index, ...other } = props;
-    
+
     return (
         <div
             role="tabpanel"
@@ -28,7 +28,7 @@ function CustomTabPanel ( props: TabPanelProps )
             aria-labelledby={ `simple-tab-${ index }` }
             { ...other }
             style={ { width: '100%', height: '500px' } }
-            >
+        >
             { value === index && (
                 <Box sx={ { p: 3, height: '100%' } }>
                     <Typography component={ 'div' } sx={ { height: '100%', width: '600px' } }>{ children }</Typography>
@@ -50,8 +50,8 @@ function a11yProps ( index: number )
 export default function Feed ()
 {
     const [ value, setValue ] = React.useState( 0 );
-    const {role} = React.useContext(AuthContext);
-    
+    const { role } = React.useContext( AuthContext );
+
     const handleChange = ( _: React.SyntheticEvent, newValue: number ) =>
     {
         setValue( newValue );
@@ -64,11 +64,11 @@ export default function Feed ()
                     <Tab label="Athletes" { ...a11yProps( 0 ) } />
                     <Tab label="Sponsors: Companies" { ...a11yProps( 1 ) } />
                     <Tab label="Sponsors: Individuals" { ...a11yProps( 2 ) } />
-                    {role === 'Admin' && <Tab label='Pending Sport Events' { ...a11yProps(3)}/>}
+                    { role === 'Admin' && <Tab label='Pending Sport Events' { ...a11yProps( 3 ) } /> }
                 </Tabs>
             </Box>
             <CustomTabPanel value={ value } index={ 0 }>
-            <AthleteList />
+                <AthleteList />
             </CustomTabPanel>
             <CustomTabPanel value={ value } index={ 1 }>
                 <CompaniesList />

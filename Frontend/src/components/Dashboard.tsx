@@ -41,9 +41,10 @@ const Dashboard: React.FC = () =>
             default:
                 navigate( '/' );
         }
-        navigate( '/feed' );
     };
-
+    
+    // navigate( '/feed' )
+    
     return (
         <Drawer variant="permanent" sx={ {
             width: drawerWidth,

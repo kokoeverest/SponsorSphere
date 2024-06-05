@@ -12,7 +12,6 @@ import goalApi from "@/api/goalApi";
 import sportEventApi from "@/api/sportEventApi";
 import enumApi from "@/api/enumApi";
 import { SportEventDto } from "@/types/sportEvent";
-import { CreateFutureSportEvent } from "@/features/sportEvents/CreateSportEvent";
 import CreateGoalSchema from "./schemas";
 
 const CreateGoalForm: React.FC = () =>
@@ -35,7 +34,7 @@ const CreateGoalForm: React.FC = () =>
     // TODO: Pagination
     useEffect( () =>
     {
-        setQueryParams( `?sport=${ selectedSport }&pageNumber=1&pageSize=${pageSize}` );
+        setQueryParams( `?sport=${ selectedSport }&pageNumber=1&pageSize=${ pageSize }` );
     }, [ selectedSport ] );
 
     // Queries
@@ -49,7 +48,7 @@ const CreateGoalForm: React.FC = () =>
         mutationFn: goalApi.createGoal,
         onSuccess: () =>
         {
-            <Alert severity='success' variant='filled'>Successful! Thank you!</Alert>
+            <Alert severity='success' variant='filled'>Successful! Thank you!</Alert>;
             navigate( `/dashboard` );
             queryClient.invalidateQueries( { queryKey: [ 'createGoal' ] } );
         },
@@ -63,6 +62,10 @@ const CreateGoalForm: React.FC = () =>
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
                     <h1>Add your goal</h1>
 
+                    <div>
+                        <Link to={ '/achievements/sportEvents/create?eventType=goal' }>*If you don't find the sport event in the list,
+                            click here to create it first*</Link>
+                    </div>
                     <TextField
                         select
                         label="Select sport"
@@ -99,20 +102,11 @@ const CreateGoalForm: React.FC = () =>
                         type='number'
                         placeholder="Goal amount needed"
                         error={ !!errors.amountNeeded }
-                        helperText={ "How much you need?" }
+                        helperText={ "How much do you need?" }
                     />
                     <br />
                     <StyledButton type="submit">Submit</StyledButton>
-                    <br />
-                    <h6>Link:</h6>
-                    <div>
-                        <Link to={ '/achievements/sportEvents/create?eventType=goal' }>*If you don't find the sport event in the list,
-                            click here to create it first*</Link>
-                    </div>
-                    <h6>Or a button?</h6>
-                    <div>
-                        <CreateFutureSportEvent></CreateFutureSportEvent>
-                    </div>
+                    
                 </StyledForm>
             ) }
 

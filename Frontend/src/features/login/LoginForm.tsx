@@ -33,7 +33,7 @@ const LoginForm: React.FC = () => {
         onSuccess: async () => {
             const userInfo = await getUserInfo();
             login(userInfo);
-            navigate('/dashboard');
+            navigate('/feed');
             reset();
         },
         onError: (error: any) => {
