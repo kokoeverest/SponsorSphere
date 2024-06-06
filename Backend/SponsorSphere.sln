@@ -22,7 +22,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SponsorSphereWebAPI", "Spon
 		{C306E044-B0EC-482F-995D-0642C16C9D9B} = {C306E044-B0EC-482F-995D-0642C16C9D9B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SponsorSphere.UnitTests", "SponsorSphere.UnitTests\SponsorSphere.UnitTests.csproj", "{4FE39DCF-6CBF-476B-AAB1-E0E4CC767ADC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SponsorSphere.UnitTests", "SponsorSphere.UnitTests\SponsorSphere.UnitTests.csproj", "{4FE39DCF-6CBF-476B-AAB1-E0E4CC767ADC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SponsorSphere.IntegrationTests", "IntegrationTests\SponsorSphere.IntegrationTests.csproj", "{DF239C84-8798-4383-A1D6-685DB0D5BC1E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4BC4E81-1E2F-47E2-BF45-E10BF6B80F4F} = {B4BC4E81-1E2F-47E2-BF45-E10BF6B80F4F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +55,10 @@ Global
 		{4FE39DCF-6CBF-476B-AAB1-E0E4CC767ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FE39DCF-6CBF-476B-AAB1-E0E4CC767ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FE39DCF-6CBF-476B-AAB1-E0E4CC767ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF239C84-8798-4383-A1D6-685DB0D5BC1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF239C84-8798-4383-A1D6-685DB0D5BC1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF239C84-8798-4383-A1D6-685DB0D5BC1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF239C84-8798-4383-A1D6-685DB0D5BC1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

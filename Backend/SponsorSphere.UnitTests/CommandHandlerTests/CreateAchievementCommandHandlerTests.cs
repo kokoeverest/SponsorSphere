@@ -8,7 +8,7 @@ using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.UnitTests.Helpers;
 
-namespace SponsorSphere.UnitTests.CommandHandlers
+namespace SponsorSphere.UnitTests.CommandHandlerTests
 {
     public class CreateAchievementCommandHandlerTests
     {
@@ -57,7 +57,7 @@ namespace SponsorSphere.UnitTests.CommandHandlers
         public async Task CreateAchievement_FutureSportEvent_RaisesBadRequestException()
         {
             // Arrange
-            SportEvent futureSportEvent = new ()
+            SportEvent futureSportEvent = new()
             {
                 Id = 3,
                 Name = "Test sport event name",

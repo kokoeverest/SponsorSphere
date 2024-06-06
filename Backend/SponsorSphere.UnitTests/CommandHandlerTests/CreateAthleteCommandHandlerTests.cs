@@ -9,7 +9,7 @@ using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.UnitTests.Helpers;
 
-namespace SponsorSphere.UnitTests.CommandHandlers
+namespace SponsorSphere.UnitTests.CommandHandlerTests
 {
     public class CreateAthleteCommandHandlerTests
     {
