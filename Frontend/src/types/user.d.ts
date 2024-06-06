@@ -7,7 +7,7 @@ export interface UserDto {
     country: string;
     phoneNumber: string;
     created: Date;
-    pictureId: number;
+    pictureId: number | null;
     website: string;
     faceBookLink: string;
     instagramLink: string;

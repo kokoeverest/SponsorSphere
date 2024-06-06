@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-import { Alert, TextField, Grid, Typography } from "@mui/material";
+import { Alert, TextField, Grid, Typography, CircularProgress } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StyledButton from "../../components/controls/Button";
 import StyledForm from "../../components/controls/Form";
@@ -13,6 +13,7 @@ import UploadPictureButton from "@/components/controls/UploadPictureButton";
 import blogPostApi from "@/api/blogPostApi";
 import pictureApi from "@/api/pictureApi";
 import { PictureDto } from "@/types/picture";
+
 
 const CreateBlogPostForm: React.FC = () =>
 {
@@ -53,6 +54,7 @@ const CreateBlogPostForm: React.FC = () =>
     {
         try
         {
+            console.log( id, idAsNumber );
             const uploadedPicture: PictureDto = await pictureApi.uploadPicture( { formFile: file } );
             setPictures( ( prevPictures ) => [ ...prevPictures, uploadedPicture ] );
         } catch ( error )
@@ -62,46 +64,50 @@ const CreateBlogPostForm: React.FC = () =>
     };
 
     return (
+        <>
+            { !mutation.isError && !mutation.isPending && (
+                <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
+                    <h1>Create a blog post</h1>
 
-        <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
-            <h1>Create a blog post</h1>
+                    <TextField value={ Number( id ) } { ...register( "authorId" ) } />
 
-            <input type="hidden" value={ id ? Number( id ) : '' } { ...register( "authorId" ) } />
+                    <TextField
+                        { ...register( 'content' ) }
+                        type="text"
+                        fullWidth
+                        multiline
+                        rows={ 10 }
+                        placeholder="Show your creativity, don't be shy"
+                        error={ !!errors.content }
+                        helperText={ errors.content?.message }
+                    />
 
-            <TextField
-                { ...register( 'content' ) }
-                label="Content"
-                type="text"
-                fullWidth
-                multiline
-                rows={ 10 }
-                placeholder="Show your creativity, don't be shy"
-                error={ !!errors.content }
-                helperText={ errors.content?.message }
-            />
+                    <UploadPictureButton onUpload={ handlePictureUpload } />
+                    <Typography variant="body2">
+                        { pictures.length } { pictures.length === 1 ? 'picture' : 'pictures' } uploaded
+                    </Typography>
 
-            <UploadPictureButton onUpload={ handlePictureUpload } />
-            <Typography variant="body2">
-                { pictures.length } { pictures.length === 1 ? 'picture' : 'pictures' } uploaded
-            </Typography>
-
-            <Grid container spacing={ 2 }>
-                { pictures.map( ( picture, index ) => (
-                    <Grid item key={ index }>
-                        <img
-                            src={ `data:image/jpeg;base64,${ picture.content }` }
-                            alt={ `Uploaded ${ index + 1 }` }
-                            width={ 100 }
-                            height={ 100 }
-                            style={ { objectFit: 'cover' } }
-                        />
+                    <Grid container spacing={ 2 }>
+                        { pictures.map( ( picture, index ) => (
+                            <Grid item key={ index }>
+                                <img
+                                    src={ `data:image/jpeg;base64,${ picture.content }` }
+                                    alt={ `Uploaded ${ index + 1 }` }
+                                    width={ 100 }
+                                    height={ 100 }
+                                    style={ { objectFit: 'cover' } }
+                                />
+                            </Grid>
+                        ) ) }
                     </Grid>
-                ) ) }
-            </Grid>
 
-            <br />
-            <StyledButton type="submit">Submit</StyledButton>
-        </StyledForm>
+                    <br />
+                    <StyledButton type="submit">Submit</StyledButton>
+                </StyledForm>
+            ) }
+            { mutation.isError && <h3>Error</h3> }
+            { ( mutation.isPending ) && <CircularProgress /> }
+        </>
     );
 };
 

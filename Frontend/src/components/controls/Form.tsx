@@ -6,6 +6,7 @@ const StyledForm: React.FC<BoxProps> = ({ children, ...rest }) => (
     <Box
         component="form"
         sx={ {
+            m: 'auto',
             p: 2,
             border: '1px solid lightgrey',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
