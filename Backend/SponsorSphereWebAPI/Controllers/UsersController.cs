@@ -34,7 +34,7 @@ namespace SponsorSphereWebAPI.Controllers
                 return NotFound("No roles found for this user");
             }
 
-            return Ok(new { Role = roles.First(), UserName = user.UserName });
+            return Ok(new { Role = roles.First(), UserName = user.UserName, Id = user.Id });
         }
 
         [HttpDelete]

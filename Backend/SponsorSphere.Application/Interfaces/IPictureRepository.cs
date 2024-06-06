@@ -25,5 +25,7 @@ namespace SponsorSphere.Application.Interfaces
         /// <param name="picture">The picture DTO identifying the picture to be deleted.</param>
         /// <returns>The number of state entries written to the database.</returns>
         Task<int> DeleteAsync(PictureDto picture);
+
+        Task<Picture> GetByIdAsync(int pictureId);
     }
 }

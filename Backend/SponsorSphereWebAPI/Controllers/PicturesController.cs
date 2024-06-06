@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SponsorSphere.Application.App.Pictures.Commands;
 using SponsorSphere.Application.App.Pictures.Dtos;
+using SponsorSphere.Application.App.Pictures.Queries;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphereWebAPI.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("pictures/")]
     public class PicturesController : ControllerBase
@@ -19,6 +20,15 @@ namespace SponsorSphereWebAPI.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        [Route("{pictureId}")]
+        public async Task<IActionResult> GetPictureById(int pictureId)
+        {
+            var result = await _mediator.Send(new GetPictureByIdQuery(pictureId));
+            return Ok(result);
+        }
+
+        [Authorize]
         [HttpPost]
         [Route("upload")]
         public async Task<IActionResult> CreatePicture([FromForm] CreatePictureDto model)
@@ -36,6 +46,7 @@ namespace SponsorSphereWebAPI.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPatch]
         [Route("update")]
         public async Task<IActionResult> UpdatePicture([FromForm] PictureDto updatedPicture)

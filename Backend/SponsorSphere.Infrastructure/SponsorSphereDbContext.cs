@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Extensions;
 using System.Reflection;
@@ -23,8 +22,6 @@ namespace SponsorSphere.Infrastructure
 
         public SponsorSphereDbContext(DbContextOptions options) : base(options) { }
 
-        //public SponsorSphereDbContext() { }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -32,7 +29,6 @@ namespace SponsorSphere.Infrastructure
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             modelBuilder.Seed();
-
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Constants;
+using System.Text;
 
 namespace SponsorSphere.Infrastructure.Extensions
 {
@@ -30,7 +31,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     ConcurrencyStamp = UserConstants.AdminConcurrencyStamp,
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
-                    PasswordHash = UserConstants.AdminPasswordHash,
+                    PasswordHash = UserConstants.PasswordHash,
                 });
 
             modelBuilder.Entity<Athlete>().HasData(
@@ -48,7 +49,8 @@ namespace SponsorSphere.Infrastructure.Extensions
                     PhoneNumber = UserConstants.PhoneNumber,
                     BirthDate = new DateTime(1983, 9, 30),
                     Sport = SportsEnum.TrailRunning,
-                    StravaLink = "www.strava.co/userpetar"
+                    StravaLink = "www.strava.co/userpetar",
+                    PasswordHash = UserConstants.PasswordHash,
                 },
                 new Athlete
                 {
@@ -60,7 +62,8 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
                     BirthDate = new DateTime(2005, 3, 30),
-                    Sport = SportsEnum.DownhillMountainBiking
+                    Sport = SportsEnum.DownhillMountainBiking,
+                    PasswordHash = UserConstants.PasswordHash,
                 }
             );
 
@@ -75,7 +78,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     NormalizedUserName = "lidl@mail.bg".ToUpper(),
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
-                    PasswordHash = UserConstants.AdminPasswordHash,
+                    PasswordHash = UserConstants.PasswordHash,
                     Iban = "BG12345"
                 },
                 new SponsorCompany
@@ -85,7 +88,8 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Email = "kaufland@bg.gb",
                     Country = CountryEnum.DEU,
                     PhoneNumber = UserConstants.PhoneNumber,
-                    Iban = "DE32215"
+                    Iban = "DE32215",
+                    PasswordHash = UserConstants.PasswordHash,
                 }
             );
 
@@ -99,6 +103,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     PhoneNumber = UserConstants.PhoneNumber,
                     LastName = "Randov",
                     BirthDate = new DateTime(1990, 1, 3),
+                    PasswordHash = UserConstants.PasswordHash,
                 },
                 new SponsorIndividual
                 {
@@ -109,6 +114,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     PhoneNumber = "1223",
                     LastName = "Uzunov",
                     BirthDate = new DateTime(1975, 3, 5),
+                    PasswordHash = UserConstants.PasswordHash,
                 }
             );
 
@@ -195,14 +201,14 @@ namespace SponsorSphere.Infrastructure.Extensions
                 new Picture
                 {
                     Id = 1,
-                    Url = @"https://drive.google.com/file/d/1PVTg8DDjnKEu2L_M2Oe4YBicC_Cvpy4C/view?usp=sharing",
-                    Modified = DateTime.UtcNow
+                    Modified = DateTime.UtcNow,
+                    Content = Encoding.ASCII.GetBytes(UserConstants.PictureContent)
                 },
                 new Picture
                 {
                     Id = 2,
-                    Url = @"https://drive.google.com/file/d/1QLGlPj9PCHBU1Lc-TQNajmHlvueoaoUG/view?usp=sharing",
-                    Modified = DateTime.UtcNow
+                    Modified = DateTime.UtcNow,
+                    Content = Encoding.ASCII.GetBytes(UserConstants.PictureContent),
                 });
 
             modelBuilder.Entity<BlogPost>().HasData(

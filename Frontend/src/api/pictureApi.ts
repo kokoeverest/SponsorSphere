@@ -4,6 +4,13 @@ import { AxiosResponse } from "axios";
 
 const pictureApi = {
 
+    getPictureById: async (pictureId: number): Promise<PictureDto> =>
+        {
+            const response = await api.get(`pictures/${pictureId}`);
+
+            return response.data;
+        },
+
     uploadPicture: async ( data: CreatePictureDto ): Promise<PictureDto> =>
     {
         const formData = new FormData();
