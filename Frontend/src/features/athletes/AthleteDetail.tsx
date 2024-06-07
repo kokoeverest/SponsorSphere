@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 import athleteApi from '@/api/athleteApi';
 import { AthleteDto } from '../../types/athlete';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert } from '@mui/material';
-import { PictureDto } from '@/types/picture';
+import { Alert, Avatar, Box } from '@mui/material';
 import pictureApi from '@/api/pictureApi';
 
 const AthleteDetail: React.FC = () =>
@@ -13,7 +12,7 @@ const AthleteDetail: React.FC = () =>
   const [ athlete, setAthlete ] = useState<AthleteDto | null>( null );
   const [ loading, setLoading ] = useState<boolean>( true );
   const [ error, setError ] = useState<string | null>( null );
-  const [ profilePicture, setProfilePicture ] = useState<PictureDto | null>( null );
+  const [ profilePicture, setProfilePicture ] = useState<string | null>( null );
 
   useEffect( () =>
   {
@@ -23,12 +22,12 @@ const AthleteDetail: React.FC = () =>
       {
         const result = await athleteApi.getAthleteById( id! );
         setAthlete( result );
-        // if (athlete){
-        const picture = await pictureApi.getPictureById( 2 );
-        setProfilePicture( picture );
-        console.log( profilePicture?.modified );
-        // }
-
+        console.log( result?.pictureId );
+        if ( result?.pictureId )
+        {
+          const picture = await pictureApi.getPictureById( result.pictureId );
+          setProfilePicture( picture );
+        }
       } catch ( error )
       {
         setError( "Failed to fetch athlete details" );
@@ -43,26 +42,31 @@ const AthleteDetail: React.FC = () =>
   }, [ id ] );
 
   if ( loading ) return <CircularProgress />;
-  if ( error ) return <Alert severity='error' variant='filled'>{ error } </Alert>;
+  if ( error ) return <Alert severity='error' variant='filled'>{ error }</Alert>;
 
   if ( !athlete ) return <p>No athlete found</p>;
 
   return (
     <div>
       <h1>{ athlete.name } { athlete.lastName }</h1>
-      <img
-        src={ `data:image/jpeg;base64,${ profilePicture?.content }` }
-        width={ 100 }
-        height={ 100 }
-        style={ { objectFit: 'cover' } }
-      />
+      { profilePicture ? (
+        <img
+          src={ `data:image/jpeg;base64,${ profilePicture }` }
+          width={ 100 }
+          height={ 100 }
+          style={ { objectFit: 'cover' } }
+          alt="Profile"
+        />
+      ) : (
+        <Avatar sx={ { width: 100, height: 100 } }>{ athlete.name.slice( 0, 1 ) }{ athlete.lastName.slice( 0, 1 ) }</Avatar>
+      ) }
       <p>Age: { athlete.age }</p>
       <p>Sport: { athlete.sport }</p>
       <p>Email: { athlete.email }</p>
       <h3>Achievements</h3>
       <ul>
         { athlete.achievements.map( ( achievement, index ) => (
-          <li key={ index }> { achievement.sport } { achievement.placeFinished } { achievement.description }</li>
+          <li key={ index }>{ achievement.sport } { achievement.placeFinished } { achievement.description }</li>
         ) ) }
       </ul>
       <h3>Blog Posts</h3>
@@ -70,17 +74,23 @@ const AthleteDetail: React.FC = () =>
         { athlete.blogPosts.map( ( blogPost, index ) => (
           <li key={ index }>
             <p>Posted: { new Date( blogPost.created ).toLocaleDateString() }</p>
-            <p>{ blogPost.content }</p>
-            {/* { blogPost.pictures.length > 0 && <img src={`data:image/jpeg;base64,${profilePicture?.content}`} />} */ }
+            <p>{ blogPost.content.slice( 0, 50 ) }</p>
+            { blogPost.pictures.length > 0 && (
+              <img src={ `data:image/jpeg;base64,${ profilePicture }` } alt="Blog post" />
+            ) }
           </li>
         ) ) }
       </ul>
-      <p>Registered on: { new Date( athlete.created ).toLocaleDateString() }</p>
-      <p>Website: { athlete.website }</p>
-      <p>Facebook: { athlete.faceBookLink }</p>
-      <p>Instagram: { athlete.instagramLink }</p>
-      <p>Strava: { athlete.stravaLink }</p>
-      <p>Twitter: { athlete.twitterLink }</p>
+      <Box>
+        <p>Registered on: { new Date( athlete.created ).toLocaleDateString() }</p>
+        <p>
+          Website: { athlete.website }
+          Facebook: { athlete.faceBookLink }
+          Instagram: { athlete.instagramLink }
+          Strava: { athlete.stravaLink }
+          Twitter: { athlete.twitterLink }
+        </p>
+      </Box>
     </div>
   );
 };

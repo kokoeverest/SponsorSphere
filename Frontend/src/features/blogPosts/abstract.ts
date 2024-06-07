@@ -1,9 +1,9 @@
-import { CreatePictureDto } from "@/types/picture";
+import { PictureDto } from "@/types/picture";
 
 export interface CreateBlogPostFormInput {
     content: string;
     authorId: number;
-    pictures: CreatePictureDto[];
+    pictures?: PictureDto[];
 }
 
 export interface UpdateBlogPostFormInput
@@ -12,5 +12,5 @@ export interface UpdateBlogPostFormInput
     created: Date;
     content: string;
     authorId: number;
-    pictures: CreatePictureDto[];
+    pictures?: any[];
 }

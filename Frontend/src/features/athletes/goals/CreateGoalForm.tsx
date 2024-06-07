@@ -49,7 +49,7 @@ const CreateGoalForm: React.FC = () =>
         onSuccess: () =>
         {
             <Alert severity='success' variant='filled'>Successful! Thank you!</Alert>;
-            navigate( `/dashboard` );
+            navigate( `/athlete/goals` );
             queryClient.invalidateQueries( { queryKey: [ 'createGoal' ] } );
         },
     } );

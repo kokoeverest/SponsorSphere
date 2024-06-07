@@ -4,11 +4,13 @@ import { AxiosResponse } from "axios";
 
 const pictureApi = {
 
-    getPictureById: async (pictureId: number): Promise<PictureDto> =>
+    getPictureById: async (pictureId: number): Promise<string> =>
         {
-            const response = await api.get(`pictures/${pictureId}`);
-
-            return response.data;
+            const response: AxiosResponse<PictureDto> = await api.get(`pictures/${pictureId}`);
+    
+            const base64String = btoa( String.fromCharCode( ...new Uint8Array( response.data.content ) ) );
+    
+            return base64String;
         },
 
     uploadPicture: async ( data: CreatePictureDto ): Promise<PictureDto> =>

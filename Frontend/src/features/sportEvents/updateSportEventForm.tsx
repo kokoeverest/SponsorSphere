@@ -59,7 +59,7 @@ const UpdateSportEventForm: React.FC = () =>
         mutationFn: sportEventApi.updateSportEvent,
         onSuccess: () =>
         {
-            <Alert severity='success' variant='filled'>
+            <Alert severity='success' variant='filled' sx={ {zIndex: "calc('.header' + 1)"}}>
                 Sport event updated successfully!
             </Alert>;
             navigate( `/dashboard` );
@@ -111,9 +111,9 @@ const UpdateSportEventForm: React.FC = () =>
                     </TextField>
 
                     <TextField
-                        type="text"
+                        type="date"
                         label="You can't change the date"
-                        disabled
+                        // disabled
                         error={ !!errors.eventDate }
                         value={ selectedEventDate }
                     />

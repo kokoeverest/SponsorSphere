@@ -35,6 +35,7 @@ public class CreatePictureCommandHandler : IRequestHandler<CreatePictureCommand,
             var picture = new Picture
             {
                 Content = memoryStream.ToArray(),
+                Modified = DateTime.UtcNow,
             };
 
             await _unitOfWork.PicturesRepository.CreateAsync(picture);

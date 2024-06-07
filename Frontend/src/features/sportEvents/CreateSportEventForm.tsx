@@ -46,7 +46,7 @@ const CreateSportEventForm: React.FC = () =>
         mutationFn: sportEventApi.createSportEvent,
         onSuccess: () =>
         {
-            <Alert severity='success' variant='filled'>
+            <Alert severity='success' variant='filled' sx={ { zIndex: "calc('.header' + 1)" } }>
                 Thank you! The event you created needs to be confirmed by admin and you'll receive a notification shortly
             </Alert>;
             navigate( `/dashboard` );

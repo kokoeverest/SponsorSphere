@@ -1,18 +1,18 @@
 import React, { useContext, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { Alert, TextField, Grid, Typography, CircularProgress } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StyledButton from "../../components/controls/Button";
 import StyledForm from "../../components/controls/Form";
 import { CreateBlogPostFormInput } from "./abstract";
-import CreateBlogPostSchema from "./schemas";
 import AuthContext from "@/context/AuthContext";
 import UploadPictureButton from "@/components/controls/UploadPictureButton";
 import blogPostApi from "@/api/blogPostApi";
 import pictureApi from "@/api/pictureApi";
 import { PictureDto } from "@/types/picture";
+import CreateBlogPostSchema from "./schemas";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 
 const CreateBlogPostForm: React.FC = () =>
@@ -25,14 +25,13 @@ const CreateBlogPostForm: React.FC = () =>
     const {
         register,
         handleSubmit,
-        formState: { errors },
-    } = useForm<CreateBlogPostFormInput>( {
+        formState: { errors } 
+    } = useForm<CreateBlogPostFormInput>({
         resolver: yupResolver( CreateBlogPostSchema ),
     } );
 
     const [ pictures, setPictures ] = useState<any[]>( [] );
 
-    // Mutations
     const mutation = useMutation( {
         mutationFn: blogPostApi.createBlogPost,
         onSuccess: () =>
@@ -54,12 +53,12 @@ const CreateBlogPostForm: React.FC = () =>
     {
         try
         {
-            console.log( id, idAsNumber );
-            const uploadedPicture: PictureDto = await pictureApi.uploadPicture( { formFile: file } );
+            const uploadedPicture: PictureDto = await pictureApi.uploadPicture( { formFile: file, modified: null } );
             setPictures( ( prevPictures ) => [ ...prevPictures, uploadedPicture ] );
         } catch ( error )
         {
             console.error( 'Error uploading picture:', error );
+            queryClient.invalidateQueries( { queryKey: [ 'createBlogPost' ] } );
         }
     };
 
@@ -67,10 +66,9 @@ const CreateBlogPostForm: React.FC = () =>
         <>
             { !mutation.isError && !mutation.isPending && (
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
+                    <input hidden value={ idAsNumber } { ...register( "authorId" ) } />
+
                     <h1>Create a blog post</h1>
-
-                    <TextField value={ Number( id ) } { ...register( "authorId" ) } />
-
                     <TextField
                         { ...register( 'content' ) }
                         type="text"
@@ -81,7 +79,7 @@ const CreateBlogPostForm: React.FC = () =>
                         error={ !!errors.content }
                         helperText={ errors.content?.message }
                     />
-
+                    <br />
                     <UploadPictureButton onUpload={ handlePictureUpload } />
                     <Typography variant="body2">
                         { pictures.length } { pictures.length === 1 ? 'picture' : 'pictures' } uploaded
@@ -105,7 +103,7 @@ const CreateBlogPostForm: React.FC = () =>
                     <StyledButton type="submit">Submit</StyledButton>
                 </StyledForm>
             ) }
-            { mutation.isError && <h3>Error</h3> }
+            { mutation.isError && <h3>Error{errors.content?.message}</h3> }
             { ( mutation.isPending ) && <CircularProgress /> }
         </>
     );

@@ -49,7 +49,7 @@ const CreateAchievementForm: React.FC = () =>
         onSuccess: () =>
         {
             <Alert severity='success' variant='filled'>Successful! Thank you!</Alert>
-            navigate( `/dashboard` );
+            navigate( `/athlete/achievements` );
             queryClient.invalidateQueries( { queryKey: [ 'createAchievement' ] } );
         },
     } );
@@ -100,7 +100,7 @@ const CreateAchievementForm: React.FC = () =>
                     <TextField
                         { ...register( 'placeFinished' ) }
                         label="Place finished"
-                        type="text"
+                        type="number"
                         placeholder="Place finished"
                         error={ !!errors.placeFinished }
                         helperText={ "If your event was a race" }
