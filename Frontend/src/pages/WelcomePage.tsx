@@ -7,7 +7,6 @@ import AuthContext from '@/context/AuthContext';
 const WelcomePage: React.FC = () =>
 {
     const { isLogged } = useContext( AuthContext );
-    // const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     const handleRegisterClick = () =>
@@ -19,7 +18,6 @@ const WelcomePage: React.FC = () =>
     {
         navigate( '/login' );
     };
-
 
     const handleExploreClick = () =>
     {
@@ -36,7 +34,6 @@ const WelcomePage: React.FC = () =>
                         <StyledButton onClick={ handleRegisterClick }>Register</StyledButton>
                         <StyledButton onClick={ handleLoginClick }>Login</StyledButton>
                     </div>
-
                 }
         </Box>
     );

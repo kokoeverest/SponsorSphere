@@ -25,7 +25,7 @@ const CreateBlogPostForm: React.FC = () =>
     const idAsNumber = Number( id );
     const [ createdBlogPost, setCreatedBlogPost ] = useState<BlogPostDto | null >(null);
     const [ pictures, setPictures ] = useState<PictureDto[]>( [] );
-    const [ blogOstPictures, setBlogPostPictures ] = useState<BlogPostPictureDto[]>( [] );
+    const [ blogPostPictures, setBlogPostPictures ] = useState<BlogPostPictureDto[]>( [] );
 
     const {
         register,
@@ -79,7 +79,7 @@ const CreateBlogPostForm: React.FC = () =>
 
     const onSubmitHandler: SubmitHandler<CreateBlogPostFormInput> = async ( data ) =>
     {
-        data.pictures = blogOstPictures;
+        data.pictures = blogPostPictures;
         console.log( data );
         blogPostCreateMutation.mutate( data );
     };

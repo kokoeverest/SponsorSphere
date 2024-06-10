@@ -28,7 +28,7 @@ const queryClient = new QueryClient();
 
 const App: React.FC = () =>
 {
-  const { isLogged } = useContext(AuthContext);
+  const { isLogged } = useContext( AuthContext );
 
   return (
     <QueryClientProvider client={ queryClient }>
@@ -54,13 +54,9 @@ const App: React.FC = () =>
               <Route path="/achievements/create" element={ <CreateAchievementForm /> } />
               <Route path="/achievements/sportEvents/create" element={ <CreateSportEventForm /> } />
               <Route path='/goals/create' element={ <CreateGoalForm /> } />
-              <Route path='/sportEvents/pending' element={<PendingSportEventsList />}/>
-              <Route path='/sportEvents/update' element={<UpdateSportEventForm />}/>
-              <Route path='/blogposts/create' element={<CreateBlogPostForm/>} />
-
-            </Route>
-
-            <Route>
+              <Route path='/sportEvents/pending' element={ <PendingSportEventsList /> } />
+              <Route path='/sportEvents/update' element={ <UpdateSportEventForm /> } />
+              <Route path='/blogposts/create' element={ <CreateBlogPostForm /> } />
 
             </Route>
             <Route path="/login" element={ <LoginForm /> } />

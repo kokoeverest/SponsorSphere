@@ -11,19 +11,19 @@ const blogPostApi = {
         return response.data;
     },
 
-    getBlogPostById: async ( id: string ): Promise<BlogPostDto> =>
+    getBlogPostById: async ( id: number ): Promise<BlogPostDto> =>
     {
         const response = await api.get<BlogPostDto>( `/blogposts/${ id }` );
         return response.data;
     },
 
-    getBlogPostByAuthorId: async ( authorId: string ): Promise<BlogPostDto[]> =>
+    getBlogPostByAuthorId: async ( authorId: number ): Promise<BlogPostDto[]> =>
     {
         const response = await api.get<BlogPostDto[]>( `/blogposts/author/${ authorId }` );
         return response.data;
     },
 
-    getLatestBlogPostByAuthorId: async ( authorId: string ): Promise<BlogPostDto[]> =>
+    getLatestBlogPostByAuthorId: async ( authorId: number ): Promise<BlogPostDto[]> =>
     {
         const response = await api.get<BlogPostDto[]>( `/blogposts/latest/${ authorId }` );
         return response.data;
