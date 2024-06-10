@@ -29,6 +29,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     .AddScoped<IAchievementRepository, AchievementsRepository>()
                     .AddScoped<IAthleteRepository, AthleteRepository>()
                     .AddScoped<IBlogPostRepository, BlogPostRepository>()
+                    .AddScoped<IBlogPostPictureRepository, BlogPostPictureRepository>()
                     .AddScoped<IGoalRepository, GoalRepository>()
                     .AddScoped<IPictureRepository, PictureRepository>()
                     .AddScoped<ISponsorCompanyRepository, SponsorCompanyRepository>()

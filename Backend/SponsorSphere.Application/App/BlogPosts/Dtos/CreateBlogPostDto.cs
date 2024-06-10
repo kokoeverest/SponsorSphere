@@ -10,6 +10,6 @@ namespace SponsorSphere.Application.App.BlogPosts.Dtos
         public string Content { get; set; } = string.Empty;
 
         public int AuthorId { get; set; }
-        public ICollection<Picture>? Pictures { get; set; }
+        public ICollection<BlogPostPicture>? Pictures { get; set; }
     }
 }

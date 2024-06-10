@@ -16,7 +16,38 @@ namespace SponsorSphere.Infrastructure.Extensions
                 {
                     RoleId = 1,
                     UserId = 1
-                });
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 2,
+                    UserId = 5
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 2,
+                    UserId = 6
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 3,
+                    UserId = 3
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 3,
+                    UserId = 4
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 3,
+                    UserId = 7
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 3,
+                    UserId = 8
+                }
+                );
 
             modelBuilder.Entity<User>().HasData(
                 new User
@@ -27,8 +58,8 @@ namespace SponsorSphere.Infrastructure.Extensions
                     NormalizedEmail = UserConstants.AdminEmail.ToUpper(),
                     UserName = UserConstants.AdminEmail,
                     NormalizedUserName = UserConstants.AdminEmail.ToUpper(),
-                    SecurityStamp = UserConstants.AdminSecurityStamp,
-                    ConcurrencyStamp = UserConstants.AdminConcurrencyStamp,
+                    SecurityStamp = UserConstants.SecurityStamp,
+                    ConcurrencyStamp = UserConstants.ConcurrencyStamp,
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
                     PasswordHash = UserConstants.PasswordHash,
@@ -45,11 +76,13 @@ namespace SponsorSphere.Infrastructure.Extensions
                     UserName = "test@mail.bg",
                     NormalizedEmail = "test@mail.bg".ToUpper(),
                     NormalizedUserName = "test@mail.bg".ToUpper(),
+                    SecurityStamp = UserConstants.SecurityStamp,
+                    ConcurrencyStamp = UserConstants.ConcurrencyStamp,
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
                     BirthDate = new DateTime(1983, 9, 30),
                     Sport = SportsEnum.TrailRunning,
-                    StravaLink = "www.strava.co/userpetar",
+                    StravaLink = "www.strava.com/userpetar",
                     PasswordHash = UserConstants.PasswordHash,
                 },
                 new Athlete
@@ -59,6 +92,10 @@ namespace SponsorSphere.Infrastructure.Extensions
                     LastName = "Petkov",
                     Email = "5kov@mail.mail",
                     UserName = "5kov@mail.mail",
+                    NormalizedEmail = "5kov@mail.mail".ToUpper(),
+                    NormalizedUserName = "5kov@mail.mail".ToUpper(),
+                    SecurityStamp = UserConstants.SecurityStamp,
+                    ConcurrencyStamp = UserConstants.ConcurrencyStamp,
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
                     BirthDate = new DateTime(2005, 3, 30),
@@ -76,6 +113,8 @@ namespace SponsorSphere.Infrastructure.Extensions
                     UserName = "lidl@mail.bg",
                     NormalizedEmail = "lidl@mail.bg".ToUpper(),
                     NormalizedUserName = "lidl@mail.bg".ToUpper(),
+                    SecurityStamp = UserConstants.SecurityStamp,
+                    ConcurrencyStamp = UserConstants.ConcurrencyStamp,
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
                     PasswordHash = UserConstants.PasswordHash,
@@ -86,6 +125,11 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Id = 4,
                     Name = "Kaufland",
                     Email = "kaufland@bg.gb",
+                    UserName = "kaufland@bg.gb",
+                    NormalizedEmail = "kaufland@bg.gb".ToUpper(),
+                    NormalizedUserName = "kaufland@bg.gb".ToUpper(),
+                    SecurityStamp = UserConstants.SecurityStamp,
+                    ConcurrencyStamp = UserConstants.ConcurrencyStamp,
                     Country = CountryEnum.DEU,
                     PhoneNumber = UserConstants.PhoneNumber,
                     Iban = "DE32215",
@@ -99,6 +143,11 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Id = 8,
                     Name = "Lazar",
                     Email = "anonimen@bg.gb",
+                    UserName = "anonimen@bg.gb",
+                    NormalizedEmail = "anonimen@bg.gb".ToUpper(),
+                    NormalizedUserName = "anonimen@bg.gb".ToUpper(),
+                    SecurityStamp = UserConstants.SecurityStamp,
+                    ConcurrencyStamp = UserConstants.ConcurrencyStamp,
                     Country = CountryEnum.BGR,
                     PhoneNumber = UserConstants.PhoneNumber,
                     LastName = "Randov",
@@ -110,6 +159,11 @@ namespace SponsorSphere.Infrastructure.Extensions
                     Id = 7,
                     Name = "Michael",
                     Email = "michael@bg.gb",
+                    UserName = "michael@bg.gb",
+                    NormalizedEmail = "michael@bg.gb".ToUpper(),
+                    NormalizedUserName = "michael@bg.gb".ToUpper(),
+                    SecurityStamp = UserConstants.SecurityStamp,
+                    ConcurrencyStamp = UserConstants.ConcurrencyStamp,
                     Country = CountryEnum.AUS,
                     PhoneNumber = "1223",
                     LastName = "Uzunov",
@@ -215,7 +269,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                 new BlogPost
                 {
                     Id = 1,
-                    Content = "A very interesting post about a sport achievement",
+                    Content = "A very interesting post about a sport achievement.",
                     Created = new DateTime(2016, 6, 12),
                     AuthorId = 6
                 },

@@ -9,6 +9,6 @@ namespace SponsorSphere.Application.App.BlogPosts.Dtos
         public DateTime Created { get; set; }
         public string Content { get; set; } = string.Empty;
         public required int AuthorId { get; set; }
-        public ICollection<Picture>? Pictures { get; set; }
+        public ICollection<BlogPostPicture>? Pictures { get; set; }
     }
 }

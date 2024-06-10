@@ -32,7 +32,7 @@ namespace SponsorSphere.Infrastructure.Repositories
 
         public async Task<Picture> GetByIdAsync(int pictureId)
         {
-            var picture = await _context.Pictures.Where(p => p.Id != pictureId)
+            var picture = await _context.Pictures.Where(p => p.Id == pictureId)
                 .FirstOrDefaultAsync()
                 ?? throw new NotFoundException($"Picture with id {pictureId} not found");
 
@@ -44,7 +44,7 @@ namespace SponsorSphere.Infrastructure.Repositories
             await _context.Pictures
                 .Where(p => p.Id == updatedPicture.Id)
                 .ExecuteUpdateAsync(setters => setters
-                .SetProperty(p => p.Content, updatedPicture.Content)
+                .SetProperty(p => p.Content, Convert.FromBase64String(updatedPicture.Content))
                 .SetProperty(p => p.Url, updatedPicture.Url)
                 .SetProperty(p => p.Modified, DateTime.UtcNow));
 

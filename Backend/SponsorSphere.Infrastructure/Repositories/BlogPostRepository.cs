@@ -85,7 +85,6 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .Where(bp => bp.Id == blogPostToUpdate.Id)
                 .ExecuteUpdateAsync(setters => setters
                 .SetProperty(bp => bp.Content, blogPostToUpdate.Content)
-                .SetProperty(bp => bp.Pictures, blogPostToUpdate.Pictures)
                 );
 
             return blogPostToUpdate;

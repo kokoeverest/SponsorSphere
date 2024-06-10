@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Extensions;
 using System.Reflection;
@@ -9,8 +10,10 @@ namespace SponsorSphere.Infrastructure
     public class SponsorSphereDbContext : IdentityDbContext<User, UserRole, int>
     {
         public override DbSet<User> Users { get; set; } = default!;
+        public DbSet<Achievement> Achievements { get; set; } = default!;
         public DbSet<Athlete> Athletes { get; set; } = default!;
         public DbSet<BlogPost> BlogPosts { get; set; } = default!;
+        public DbSet<BlogPostPicture> BlogPostPictures { get; set; } = default!;
         public DbSet<Goal> Goals { get; set; } = default!;
         public DbSet<Picture> Pictures { get; set; } = default!;
         public DbSet<SponsorCompany> SponsorCompanies { get; set; } = default!;
@@ -18,9 +21,16 @@ namespace SponsorSphere.Infrastructure
         public DbSet<Sponsor> Sponsors { get; set; } = default!;
         public DbSet<Sponsorship> Sponsorships { get; set; } = default!;
         public DbSet<SportEvent> SportEvents { get; set; } = default!;
-        public DbSet<Achievement> Achievements { get; set; } = default!;
 
         public SponsorSphereDbContext(DbContextOptions options) : base(options) { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=SponsorSphere")
+                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },
+                    LogLevel.Error);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

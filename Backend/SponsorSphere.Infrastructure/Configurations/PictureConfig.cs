@@ -8,6 +8,11 @@ namespace SponsorSphere.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Picture> builder)
         {
+            builder.Property(p => p.Content)
+                .IsRequired(true);
+
+            builder.Property(p => p.Url)
+                .IsRequired(false);
         }
     }
 }

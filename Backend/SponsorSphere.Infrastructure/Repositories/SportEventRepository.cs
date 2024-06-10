@@ -43,14 +43,14 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<List<SportEvent>> GetFinishedSportEventsAsync(SportsEnum sport, int pageNumber, int pageSize) =>
 
             await _context.SportEvents
-            .Where(se => se.Finished && se.Sport == sport)
+            .Where(se => se.Finished && se.Sport == sport && se.Status == SportEventStatus.Approved)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
          
         public async Task<List<SportEvent>> GetUnfinishedSportEventsAsync(SportsEnum sport, int pageNumber, int pageSize) =>
              await _context.SportEvents
-            .Where(se => !se.Finished && se.Sport == sport)
+            .Where(se => !se.Finished && se.Sport == sport && se.Status == SportEventStatus.Approved)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
