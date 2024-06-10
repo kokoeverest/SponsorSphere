@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { BlogPostDto } from "../types/blogPost";
 import { api } from "./api";
 import { CreateBlogPostFormInput, UpdateBlogPostFormInput } from "@/features/blogPosts/abstract";
@@ -34,15 +35,15 @@ const blogPostApi = {
         return response.data;
     },
 
-    createBlogPost: async ( data: CreateBlogPostFormInput ): Promise<string> =>
+    createBlogPost: async ( data: CreateBlogPostFormInput ): Promise<BlogPostDto> =>
     {
-        const response = await api.post( "blogposts/create", data, {
+        const response: AxiosResponse<BlogPostDto> = await api.post( "blogposts/create", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         } );
 
-        return response.data.id;
+        return response.data;
     },
 
     updateBlogPost: async ( data: UpdateBlogPostFormInput ): Promise<string> =>
@@ -56,7 +57,7 @@ const blogPostApi = {
         return response.data.id;
     },
 
-    deleteBlogPost: async ( data: BlogPostDto ): Promise<any> =>
+    deleteBlogPost: async ( data: BlogPostDto ): Promise<void> =>
     {
         const response = await api.delete( "blogposts/delete", {
             headers: { 'Content-Type': 'application/json' },

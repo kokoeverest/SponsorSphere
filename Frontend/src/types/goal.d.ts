@@ -1,8 +1,8 @@
 export interface GoalDto {
-    Id: string;
-    Date: string;
-    SportEventId: number;
-    Sport: string;
-    AmountNeeded: number;
-    AthleteId: number;
+    id: string;
+    date: string;
+    sportEventId: number;
+    sport: string;
+    amountNeeded: number;
+    athleteId: number;
 }

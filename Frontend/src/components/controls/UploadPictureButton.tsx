@@ -17,7 +17,7 @@ const VisuallyHiddenInput = styled( 'input' )( {
 
 interface UploadPictureButtonProps
 {
-    onUpload: ( file: File ) => Promise<void>;
+    onUpload: ( file: File ) => void;
 }
 
 const UploadPictureButton: React.FC<UploadPictureButtonProps> = ( { onUpload } ) =>

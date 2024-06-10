@@ -1,16 +1,14 @@
-import { CreatePictureDto, PictureDto } from "@/types/picture";
+import { CreatePictureDto, GetPictureDto, PictureDto } from "@/types/picture";
 import { api } from "./api";
 import { AxiosResponse } from "axios";
 
 const pictureApi = {
 
-    getPictureById: async (pictureId: number): Promise<string> =>
+    getPictureById: async (pictureId: number): Promise<GetPictureDto> =>
         {
-            const response: AxiosResponse<PictureDto> = await api.get(`pictures/${pictureId}`);
+            const response: AxiosResponse<GetPictureDto> = await api.get(`pictures/${pictureId}`);
     
-            const base64String = btoa( String.fromCharCode( ...new Uint8Array( response.data.content ) ) );
-    
-            return base64String;
+            return response.data;
         },
 
     uploadPicture: async ( data: CreatePictureDto ): Promise<PictureDto> =>

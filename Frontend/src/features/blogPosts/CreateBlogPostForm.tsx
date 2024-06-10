@@ -13,6 +13,8 @@ import pictureApi from "@/api/pictureApi";
 import { PictureDto } from "@/types/picture";
 import CreateBlogPostSchema from "./schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { BlogPostPictureDto } from "@/types/blogPostPicture";
+import { BlogPostDto } from "@/types/blogPost";
 
 
 const CreateBlogPostForm: React.FC = () =>
@@ -21,50 +23,75 @@ const CreateBlogPostForm: React.FC = () =>
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const idAsNumber = Number( id );
+    const [ createdBlogPost, setCreatedBlogPost ] = useState<BlogPostDto | null >(null);
+    const [ pictures, setPictures ] = useState<PictureDto[]>( [] );
+    const [ blogOstPictures, setBlogPostPictures ] = useState<BlogPostPictureDto[]>( [] );
 
     const {
         register,
         handleSubmit,
-        formState: { errors } 
-    } = useForm<CreateBlogPostFormInput>({
+        formState: { errors }
+    } = useForm<CreateBlogPostFormInput>( {
         resolver: yupResolver( CreateBlogPostSchema ),
     } );
 
-    const [ pictures, setPictures ] = useState<any[]>( [] );
 
-    const mutation = useMutation( {
+    const blogPostCreateMutation = useMutation( {
         mutationFn: blogPostApi.createBlogPost,
-        onSuccess: () =>
+        onSuccess: ( result ) =>
         {
+            // navigate( `/feed` );
+            setCreatedBlogPost(result);
+            // queryClient.invalidateQueries( { queryKey: [ 'createBlogPost' ] } );
             <Alert severity='success' variant='filled'>Successful!</Alert>;
-            navigate( `/feed` );
-            queryClient.invalidateQueries( { queryKey: [ 'createBlogPost' ] } );
         },
+        onError: () =>
+        {
+            pictures.forEach( ( pic ) =>
+            {
+                pictureDeleteMutation.mutate( pic );
+            } );
+
+            if (createdBlogPost)
+            blogPostDeleteMutation.mutate(createdBlogPost);
+        
+            navigate( `/feed` );
+        }
+    } );
+
+    const blogPostDeleteMutation = useMutation({
+        mutationFn: blogPostApi.deleteBlogPost,
+    });
+
+    const pictureUploadMutation = useMutation( {
+        mutationFn: pictureApi.uploadPicture,
+        onSuccess: ( result ) =>
+        {
+            setPictures( ( prevPictures: PictureDto[] ) => [ ...prevPictures, result ] );
+            setBlogPostPictures( ( prevBlogPostPictures: BlogPostPictureDto[] ) =>
+                [ ...prevBlogPostPictures, { pictureId: result.id, blogPostId: 0 } ] );
+        }
+    } );
+
+    const pictureDeleteMutation = useMutation( {
+        mutationFn: pictureApi.deletePicture
     } );
 
     const onSubmitHandler: SubmitHandler<CreateBlogPostFormInput> = async ( data ) =>
     {
-        data.authorId = idAsNumber;
-        data.pictures = pictures;
-        mutation.mutate( data );
+        data.pictures = blogOstPictures;
+        console.log( data );
+        blogPostCreateMutation.mutate( data );
     };
 
     const handlePictureUpload = async ( file: File ) =>
     {
-        try
-        {
-            const uploadedPicture: PictureDto = await pictureApi.uploadPicture( { formFile: file, modified: null } );
-            setPictures( ( prevPictures ) => [ ...prevPictures, uploadedPicture ] );
-        } catch ( error )
-        {
-            console.error( 'Error uploading picture:', error );
-            queryClient.invalidateQueries( { queryKey: [ 'createBlogPost' ] } );
-        }
+        pictureUploadMutation.mutate( { formFile: file, modified: null } );
     };
 
     return (
         <>
-            { !mutation.isError && !mutation.isPending && (
+            { !blogPostCreateMutation.isError && !blogPostCreateMutation.isPending && (
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
                     <input hidden value={ idAsNumber } { ...register( "authorId" ) } />
 
@@ -85,8 +112,9 @@ const CreateBlogPostForm: React.FC = () =>
                         { pictures.length } { pictures.length === 1 ? 'picture' : 'pictures' } uploaded
                     </Typography>
 
-                    <Grid container spacing={ 2 }>
-                        { pictures.map( ( picture, index ) => (
+                    <Grid container spacing={ 2 } { ...register( "pictures" ) }>
+
+                        { ...pictures.map( ( picture, index ) => (
                             <Grid item key={ index }>
                                 <img
                                     src={ `data:image/jpeg;base64,${ picture.content }` }
@@ -103,8 +131,8 @@ const CreateBlogPostForm: React.FC = () =>
                     <StyledButton type="submit">Submit</StyledButton>
                 </StyledForm>
             ) }
-            { mutation.isError && <h3>Error{errors.content?.message}</h3> }
-            { ( mutation.isPending ) && <CircularProgress /> }
+            { blogPostCreateMutation.isError && <Alert severity='error' variant='filled'>Error</Alert> }
+            { ( blogPostCreateMutation.isPending ) && <CircularProgress /> }
         </>
     );
 };
