@@ -25,9 +25,20 @@ const UploadPictureButton: React.FC<UploadPictureButtonProps> = ( { onUpload } )
     const handleFileChange = ( event: React.ChangeEvent<HTMLInputElement> ) =>
     {
         const file = event.target.files?.[ 0 ];
+
         if ( file )
         {
-            onUpload( file );
+            const endIndex = file?.name.length;
+            const startIndex = endIndex - 3;
+            console.log( file.name.slice( startIndex, endIndex ) );
+            if ( [ 'jpg', 'png', 'gif' ].includes( file.name.slice( startIndex, endIndex ) ) )
+            {
+                onUpload( file );
+            }
+            else
+            {
+                alert( 'Not a valid image file. Only .jpg, .png, .gif are accepted' );
+            }
         }
     };
 

@@ -37,7 +37,7 @@ namespace SponsorSphereWebAPI.Controllers
             return Created(string.Empty, result);
         }
 
-        [Authorize(Roles = RoleConstants.Admin)]
+        [Authorize]
         [HttpDelete]
         [Route("delete")]
         public async Task<IActionResult> DeletePicture(PictureDto picture)

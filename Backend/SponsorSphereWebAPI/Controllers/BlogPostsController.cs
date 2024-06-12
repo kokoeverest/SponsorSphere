@@ -60,11 +60,6 @@ namespace SponsorSphereWebAPI.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateBlogPost([FromForm] CreateBlogPostDto model)
         {
-            var user = HttpContext.User?.Identity?.Name ?? string.Empty;
-            var loggedInUser = await _userManager.FindByEmailAsync(user);
-
-            model.AuthorId = loggedInUser!.Id;
-
             var result = await _mediator.Send(new CreateBlogPostCommand(model));
             return Created(string.Empty, result);
         }

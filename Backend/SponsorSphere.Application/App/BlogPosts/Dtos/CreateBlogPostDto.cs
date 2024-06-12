@@ -1,4 +1,5 @@
-﻿using SponsorSphere.Domain.Models;
+﻿using Microsoft.AspNetCore.Http;
+using SponsorSphere.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace SponsorSphere.Application.App.BlogPosts.Dtos
@@ -10,6 +11,6 @@ namespace SponsorSphere.Application.App.BlogPosts.Dtos
         public string Content { get; set; } = string.Empty;
 
         public int AuthorId { get; set; }
-        public ICollection<BlogPostPicture>? Pictures { get; set; }
+        public ICollection<IFormFile> Pictures { get; set; } = [];
     }
 }

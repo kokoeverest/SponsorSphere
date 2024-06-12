@@ -9,11 +9,8 @@ import { CreateBlogPostFormInput } from "./abstract";
 import AuthContext from "@/context/AuthContext";
 import UploadPictureButton from "@/components/controls/UploadPictureButton";
 import blogPostApi from "@/api/blogPostApi";
-import pictureApi from "@/api/pictureApi";
-import { PictureDto } from "@/types/picture";
 import CreateBlogPostSchema from "./schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { BlogPostPictureDto } from "@/types/blogPostPicture";
 import { BlogPostDto } from "@/types/blogPost";
 
 
@@ -23,15 +20,15 @@ const CreateBlogPostForm: React.FC = () =>
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const idAsNumber = Number( id );
-    const [ createdBlogPost, setCreatedBlogPost ] = useState<BlogPostDto | null >(null);
-    const [ pictures, setPictures ] = useState<PictureDto[]>( [] );
-    const [ blogPostPictures, setBlogPostPictures ] = useState<BlogPostPictureDto[]>( [] );
+    const [ _, setCreatedBlogPost ] = useState<BlogPostDto | null>( null );
+    const [ pictures, setPictures ] = useState<File[]>( [] );
+
 
     const {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm<CreateBlogPostFormInput>( {
+    } = useForm( {
         resolver: yupResolver( CreateBlogPostSchema ),
     } );
 
@@ -40,53 +37,32 @@ const CreateBlogPostForm: React.FC = () =>
         mutationFn: blogPostApi.createBlogPost,
         onSuccess: ( result ) =>
         {
-            // navigate( `/feed` );
-            setCreatedBlogPost(result);
-            // queryClient.invalidateQueries( { queryKey: [ 'createBlogPost' ] } );
-            <Alert severity='success' variant='filled'>Successful!</Alert>;
+            setCreatedBlogPost( result );
+            alert("Successful!")
+            queryClient.invalidateQueries( { queryKey: [ 'createBlogPost' ] } );
+            navigate( `/feed` );
         },
         onError: () =>
         {
-            pictures.forEach( ( pic ) =>
-            {
-                pictureDeleteMutation.mutate( pic );
-            } );
-
-            if (createdBlogPost)
-            blogPostDeleteMutation.mutate(createdBlogPost);
-        
-            navigate( `/feed` );
+            <Alert severity='error' variant='standard'>Failed to create blog post!</Alert>;
         }
-    } );
-
-    const blogPostDeleteMutation = useMutation({
-        mutationFn: blogPostApi.deleteBlogPost,
-    });
-
-    const pictureUploadMutation = useMutation( {
-        mutationFn: pictureApi.uploadPicture,
-        onSuccess: ( result ) =>
-        {
-            setPictures( ( prevPictures: PictureDto[] ) => [ ...prevPictures, result ] );
-            setBlogPostPictures( ( prevBlogPostPictures: BlogPostPictureDto[] ) =>
-                [ ...prevBlogPostPictures, { pictureId: result.id, blogPostId: 0 } ] );
-        }
-    } );
-
-    const pictureDeleteMutation = useMutation( {
-        mutationFn: pictureApi.deletePicture
     } );
 
     const onSubmitHandler: SubmitHandler<CreateBlogPostFormInput> = async ( data ) =>
     {
-        data.pictures = blogPostPictures;
-        console.log( data );
-        blogPostCreateMutation.mutate( data );
+        const formData = new FormData();
+        formData.append( 'authorId', idAsNumber.toString() );
+        formData.append( 'content', data.content );
+        pictures.forEach( ( file, _ ) =>
+        {
+            formData.append( `pictures`, file );
+        } );
+        blogPostCreateMutation.mutate( formData );
     };
 
-    const handlePictureUpload = async ( file: File ) =>
+    const handlePictureUpload = ( file: File ) =>
     {
-        pictureUploadMutation.mutate( { formFile: file, modified: null } );
+        setPictures( ( prevPictures ) => [ ...prevPictures, file ] );
     };
 
     return (
@@ -99,12 +75,13 @@ const CreateBlogPostForm: React.FC = () =>
                     <TextField
                         { ...register( 'content' ) }
                         type="text"
-                        fullWidth
                         multiline
+                        fullWidth
                         rows={ 10 }
                         placeholder="Show your creativity, don't be shy"
                         error={ !!errors.content }
                         helperText={ errors.content?.message }
+                        sx={{p: 2, m: 2}}
                     />
                     <br />
                     <UploadPictureButton onUpload={ handlePictureUpload } />
@@ -117,7 +94,7 @@ const CreateBlogPostForm: React.FC = () =>
                         { ...pictures.map( ( picture, index ) => (
                             <Grid item key={ index }>
                                 <img
-                                    src={ `data:image/jpeg;base64,${ picture.content }` }
+                                    src={ URL.createObjectURL( picture ) }
                                     alt={ `Uploaded ${ index + 1 }` }
                                     width={ 100 }
                                     height={ 100 }

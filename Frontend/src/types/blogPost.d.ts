@@ -5,5 +5,5 @@ export interface BlogPostDto {
     created: Date;
     content: string;
     authorId: number;
-    pictures: BlogPostPictureDto[];
+    pictures: PictureDto[];
 }

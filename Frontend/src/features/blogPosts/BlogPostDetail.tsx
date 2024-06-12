@@ -9,6 +9,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { BlogPostDto } from '@/types/blogPost';
 import StyledButton from '@/components/controls/Button';
 import { UserDto } from '@/types/user';
+import { ImageList, ImageListItem } from '@mui/material';
 
 interface BlogPostDetailProps
 {
@@ -43,7 +44,8 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ( { blogPost, author, open
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
         >
-            <DialogTitle id="scroll-dialog-title">{ author?.name }'s post from {new Date( blogPost.created ).toLocaleDateString()}:</DialogTitle>
+            <DialogTitle id="scroll-dialog-title">{ author?.name }'s post from { new Date( blogPost.created ).toLocaleDateString() }:</DialogTitle>
+            
             <DialogContent dividers={ scroll === 'paper' }>
                 <DialogContentText
                     id="scroll-dialog-description"
@@ -52,6 +54,23 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ( { blogPost, author, open
                 >
                     { blogPost.content }
                 </DialogContentText>
+
+
+                <ImageList sx={ { display: 'flex', alignItems: 'center', maxWidthwidth: 640, maxHeight: 480 } } cols={ 3 }>
+                    { blogPost.pictures.map( ( picture, index ) => (
+                        <ImageListItem key={ index }>
+                            <img
+                                width={'inherit'}
+                                height={'inherit'}
+                                src={ `data:image/jpeg;base64,${ picture.content }` }
+                                alt={ `picture${ index + 1 }` }
+                                loading="lazy"
+                            />
+                        </ImageListItem>
+                    ) ) }
+
+                </ImageList>
+
             </DialogContent>
             <DialogActions>
                 <StyledButton onClick={ onClose }>Close</StyledButton>

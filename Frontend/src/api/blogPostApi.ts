@@ -35,7 +35,7 @@ const blogPostApi = {
         return response.data;
     },
 
-    createBlogPost: async ( data: CreateBlogPostFormInput ): Promise<BlogPostDto> =>
+    createBlogPost: async ( data: CreateBlogPostFormInput | FormData ): Promise<BlogPostDto> =>
     {
         const response: AxiosResponse<BlogPostDto> = await api.post( "blogposts/create", data, {
             headers: {

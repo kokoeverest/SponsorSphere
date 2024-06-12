@@ -9,7 +9,8 @@ namespace SponsorSphere.Application.Profiles
         public BlogPostProfile()
         {
             CreateMap<BlogPost, BlogPostDto>();
-            CreateMap<CreateBlogPostDto, BlogPost>();
+            CreateMap<CreateBlogPostDto, BlogPost>()
+                .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => new List<Picture>()));
         }
     }
 }

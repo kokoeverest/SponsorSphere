@@ -47,11 +47,6 @@ namespace SponsorSphere.Infrastructure.Configurations
             builder.Property(u => u.PictureId)
                 .IsRequired(false);
 
-            builder.HasMany(u => u.BlogPosts)
-                .WithOne()
-                .HasForeignKey(bp => bp.AuthorId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasQueryFilter(u => !u.IsDeleted);
 
             builder.HasIndex(u => u.Email)

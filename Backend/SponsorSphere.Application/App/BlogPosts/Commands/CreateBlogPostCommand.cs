@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.BlogPosts.Dtos;
 using SponsorSphere.Application.Common.Constants;
+using SponsorSphere.Application.Common.Helpers;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -28,11 +29,21 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
         var start = DateTime.Now;
         _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
-        var blogPost = _mapper.Map<BlogPost>(request.BlogPost);
-
         try
         {
+            List<Picture> newPictures = [];
+
             await _unitOfWork.BeginTransactionAsync();
+
+            foreach (var picture in request.BlogPost.Pictures)
+            {
+                var transformedPicture = await PictureHelper.TransformFileToPicture(picture, cancellationToken);
+                newPictures.Add(transformedPicture);
+            }
+
+            var blogPost = _mapper.Map<BlogPost>(request.BlogPost);
+            blogPost.Pictures = newPictures;
+
             await _unitOfWork.BlogPostsRepository.CreateAsync(blogPost);
             await _unitOfWork.CommitTransactionAsync();
 

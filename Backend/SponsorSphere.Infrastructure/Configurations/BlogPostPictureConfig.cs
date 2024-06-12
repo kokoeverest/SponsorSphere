@@ -19,6 +19,9 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .IsRequired();
 
             builder.HasKey(bp => new { bp.BlogPostId, bp.PictureId });
+
+            builder
+                .HasQueryFilter(bp => !bp.BlogPost!.Author!.IsDeleted);
         }
     }
 }
