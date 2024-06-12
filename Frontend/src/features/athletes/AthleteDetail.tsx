@@ -1,24 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import athleteApi from '@/api/athleteApi';
 import { AthleteDto } from '../../types/athlete';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, Avatar, Box, Link, List, ListItem, ListItemAvatar, ListItemButton, Stack, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, Link, List, ListItem, ListItemButton, Stack, SvgIcon, Typography } from '@mui/material';
 import pictureApi from '@/api/pictureApi';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import WebhookIcon from '@mui/icons-material/Webhook';
+import EmailIcon from '@mui/icons-material/Email';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import BlogPostDetail from '../blogPosts/BlogPostDetail';
 import AchievementDetail from './achievements/AchievementDetail';
 import { BlogPostDto } from '@/types/blogPost';
 import { UserDto } from '@/types/user';
 import { AchievementDto } from '@/types/achievement';
+import { GoalDto } from '@/types/goal';
+import GoalDetail from './goals/GoalDetail';
+import StyledBox from '@/components/controls/Box';
+import StyledText from '@/components/controls/Typography';
+import ProfilePicture from '@/components/controls/ProfilePicture';
+import StyledButton from '@/components/controls/Button';
+import AuthContext from '@/context/AuthContext';
+import { SponsorDto } from '@/types/sponsor';
+import sponsorCompanyApi from '@/api/sponsorCompanyApi';
 
 const AthleteDetail: React.FC = () =>
 {
-  const { id } = useParams<{ id: string; }>();
+  const navigate = useNavigate();
+  const { id } = useContext( AuthContext );
+  const { id: athleteId } = useParams<{ id: string; }>();
   const [ athlete, setAthlete ] = useState<AthleteDto | null>( null );
+  const [ sponsor, setSponsor ] = useState<SponsorDto | null>( null );
   const [ loading, setLoading ] = useState<boolean>( true );
   const [ error, setError ] = useState<string | null>( null );
   const [ profilePicture, setProfilePicture ] = useState<string | null>( null );
@@ -31,13 +44,16 @@ const AthleteDetail: React.FC = () =>
   const [ selectedAthlete, setSelectedAthlete ] = useState<AthleteDto | null>( null );
   const [ isAchievementDetailOpen, setIsAchievementDetailOpen ] = useState<boolean>( false );
 
+  const [ selectedGoal, setSelectedGoal ] = useState<GoalDto | null>( null );
+  const [ isGoalDetailOpen, setIsGoalDetailOpen ] = useState<boolean>( false );
+
   useEffect( () =>
   {
-    const fetchData = async () =>
+    const fetchAthleteData = async () =>
     {
       try
       {
-        const result = await athleteApi.getAthleteById( id! );
+        const result = await athleteApi.getAthleteById( athleteId! );
         setAthlete( result );
         if ( result?.pictureId )
         {
@@ -53,8 +69,30 @@ const AthleteDetail: React.FC = () =>
       }
     };
 
-    fetchData();
+    fetchAthleteData();
+  }, [ athleteId ] );
+
+  useEffect( () =>
+  {
+    const fetchSponsorData = async () =>
+    {
+      try
+      {
+        const result = await sponsorCompanyApi.getSponsorCompanyById( id! );
+        setSponsor( result );
+
+      } catch ( error )
+      {
+        setError( "Failed to fetch sponsor details" );
+      } finally
+      {
+        setLoading( false );
+      }
+    };
+
+    fetchSponsorData();
   }, [ id ] );
+
 
   if ( loading ) return <CircularProgress />;
   if ( error ) return <Alert severity='error' variant='filled'>{ error }</Alert>;
@@ -87,94 +125,141 @@ const AthleteDetail: React.FC = () =>
     setSelectedAchievement( null );
   };
 
+  const handleGoalClick = ( goal: GoalDto, athlete: AthleteDto ) =>
+  {
+    setSelectedGoal( goal );
+    setSelectedAthlete( athlete );
+    setIsGoalDetailOpen( true );
+  };
+
+  const handleCloseGoalDetail = () =>
+  {
+    setIsGoalDetailOpen( false );
+    setSelectedGoal( null );
+  };
+
   return (
-    <Box
-      my={ 4 }
-      display="flex"
-      alignItems="center"
-      gap={ 4 }
-      p={ 2 }
-      sx={ { border: '2px solid grey' } }>
-      <List>
+    <StyledBox>
+      <Stack alignItems="center" spacing={ 2 }>
         <h1>{ athlete.name } { athlete.lastName }</h1>
-        <ListItem>
-          <ListItemAvatar>
-            { profilePicture ? (
-              <img
-                src={ `data:image/jpeg;base64,${ profilePicture }` }
-                width={ 100 }
-                height={ 100 }
-                alt="Profile"
-              />
-            ) : (
-              <Avatar sx={ { width: 100, height: 100 } }>{ athlete.name.slice( 0, 1 ) }{ athlete.lastName.slice( 0, 1 ) }</Avatar>
-            ) }
-          </ListItemAvatar>
-        </ListItem>
-        <Typography variant="h6">SponsorSphere member since: <strong>{ new Date( athlete.created ).toLocaleDateString() }</strong></Typography>
-        <Typography variant="h6">Age: <strong>{ athlete.age }</strong></Typography>
-        <Typography variant="h6">Sport: <strong>{ athlete.sport }</strong></Typography>
 
-        <h3>Achievements</h3>
-        { athlete.achievements.map( ( achievement, index ) => (
-          <List>
-            <ListItem key={ index }>
-              <ListItemButton onClick={ () => handleAchievementClick( achievement, athlete ) }>
-                <Typography>Sport: { achievement.sport }</Typography>
-                { achievement.placeFinished && <Typography>Finished: <strong>{ achievement.placeFinished }</strong></Typography> }
-                { achievement.description && <Typography>Description: <strong>{ achievement.description }</strong></Typography> }
-              </ListItemButton>
-            </ListItem>
-          </List>
-        ) ) }
+        { profilePicture ? (
+          <ProfilePicture
+            alt="Profile"
+            src={ `data:image/jpeg;base64,${ profilePicture }` }
+          />
+        ) : (
+          <ProfilePicture
+            alt='Avatar'>
+            { athlete.name.slice( 0, 1 ) }{ athlete.lastName.slice( 0, 1 ) }
+          </ProfilePicture>
+        ) }
 
-        <h3>Blog Posts</h3>
-        { athlete.blogPosts.map( ( blogPost, index ) => (
-          <List>
-            <ListItem key={ index }>
-              <ListItemButton onClick={ () => handleBlogPostClick( blogPost, athlete ) }>
 
-                <Typography>Posted: { new Date( blogPost.created ).toLocaleDateString() }</Typography><br />
-                <Typography>{ blogPost.content.slice( 0, 50 ) }</Typography>
-              </ListItemButton>
-            </ListItem>
-          </List>
-        ) ) }
-        <Stack direction="row" spacing={ 4 } >
-          <Link href={ athlete.website } target="_blank" rel="noopener noreferrer">
-            <WebhookIcon />
-          </Link>
-          <Link href={ athlete.faceBookLink } target="_blank" rel="noopener noreferrer">
-            <FacebookIcon />
-          </Link>
-          <Link href={ athlete.instagramLink } target="_blank" rel="noopener noreferrer">
-            <InstagramIcon />
-          </Link>
-          <Link href={ athlete.stravaLink } target="_blank" rel="noopener noreferrer">
-            <SvgIcon>
-              {/* credit: plus icon from https://iconduck.com/free-icons/strava */ }
-              <svg
-                viewBox="0 0 48 48"
-                xmlns="http://www.w3.org/2000/svg">
-                <g
-                  fill="none"
-                  stroke="#000"
-                  strokeLinecap="round"
-                  strokeLinejoin="round">
-                  <path
-                    d="m31.016 26.855-11.177-22.355-11.178 22.355" />
-                  <path
-                    d="m22.694 26.855 8.322 16.645 8.323-16.645" />
-                </g>
-              </svg>
-            </SvgIcon>
-          </Link>
-          <Link href={ athlete.twitterLink } target="_blank" rel="noopener noreferrer">
-            <TwitterIcon />
-          </Link>
-      <Typography variant="h6">Email: <strong>{ athlete.email }</strong></Typography>
-        </Stack>
-      </List>
+        <StyledText>SponsorSphere member since: <strong>{ new Date( athlete.created ).toLocaleDateString() }</strong></StyledText>
+        <StyledText>Age: <strong>{ athlete.age }</strong></StyledText>
+        <StyledText >Sport: <strong>{ athlete.sport }</strong></StyledText>
+
+        <StyledBox>
+          <StyledText>Goals:</StyledText>
+          { athlete.goals && athlete.goals.length > 0 ? (
+            <List>
+              { athlete.goals.map( ( goal, index ) => (
+                <ListItem key={ index }>
+                  <ListItemButton onClick={ () => handleGoalClick( goal, athlete ) }>
+                    <StyledText>Sport: { goal.sport }</StyledText>
+                  </ListItemButton>
+                </ListItem>
+              ) ) }
+            </List>
+          ) : (
+            <StyledText>{ athlete.name } has no current goals</StyledText>
+          ) }
+        </StyledBox>
+
+        <StyledButton onClick={ () => navigate( `/sponsorships/create`, { state: {athlete, sponsor} } ) }>Become a sponsor</StyledButton>
+
+        <StyledBox>
+          <Stack>
+            <StyledText>Achievements</StyledText>
+            { athlete.achievements.map( ( achievement, index ) => (
+              <List>
+                <ListItem key={ index }>
+                  <ListItemButton onClick={ () => handleAchievementClick( achievement, athlete ) }>
+                    <StyledText>Sport: { achievement.sport } </StyledText>
+                    { achievement.placeFinished && <Typography>Finished: <strong>{ achievement.placeFinished }</strong></Typography> }
+                    { achievement.description && <Typography>Description: <strong>{ achievement.description.slice( 0, 15 ) + "..." }</strong></Typography> }
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            ) ) }
+          </Stack>
+        </StyledBox>
+
+        <StyledBox>
+          <Stack>
+            <StyledText>Blog Posts</StyledText>
+            { athlete.blogPosts.map( ( blogPost, index ) => (
+              <List>
+                <ListItem key={ index }>
+                  <ListItemButton onClick={ () => handleBlogPostClick( blogPost, athlete ) }>
+
+                    <Typography>Posted: { new Date( blogPost.created ).toLocaleDateString() }
+                      <strong>{ blogPost.content.slice( 0, 15 ) + "..." }</strong></Typography>
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            ) ) }
+          </Stack>
+        </StyledBox>
+
+        <p>TODO: Fix the links</p>
+        <Box>
+          <Stack direction="row" spacing={ 8 } justifyContent="center" >
+            <Link href={ athlete.website } target="_blank" rel="noopener noreferrer">
+              <WebhookIcon />
+            </Link>
+            <Link href={ athlete.faceBookLink } target="_blank" rel="noopener noreferrer">
+              <FacebookIcon />
+            </Link>
+            <Link href={ athlete.instagramLink } target="_blank" rel="noopener noreferrer">
+              <InstagramIcon />
+            </Link>
+            <Link href={ athlete.stravaLink } target="_blank" rel="noopener noreferrer">
+              <SvgIcon >
+                {/* credit: plus icon from https://iconduck.com/free-icons/strava */ }
+                <svg
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g
+                    fill="none"
+                    stroke="#000"
+                    strokeLinecap="round"
+                    strokeLinejoin="round">
+                    <path
+                      d="m31.016 26.855-11.177-22.355-11.178 22.355" />
+                    <path
+                      d="m22.694 26.855 8.322 16.645 8.323-16.645" />
+                  </g>
+                </svg>
+              </SvgIcon>
+            </Link>
+            <Link href={ athlete.twitterLink } target="_blank" rel="noopener noreferrer">
+              <TwitterIcon />
+            </Link>
+            <Link href={ athlete.email } target="_blank" rel="noopener noreferrer">
+              <EmailIcon />
+            </Link>
+          </Stack>
+        </Box>
+      </Stack>
+
+      <GoalDetail
+        goal={ selectedGoal }
+        athlete={ selectedAthlete }
+        open={ isGoalDetailOpen }
+        onClose={ handleCloseGoalDetail }
+      />
 
       <BlogPostDetail
         blogPost={ selectedBlogPost }
@@ -187,7 +272,7 @@ const AthleteDetail: React.FC = () =>
         athlete={ selectedAthlete }
         open={ isAchievementDetailOpen }
         onClose={ handleCloseAchievementDetail } />
-    </Box>
+    </StyledBox>
   );
 };
 

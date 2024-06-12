@@ -5,9 +5,9 @@ import { AxiosResponse } from "axios";
 
 const goalApi = {
 
-    getAthleteGoals: async ( athleteId: number, pageNumber: number ) =>
+    getAthleteGoals: async ( athleteId: number, queryParams: string ) =>
     {
-        const response: AxiosResponse<GoalDto[]> = await api.get( `goals/${ athleteId }?pageNumber=${ pageNumber }&pageSize=10` );
+        const response: AxiosResponse<GoalDto[]> = await api.get( `goals/${ athleteId }?${ queryParams }` );
 
         return response.data;
     },
