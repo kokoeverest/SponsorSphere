@@ -43,8 +43,6 @@ const Dashboard: React.FC = () =>
         }
     };
     
-    // navigate( '/feed' )
-    
     return (
         <Drawer variant="permanent" sx={ {
             width: drawerWidth,

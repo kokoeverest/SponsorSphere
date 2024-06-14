@@ -31,10 +31,10 @@ public class CreateSportEventCommandHandler : IRequestHandler<CreateSportEventCo
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            var newSportEvent = await _unitOfWork.SportEventsRepository.CreateAsync(sportEvent);
+            await _unitOfWork.SportEventsRepository.CreateAsync(sportEvent);
             await _unitOfWork.CommitTransactionAsync();
 
-            var mappedSportEvent = _mapper.Map<SportEventDto>(newSportEvent);
+            var mappedSportEvent = _mapper.Map<SportEventDto>(sportEvent);
             _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mappedSportEvent);
         }

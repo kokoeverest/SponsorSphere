@@ -2,11 +2,6 @@
 using MediatR;
 using SponsorSphere.Application.App.Sponsorships.Dtos;
 using SponsorSphere.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SponsorSphere.Application.App.Sponsorships.Queries;
 
@@ -28,9 +23,9 @@ public class GetSponsorshipQueryHandler : IRequestHandler<GetSponsorshipQuery, S
         try
         {
             var sponsorship = await _unitOfWork.SponsorshipsRepository.GetSponsorshipAsync(request.AthleteId, request.SponsorId);
-            var mappedSponsorships = _mapper.Map<SponsorshipDto>(sponsorship);
+            var mappedSponsorship = _mapper.Map<SponsorshipDto>(sponsorship);
 
-            return mappedSponsorships;
+            return mappedSponsorship;
         }
         catch (Exception)
         {

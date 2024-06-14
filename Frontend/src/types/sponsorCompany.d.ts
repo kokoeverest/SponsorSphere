@@ -1,5 +1,5 @@
-import { UserDto } from './user';
+import { SponsorDto } from './sponsor';
 
-export interface SponsorCompanyDto extends UserDto {
+export interface SponsorCompanyDto extends SponsorDto {
     iban: string;
 }

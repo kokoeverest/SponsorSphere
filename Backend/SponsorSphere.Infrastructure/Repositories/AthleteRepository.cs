@@ -46,6 +46,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             var athlete = await _context.Athletes
                 .Include(ath => ath.BlogPosts)
+                    .ThenInclude(bp => bp.Pictures)
                 .Include(ath => ath.Sponsorships)
                 .Include(ath => ath.Goals)
                 .Include(ath => ath.Achievements)

@@ -58,8 +58,16 @@ export default function Feed ()
     };
 
     return (
-        <Box sx={ { m: 'auto' } }>
-            <Box sx={ { borderBottom: 1, borderColor: 'divider' } }>
+        <Box sx={ {
+            marginLeft: '240px',
+            m: 'auto'
+        } }>
+            <Box sx={ {
+                borderBottom: 1,
+                borderLeft: 0,
+                borderRight: 0,
+                borderColor: 'divider'
+            } }>
                 <Tabs value={ value } onChange={ handleChange } aria-label="basic tabs example" centered>
                     <Tab label="Athletes" { ...a11yProps( 0 ) } />
                     <Tab label="Sponsors: Companies" { ...a11yProps( 1 ) } />

@@ -11,7 +11,8 @@ import StyledButton from '@/components/controls/Button';
 import { AthleteDto } from '@/types/athlete';
 import sportEventApi from '@/api/sportEventApi';
 import { SportEventDto } from '@/types/sportEvent';
-import { Alert, Box, CircularProgress, Slider, Typography } from '@mui/material';
+import { Alert, CircularProgress, Slider, Typography } from '@mui/material';
+import StyledBox from '@/components/controls/Box';
 
 interface GoalDetailProps
 {
@@ -32,6 +33,9 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
     let totalSponsorshipsAmount = 0;
     athlete?.sponsorships.forEach( sponsorship => totalSponsorshipsAmount += sponsorship.amount );
 
+    let notEnoughMoney = 0;
+    notEnoughMoney = goal?.amountNeeded ? (goal.amountNeeded - totalSponsorshipsAmount) : (- totalSponsorshipsAmount);
+
     const marks = [
         {
             value: 0,
@@ -39,7 +43,7 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
         },
         {
             value: goal?.amountNeeded ? goal.amountNeeded : 100,
-            label: `${goal?.amountNeeded}`,
+            label: `${ goal?.amountNeeded }`,
         },
     ];
 
@@ -95,9 +99,9 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
             scroll={ scroll }
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
-            sx={{lineHeight: 2}}
+            sx={ { lineHeight: 2 } }
         >
-            <DialogTitle id="scroll-dialog-title">{ athlete?.name } dreams to impress the world on <br/>
+            <DialogTitle id="scroll-dialog-title">{ athlete?.name } dreams to impress the world on <br />
                 { new Date( sportEvent!.eventDate ).toLocaleDateString() }:</DialogTitle>
             <DialogContent dividers={ scroll === 'paper' }>
                 <DialogContentText
@@ -107,22 +111,24 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
                 >
                     <Typography>Sport of the event: { sportEvent?.sport }</Typography>
                     <Typography>{ sportEvent?.name } in { sportEvent?.country }</Typography>
-                    { goal.amountNeeded && <Typography>{ athlete?.name } needs { goal.amountNeeded - totalSponsorshipsAmount } euro to be able to participate!</Typography> }
                     <Typography>So far { athlete?.name } has { totalSponsorshipsAmount } euro </Typography>
-                    <Box sx={ { width: 'inherit', marginTop: 6 } }>
+
+                    { notEnoughMoney > 0 
+                        ? <Typography>{ athlete?.name } needs { notEnoughMoney } euro more to be able to participate!</Typography> 
+                        : <Typography> {athlete?.name} has received the needed money for this goal!</Typography> }
+
+                    <StyledBox sx={ {  marginTop: 6 } }>
                         <Slider
-                        disabled
                             min={ 0 }
                             max={ goal.amountNeeded }
                             defaultValue={ totalSponsorshipsAmount }
                             aria-label="Always visible"
-                            getAriaValueText={valuetext}
+                            getAriaValueText={ valuetext }
                             valueLabelDisplay="on"
-                            marks={marks}    
-                        >
-
-                        </Slider>
-                    </Box>
+                            marks={ marks }
+                            sx={ { color: notEnoughMoney > 0 ? 'red' : 'green', maxWidth: '95%'}}
+                        />
+                    </StyledBox>
 
                     <Typography>Current sponsors: { }</Typography>
                 </DialogContentText>

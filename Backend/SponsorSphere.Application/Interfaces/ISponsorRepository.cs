@@ -1,7 +1,17 @@
-﻿namespace SponsorSphere.Application.Interfaces
+﻿using SponsorSphere.Domain.Models;
+
+namespace SponsorSphere.Application.Interfaces
 {
     public interface ISponsorRepository
     {
+
+        /// <summary>
+        /// Asynchronously retrieves a sponsor by its unique identifier.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the sponsor.</param>
+        /// <returns>The <see cref="Sponsor"/> entity if found, otherwise null.</returns>
+        Task<Sponsor> GetByIdAsync(int userId);
+
         /// <summary>
         /// Asynchronously retrieves a paginated list of sponsors ordered by the amount of money provided.
         /// </summary>

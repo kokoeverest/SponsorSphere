@@ -7,7 +7,12 @@ const StyledBox: React.FC<BoxProps> = ( { children, ...rest } ) => (
         display='flex'
         alignItems="center"
         gap={ 2 }
-        sx={ { border: '2px solid lightgrey', m: 2, p: 2, width: '85%' } }
+        sx={ { 
+            borderRadius: '10px',
+            border: '2px solid lightgrey', 
+            m: 2, 
+            p: 2, 
+            width: '85%' } }
         { ...rest }
     >
         { children }

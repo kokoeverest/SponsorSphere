@@ -37,10 +37,10 @@ public class CreateSponsorshipCommandHandler : IRequestHandler<CreateSponsorship
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            var newSponsorship = _unitOfWork.SponsorshipsRepository.CreateAsync(sponsorship);
+            await _unitOfWork.SponsorshipsRepository.CreateAsync(sponsorship);
 
             await _unitOfWork.CommitTransactionAsync();
-            var mappedSponsorship = _mapper.Map<SponsorshipDto>( newSponsorship );
+            var mappedSponsorship = _mapper.Map<SponsorshipDto>( sponsorship );
 
             _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
             return await Task.FromResult(mappedSponsorship);

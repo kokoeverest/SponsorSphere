@@ -1,12 +1,12 @@
 :root {
   --backGroundOrange: #fa8233;
-  --backGroundBlue: #1976d2;
+  --backGroundBlue: #4398f1;
   --formGrey: rgb(235, 229, 229);
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgb(0, 0, 0);
   background-color: var(--backGroundOrange);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -63,7 +63,7 @@ h1 {
   will-change: filter;
   transition: filter 600ms;
   font-size: 50px;
-  color: var(--formGrey);
+  color: black;
   z-index: calc('.header' + 1);
 }
 

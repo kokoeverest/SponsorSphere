@@ -31,6 +31,15 @@ namespace SponsorSphereWebAPI.Controllers
             return Ok(sponsorships);
         }
 
+        [HttpGet]
+        [Route("{athleteId}/{sponsorId}")]
+        public async Task<IActionResult> GetSponsorship(int athleteId, int sponsorId)
+        {
+            var sponsorship = await _mediator.Send(new GetSponsorshipQuery(athleteId, sponsorId));
+            return Ok(sponsorship);
+        }
+
+
         [Authorize(Roles = RoleConstants.Sponsor)]
         [HttpPost]
         [Route("create")]

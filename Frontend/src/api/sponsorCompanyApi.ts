@@ -1,6 +1,7 @@
 import { SponsorCompanyDto } from "../types/sponsorCompany";
 import { RegisterCompanyFormInput } from "@/features/sponsors/companies/registration/abstract";
 import { api } from "./api";
+import { SponsorDto } from "@/types/sponsor";
 
 const sponsorCompanyApi = {
     register: async (data: RegisterCompanyFormInput): Promise<string> => {
@@ -19,8 +20,8 @@ const sponsorCompanyApi = {
         return response.data;
     },
 
-    getSponsorCompanyById: async (id: string): Promise<SponsorCompanyDto> => {
-        const response = await api.get<SponsorCompanyDto>(`/users/sponsors/companies/${id}`);
+    getSponsorCompanyById: async (id: string): Promise<SponsorDto> => {
+        const response = await api.get<SponsorDto>(`/users/sponsors/companies/${id}`);
         return response.data;
     },
 

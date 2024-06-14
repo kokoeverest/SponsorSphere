@@ -24,17 +24,20 @@ import StyledButton from '@/components/controls/Button';
 import AuthContext from '@/context/AuthContext';
 import { SponsorDto } from '@/types/sponsor';
 import sponsorCompanyApi from '@/api/sponsorCompanyApi';
+import { SponsorshipDto } from '@/types/sponsorship';
+import sponsorshipApi from '@/api/sponsorshipApi';
 
 const AthleteDetail: React.FC = () =>
 {
   const navigate = useNavigate();
-  const { id } = useContext( AuthContext );
+  const { id, role } = useContext( AuthContext );
   const { id: athleteId } = useParams<{ id: string; }>();
   const [ athlete, setAthlete ] = useState<AthleteDto | null>( null );
   const [ sponsor, setSponsor ] = useState<SponsorDto | null>( null );
   const [ loading, setLoading ] = useState<boolean>( true );
   const [ error, setError ] = useState<string | null>( null );
   const [ profilePicture, setProfilePicture ] = useState<string | null>( null );
+  const [ existingSponsorship, setExistingSponsorship ] = useState<SponsorshipDto | null>( null );
 
   const [ selectedBlogPost, setSelectedBlogPost ] = useState<BlogPostDto | null>( null );
   const [ selectedAuthor, setSelectedAuthor ] = useState<UserDto | null>( null );
@@ -90,9 +93,36 @@ const AthleteDetail: React.FC = () =>
       }
     };
 
-    fetchSponsorData();
+    if ( role === 'Sponsor' )
+    {
+      fetchSponsorData();
+    }
   }, [ id ] );
 
+  useEffect( () =>
+  {
+    const fetchSponsorshipData = async () =>
+    {
+      try
+      {
+        if ( athlete && sponsor )
+        {
+          const result = await sponsorshipApi.getSponsorship( athlete?.id, sponsor.id );
+          setExistingSponsorship( result );
+        }
+      } catch ( error )
+      {
+        setExistingSponsorship( null );
+      } finally
+      {
+        setLoading( false );
+      }
+
+    };
+
+    fetchSponsorshipData();
+
+  }, );
 
   if ( loading ) return <CircularProgress />;
   if ( error ) return <Alert severity='error' variant='filled'>{ error }</Alert>;
@@ -161,6 +191,23 @@ const AthleteDetail: React.FC = () =>
         <StyledText >Sport: <strong>{ athlete.sport }</strong></StyledText>
 
         <StyledBox>
+          <StyledText>Sponsorships:</StyledText><br />
+          { athlete.sponsorships && athlete.sponsorships.length > 0 ? (
+          
+            <List>
+                <ListItemButton>
+                <StyledText variant='h6'>{ athlete.name } has { athlete.sponsorships.length } sponsors</StyledText>
+
+                </ListItemButton>
+            </List>
+          
+          
+          ) : (
+            <StyledText>{ athlete.name } has no sponsors yet</StyledText>
+          ) }
+        </StyledBox>
+
+        <StyledBox>
           <StyledText>Goals:</StyledText>
           { athlete.goals && athlete.goals.length > 0 ? (
             <List>
@@ -177,11 +224,19 @@ const AthleteDetail: React.FC = () =>
           ) }
         </StyledBox>
 
-        <StyledButton onClick={ () => navigate( `/sponsorships/create`, { state: {athlete, sponsor} } ) }>Become a sponsor</StyledButton>
+        { role === 'Sponsor' && !existingSponsorship
+          ? <StyledButton onClick={ () => navigate( `/sponsorships/create`, { state: { athlete, sponsor } } ) }>Become a sponsor</StyledButton>
+          : ( role === 'Sponsor' &&
+            <StyledBox className='container-buttons'>
+              <StyledButton>Edit sponsorship</StyledButton>
+              <StyledButton>Cancel sponsorship</StyledButton>
+            </StyledBox>
+          )
+        }
 
         <StyledBox>
           <Stack>
-            <StyledText>Achievements</StyledText>
+            <StyledText>Achievements:</StyledText>
             { athlete.achievements.map( ( achievement, index ) => (
               <List>
                 <ListItem key={ index }>
@@ -198,7 +253,7 @@ const AthleteDetail: React.FC = () =>
 
         <StyledBox>
           <Stack>
-            <StyledText>Blog Posts</StyledText>
+            <StyledText>Blog Posts:</StyledText>
             { athlete.blogPosts.map( ( blogPost, index ) => (
               <List>
                 <ListItem key={ index }>

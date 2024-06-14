@@ -42,18 +42,6 @@ namespace SponsorSphere.Infrastructure.Repositories
             return 1;
         }
 
-        public async Task<SponsorCompany> GetByIdAsync(int userId)
-        {
-            var sponsorCompany = await _context.SponsorCompanies
-                .Include(sc => sc.BlogPosts)
-                    .ThenInclude(bp => bp.Pictures)
-                .Include(sc => sc.Sponsorships)
-                .FirstOrDefaultAsync(sc => sc.Id == userId)
-                    ?? throw new NotFoundException($"Sponsor with id {userId} not found");
-
-            return sponsorCompany;
-        }
-
         public async Task<List<SponsorCompany>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await _context.SponsorCompanies

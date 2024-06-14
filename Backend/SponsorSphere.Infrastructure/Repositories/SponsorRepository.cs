@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
@@ -12,6 +13,20 @@ namespace SponsorSphere.Infrastructure.Repositories
         {
             _context = context;
         }
+
+
+        public async Task<Sponsor> GetByIdAsync(int userId)
+        {
+            var sponsor = await _context.Sponsors
+                .Include(sc => sc.BlogPosts)
+                    .ThenInclude(bp => bp.Pictures)
+                .Include(sc => sc.Sponsorships)
+                .FirstOrDefaultAsync(sc => sc.Id == userId)
+                    ?? throw new NotFoundException($"Sponsor with id {userId} not found");
+
+            return sponsor;
+        }
+
         public async Task<List<object>> GetByMostAthletesAsync(int pageNumber, int pageSize)
         {
             var sponsors = await _context.Sponsors

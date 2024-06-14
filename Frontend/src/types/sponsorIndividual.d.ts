@@ -1,6 +1,6 @@
-import { UserDto } from './user';
+import { SponsorDto } from './sponsor';
 
-export interface SponsorIndividualDto extends UserDto {
+export interface SponsorIndividualDto extends SponsorDto {
     age: number;
     lastName: string;
     birthDate: Date;

@@ -59,9 +59,9 @@ namespace SponsorSphereWebAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetSponsorCompanyById(int id)
+        public async Task<IActionResult> GetSponsorById(int id)
         {
-            var result = await _mediator.Send(new GetSponsorCompanyByIdQuery(id));
+            var result = await _mediator.Send(new GetSponsorByIdQuery(id));
             return Ok(result);
         }
 

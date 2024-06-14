@@ -8,6 +8,8 @@ const StyledForm: React.FC<BoxProps> = ({ children, ...rest }) => (
         sx={ {
             m: 'auto',
             p: 2,
+            borderRadius: '10px',
+            position: 'sticky',
             border: '1px solid lightgrey',
             gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
             '& .MuiTextField-root': { m: 2, width: '90%' },

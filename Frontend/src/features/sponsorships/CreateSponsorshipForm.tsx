@@ -71,6 +71,7 @@ const CreateSponsorshipForm: React.FC = () =>
                         { ...register("amount")}
                         type='number'
                         label="Enter amount in EUR"
+                        error={ !!errors.amount }
                         helperText={ "The amount of the sponsorship" }
                        />
 
@@ -78,7 +79,6 @@ const CreateSponsorshipForm: React.FC = () =>
                         { ...register( "athleteId" ) }
                         label={ `${ athlete.name } ${ athlete.lastName }` }
                         // disabled
-                        error={ !!errors.athleteId }
                         value={ athlete.id }
                     />
 
@@ -86,8 +86,6 @@ const CreateSponsorshipForm: React.FC = () =>
                         { ...register( 'sponsorId' ) }
                         label={sponsor.name}
                         // disabled
-                        placeholder={`${sponsor.name}`}
-                        error={ !!errors.sponsorId }
                         value={sponsor.id}
                     />
 

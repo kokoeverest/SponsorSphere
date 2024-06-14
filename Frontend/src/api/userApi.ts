@@ -1,4 +1,3 @@
-// import { apiPrivate } from "./apiPrivate";
 import { api } from "./api";
 
 export interface UserInfoResponse {

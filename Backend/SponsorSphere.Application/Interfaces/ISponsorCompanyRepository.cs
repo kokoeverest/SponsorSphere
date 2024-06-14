@@ -24,13 +24,6 @@ namespace SponsorSphere.Application.Interfaces
         Task<int> GetSponsorCompaniesCount();
 
         /// <summary>
-        /// Asynchronously retrieves a sponsor company by its unique identifier.
-        /// </summary>
-        /// <param name="userId">The unique identifier of the sponsor company.</param>
-        /// <returns>The <see cref="SponsorCompany"/> entity if found, otherwise null.</returns>
-        Task<SponsorCompany> GetByIdAsync(int userId);
-
-        /// <summary>
         /// Asynchronously retrieves a paginated list of sponsor companies by country.
         /// </summary>
         /// <param name="country">The country to filter sponsor companies by.</param>
