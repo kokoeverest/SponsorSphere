@@ -23,7 +23,6 @@ namespace SponsorSphere.IntegrationTests.AthleteTests
             var achievementRepository = new AchievementsRepository(_context);
             var athleteRepository = new AthleteRepository(_context);
             var blogPostRepository = new BlogPostRepository(_context);
-            var blogPostPictureRepository = new BlogPostPictureRepository(_context);
             var goalRepository = new GoalRepository(_context);
             var pictureRepository = new PictureRepository(_context);
             var sponsorCompanyRepository = new SponsorCompanyRepository(_context);
@@ -37,7 +36,6 @@ namespace SponsorSphere.IntegrationTests.AthleteTests
                 athleteRepository,
                 achievementRepository,
                 blogPostRepository,
-                blogPostPictureRepository,
                 goalRepository,
                 pictureRepository,
                 sponsorCompanyRepository,
