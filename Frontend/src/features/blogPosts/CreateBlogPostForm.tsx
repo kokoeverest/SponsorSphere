@@ -38,13 +38,13 @@ const CreateBlogPostForm: React.FC = () =>
         onSuccess: ( result ) =>
         {
             setCreatedBlogPost( result );
-            alert("Successful!")
+            alert( "Successful!" );
             queryClient.invalidateQueries( { queryKey: [ 'createBlogPost' ] } );
             navigate( `/feed` );
         },
         onError: () =>
         {
-            <Alert severity='error' variant='standard'>Failed to create blog post!</Alert>;
+            alert( 'Failed to create blog post' );
         }
     } );
 
@@ -81,7 +81,7 @@ const CreateBlogPostForm: React.FC = () =>
                         placeholder="Show your creativity, don't be shy"
                         error={ !!errors.content }
                         helperText={ errors.content?.message }
-                        sx={{p: 2, m: 2}}
+                        sx={ { p: 2, m: 2 } }
                     />
                     <br />
                     <UploadPictureButton onUpload={ handlePictureUpload } />

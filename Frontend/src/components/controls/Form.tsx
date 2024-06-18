@@ -10,10 +10,12 @@ const StyledForm: React.FC<BoxProps> = ({ children, ...rest }) => (
             p: 2,
             borderRadius: '10px',
             position: 'sticky',
+            alignItems: 'center',
+            justifyContent: 'center',
             border: '1px solid lightgrey',
             gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
             '& .MuiTextField-root': { m: 2, width: '90%' },
-            width: 640,
+            width: '60%',
             backgroundColor: 'var(--formGrey)',
             color: 'black'
         } }

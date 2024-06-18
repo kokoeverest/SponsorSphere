@@ -8,7 +8,6 @@ button {
     font-family: inherit;
     background-color: white;
     cursor: pointer;
-    color: black;
     border-color: #000000;
     transition: border-color 0.25s;
 }
@@ -25,7 +24,6 @@ button:focus-visible {
 .container-buttons {
     display: flex;
     justify-content: space-evenly;
-    color: black;
 }
 
 .header .container-buttons {

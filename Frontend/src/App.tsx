@@ -25,6 +25,7 @@ import UpdateSportEventForm from "./features/sportEvents/UpdateSportEventForm";
 import CreateBlogPostForm from "./features/blogPosts/CreateBlogPostForm";
 import CreateSponsorshipForm from "./features/sponsorships/CreateSponsorshipForm";
 import UpdateAthleteProfileForm from "./features/athletes/UpdateAthleteProfileForm";
+import SponsorCompanyDetail from "./features/sponsors/companies/SponsorCompanyDetail";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App: React.FC = () =>
               <Route path='/blogposts/create' element={ <CreateBlogPostForm /> } />
               <Route path='sponsorships/create' element={ <CreateSponsorshipForm/>} />
               <Route path='/users/profile/update' element={ <UpdateAthleteProfileForm/>} />
+              <Route path='/sponsors/companies/:sponsorId' element={ <SponsorCompanyDetail/> } />
 
             </Route>
             <Route path="/login" element={ <LoginForm /> } />

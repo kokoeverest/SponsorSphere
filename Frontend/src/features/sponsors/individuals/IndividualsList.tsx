@@ -26,11 +26,13 @@ const AthleteList: React.FC = () =>
             const queryParams = `?pageNumber=${ page }&pageSize=${ pageSize }&sport=Football`;
             const result: SponsorIndividualDto[] = await sponsorIndividualApi.getSponsorIndividuals( queryParams );
             setSponsorIndividuals( result );
-        } catch ( error )
+        } 
+        catch ( error )
         {
             setError( "Failed to fetch sponsors" );
             console.error( error );
-        } finally
+        } 
+        finally
         {
             setLoading( false );
         }
@@ -42,7 +44,8 @@ const AthleteList: React.FC = () =>
         {
             const count: number = await sponsorIndividualApi.getIndividualsCount();
             setTotalPages( Math.ceil( count / pageSize ) );
-        } catch ( error )
+        } 
+        catch ( error )
         {
             setError( "Failed to fetch sponsors count" );
             console.error( error );

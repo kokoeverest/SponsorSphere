@@ -1,36 +1,26 @@
-import React from "react";
-import { useAuth } from "@/hooks/useAuth";
-import { Typography, CircularProgress, Container, Drawer, Toolbar, Box } from "@mui/material";
+import React, { useContext } from "react";
+import { Drawer, Toolbar, Box } from "@mui/material";
 import AdminDashboard from "./dashboards/AdminDashboard";
 import SponsorDashboard from "./dashboards/SponsorDashboard";
 import AthleteDashboard from "./dashboards/AthleteDashboard";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "@/context/AuthContext";
 
 const drawerWidth = 240;
 
 const Dashboard: React.FC = () =>
 {
-    const { user, loading, isAuthenticated } = useAuth();
+    const { role, isLogged } = useContext( AuthContext );
     const navigate = useNavigate();
 
-    if ( loading )
-    {
-        return (
-            <Container>
-                <CircularProgress />
-                <Typography variant="h6">Loading...</Typography>
-            </Container>
-        );
-    }
-
-    if ( !user || !user.role || !isAuthenticated )
+    if ( !isLogged )
     {
         navigate( '/login' );
     }
 
     const renderDashboard = () =>
     {
-        switch ( user!.role )
+        switch ( role )
         {
             case 'Admin':
                 return <AdminDashboard />;
@@ -42,12 +32,12 @@ const Dashboard: React.FC = () =>
                 navigate( '/' );
         }
     };
-    
+
     return (
         <Drawer variant="permanent" sx={ {
             width: drawerWidth,
             flexShrink: 0,
-            [ `& .MuiDrawer-paper` ]: { marginTop: 14, width: drawerWidth, backgroundColor: 'var(--backGroundBlue)' },
+            [ `& .MuiDrawer-paper` ]: { marginTop: 'auto', width: drawerWidth, backgroundColor: 'var(--backGroundBlue)' },
         } }>
             <Toolbar />
             <Box>

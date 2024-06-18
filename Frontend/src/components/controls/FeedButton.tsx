@@ -12,7 +12,7 @@ const FeedButton: React.FC = () =>
         navigate( '/feed' );
     }
     return (
-        <StyledButton onClick={ feedHandler } sx={ { backgroundColor: 'var(--backGroundOrange)' } }>Explore</StyledButton>
+        <StyledButton onClick={ feedHandler } sx={ { color: 'black', backgroundColor: 'var(--backGroundOrange)' } }>Explore</StyledButton>
     );
 };
 

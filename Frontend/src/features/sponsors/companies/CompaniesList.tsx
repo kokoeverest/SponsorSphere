@@ -26,11 +26,13 @@ const AthleteList: React.FC = () =>
             const queryParams = `?pageNumber=${ page }&pageSize=${ pageSize }&sport=Football`;
             const result: SponsorCompanyDto[] = await sponsorCompanyApi.getSponsorCompanies( queryParams );
             setSponsorCompanies( result );
-        } catch ( error )
+        }
+        catch ( error )
         {
             setError( "Failed to fetch companies" );
             console.error( error );
-        } finally
+        }
+         finally
         {
             setLoading( false );
         }
@@ -42,7 +44,8 @@ const AthleteList: React.FC = () =>
         {
             const count: number = await sponsorCompanyApi.getCompaniesCount();
             setTotalPages( Math.ceil( count / pageSize ) );
-        } catch ( error )
+        } 
+        catch ( error )
         {
             setError( "Failed to fetch companies count" );
             console.error( error );
