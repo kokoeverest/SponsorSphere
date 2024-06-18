@@ -14,28 +14,32 @@ const AuthContextWrapper: React.FC<AuthContextWrapperProps> = ( { children } ) =
     // if any of the two has expired.
 
     const isLoggedLocalStorage = localStorage.getItem( 'isLogged' ) === "true";
-    const userNameLocalStorage = localStorage.getItem( 'userName' );
-    const roleLocalStorage = localStorage.getItem( 'role' );
     const idLocalStorage = localStorage.getItem( 'id' );
+    const roleLocalStorage = localStorage.getItem( 'role' );
+    const userNameLocalStorage = localStorage.getItem( 'userName' );
+    const userTypeLocalStorage = localStorage.getItem( 'userType' )
 
     const [ isLogged, setLogged ] = useState( isLoggedLocalStorage );
-    const [ userName, setUserName ] = useState( userNameLocalStorage );
-    const [ role, setRole ] = useState( roleLocalStorage );
     const [ id, setId ] = useState( idLocalStorage );
+    const [ role, setRole ] = useState( roleLocalStorage );
+    const [ userName, setUserName ] = useState( userNameLocalStorage );
+    const [ userType, setUserType ] = useState( userTypeLocalStorage );
 
     const login = ( userData: UserInfoResponse ) =>
     {
         if ( !isLogged )
         {
             localStorage.setItem( "isLogged", "true" );
-            localStorage.setItem( "userName", userData.userName );
-            localStorage.setItem( "role", userData.role );
             localStorage.setItem( 'id', userData.id );
+            localStorage.setItem( "role", userData.role );
+            localStorage.setItem( "userName", userData.userName );
+            localStorage.setItem( 'userType', userData.userType );
 
             setLogged( true );
-            setUserName( userData.userName );
-            setRole( userData.role );
             setId( userData.id );
+            setRole( userData.role );
+            setUserName( userData.userName );
+            setUserType( userData.userType );
         }
     };
 
@@ -49,7 +53,7 @@ const AuthContextWrapper: React.FC<AuthContextWrapperProps> = ( { children } ) =
         setId( null );
     };
 
-    return <AuthContext.Provider value={ { isLogged, id, userName, role, login, logout } }>
+    return <AuthContext.Provider value={ { isLogged, id, userName, role, userType, login, logout } }>
         { children }
     </AuthContext.Provider>;
 };

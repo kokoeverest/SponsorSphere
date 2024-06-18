@@ -12,7 +12,7 @@ const AddGoal: React.FC = () =>
         navigate( '/goals/create' );
     };
     return (
-        <StyledButton onClick={ addGoalHandler } sx={ { backgroundColor: 'var(--backGroundOrange)' } }> Add goal</StyledButton>
+        <StyledButton onClick={ addGoalHandler } sx={ { color: 'black', backgroundColor: 'var(--backGroundOrange)' } }> Add goal</StyledButton>
     );
 };
 

@@ -9,8 +9,12 @@ namespace SponsorSphere.Application.Profiles
         public SponsorCompanyProfile()
         {
             CreateMap<SponsorCompany, SponsorCompanyDto>();
+
             CreateMap<RegisterSponsorCompanyDto, SponsorCompany>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+
+            CreateMap<UpdateSponsorCompanyDto, SponsorCompanyDto>()
+                .ForMember(dest => dest.PictureId, opt => opt.Ignore());
         }
     }
 }

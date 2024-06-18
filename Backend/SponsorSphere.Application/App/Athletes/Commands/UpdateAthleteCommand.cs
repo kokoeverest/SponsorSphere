@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Athletes.Dtos;
 using SponsorSphere.Application.Common.Constants;
+using SponsorSphere.Application.Common.Helpers;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.Athletes.Commands;
 
-public record UpdateAthleteCommand(AthleteDto AthleteToUpdate) : IRequest<AthleteDto>;
+public record UpdateAthleteCommand(UpdateAthleteDto AthleteToUpdate) : IRequest<AthleteDto>;
 
 public class UpdateAthleteCommandHandler : IRequestHandler<UpdateAthleteCommand, AthleteDto>
 {
@@ -34,7 +35,20 @@ public class UpdateAthleteCommandHandler : IRequestHandler<UpdateAthleteCommand,
             _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
 
             await _unitOfWork.BeginTransactionAsync();
-            var result = await _unitOfWork.AthletesRepository.UpdateAsync(request.AthleteToUpdate);
+
+            var transformedPicture = request.AthleteToUpdate.PictureId is not null
+                ? await PictureHelper.TransformFileToPicture(request.AthleteToUpdate.PictureId, cancellationToken)
+                : null;
+
+            if (transformedPicture != null)
+            {
+                transformedPicture = await _unitOfWork.PicturesRepository.CreateAsync(transformedPicture);
+            }
+
+            var updatedAthlete = _mapper.Map<AthleteDto>(request.AthleteToUpdate);
+            updatedAthlete.PictureId = transformedPicture?.Id ?? 0;
+
+            var result = await _unitOfWork.AthletesRepository.UpdateAsync(updatedAthlete);
             await _unitOfWork.CommitTransactionAsync();
 
             _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
@@ -46,5 +60,5 @@ public class UpdateAthleteCommandHandler : IRequestHandler<UpdateAthleteCommand,
             await _unitOfWork.RollbackTransactionAsync();
             throw;
         }
-    } 
+    }
 }

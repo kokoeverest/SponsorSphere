@@ -11,6 +11,9 @@ namespace SponsorSphere.Application.Profiles
             CreateMap<SponsorIndividual, SponsorIndividualDto>();
             CreateMap<RegisterSponsorIndividualDto, SponsorIndividual>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+
+            CreateMap<UpdateSponsorIndividualDto, SponsorIndividualDto>()
+                .ForMember(dest => dest.PictureId, opt => opt.Ignore());
         }
     }
 }

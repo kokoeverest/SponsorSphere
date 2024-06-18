@@ -84,7 +84,7 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize(Roles = RoleConstants.Sponsor)]
         [HttpPatch]
         [Route("update")]
-        public async Task<IActionResult> UpdateSponsorCompany([FromForm] SponsorCompanyDto updatedSponsorCompany)
+        public async Task<IActionResult> UpdateSponsorCompany([FromForm] UpdateSponsorCompanyDto updatedSponsorCompany)
         {
             var result = await _mediator.Send(new UpdateSponsorCompanyCommand(updatedSponsorCompany));
             return Accepted(result);

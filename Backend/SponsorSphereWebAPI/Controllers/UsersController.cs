@@ -15,12 +15,12 @@ namespace SponsorSphereWebAPI.Controllers
 
         public UsersController(UserManager<User> userManager)
         {
-            _userManager = userManager;            
+            _userManager = userManager;
         }
 
         [HttpGet]
         [Route("info")]
-        public async Task<IActionResult> GetUserRole()
+        public async Task<IActionResult> GetUserInfo()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user is null)
@@ -33,8 +33,16 @@ namespace SponsorSphereWebAPI.Controllers
             {
                 return NotFound("No roles found for this user");
             }
+            var userType = user.GetType().ToString()[28..];
 
-            return Ok(new { Role = roles.First(), UserName = user.UserName, Id = user.Id });
+            return Ok(new
+            {
+                Id = user.Id,
+                Role = roles.First(),
+                UserName = user.UserName,
+                UserType = userType
+            }
+            );
         }
 
         [HttpDelete]

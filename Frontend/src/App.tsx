@@ -21,9 +21,10 @@ import { Box } from "@mui/material";
 import Feed from "./components/Feed";
 import AuthContext from "./context/AuthContext";
 import PendingSportEventsList from "./features/admins/PendingSportEventsList";
-import UpdateSportEventForm from "./features/sportEvents/updateSportEventForm";
+import UpdateSportEventForm from "./features/sportEvents/UpdateSportEventForm";
 import CreateBlogPostForm from "./features/blogPosts/CreateBlogPostForm";
 import CreateSponsorshipForm from "./features/sponsorships/CreateSponsorshipForm";
+import UpdateAthleteProfileForm from "./features/athletes/UpdateAthleteProfileForm";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App: React.FC = () =>
               <Route path='/sportEvents/update' element={ <UpdateSportEventForm /> } />
               <Route path='/blogposts/create' element={ <CreateBlogPostForm /> } />
               <Route path='sponsorships/create' element={ <CreateSponsorshipForm/>} />
+              <Route path='/users/profile/update' element={ <UpdateAthleteProfileForm/>} />
 
             </Route>
             <Route path="/login" element={ <LoginForm /> } />

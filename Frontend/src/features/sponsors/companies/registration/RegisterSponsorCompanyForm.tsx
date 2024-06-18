@@ -30,7 +30,7 @@ const RegisterCompany: React.FC = () => {
 
     // Mutations
     const mutation = useMutation({
-        mutationFn: sponsorCompanyApi.register,
+        mutationFn: sponsorCompanyApi.registerSponsorCompany,
         onSuccess: (userId) => {
 
             <Alert severity='info' variant='filled'>You registered successfully!</Alert>;

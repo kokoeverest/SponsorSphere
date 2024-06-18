@@ -82,7 +82,7 @@ namespace SponsorSphere.Infrastructure.Extensions
                     PhoneNumber = UserConstants.PhoneNumber,
                     BirthDate = new DateTime(1983, 9, 30),
                     Sport = SportsEnum.TrailRunning,
-                    StravaLink = "www.strava.com/userpetar",
+                    StravaLink = "https://www.strava.com/userpetar",
                     PasswordHash = UserConstants.PasswordHash,
                 },
                 new Athlete

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import athleteApi from '@/api/athleteApi';
 import { AthleteDto } from '../../types/athlete';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, Box, Link, List, ListItem, ListItemButton, Stack, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, Divider, Link, List, ListItem, ListItemButton, Stack, Typography } from '@mui/material';
 import pictureApi from '@/api/pictureApi';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -26,6 +26,7 @@ import { SponsorDto } from '@/types/sponsor';
 import sponsorCompanyApi from '@/api/sponsorCompanyApi';
 import { SponsorshipDto } from '@/types/sponsorship';
 import sponsorshipApi from '@/api/sponsorshipApi';
+import StravaIcon from '../../assets/StravaIcon';
 
 const AthleteDetail: React.FC = () =>
 {
@@ -169,7 +170,7 @@ const AthleteDetail: React.FC = () =>
   };
 
   return (
-    <StyledBox>
+    <Box sx={{backgroundColor: 'whitesmoke'}}>
       <Stack alignItems="center" spacing={ 2 }>
         <h1>{ athlete.name } { athlete.lastName }</h1>
 
@@ -180,18 +181,21 @@ const AthleteDetail: React.FC = () =>
           />
         ) : (
           <ProfilePicture
-            alt='Avatar'>
+          alt='Avatar'>
             { athlete.name.slice( 0, 1 ) }{ athlete.lastName.slice( 0, 1 ) }
           </ProfilePicture>
         ) }
-
+      <Divider/>
 
         <StyledText>SponsorSphere member since: <strong>{ new Date( athlete.created ).toLocaleDateString() }</strong></StyledText>
+      <Divider hidden />
         <StyledText>Age: <strong>{ athlete.age }</strong></StyledText>
+      <Divider hidden/>
         <StyledText >Sport: <strong>{ athlete.sport }</strong></StyledText>
-
+      <Divider hidden/>
+      <Divider >Sponsorships</Divider>
         <StyledBox>
-          <StyledText>Sponsorships:</StyledText><br />
+          {/* <StyledText>Sponsorships:</StyledText><br /> */}
           { athlete.sponsorships && athlete.sponsorships.length > 0 ? (
           
             <List>
@@ -207,8 +211,9 @@ const AthleteDetail: React.FC = () =>
           ) }
         </StyledBox>
 
+      <Divider >Goals</Divider>
         <StyledBox>
-          <StyledText>Goals:</StyledText>
+          {/* <StyledText>Goals:</StyledText> */}
           { athlete.goals && athlete.goals.length > 0 ? (
             <List>
               { athlete.goals.map( ( goal, index ) => (
@@ -224,19 +229,11 @@ const AthleteDetail: React.FC = () =>
           ) }
         </StyledBox>
 
-        { role === 'Sponsor' && !existingSponsorship
-          ? <StyledButton onClick={ () => navigate( `/sponsorships/create`, { state: { athlete, sponsor } } ) }>Become a sponsor</StyledButton>
-          : ( role === 'Sponsor' &&
-            <StyledBox className='container-buttons'>
-              <StyledButton>Edit sponsorship</StyledButton>
-              <StyledButton>Cancel sponsorship</StyledButton>
-            </StyledBox>
-          )
-        }
 
+       <Divider>Achievements</Divider> 
         <StyledBox>
           <Stack>
-            <StyledText>Achievements:</StyledText>
+            {/* <StyledText>Achievements:</StyledText> */}
             { athlete.achievements.map( ( achievement, index ) => (
               <List>
                 <ListItem key={ index }>
@@ -251,9 +248,10 @@ const AthleteDetail: React.FC = () =>
           </Stack>
         </StyledBox>
 
+      <Divider>Blog Posts</Divider>
         <StyledBox>
           <Stack>
-            <StyledText>Blog Posts:</StyledText>
+            {/* <StyledText>Blog Posts:</StyledText> */}
             { athlete.blogPosts.map( ( blogPost, index ) => (
               <List>
                 <ListItem key={ index }>
@@ -268,45 +266,49 @@ const AthleteDetail: React.FC = () =>
           </Stack>
         </StyledBox>
 
-        <p>TODO: Fix the links</p>
-        <Box>
-          <Stack direction="row" spacing={ 8 } justifyContent="center" >
+              { role === 'Sponsor' && !existingSponsorship
+                ? <StyledButton onClick={ () => navigate( `/sponsorships/create`, { state: { athlete, sponsor } } ) }>Become a sponsor</StyledButton>
+                : ( role === 'Sponsor' &&
+                  <StyledBox className='container-buttons'>
+                    <StyledButton>Edit sponsorship</StyledButton>
+                    <StyledButton>Cancel sponsorship</StyledButton>
+                  </StyledBox>
+                )
+              }
+      <Box>
+        <Stack direction="row" spacing={ 8 } justifyContent="center">
+          { athlete.website && (
             <Link href={ athlete.website } target="_blank" rel="noopener noreferrer">
               <WebhookIcon />
             </Link>
+          ) }
+          { athlete.faceBookLink && (
             <Link href={ athlete.faceBookLink } target="_blank" rel="noopener noreferrer">
               <FacebookIcon />
             </Link>
+          ) }
+          { athlete.instagramLink && (
             <Link href={ athlete.instagramLink } target="_blank" rel="noopener noreferrer">
               <InstagramIcon />
             </Link>
-            <Link href={ athlete.stravaLink } target="_blank" rel="noopener noreferrer">
-              <SvgIcon >
-                {/* credit: plus icon from https://iconduck.com/free-icons/strava */ }
-                <svg
-                  viewBox="0 0 48 48"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <g
-                    fill="none"
-                    stroke="#000"
-                    strokeLinecap="round"
-                    strokeLinejoin="round">
-                    <path
-                      d="m31.016 26.855-11.177-22.355-11.178 22.355" />
-                    <path
-                      d="m22.694 26.855 8.322 16.645 8.323-16.645" />
-                  </g>
-                </svg>
-              </SvgIcon>
+          ) }
+          { athlete.stravaLink && (
+            <Link href={ `${athlete.stravaLink }`} target="_blank" rel="noopener noreferrer">
+              <StravaIcon />
             </Link>
+          ) }
+          { athlete.twitterLink && (
             <Link href={ athlete.twitterLink } target="_blank" rel="noopener noreferrer">
               <TwitterIcon />
             </Link>
-            <Link href={ athlete.email } target="_blank" rel="noopener noreferrer">
+          ) }
+          { athlete.email && (
+            <Link href={ `mailto:${ athlete.email }` } target="_blank" rel="noopener noreferrer">
               <EmailIcon />
             </Link>
-          </Stack>
-        </Box>
+          ) }
+        </Stack>
+      </Box>
       </Stack>
 
       <GoalDetail
@@ -327,7 +329,7 @@ const AthleteDetail: React.FC = () =>
         athlete={ selectedAthlete }
         open={ isAchievementDetailOpen }
         onClose={ handleCloseAchievementDetail } />
-    </StyledBox>
+    </Box>
   );
 };
 

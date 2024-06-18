@@ -17,4 +17,28 @@ const registerAthleteSchema = yup.object().shape({
   sport: yup.string().required("Sport is required"),
 });
 
-export { registerAthleteSchema };
+const UpdateAthleteProfileSchema = yup.object().shape( {
+  id: yup.number().required( 'Id is required' ),
+  name: yup.string().min( 2 ).max( 200 ).required( "First name is required" ),
+  lastName: yup.string().min( 2 ).max( 200 ).required( "Last name is required" ),
+  email: yup
+    .string()
+    .email( "Must be a valid email" )
+    .required( "Email is required" ),
+  birthDate: yup
+    .date()
+    .required( "Birthdate is required" )
+    .typeError( "Invalid date format" ),
+  phoneNumber: yup.string().required( "Phone number is required" ),
+  country: yup.string().required( "Country is required" ),
+  sport: yup.string().required( "Sport is required" ),
+  pictureId: yup.mixed().nullable(),
+  website: yup.string().nullable().optional(),
+  faceBookLink: yup.string().nullable().optional(),
+  instagramLink: yup.string().nullable().optional(),
+  twitterLink: yup.string().nullable().optional(),
+  stravaLink: yup.string().nullable().optional(),
+} );
+
+
+export { registerAthleteSchema, UpdateAthleteProfileSchema};

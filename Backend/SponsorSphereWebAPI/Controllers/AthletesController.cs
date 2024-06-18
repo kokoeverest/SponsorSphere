@@ -99,7 +99,7 @@ namespace SponsorSphereWebAPI.Controllers
         [Authorize(Roles = RoleConstants.Athlete)]
         [HttpPatch]
         [Route("update")]
-        public async Task<IActionResult> UpdateAthlete([FromForm] AthleteDto updatedAthlete)
+        public async Task<IActionResult> UpdateAthlete([FromForm] UpdateAthleteDto updatedAthlete)
         {
             var result = await _mediator.Send(new UpdateAthleteCommand(updatedAthlete));
             return Accepted(result);

@@ -30,6 +30,7 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
     const [ loading, setLoading ] = useState<boolean>( true );
     const [ error, setError ] = useState<string | null>( null );
     const [ sportEvent, setSportEvent ] = useState<SportEventDto | null>( null );
+    
     let totalSponsorshipsAmount = 0;
     athlete?.sponsorships.forEach( sponsorship => totalSponsorshipsAmount += sponsorship.amount );
 

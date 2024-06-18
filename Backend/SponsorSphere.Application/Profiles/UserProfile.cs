@@ -9,6 +9,8 @@ namespace SponsorSphere.Application.Profiles
         public UserProfile()
         {
             CreateMap<User, UserDto>();
+
+            CreateMap<UpdateUserDto, UserDto>();
         }
     }
 }

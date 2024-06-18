@@ -31,7 +31,7 @@ const RegisterIndividualForm: React.FC = () => {
 
     // Mutations
     const mutation = useMutation({
-        mutationFn: sponsorIndividualApi.register,
+        mutationFn: sponsorIndividualApi.registerSponsorIndividual,
         onSuccess: (userId) => {
             <Alert severity='success' variant='filled'>You registered successfully!</Alert>
             navigate(`/sponsors/individuals/${userId}`);

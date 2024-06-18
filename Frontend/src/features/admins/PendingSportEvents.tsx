@@ -8,13 +8,14 @@ let count: number = 0;
 try
 {
     count = await sportEventApi.getPendingSportEventsCount();
-} catch ( error )
+} 
+catch ( error )
 {
     console.error( error );
 }
 
-const PendingSportEvents: React.FC = () =>
-{
+const PendingSportEvents: React.FC =  () =>
+    {
 
     
     return (

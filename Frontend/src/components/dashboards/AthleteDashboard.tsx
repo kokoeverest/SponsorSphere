@@ -4,10 +4,20 @@ import AddAchievement from "@/features/athletes/achievements/AddAchievement";
 import AddGoal from "@/features/athletes/goals/AddGoal";
 import FeedButton from "../controls/FeedButton";
 import CreateBlogPost from "@/features/blogPosts/CreateBlogPost";
+import MyProfile from "@/features/usersCommon/MyProfile";
+import { UpdateUserProfile } from "@/features/usersCommon/UpdateUserProfile";
 
 const AthleteDashboard: React.FC = () => (
     <Stack spacing={ 2 }>
         <Typography variant='h4' gutterBottom>Athlete Dashboard</Typography>
+        
+        <Grid item>
+            <UpdateUserProfile/>
+        </Grid>
+
+        <Grid item>
+            <MyProfile />
+        </Grid>
 
         <Grid item>
             <FeedButton />
@@ -24,6 +34,7 @@ const AthleteDashboard: React.FC = () => (
         <Grid item>
             <AddGoal />
         </Grid>
+
 
     </Stack>
 );

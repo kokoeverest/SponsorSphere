@@ -1,4 +1,3 @@
-// src/types/athlete.d.ts
 import { UserDto } from './user';
 import { AchievementDto } from './achievement';
 

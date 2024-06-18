@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SponsorSphere.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace SponsorSphere.Application.App.BlogPosts.Dtos

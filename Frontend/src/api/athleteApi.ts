@@ -1,16 +1,29 @@
 import { AthleteDto } from "../types/athlete";
 import { RegisterAthleteFormInput } from "@/features/athletes/registration/abstract";
 import { api } from "./api";
+import { UpdateAthleteProfileFormInput } from "@/features/athletes/abstract";
+import { AxiosResponse } from "axios";
 
 const athleteApi = {
-  register: async (data: RegisterAthleteFormInput): Promise<string> => {
-      const response = await api.post("users/athletes/register", data, {
+  registerAthlete: async (data: RegisterAthleteFormInput): Promise<number> => {
+      const response:AxiosResponse<AthleteDto> = await api.post("users/athletes/register", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
       return response.data.id;
+  },
+
+  updateAthlete: async ( data: UpdateAthleteProfileFormInput ): Promise<AthleteDto> =>
+  {
+    const response: AxiosResponse<AthleteDto> = await api.patch( "users/athletes/update", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    } );
+
+    return response.data;
   },
 
   getAthletes: async ( queryParams: string ): Promise<AthleteDto[]> => {
