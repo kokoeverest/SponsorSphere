@@ -25,7 +25,8 @@ public class DeleteGoalCommandHandler : IRequestHandler<DeleteGoalCommand>
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            await _unitOfWork.GoalsRepository.DeleteAsync(request.SportEventId, request.AthleteId);
+            var result = await _unitOfWork.GoalsRepository.DeleteAsync(request.SportEventId, request.AthleteId);
+            Console.WriteLine(result);
             await _unitOfWork.CommitTransactionAsync();
             _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
         }

@@ -53,8 +53,11 @@ const CreateSponsorshipForm: React.FC = () =>
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
                     <h1>Want to become a sposor?</h1>
 
+                    <input hidden { ...register( "athleteId" ) } defaultValue={ athlete.id } />
+                    <input hidden { ...register( 'sponsorId' ) } defaultValue={ sponsor.id } />
+
                     <TextField
-                        {...register('level')}
+                        { ...register( 'level' ) }
                         select
                         label='Select sponsorship level'
                         value={ selectedLevel }
@@ -66,27 +69,13 @@ const CreateSponsorshipForm: React.FC = () =>
                             </MenuItem>
                         ) ) }
                     </TextField>
-                    
+
                     <TextField
-                        { ...register("amount")}
+                        { ...register( "amount" ) }
                         type='number'
                         label="Enter amount in EUR"
                         error={ !!errors.amount }
                         helperText={ "The amount of the sponsorship" }
-                       />
-
-                    <TextField
-                        { ...register( "athleteId" ) }
-                        label={ `${ athlete.name } ${ athlete.lastName }` }
-                        // disabled
-                        value={ athlete.id }
-                    />
-
-                    <TextField
-                        { ...register( 'sponsorId' ) }
-                        label={sponsor.name}
-                        // disabled
-                        value={sponsor.id}
                     />
 
                     <br />

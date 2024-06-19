@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import athleteApi from '@/api/athleteApi';
 import { AthleteDto } from '../../types/athlete';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, Box, Divider, Link, List, ListItem, ListItemButton, Stack, Typography } from '@mui/material';
+import { Alert, Box, Divider, Link, List, ListItem, ListItemButton, Stack } from '@mui/material';
 import pictureApi from '@/api/pictureApi';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -27,6 +27,7 @@ import sponsorCompanyApi from '@/api/sponsorCompanyApi';
 import { SponsorshipDto } from '@/types/sponsorship';
 import sponsorshipApi from '@/api/sponsorshipApi';
 import StravaIcon from '../../assets/StravaIcon';
+import { UpdateUserProfile } from '../usersCommon/UpdateUserProfile';
 
 const AthleteDetail: React.FC = () =>
 {
@@ -170,7 +171,7 @@ const AthleteDetail: React.FC = () =>
   };
 
   return (
-    <Box sx={{backgroundColor: 'whitesmoke'}}>
+    <StyledBox sx={ { backgroundColor: 'whitesmoke' } }>
       <Stack alignItems="center" spacing={ 2 }>
         <h1>{ athlete.name } { athlete.lastName }</h1>
 
@@ -181,45 +182,48 @@ const AthleteDetail: React.FC = () =>
           />
         ) : (
           <ProfilePicture
-          alt='Avatar'>
+            alt='Avatar'>
             { athlete.name.slice( 0, 1 ) }{ athlete.lastName.slice( 0, 1 ) }
           </ProfilePicture>
         ) }
-      <Divider/>
+        <Divider />
 
-        <StyledText>SponsorSphere member since: <strong>{ new Date( athlete.created ).toLocaleDateString() }</strong></StyledText>
-      <Divider hidden />
-        <StyledText>Age: <strong>{ athlete.age }</strong></StyledText>
-      <Divider hidden/>
-        <StyledText >Sport: <strong>{ athlete.sport }</strong></StyledText>
-      <Divider hidden/>
-      <Divider >Sponsorships</Divider>
+        <Divider flexItem><StyledText>General info</StyledText></Divider>
+
         <StyledBox>
-          {/* <StyledText>Sponsorships:</StyledText><br /> */}
-          { athlete.sponsorships && athlete.sponsorships.length > 0 ? (
-          
-            <List>
-                <ListItemButton>
-                <StyledText variant='h6'>{ athlete.name } has { athlete.sponsorships.length } sponsors</StyledText>
+          <StyledText>SponsorSphere member since: <strong>{ new Date( athlete.created ).toLocaleDateString() }</strong></StyledText>
+          <Divider hidden />
+          <StyledText>Age: <strong>{ athlete.age }</strong></StyledText>
+          <Divider hidden />
+          <StyledText >Sport: <strong>{ athlete.sport }</strong></StyledText>
+          <Divider hidden />
+        </StyledBox>
 
-                </ListItemButton>
+        <Divider flexItem><StyledText>Sponsorships</StyledText></Divider>
+        <StyledBox>
+          { athlete.sponsorships && athlete.sponsorships.length > 0 ? (
+
+            <List>
+              <ListItemButton>
+                <StyledText>{ athlete.name } has { athlete.sponsorships.length } sponsors</StyledText>
+
+              </ListItemButton>
             </List>
-          
-          
+
+
           ) : (
             <StyledText>{ athlete.name } has no sponsors yet</StyledText>
           ) }
         </StyledBox>
 
-      <Divider >Goals</Divider>
+        <Divider flexItem> <StyledText>Goals</StyledText> </Divider>
         <StyledBox>
-          {/* <StyledText>Goals:</StyledText> */}
           { athlete.goals && athlete.goals.length > 0 ? (
             <List>
               { athlete.goals.map( ( goal, index ) => (
                 <ListItem key={ index }>
                   <ListItemButton onClick={ () => handleGoalClick( goal, athlete ) }>
-                    <StyledText>Sport: { goal.sport }</StyledText>
+                    <StyledText>{ `Sport: ${ goal.sport }` }</StyledText>
                   </ListItemButton>
                 </ListItem>
               ) ) }
@@ -230,85 +234,99 @@ const AthleteDetail: React.FC = () =>
         </StyledBox>
 
 
-       <Divider>Achievements</Divider> 
+        <Divider flexItem> <StyledText>Achievements</StyledText></Divider>
         <StyledBox>
           <Stack>
-            {/* <StyledText>Achievements:</StyledText> */}
-            { athlete.achievements.map( ( achievement, index ) => (
+            { athlete.achievements && athlete.achievements.length > 0 ? (
               <List>
-                <ListItem key={ index }>
-                  <ListItemButton onClick={ () => handleAchievementClick( achievement, athlete ) }>
-                    <StyledText>Sport: { achievement.sport } </StyledText>
-                    { achievement.placeFinished && <Typography>Finished: <strong>{ achievement.placeFinished }</strong></Typography> }
-                    { achievement.description && <Typography>Description: <strong>{ achievement.description.slice( 0, 15 ) + "..." }</strong></Typography> }
-                  </ListItemButton>
-                </ListItem>
+                { athlete.achievements.map( ( achievement, index ) => (
+                  <ListItem key={ index }>
+                    <ListItemButton onClick={ () => handleAchievementClick( achievement, athlete ) }>
+                      <StyledText>Sport: { achievement.sport }
+
+                        { achievement.placeFinished && <StyledText>{ `Finished:  ${ achievement.placeFinished } place` }</StyledText> }
+                        { achievement.description && <StyledText>{ `Description:  ${ achievement.description.slice( 0, 15 ) + "..." }` }</StyledText> }
+                      </StyledText>
+                    </ListItemButton>
+                  </ListItem>
+                ) ) }
               </List>
-            ) ) }
+            ) : (
+              <StyledText>{ athlete.name } hasn't added any achievements yet</StyledText>
+            ) }
           </Stack>
         </StyledBox>
 
-      <Divider>Blog Posts</Divider>
+        <Divider flexItem><StyledText>Blog Posts</StyledText></Divider>
         <StyledBox>
           <Stack>
-            {/* <StyledText>Blog Posts:</StyledText> */}
-            { athlete.blogPosts.map( ( blogPost, index ) => (
-              <List>
-                <ListItem key={ index }>
-                  <ListItemButton onClick={ () => handleBlogPostClick( blogPost, athlete ) }>
-
-                    <Typography>Posted: { new Date( blogPost.created ).toLocaleDateString() }
-                      <strong>{ blogPost.content.slice( 0, 15 ) + "..." }</strong></Typography>
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            ) ) }
+            { athlete?.blogPosts && athlete.blogPosts.length > 0 ? (
+              athlete.blogPosts.map( ( blogPost, index ) => (
+                <List>
+                  <ListItem key={ index }>
+                    <ListItemButton onClick={ () => handleBlogPostClick( blogPost, athlete ) }>
+                      <StyledText>
+                        { `Posted on: ${ new Date( blogPost.created ).toLocaleDateString() }
+                        ${ blogPost.content.slice( 0, 15 ) + "..." }` }
+                      </StyledText>
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              ) ) ) : (
+              <StyledText>{ athlete?.name } hasn't shared anything yet</StyledText>
+            ) }
           </Stack>
         </StyledBox>
 
-              { role === 'Sponsor' && !existingSponsorship
-                ? <StyledButton onClick={ () => navigate( `/sponsorships/create`, { state: { athlete, sponsor } } ) }>Become a sponsor</StyledButton>
-                : ( role === 'Sponsor' &&
-                  <StyledBox className='container-buttons'>
-                    <StyledButton>Edit sponsorship</StyledButton>
-                    <StyledButton>Cancel sponsorship</StyledButton>
-                  </StyledBox>
-                )
-              }
-      <Box>
-        <Stack direction="row" spacing={ 8 } justifyContent="center">
-          { athlete.website && (
-            <Link href={ athlete.website } target="_blank" rel="noopener noreferrer">
-              <WebhookIcon />
-            </Link>
-          ) }
-          { athlete.faceBookLink && (
-            <Link href={ athlete.faceBookLink } target="_blank" rel="noopener noreferrer">
-              <FacebookIcon />
-            </Link>
-          ) }
-          { athlete.instagramLink && (
-            <Link href={ athlete.instagramLink } target="_blank" rel="noopener noreferrer">
-              <InstagramIcon />
-            </Link>
-          ) }
-          { athlete.stravaLink && (
-            <Link href={ `${athlete.stravaLink }`} target="_blank" rel="noopener noreferrer">
-              <StravaIcon />
-            </Link>
-          ) }
-          { athlete.twitterLink && (
-            <Link href={ athlete.twitterLink } target="_blank" rel="noopener noreferrer">
-              <TwitterIcon />
-            </Link>
-          ) }
-          { athlete.email && (
-            <Link href={ `mailto:${ athlete.email }` } target="_blank" rel="noopener noreferrer">
-              <EmailIcon />
-            </Link>
-          ) }
-        </Stack>
-      </Box>
+        { role === 'Sponsor' && !existingSponsorship
+          ? <StyledButton onClick={ () => navigate( `/sponsorships/create`, { state: { athlete, sponsor } } ) }>Become a sponsor</StyledButton>
+          : ( role === 'Sponsor' &&
+            <StyledBox className='container-buttons'>
+              <StyledButton>Edit sponsorship</StyledButton>
+              <StyledButton>Cancel sponsorship</StyledButton>
+            </StyledBox>
+          )
+        }
+
+        <Divider flexItem><StyledText>Contacts and social media</StyledText></Divider>
+        <Box>
+          <Stack direction="row" spacing={ 8 } justifyContent="center">
+            { athlete.website && (
+              <Link href={ athlete.website } target="_blank" rel="noopener noreferrer">
+                <WebhookIcon />
+              </Link>
+            ) }
+            { athlete.faceBookLink && (
+              <Link href={ athlete.faceBookLink } target="_blank" rel="noopener noreferrer">
+                <FacebookIcon />
+              </Link>
+            ) }
+            { athlete.instagramLink && (
+              <Link href={ athlete.instagramLink } target="_blank" rel="noopener noreferrer">
+                <InstagramIcon />
+              </Link>
+            ) }
+            { athlete.stravaLink && (
+              <Link href={ `${ athlete.stravaLink }` } target="_blank" rel="noopener noreferrer">
+                <StravaIcon />
+              </Link>
+            ) }
+            { athlete.twitterLink && (
+              <Link href={ athlete.twitterLink } target="_blank" rel="noopener noreferrer">
+                <TwitterIcon />
+              </Link>
+            ) }
+            { athlete.email && (
+              <Link href={ `mailto:${ athlete.email }` } target="_blank" rel="noopener noreferrer">
+                <EmailIcon />
+              </Link>
+            ) }
+          </Stack>
+        </Box>
+        
+        <Divider flexItem />
+        { athleteId == id && <UpdateUserProfile /> }
+
       </Stack>
 
       <GoalDetail
@@ -329,7 +347,7 @@ const AthleteDetail: React.FC = () =>
         athlete={ selectedAthlete }
         open={ isAchievementDetailOpen }
         onClose={ handleCloseAchievementDetail } />
-    </Box>
+    </StyledBox>
   );
 };
 

@@ -21,7 +21,15 @@ const MyProfile: React.FC = () =>
     };
 
     return (
-        <StyledButton onClick={ myProfileClickHandler } sx={ { color: 'black', backgroundColor: 'var(--backGroundOrange)' } }>My Profile</StyledButton>
+        <StyledButton
+            onClick={ myProfileClickHandler }
+            sx={ {
+                color: 'black',
+                backgroundColor: 'var(--backGroundOrange)'
+            } }
+        >
+            My Profile
+        </StyledButton>
     );
 };
 

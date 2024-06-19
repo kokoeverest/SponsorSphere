@@ -1,4 +1,4 @@
-import { BlogPostPictureDto } from "./blogPostPicture";
+import { PictureDto } from "./picture";
 
 export interface BlogPostDto {
     id: number;

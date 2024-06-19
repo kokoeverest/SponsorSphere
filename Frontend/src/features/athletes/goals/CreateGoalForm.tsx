@@ -13,6 +13,7 @@ import sportEventApi from "@/api/sportEventApi";
 import enumApi from "@/api/enumApi";
 import { SportEventDto } from "@/types/sportEvent";
 import CreateGoalSchema from "./schemas";
+import StyledText from "@/components/controls/Typography";
 
 const CreateGoalForm: React.FC = () =>
 {
@@ -60,16 +61,19 @@ const CreateGoalForm: React.FC = () =>
         <>
             { !mutation.isError && !mutation.isPending && !sportsEventsQuery.isPending && (
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
-                    <h1>Add your goal</h1>
+                    <StyledText variant="h3">Add your goal</StyledText>
 
                     <div>
-                        <Link to={ '/achievements/sportEvents/create?eventType=goal' }>*If you don't find the sport event in the list,
-                            click here to create it first*</Link>
+                        <Link to={ '/achievements/sportEvents/create?eventType=goal' }>
+                            <StyledText variant="h6">
+                                *If you don't find the sport event in the list, click here to create it first*
+                            </StyledText>
+                        </Link>
                     </div>
                     <TextField
                         select
                         label="Select sport"
-                        helperText={ "The sport of your achievement" }
+                        helperText={ "The sport which you will compete in" }
                         value={ selectedSport }
                         onChange={ ( event ) => setSelectedSport( event.target.value ) }
                     >
@@ -100,13 +104,13 @@ const CreateGoalForm: React.FC = () =>
                         { ...register( 'amountNeeded' ) }
                         label="Goal amount needed"
                         type='number'
-                        placeholder="Goal amount needed"
+                        placeholder="Goal amount needed in EUR"
                         error={ !!errors.amountNeeded }
                         helperText={ "How much do you need?" }
                     />
                     <br />
                     <StyledButton type="submit">Submit</StyledButton>
-                    
+
                 </StyledForm>
             ) }
 

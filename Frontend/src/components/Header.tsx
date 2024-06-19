@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import StyledButton from './controls/Button';
 import LogoutButton from './controls/LogoutButton';
 import AuthContext from '@/context/AuthContext';
+import Dashboard from './Dashboard';
 
 const Header: React.FC = () =>
 {
@@ -15,17 +15,12 @@ const Header: React.FC = () =>
     navigate( '/' );
   };
 
-  const handleDashboardClick = () =>
-  {
-    navigate( '/dashboard' );
-  };
-
   return (
     <div className="header">
       <h1 className='headerTitle' onClick={ handleTitleClick }>SponsorSphere</h1>
       { authData.isLogged
         && <div className="container-buttons">
-          <StyledButton onClick={ handleDashboardClick }>Dashboard</StyledButton>
+          <Dashboard />
           <LogoutButton></LogoutButton>
         </div>
       }

@@ -8,10 +8,17 @@ import { PAGE_SIZE as pageSize } from '@/common/constants';
 import { SponsorIndividualDto } from '../../../types/sponsorIndividual';
 import StyledPagination from '@/components/controls/Pagination';
 import sponsorIndividualApi from '@/api/sponsorIndividualApi';
+import { fetchPicture } from '@/common/helpers';
+import StyledText from '@/components/controls/Typography';
+
+interface SponsorIndividualWithPicture extends SponsorIndividualDto
+{
+    pictureContent?: string;
+}
 
 const AthleteList: React.FC = () =>
 {
-    const [ sponsorIndividuals, setSponsorIndividuals ] = useState<SponsorIndividualDto[]>( [] );
+    const [ sponsorIndividuals, setSponsorIndividuals ] = useState<SponsorIndividualWithPicture[]>( [] );
     const [ loading, setLoading ] = useState<boolean>( true );
     const [ error, setError ] = useState<string | null>( null );
     const [ pageNumber, setPageNumber ] = useState<number>( 1 );
@@ -25,7 +32,19 @@ const AthleteList: React.FC = () =>
         {
             const queryParams = `?pageNumber=${ page }&pageSize=${ pageSize }&sport=Football`;
             const result: SponsorIndividualDto[] = await sponsorIndividualApi.getSponsorIndividuals( queryParams );
-            setSponsorIndividuals( result );
+            
+            const sponsorIndividualsWithPictures = await Promise.all( result.map( async ( sponsorIndividual ) =>
+            {
+                if ( sponsorIndividual.pictureId )
+                {
+                    const pictureContent = await fetchPicture( sponsorIndividual.pictureId );
+                    return { ...sponsorIndividual, pictureContent };
+                }
+                return sponsorIndividual;
+            } ) );
+
+
+            setSponsorIndividuals( sponsorIndividualsWithPictures );
         } 
         catch ( error )
         {
@@ -68,17 +87,16 @@ const AthleteList: React.FC = () =>
 
     return (
         <>
-
             { sponsorIndividuals.map( sponsorIndividual => (
                 <List key={ sponsorIndividual.id } dense={ true }>
                     <ListItem>
                         <ListItemAvatar>
-                            <Avatar>
-                                <ArrowForwardIcon />
+                            <Avatar src={ `data:image/jpeg;base64,${ sponsorIndividual.pictureContent }` }>
+                                { !sponsorIndividual.pictureContent && <ArrowForwardIcon /> }
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemButton href={ `/sponsors/companies/${ sponsorIndividual.id }` }>
-                            { sponsorIndividual.name }, Age: { sponsorIndividual.age }, Country: { sponsorIndividual.country }
+                        <ListItemButton href={ `/sponsors/individuals/${ sponsorIndividual.id }` }>
+                            <StyledText>{ sponsorIndividual.name }, Age: { sponsorIndividual.age }, Country: { sponsorIndividual.country }</StyledText>
                         </ListItemButton>
                     </ListItem>
                 </List>

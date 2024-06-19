@@ -12,7 +12,8 @@ import athleteApi from "@/api/athleteApi";
 import enumApi from "@/api/enumApi";
 import { registerAthleteSchema } from "@/features/athletes/schemas";
 
-const RegisterAthleteForm: React.FC = () => {
+const RegisterAthleteForm: React.FC = () =>
+{
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -20,124 +21,157 @@ const RegisterAthleteForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterAthleteFormInput>({
-    resolver: yupResolver(registerAthleteSchema),
-  });
+  } = useForm<RegisterAthleteFormInput>( {
+    resolver: yupResolver( registerAthleteSchema ),
+  } );
 
-  const [selectedCountry, setSelectedCountry] = useState('BGR');
-  const [selectedSport, setSelectedSport] = useState('Basketball');
+  const [ selectedCountry, setSelectedCountry ] = useState( 'BGR' );
+  const [ selectedSport, setSelectedSport ] = useState( 'Basketball' );
+  const [ errorMessage, setErrorMessage ] = useState<string | null>( null );
 
   // Queries
-  const countriesQuery = useQuery({ queryKey: ['getCountries'], queryFn: enumApi.getCountries });
-  const sportsQuery = useQuery({ queryKey: ['getSports'], queryFn: enumApi.getSports });
+  const countriesQuery = useQuery( { queryKey: [ 'getCountries' ], queryFn: enumApi.getCountries } );
+  const sportsQuery = useQuery( { queryKey: [ 'getSports' ], queryFn: enumApi.getSports } );
 
   // Mutations
-  const mutation = useMutation({
+  const mutation = useMutation( {
     mutationFn: athleteApi.registerAthlete,
-    onSuccess: (userId) => {
-      <Alert severity='success' variant='filled'>You registered successfully!</Alert>
-      navigate(`/athletes/${userId}`);
-      queryClient.invalidateQueries({ queryKey: ['getAthletes'] })
+    onSuccess: ( userId ) =>
+    {
+      <Alert severity='success' variant='filled'>You registered successfully!</Alert>;
+      navigate( `/athletes/${ userId }` );
+      queryClient.invalidateQueries( { queryKey: [ 'getAthletes' ] } );
     },
-  });
+    onError: ( error: any ) =>
+    {
+      if ( error.response && error.response.data && error.response.data.message )
+      {
+        if ( error.response.data.message.includes( "is already taken" ) )
+        {
+          setErrorMessage( "This email is already registered. Please use another email." );
+        } else
+        {
+          setErrorMessage( "An unexpected error occurred. Please try again." );
+        }
+      }
+    }
+  } );
 
-  const onSubmitHandler: SubmitHandler<RegisterAthleteFormInput> = async (data) => mutation.mutate(data);
+  const onSubmitHandler: SubmitHandler<RegisterAthleteFormInput> = async ( data ) =>
+  {
+    setErrorMessage( null );
+    mutation.mutate( data );
+  };
 
   return (
     <>
-      {!mutation.isError && !mutation.isPending && !countriesQuery.isPending && !sportsQuery.isPending && (
-        <StyledForm onSubmit={handleSubmit(onSubmitHandler)}>
+      { !countriesQuery.isPending && !sportsQuery.isPending && (
+        <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
           <h1>Register as Athlete</h1>
 
+
           <TextField
-            {...register("name")}
+            { ...register( "name" ) }
             label="First name"
             type="text"
             placeholder="First name"
-            error={!!errors.name}
-            helperText={errors.name?.message}
+            error={ !!errors.name }
+            helperText={ errors.name?.message }
           />
 
           <TextField
-            {...register("lastName")}
+            { ...register( "lastName" ) }
             label="Last name"
             type="text"
             placeholder="Last name"
-            error={!!errors.lastName}
-            helperText={errors.lastName?.message}
+            error={ !!errors.lastName }
+            helperText={ errors.lastName?.message }
           />
 
           <TextField
-            {...register("email")}
+            { ...register( "email" ) }
             label="Email"
             type="email"
             placeholder="Enter a valid email"
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            error={ !!errors.email }
+            helperText={ errors.email?.message }
           />
 
           <TextField
-            {...register("password")}
+            { ...register( "password" ) }
             label="Password"
             type="password"
             placeholder="Enter strong password"
-            error={!!errors.password}
-            helperText={errors.password?.message}
+            error={ !!errors.password }
+            helperText={ errors.password?.message }
           />
 
           <TextField
-            {...register("birthDate")}
+            { ...register( "birthDate" ) }
             type="date"
-            error={!!errors.birthDate}
-            helperText={errors.birthDate?.message}
+            error={ !!errors.birthDate }
+            helperText={ errors.birthDate?.message }
           />
 
           <TextField
-            {...register("phoneNumber")}
+            { ...register( "phoneNumber" ) }
             label="Phone number"
             type="tel"
-            error={!!errors.phoneNumber}
-            helperText={errors.phoneNumber?.message}
+            error={ !!errors.phoneNumber }
+            helperText={ errors.phoneNumber?.message }
           />
 
           <TextField
-            {...register("country")}
+            { ...register( "country" ) }
             select
             label="Select country"
-            error={!!errors.country}
-            helperText={errors.country?.message}
-            value={selectedCountry}
-            onChange={(event) => setSelectedCountry(event.target.value)}
+            error={ !!errors.country }
+            helperText={ errors.country?.message }
+            value={ selectedCountry }
+            onChange={ ( event ) => setSelectedCountry( event.target.value ) }
           >
-            {countriesQuery.data?.map((country) => (
-              <MenuItem key={country} value={country}>
-                {country}
+            { countriesQuery.data?.map( ( country ) => (
+              <MenuItem key={ country } value={ country }>
+                { country }
               </MenuItem>
-            ))}
+            ) ) }
           </TextField>
 
           <TextField
-            {...register("sport")}
+            { ...register( "sport" ) }
             select
             label="Select sport"
-            error={!!errors.sport}
-            helperText={errors.sport?.message}
-            value={selectedSport}
-            onChange={(event) => setSelectedSport(event.target.value)}
+            error={ !!errors.sport }
+            helperText={ errors.sport?.message }
+            value={ selectedSport }
+            onChange={ ( event ) => setSelectedSport( event.target.value ) }
           >
-            {sportsQuery.data?.map((sport) => (
-              <MenuItem key={sport} value={sport}>
-                {sport}
+            { sportsQuery.data?.map( ( sport ) => (
+              <MenuItem key={ sport } value={ sport }>
+                { sport }
               </MenuItem>
-            ))}
+            ) ) }
           </TextField>
           <br />
 
+          { errorMessage && (
+
+            <Alert
+              severity="error"
+              sx={ {
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 100
+              } }>{ errorMessage }</Alert>
+
+          ) }
+
           <StyledButton type="submit">Register</StyledButton>
         </StyledForm>
-      )}
+      ) }
 
-      {mutation.isError && <h3>Error</h3>}
       { ( countriesQuery.isPending || sportsQuery.isPending || mutation.isPending ) && <CircularProgress /> }
     </>
   );

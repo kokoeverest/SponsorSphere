@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { PHONE_NUMBER_REGEX as phoneNumberRegex } from "@/common/constants";
 
 const RegisterIndividualSchema = yup.object().shape( {
     name: yup.string().min( 2 ).max( 200 ).required( 'First name is required' ),
@@ -6,7 +7,12 @@ const RegisterIndividualSchema = yup.object().shape( {
     email: yup.string().email( 'Must be a valid email' ).required( 'Email is required' ),
     password: yup.string().min( 8 ).max( 32 ).required( 'Password is required' ),
     birthDate: yup.string().required( 'Birthdate is required' ).typeError( 'Invalid date format' ),
-    phoneNumber: yup.string().required( 'Phone number is required' ),
+    phoneNumber: yup
+        .string()
+        .min( 10 )
+        .max( 16 )
+        .matches( phoneNumberRegex, "Phone number is not valid" )
+        .required( 'Phone number is required' ),
     country: yup.string().required( 'Country is required' ),
 } );
 
@@ -22,7 +28,12 @@ const UpdateSponsorIndividualProfileSchema = yup.object().shape( {
         .date()
         .required( "Birthdate is required" )
         .typeError( "Invalid date format" ),
-    phoneNumber: yup.string().required( "Phone number is required" ),
+    phoneNumber: yup
+        .string()
+        .min(10)
+        .max(16)
+        .matches( phoneNumberRegex, "Phone number is not valid" )
+        .required( "Phone number is required" ),
     country: yup.string().required( "Country is required" ),
     pictureId: yup.mixed().nullable().optional(),
     website: yup.string().nullable().optional(),

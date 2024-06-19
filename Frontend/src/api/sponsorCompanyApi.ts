@@ -1,7 +1,6 @@
 import { SponsorCompanyDto } from "../types/sponsorCompany";
 import { RegisterCompanyFormInput } from "@/features/sponsors/companies/registration/abstract";
 import { api } from "./api";
-import { SponsorDto } from "@/types/sponsor";
 import { UpdateSponsorCompanyProfileFormInput } from "@/features/sponsors/companies/abstract";
 import { AxiosResponse } from "axios";
 import { SponsorIndividualDto } from "@/types/sponsorIndividual";
@@ -34,8 +33,8 @@ const sponsorCompanyApi = {
         return response.data;
     },
 
-    getSponsorCompanyById: async ( id: string ): Promise<SponsorIndividualDto | SponsorCompanyDto | SponsorDto> => {
-        const response = await api.get<SponsorIndividualDto | SponsorCompanyDto | SponsorDto>(`/users/sponsors/companies/${id}`);
+    getSponsorCompanyById: async ( id: string ): Promise<SponsorIndividualDto | SponsorCompanyDto> => {
+        const response = await api.get<SponsorIndividualDto | SponsorCompanyDto>(`/users/sponsors/companies/${id}`);
         return response.data;
     },
 

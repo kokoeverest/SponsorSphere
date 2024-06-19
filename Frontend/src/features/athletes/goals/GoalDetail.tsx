@@ -13,6 +13,7 @@ import sportEventApi from '@/api/sportEventApi';
 import { SportEventDto } from '@/types/sportEvent';
 import { Alert, CircularProgress, Slider, Typography } from '@mui/material';
 import StyledBox from '@/components/controls/Box';
+import goalApi from '@/api/goalApi';
 
 interface GoalDetailProps
 {
@@ -30,12 +31,12 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
     const [ loading, setLoading ] = useState<boolean>( true );
     const [ error, setError ] = useState<string | null>( null );
     const [ sportEvent, setSportEvent ] = useState<SportEventDto | null>( null );
-    
+
     let totalSponsorshipsAmount = 0;
     athlete?.sponsorships.forEach( sponsorship => totalSponsorshipsAmount += sponsorship.amount );
 
     let notEnoughMoney = 0;
-    notEnoughMoney = goal?.amountNeeded ? (goal.amountNeeded - totalSponsorshipsAmount) : (- totalSponsorshipsAmount);
+    notEnoughMoney = goal?.amountNeeded ? ( goal.amountNeeded - totalSponsorshipsAmount ) : ( - totalSponsorshipsAmount );
 
     const marks = [
         {
@@ -89,7 +90,16 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
         }
     }, [ open ] );
 
+    const onDeleteHandler = async () => 
+    {
+        if ( sportEvent )
+        {
+            await goalApi.deleteGoal( sportEvent.id, Number( id ) );
+        }
+    };
+
     if ( !goal ) return null;
+    if ( !sportEvent ) return null;
     if ( loading ) return <CircularProgress />;
     if ( error ) return <Alert severity='error' variant='filled'>{ error } </Alert>;
 
@@ -114,11 +124,11 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
                     <Typography>{ sportEvent?.name } in { sportEvent?.country }</Typography>
                     <Typography>So far { athlete?.name } has { totalSponsorshipsAmount } euro </Typography>
 
-                    { notEnoughMoney > 0 
-                        ? <Typography>{ athlete?.name } needs { notEnoughMoney } euro more to be able to participate!</Typography> 
-                        : <Typography> {athlete?.name} has received the needed money for this goal!</Typography> }
+                    { notEnoughMoney > 0
+                        ? <Typography>{ athlete?.name } needs { notEnoughMoney } euro more to be able to participate!</Typography>
+                        : <Typography> { athlete?.name } has received the needed money for this goal!</Typography> }
 
-                    <StyledBox sx={ {  marginTop: 6 } }>
+                    <StyledBox sx={ { marginTop: 6 } }>
                         <Slider
                             min={ 0 }
                             max={ goal.amountNeeded }
@@ -127,7 +137,7 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
                             getAriaValueText={ valuetext }
                             valueLabelDisplay="on"
                             marks={ marks }
-                            sx={ { color: notEnoughMoney > 0 ? 'red' : 'green', maxWidth: '95%'}}
+                            sx={ { color: notEnoughMoney > 0 ? 'red' : 'green', maxWidth: '95%' } }
                         />
                     </StyledBox>
 
@@ -137,7 +147,8 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
             <DialogActions>
                 <div className='container-buttons'>
                     <StyledButton onClick={ onClose }>Close</StyledButton>
-                    { Number( id ) === goal.athleteId && <StyledButton>Delete achievement</StyledButton> }
+                    { Number( id ) === goal.athleteId
+                        && <StyledButton onClick={ onDeleteHandler }>Delete goal</StyledButton> }
                 </div>
             </DialogActions>
         </Dialog>

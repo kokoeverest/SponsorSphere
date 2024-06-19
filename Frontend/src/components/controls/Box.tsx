@@ -4,10 +4,10 @@ import './Form.css';
 
 const StyledBox: React.FC<BoxProps> = ( { children, ...rest } ) => (
     <Box
-        display='flex'
-        alignItems="center"
-        gap={ 2 }
-        sx={ { 
+    gap={ 2 }
+    sx={ { 
+            display: 'flex',
+            justifyContent: "center",
             borderRadius: '10px',
             border: '2px solid lightgrey', 
             m: 2, 

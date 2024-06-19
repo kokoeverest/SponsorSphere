@@ -12,6 +12,7 @@ import blogPostApi from "@/api/blogPostApi";
 import CreateBlogPostSchema from "./schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { BlogPostDto } from "@/types/blogPost";
+import StyledText from "@/components/controls/Typography";
 
 
 const CreateBlogPostForm: React.FC = () =>
@@ -28,7 +29,7 @@ const CreateBlogPostForm: React.FC = () =>
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm( {
+    } = useForm < CreateBlogPostFormInput >( {
         resolver: yupResolver( CreateBlogPostSchema ),
     } );
 
@@ -53,7 +54,7 @@ const CreateBlogPostForm: React.FC = () =>
         const formData = new FormData();
         formData.append( 'authorId', idAsNumber.toString() );
         formData.append( 'content', data.content );
-        pictures.forEach( ( file, _ ) =>
+        pictures.forEach( ( file ) =>
         {
             formData.append( `pictures`, file );
         } );
@@ -69,9 +70,9 @@ const CreateBlogPostForm: React.FC = () =>
         <>
             { !blogPostCreateMutation.isError && !blogPostCreateMutation.isPending && (
                 <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
-                    <input hidden value={ idAsNumber } { ...register( "authorId" ) } />
+                    <input hidden defaultValue={ idAsNumber } { ...register( "authorId" ) } />
 
-                    <h1>Create a blog post</h1>
+                    <StyledText variant="h3">Create a blog post</StyledText>
                     <TextField
                         { ...register( 'content' ) }
                         type="text"
@@ -81,7 +82,6 @@ const CreateBlogPostForm: React.FC = () =>
                         placeholder="Show your creativity, don't be shy"
                         error={ !!errors.content }
                         helperText={ errors.content?.message }
-                        sx={ { p: 2, m: 2 } }
                     />
                     <br />
                     <UploadPictureButton onUpload={ handlePictureUpload } />

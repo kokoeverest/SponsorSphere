@@ -36,7 +36,7 @@ const UpdateSponsorIndividualProfileForm: React.FC = () =>
         onSuccess: () =>
         {
             navigate( profilePage );
-            // queryClient.invalidateQueries( { queryKey: [ 'userProfile' ] } );
+            queryClient.invalidateQueries( { queryKey: [ 'getSponsorIndividuals' ] } );
         },
     } );
 

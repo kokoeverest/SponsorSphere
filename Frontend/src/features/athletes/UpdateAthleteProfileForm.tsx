@@ -39,6 +39,7 @@ const UpdateAthleteProfileForm: React.FC = () =>
         onSuccess: () =>
         {
             navigate( profilePage );
+            queryClient.invalidateQueries( { queryKey: [ 'getAthletes' ] } );
         },
     } );
 

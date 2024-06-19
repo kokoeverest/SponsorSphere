@@ -16,6 +16,8 @@ import sponsorIndividualApi from '@/api/sponsorIndividualApi';
 const RegisterIndividualForm: React.FC = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const [selectedCountry, setSelectedCountry] = useState('BGR');
+    const [ errorMessage, setErrorMessage ] = useState<string | null>( null );
 
     const {
         register,
@@ -24,8 +26,6 @@ const RegisterIndividualForm: React.FC = () => {
     } = useForm<RegisterIndividualFormInput>({
         resolver: yupResolver(RegisterIndividualSchema),
     });
-
-    const [selectedCountry, setSelectedCountry] = useState('BGR');
 
     const countriesQuery = useQuery({ queryKey: ['getCountries'], queryFn: enumApi.getCountries });
 
@@ -37,6 +37,19 @@ const RegisterIndividualForm: React.FC = () => {
             navigate(`/sponsors/individuals/${userId}`);
             queryClient.invalidateQueries({ queryKey: ['getSponsorIndividuals'] });
         },
+        onError: ( error: any ) =>
+        {
+            if ( error.response && error.response.data && error.response.data.message )
+            {
+                if ( error.response.data.message.includes( "is already taken" ) )
+                {
+                    setErrorMessage( "This email is already registered. Please use another email." );
+                } else
+                {
+                    setErrorMessage( "An unexpected error occurred. Please try again." );
+                }
+            }
+        }
     });
 
     const onSubmitHandler: SubmitHandler<RegisterIndividualFormInput> = async (data) => mutation.mutate(data);
@@ -118,6 +131,19 @@ const RegisterIndividualForm: React.FC = () => {
             </TextField>
 
             <br />
+            { errorMessage && (
+
+                <Alert
+                    severity="error"
+                    sx={ {
+                        position: 'fixed',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        zIndex: 100
+                    } }>{ errorMessage }</Alert>
+
+            ) }
 
             <StyledButton type='submit'>Register</StyledButton>
         </StyledForm>

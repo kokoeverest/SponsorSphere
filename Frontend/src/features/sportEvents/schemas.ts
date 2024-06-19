@@ -28,8 +28,7 @@ export const UpdateSportEventSchema = yup.object().shape( {
     country: yup.string().required( 'Country is required' ),
     eventDate: yup.date()
         .required( 'Event date is required' )
-        .typeError( 'Event date must be a valid date' )
-        .min( new Date(), 'Event date must be in the future' ),
+        .typeError( 'Event date must be a valid date' ),
     eventType: yup.string().required( 'Event type is required' ),
     sport: yup.string().required( 'Sport is required' ),
     status: yup.string().required('Status is required'),

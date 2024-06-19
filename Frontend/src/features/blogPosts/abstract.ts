@@ -1,7 +1,7 @@
 export interface CreateBlogPostFormInput {
     content: string;
     authorId: number;
-    pictures?: File[];
+    pictures: File[];
 }
 
 export interface UpdateBlogPostFormInput

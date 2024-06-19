@@ -8,6 +8,7 @@ import athleteApi from '@/api/athleteApi';
 import sponsorCompanyApi from '@/api/sponsorCompanyApi';
 import { SponsorIndividualDto } from '@/types/sponsorIndividual';
 import { SponsorCompanyDto } from '@/types/sponsorCompany';
+import { Box } from '@mui/material';
 
 export const UpdateUserProfile: React.FC = () =>
 {
@@ -17,7 +18,7 @@ export const UpdateUserProfile: React.FC = () =>
 
     const navigate = useNavigate();
 
-    const fetchUser = async ( ) =>
+    const fetchUser = async () =>
     {
         try
         {
@@ -38,14 +39,16 @@ export const UpdateUserProfile: React.FC = () =>
 
     useEffect( () =>
     {
-        fetchUser( );
+        fetchUser();
 
     }, [ userType ] );
 
     return (
-        <StyledButton 
-            sx={ { color: 'black', backgroundColor: 'var(--backGroundOrange)' } } 
-        onClick={ () => navigate( '/users/profile/update', { state: athlete ? athlete : sponsor } ) }
-        >Edit profile</StyledButton>
+        <Box sx={ { p: 2 } }>
+            <StyledButton
+                sx={ { color: 'black', backgroundColor: 'var(--backGroundBlue)' } }
+                onClick={ () => navigate( '/users/profile/update', { state: athlete ? athlete : sponsor } ) }
+            >Edit profile</StyledButton>
+        </Box>
     );
 };

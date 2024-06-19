@@ -15,7 +15,7 @@ const StyledForm: React.FC<BoxProps> = ({ children, ...rest }) => (
             border: '1px solid lightgrey',
             gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
             '& .MuiTextField-root': { m: 2, width: '90%' },
-            width: '60%',
+            width: '80%',
             backgroundColor: 'var(--formGrey)',
             color: 'black'
         } }

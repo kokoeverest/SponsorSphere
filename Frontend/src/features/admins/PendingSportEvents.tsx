@@ -1,26 +1,17 @@
 import React from 'react';
 import StyledButton from '@/components/controls/Button';
 import { Badge } from '@mui/material';
-import sportEventApi from '@/api/sportEventApi';
+import { usePendingSportEvents } from '@/context/PendingSportEventsContext';
 
-let count: number = 0;
-
-try
+const PendingSportEvents: React.FC = () =>
 {
-    count = await sportEventApi.getPendingSportEventsCount();
-} 
-catch ( error )
-{
-    console.error( error );
-}
+    const { count } = usePendingSportEvents();
 
-const PendingSportEvents: React.FC =  () =>
-    {
-
-    
     return (
-        <Badge badgeContent={ count } max={ 9 } color='error'>
-            <StyledButton sx={ { backgroundColor: 'var(--backGroundOrange)' } }>Pending Sport Events</StyledButton>
+        <Badge badgeContent={ count } max={ 99 } color='error'>
+            <StyledButton sx={ { backgroundColor: 'var(--backGroundOrange)' } }>
+                Pending Sport Events
+            </StyledButton>
         </Badge>
     );
 };

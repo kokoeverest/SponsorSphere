@@ -9,6 +9,7 @@ import StyledPagination from '@/components/controls/Pagination';
 import { SportEventDto } from '@/types/sportEvent';
 import sportEventApi from '@/api/sportEventApi';
 import { useNavigate } from 'react-router-dom';
+import StyledText from '@/components/controls/Typography';
 
 const PendingSportEventsList: React.FC = () =>
 {
@@ -76,7 +77,7 @@ const PendingSportEventsList: React.FC = () =>
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemButton onClick={ () => navigate( `/sportEvents/update`, { state: sportEvent } ) }>
-                            { sportEvent.name }, Sport: { sportEvent.sport }, Country: { sportEvent.country }
+                           <StyledText>{ sportEvent.name }, Sport: { sportEvent.sport }, Country: { sportEvent.country }</StyledText>
                         </ListItemButton>
                     </ListItem>
                 </List>

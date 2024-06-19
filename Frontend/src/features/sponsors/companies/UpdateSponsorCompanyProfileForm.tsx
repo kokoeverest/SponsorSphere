@@ -36,10 +36,8 @@ const UpdateSponsorCompanyProfileForm: React.FC = () =>
         mutationFn: sponsorCompanyApi.updateSponsorCompany,
         onSuccess: () =>
         {
-
             navigate( profilePage );
-
-            // queryClient.invalidateQueries( { queryKey: [ 'userProfile' ] } );
+            queryClient.invalidateQueries( { queryKey: [ 'getSponsorCompanies' ] } );
         },
     } );
 
