@@ -14,6 +14,8 @@ import { SportEventDto } from '@/types/sportEvent';
 import { Alert, CircularProgress, Slider, Typography } from '@mui/material';
 import StyledBox from '@/components/controls/Box';
 import goalApi from '@/api/goalApi';
+import { useNavigate } from 'react-router-dom';
+import { urlBuilder } from '@/common/helpers';
 
 interface GoalDetailProps
 {
@@ -26,11 +28,12 @@ interface GoalDetailProps
 const GoalDetail: React.FC<GoalDetailProps> = ( {
     goal: goal, athlete: athlete, open, onClose } ) =>
 {
-    const { id } = useContext( AuthContext );
+    const { id, role, userType } = useContext( AuthContext );
     const [ scroll ] = useState<DialogProps[ 'scroll' ]>( 'paper' );
     const [ loading, setLoading ] = useState<boolean>( true );
     const [ error, setError ] = useState<string | null>( null );
     const [ sportEvent, setSportEvent ] = useState<SportEventDto | null>( null );
+    const navigate = useNavigate();
 
     let totalSponsorshipsAmount = 0;
     athlete?.sponsorships.forEach( sponsorship => totalSponsorshipsAmount += sponsorship.amount );
@@ -95,6 +98,8 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
         if ( sportEvent )
         {
             await goalApi.deleteGoal( sportEvent.id, Number( id ) );
+            onClose();
+            navigate( urlBuilder( id!, role!, userType! ) );
         }
     };
 

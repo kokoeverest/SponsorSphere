@@ -30,7 +30,7 @@ const AthleteList: React.FC = () =>
         setError( null );
         try
         {
-            const queryParams = `?pageNumber=${ page }&pageSize=${ pageSize }&sport=Football`;
+            const queryParams = `?pageNumber=${ page }&pageSize=${ pageSize }`;
             const result: SponsorCompanyDto[] = await sponsorCompanyApi.getSponsorCompanies( queryParams );
 
             const sponsorCompaliesWithPictures = await Promise.all( result.map( async ( sponsorCompany ) =>

@@ -5,8 +5,8 @@ using SponsorSphere.Application.Interfaces;
 
 namespace SponsorSphere.Application.App.BlogPosts.Commands;
 
-public record DeleteBlogPostCommand(int AuthorId) : IRequest<int>;
-public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostCommand, int>
+public record DeleteBlogPostCommand(int AuthorId) : IRequest;
+public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeleteBlogPostCommandHandler> _logger;
@@ -17,7 +17,7 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
         _logger = logger;
     }
 
-    public async Task<int> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken)
     {
         var start = DateTime.Now;
         _logger.LogInformation(LoggingConstants.logStartString, request.ToString());
@@ -25,11 +25,10 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            var result = await _unitOfWork.BlogPostsRepository.DeleteAsync(request.AuthorId);
+            await _unitOfWork.BlogPostsRepository.DeleteAsync(request.AuthorId);
             await _unitOfWork.CommitTransactionAsync();
 
             _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);
-            return result;
         }
         catch (Exception)
         {

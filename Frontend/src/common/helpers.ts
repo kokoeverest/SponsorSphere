@@ -1,7 +1,7 @@
 import pictureApi from "@/api/pictureApi";
 
 export const formatDate = ( date: any ): string =>
-{
+    {
     if ( !( date instanceof Date ) )
     {
         date = new Date( date );
@@ -23,5 +23,21 @@ export const fetchPicture = async ( pictureId: number ): Promise<string> =>
     {
         console.error( `Failed to fetch picture with id ${ pictureId }`, error );
         return '';
+    }
+};
+
+
+export const urlBuilder = ( id: string, role: string, userType: string ): string =>
+{
+    switch ( userType )
+    {
+        case 'SponsorCompany':
+            return `/${ role.toLowerCase() }s/companies/${ id }`;
+        case 'SponsorIndividual':
+            return `/${ role.toLowerCase() }s/individuals/${ id }`;
+        case 'Athlete':
+            return `/${ role.toLowerCase() }s/${ id }`;
+        default:
+            return '';
     }
 };

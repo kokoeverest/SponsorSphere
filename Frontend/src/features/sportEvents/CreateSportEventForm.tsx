@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Alert, CircularProgress, MenuItem, TextField } from "@mui/material";
+import {  CircularProgress, MenuItem, TextField } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import StyledButton from "../../components/controls/Button";
@@ -11,9 +11,12 @@ import { CreateSportEventFormInput } from "./abstract";
 import enumApi from "@/api/enumApi";
 import { CreatePastSportEventSchema, CreateFutureSportEventSchema } from "./schemas";
 import sportEventApi from "@/api/sportEventApi";
+import { urlBuilder } from "@/common/helpers";
+import AuthContext from "@/context/AuthContext";
 
 const CreateSportEventForm: React.FC = () =>
 {
+    const { id, role, userType } = useContext( AuthContext );
     const navigate = useNavigate();
     const location = useLocation();
     const queryClient = useQueryClient();
@@ -46,10 +49,8 @@ const CreateSportEventForm: React.FC = () =>
         mutationFn: sportEventApi.createSportEvent,
         onSuccess: () =>
         {
-            <Alert severity='success' variant='filled' sx={ { zIndex: "calc('.header' + 1)" } }>
-                Thank you! The event you created needs to be confirmed by admin and you'll receive a notification shortly
-            </Alert>;
-            navigate( `/dashboard` );
+            alert("Thank you! The event you created needs to be confirmed by admin and you'll receive a notification shortly");
+            navigate( urlBuilder( id!, role!, userType! ) );
             queryClient.invalidateQueries( { queryKey: [ 'createSportEvent' ] } );
         },
     } );

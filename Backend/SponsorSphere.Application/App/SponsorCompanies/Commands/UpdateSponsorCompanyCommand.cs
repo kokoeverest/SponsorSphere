@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using SponsorSphere.Application.App.Athletes.Dtos;
+using SponsorSphere.Application.App.Pictures.Dtos;
 using SponsorSphere.Application.App.SponsorCompanies.Dtos;
 using SponsorSphere.Application.Common.Constants;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Common.Helpers;
 using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SponsorCompanies.Commands;
 
@@ -13,15 +16,17 @@ public record UpdateSponsorCompanyCommand(UpdateSponsorCompanyDto SponsorCompany
 
 public class UpdateSponsorCompanyCommandHandler : IRequestHandler<UpdateSponsorCompanyCommand, SponsorCompanyDto>
 {
+    private readonly UserManager<User> _userManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdateSponsorCompanyCommandHandler> _logger;
     private readonly IMapper _mapper;
 
-    public UpdateSponsorCompanyCommandHandler(IUnitOfWork unitOfWork, ILogger<UpdateSponsorCompanyCommandHandler> logger, IMapper mapper)
+    public UpdateSponsorCompanyCommandHandler(IUnitOfWork unitOfWork, ILogger<UpdateSponsorCompanyCommandHandler> logger, IMapper mapper, UserManager<User> userManager)
     {
         _unitOfWork = unitOfWork;
         _logger = logger;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<SponsorCompanyDto> Handle(UpdateSponsorCompanyCommand request, CancellationToken cancellationToken)
@@ -33,18 +38,49 @@ public class UpdateSponsorCompanyCommandHandler : IRequestHandler<UpdateSponsorC
 
             await _unitOfWork.BeginTransactionAsync();
 
-            var transformedPicture = request.SponsorCompanyToUpdate.PictureId is not null
+            var loggedUser = await _userManager.FindByEmailAsync(request.SponsorCompanyToUpdate.Email);
+            Picture? existingPicture;
+
+            if (loggedUser is null)
+            {
+                throw new NotFoundException("User is not found!");
+            }
+
+            if (loggedUser.PictureId == 0)
+            {
+                existingPicture = null;
+            }
+            else
+            {
+                existingPicture = await _unitOfWork.PicturesRepository.GetByIdAsync(loggedUser.PictureId);
+            }
+
+            var newProfilePicture = request.SponsorCompanyToUpdate.PictureId is not null
                 ? await PictureHelper.TransformFileToPicture(request.SponsorCompanyToUpdate.PictureId, cancellationToken)
                 : null;
 
-            if (transformedPicture != null)
+            var updatedSponsorCompany = _mapper.Map<SponsorCompanyDto>(request.SponsorCompanyToUpdate);
+
+            if (existingPicture != null && newProfilePicture != null)
             {
-                transformedPicture = await _unitOfWork.PicturesRepository.CreateAsync(transformedPicture);
+                newProfilePicture.Id = existingPicture.Id;
+
+                var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
+
+                await _unitOfWork.PicturesRepository.UpdateAsync(mappedPicture);
+                updatedSponsorCompany.PictureId = newProfilePicture.Id;
             }
 
-            var updatedSponsorCompany = _mapper.Map<SponsorCompanyDto>(request.SponsorCompanyToUpdate);
-            updatedSponsorCompany.PictureId = transformedPicture?.Id ?? 0;
+            else if (newProfilePicture != null)
+            {
+                newProfilePicture = await _unitOfWork.PicturesRepository.CreateAsync(newProfilePicture);
+                updatedSponsorCompany.PictureId = newProfilePicture.Id;
+            }
 
+            else if (existingPicture != null)
+            {
+                updatedSponsorCompany.PictureId = existingPicture.Id;
+            }
 
             var result = await _unitOfWork.SponsorCompaniesRepository.UpdateAsync(updatedSponsorCompany);
             await _unitOfWork.CommitTransactionAsync();

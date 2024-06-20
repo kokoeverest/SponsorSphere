@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,11 +14,14 @@ import enumApi from "@/api/enumApi";
 import { SportEventDto } from "@/types/sportEvent";
 import CreateGoalSchema from "./schemas";
 import StyledText from "@/components/controls/Typography";
+import { urlBuilder } from "@/common/helpers";
+import AuthContext from "@/context/AuthContext";
 
 const CreateGoalForm: React.FC = () =>
 {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const { id, role, userType } = useContext( AuthContext );
 
     const {
         register,
@@ -50,7 +53,7 @@ const CreateGoalForm: React.FC = () =>
         onSuccess: () =>
         {
             <Alert severity='success' variant='filled'>Successful! Thank you!</Alert>;
-            navigate( `/athlete/goals` );
+            navigate( urlBuilder(id!, role!, userType!) );
             queryClient.invalidateQueries( { queryKey: [ 'createGoal' ] } );
         },
     } );

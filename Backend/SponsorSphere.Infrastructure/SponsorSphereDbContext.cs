@@ -24,14 +24,6 @@ namespace SponsorSphere.Infrastructure
 
         public SponsorSphereDbContext(DbContextOptions options) : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=SponsorSphere")
-                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },
-                    LogLevel.Error);
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

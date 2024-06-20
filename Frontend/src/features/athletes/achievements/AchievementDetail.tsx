@@ -12,6 +12,10 @@ import { AthleteDto } from '@/types/athlete';
 import sportEventApi from '@/api/sportEventApi';
 import { SportEventDto } from '@/types/sportEvent';
 import { Alert, CircularProgress, Typography } from '@mui/material';
+import achievementApi from '@/api/achievementApi';
+import { urlBuilder } from '@/common/helpers';
+import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface AchievementDetailProps
 {
@@ -24,11 +28,13 @@ interface AchievementDetailProps
 const AchievementDetail: React.FC<AchievementDetailProps> = ( {
     achievement: achievement, athlete: athlete, open, onClose } ) =>
 {
-    const { id } = useContext( AuthContext );
+    const { id, role, userType } = useContext( AuthContext );
     const [ scroll ] = useState<DialogProps[ 'scroll' ]>( 'paper' );
     const [ loading, setLoading ] = useState<boolean>( true );
     const [ error, setError ] = useState<string | null>( null );
     const [ sportEvent, setSportEvent ] = useState<SportEventDto | null>( null );
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
 
     const descriptionElementRef = useRef<HTMLElement>( null );
@@ -67,6 +73,17 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
         }
     }, [ open ] );
 
+    const onDeleteHandler = async () => 
+    {
+        if ( sportEvent )
+        {
+            await achievementApi.deleteAchievement( sportEvent.id, Number( id ) );
+            onClose();
+            queryClient.invalidateQueries( { queryKey: [ `deleteAchievement` ] } );
+            navigate( urlBuilder(id!, role!, userType!) );
+        }
+    };
+
     if ( !achievement ) return null;
     if ( loading ) return <CircularProgress />;
     if ( error ) return <Alert severity='error' variant='filled'>{ error } </Alert>;
@@ -96,7 +113,7 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
             <DialogActions>
                 <div className='container-buttons'>
                     <StyledButton onClick={ onClose }>Close</StyledButton>
-                    { Number( id ) === achievement.athleteId && <StyledButton>Delete achievement</StyledButton> }
+                    { Number( id ) === achievement.athleteId && <StyledButton onClick={ onDeleteHandler }>Delete achievement</StyledButton> }
                 </div>
             </DialogActions>
         </Dialog>

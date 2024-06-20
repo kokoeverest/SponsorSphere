@@ -1,6 +1,6 @@
 export interface CreateAchievementFormInput 
 {
     sportEventId: number;
-    placeFinished?: number;
-    description?: string;
+    placeFinished?: string | null;
+    description?: string | null;
 }

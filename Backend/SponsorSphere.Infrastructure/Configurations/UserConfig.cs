@@ -44,8 +44,6 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .IsRequired(false)
                 .HasMaxLength(200);
 
-            builder.Property(u => u.PictureId)
-                .IsRequired(false);
 
             builder.HasQueryFilter(u => !u.IsDeleted);
 

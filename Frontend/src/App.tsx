@@ -25,6 +25,7 @@ import CreateSponsorshipForm from "./features/sponsorships/CreateSponsorshipForm
 import UpdateAthleteProfileForm from "./features/athletes/UpdateAthleteProfileForm";
 import SponsorCompanyDetail from "./features/sponsors/companies/SponsorCompanyDetail";
 import SponsorIndividualDetail from "./features/sponsors/individuals/SponsorIndividualDetail";
+import { PendingSportEventsProvider } from "./context/PendingSportEventsContext";
 
 const queryClient = new QueryClient();
 
@@ -52,13 +53,17 @@ const App: React.FC = () =>
               <Route path="/achievements/create" element={ <CreateAchievementForm /> } />
               <Route path="/achievements/sportEvents/create" element={ <CreateSportEventForm /> } />
               <Route path='/goals/create' element={ <CreateGoalForm /> } />
-              <Route path='/sportEvents/pending' element={ <PendingSportEventsList /> } />
-              <Route path='/sportEvents/update' element={ <UpdateSportEventForm /> } />
+
               <Route path='/blogposts/create' element={ <CreateBlogPostForm /> } />
-              <Route path='sponsorships/create' element={ <CreateSponsorshipForm/>} />
-              <Route path='/users/profile/update' element={ <UpdateAthleteProfileForm/>} />
-              <Route path='/sponsors/companies/:sponsorId' element={ <SponsorCompanyDetail/> } />
+              <Route path='sponsorships/create' element={ <CreateSponsorshipForm /> } />
+              <Route path='/users/profile/update' element={ <UpdateAthleteProfileForm /> } />
+              <Route path='/sponsors/companies/:sponsorId' element={ <SponsorCompanyDetail /> } />
               <Route path='/sponsors/individuals/:sponsorId' element={ <SponsorIndividualDetail /> } />
+              <Route path='/sportEvents/pending' element={ <PendingSportEventsList /> } />
+
+              <Route element={ <PendingSportEventsProvider children={ <UpdateSportEventForm /> } /> }>
+                <Route path='/sportEvents/update' element={ <UpdateSportEventForm /> } />
+              </Route>
 
             </Route>
             <Route path="/login" element={ <LoginForm /> } />

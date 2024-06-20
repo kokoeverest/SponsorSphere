@@ -3,7 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SponsorSphere.Application.App.Athletes.Dtos;
+using SponsorSphere.Application.App.Pictures.Dtos;
 using SponsorSphere.Application.Common.Constants;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Common.Helpers;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
@@ -36,17 +38,49 @@ public class UpdateAthleteCommandHandler : IRequestHandler<UpdateAthleteCommand,
 
             await _unitOfWork.BeginTransactionAsync();
 
-            var transformedPicture = request.AthleteToUpdate.PictureId is not null
+            var loggedUser = await _userManager.FindByEmailAsync(request.AthleteToUpdate.Email);
+            Picture? existingPicture;
+
+            if (loggedUser is null)
+            {
+                throw new NotFoundException("User is not found!");
+            }
+
+            if (loggedUser.PictureId == 0)
+            {
+                existingPicture = null;
+            }
+            else
+            {
+                existingPicture = await _unitOfWork.PicturesRepository.GetByIdAsync(loggedUser.PictureId);
+            }
+
+            var newProfilePicture = request.AthleteToUpdate.PictureId is not null
                 ? await PictureHelper.TransformFileToPicture(request.AthleteToUpdate.PictureId, cancellationToken)
                 : null;
 
-            if (transformedPicture != null)
+            var updatedAthlete = _mapper.Map<AthleteDto>(request.AthleteToUpdate);
+
+            if (existingPicture != null && newProfilePicture != null)
             {
-                transformedPicture = await _unitOfWork.PicturesRepository.CreateAsync(transformedPicture);
+                newProfilePicture.Id = existingPicture.Id;
+
+                var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
+
+                await _unitOfWork.PicturesRepository.UpdateAsync(mappedPicture);
+                updatedAthlete.PictureId = newProfilePicture.Id;
             }
 
-            var updatedAthlete = _mapper.Map<AthleteDto>(request.AthleteToUpdate);
-            updatedAthlete.PictureId = transformedPicture?.Id ?? 0;
+            else if (newProfilePicture != null)
+            {
+                newProfilePicture = await _unitOfWork.PicturesRepository.CreateAsync(newProfilePicture);
+                updatedAthlete.PictureId = newProfilePicture.Id;
+            }
+
+            else if (existingPicture != null)
+            {
+                updatedAthlete.PictureId = existingPicture.Id;
+            }
 
             var result = await _unitOfWork.AthletesRepository.UpdateAsync(updatedAthlete);
             await _unitOfWork.CommitTransactionAsync();

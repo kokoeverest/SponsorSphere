@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using SponsorSphere.Application.App.SponsorCompanies.Dtos;
+using SponsorSphere.Application.App.Pictures.Dtos;
 using SponsorSphere.Application.App.SponsorIndividuals.Dtos;
 using SponsorSphere.Application.Common.Constants;
+using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Common.Helpers;
 using SponsorSphere.Application.Interfaces;
+using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.SponsorIndividuals.Commands;
 public record UpdateSponsorIndividualCommand(
@@ -13,12 +16,14 @@ public record UpdateSponsorIndividualCommand(
 
 public class UpdateSponsorIndividualCommandHandler : IRequestHandler<UpdateSponsorIndividualCommand, SponsorIndividualDto>
 {
+    private readonly UserManager<User> _userManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ILogger<UpdateSponsorIndividualCommandHandler> _logger;
 
-    public UpdateSponsorIndividualCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UpdateSponsorIndividualCommandHandler> logger)
+    public UpdateSponsorIndividualCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UpdateSponsorIndividualCommandHandler> logger, UserManager<User> userManager)
     {
+        _userManager = userManager;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _logger = logger;
@@ -32,20 +37,52 @@ public class UpdateSponsorIndividualCommandHandler : IRequestHandler<UpdateSpons
         {
             await _unitOfWork.BeginTransactionAsync();
 
-            var transformedPicture = request.SponsorIndividualToUpdate.PictureId is not null
-                    ? await PictureHelper.TransformFileToPicture(request.SponsorIndividualToUpdate.PictureId, cancellationToken)
-                    : null;
+            var loggedUser = await _userManager.FindByEmailAsync(request.SponsorIndividualToUpdate.Email);
+            Picture? existingPicture;
 
-            if (transformedPicture != null)
+            if (loggedUser is null)
             {
-                transformedPicture = await _unitOfWork.PicturesRepository.CreateAsync(transformedPicture);
+                throw new NotFoundException("User is not found!");
             }
 
-            var updatedSponsorCompany = _mapper.Map<SponsorIndividualDto>(request.SponsorIndividualToUpdate);
-            updatedSponsorCompany.PictureId = transformedPicture?.Id ?? 0;
+            if (loggedUser.PictureId == 0)
+            {
+                existingPicture = null;
+            }
+            else
+            {
+                existingPicture = await _unitOfWork.PicturesRepository.GetByIdAsync(loggedUser.PictureId);
+            }
+
+            var newProfilePicture = request.SponsorIndividualToUpdate.PictureId is not null
+                ? await PictureHelper.TransformFileToPicture(request.SponsorIndividualToUpdate.PictureId, cancellationToken)
+                : null;
+
+            var updatedSponsorIndividual = _mapper.Map<SponsorIndividualDto>(request.SponsorIndividualToUpdate);
+
+            if (existingPicture != null && newProfilePicture != null)
+            {
+                newProfilePicture.Id = existingPicture.Id;
+
+                var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
+
+                await _unitOfWork.PicturesRepository.UpdateAsync(mappedPicture);
+                updatedSponsorIndividual.PictureId = newProfilePicture.Id;
+            }
+
+            else if (newProfilePicture != null)
+            {
+                newProfilePicture = await _unitOfWork.PicturesRepository.CreateAsync(newProfilePicture);
+                updatedSponsorIndividual.PictureId = newProfilePicture.Id;
+            }
+
+            else if (existingPicture != null)
+            {
+                updatedSponsorIndividual.PictureId = existingPicture.Id;
+            }
 
 
-            var result = await _unitOfWork.SponsorIndividualsRepository.UpdateAsync(updatedSponsorCompany);
+            var result = await _unitOfWork.SponsorIndividualsRepository.UpdateAsync(updatedSponsorIndividual);
             await _unitOfWork.CommitTransactionAsync();
 
             _logger.LogInformation(LoggingConstants.logEndString, request.ToString(), (DateTime.Now - start).TotalMilliseconds);

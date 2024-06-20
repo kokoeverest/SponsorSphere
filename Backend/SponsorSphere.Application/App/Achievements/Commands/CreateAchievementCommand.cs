@@ -43,7 +43,8 @@ public class CreateAchievementCommandHandler : IRequestHandler<CreateAchievement
             Sport = sportEvent.Sport,
             SportEventId = sportEvent.Id,
             AthleteId = request.AthleteId,
-            PlaceFinished = request.Model.PlaceFinished
+            PlaceFinished = request.Model.PlaceFinished,
+            Description = request.Model.Description
         };
 
         try

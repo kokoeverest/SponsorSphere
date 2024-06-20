@@ -191,12 +191,15 @@ const AthleteDetail: React.FC = () =>
         <Divider flexItem><StyledText>General info</StyledText></Divider>
 
         <StyledBox>
+          <Stack>
+
           <StyledText>SponsorSphere member since: <strong>{ new Date( athlete.created ).toLocaleDateString() }</strong></StyledText>
           <Divider hidden />
           <StyledText>Age: <strong>{ athlete.age }</strong></StyledText>
           <Divider hidden />
           <StyledText >Sport: <strong>{ athlete.sport }</strong></StyledText>
           <Divider hidden />
+          </Stack>
         </StyledBox>
 
         <Divider flexItem><StyledText>Sponsorships</StyledText></Divider>
@@ -205,7 +208,11 @@ const AthleteDetail: React.FC = () =>
 
             <List>
               <ListItemButton>
-                <StyledText>{ athlete.name } has { athlete.sponsorships.length } sponsors</StyledText>
+                <StyledText>
+                  { athlete.name } has { athlete.sponsorships.length } 
+                  { athlete?.sponsorships.length === 1 ? ' sponsor' : ' sponsors' } 
+                  {' with a total of'} {athlete?.sponsorships[0].amount} euro
+                </StyledText>
 
               </ListItemButton>
             </List>

@@ -9,6 +9,7 @@ import CreateBlogPost from "@/features/blogPosts/CreateBlogPost";
 import AddAchievement from "@/features/athletes/achievements/AddAchievement";
 import AddGoal from "@/features/athletes/goals/AddGoal";
 import PendingSportEvents from "@/features/admins/PendingSportEvents";
+import { PendingSportEventsProvider } from "@/context/PendingSportEventsContext";
 
 
 const Dashboard: React.FC = () =>
@@ -29,31 +30,33 @@ const Dashboard: React.FC = () =>
     }
 
     const AdminDashboard = (
-        <Box sx={
-            {
-                width: drawerWidth,
-                display: 'flex',
-                justifyContent: 'center'
+        <PendingSportEventsProvider>
+            <Box sx={
+                {
+                    width: drawerWidth,
+                    display: 'flex',
+                    justifyContent: 'center'
+                }
             }
-        }
-            role="presentation"
-            onClick={ toggleDrawer( false ) } >
+                role="presentation"
+                onClick={ toggleDrawer( false ) } >
 
-            <Stack spacing={ 2 }>
-                <Typography variant='h4'>Admin</Typography>
+                <Stack spacing={ 2 }>
+                    <Typography variant='h4'>Admin</Typography>
 
-                <Grid item>
-                    <PendingSportEvents />
-                </Grid>
+                    <Grid item>
+                        <PendingSportEvents />
+                    </Grid>
 
-                <Grid item>
-                    <FeedButton />
-                </Grid>
-                <Grid item>
+                    <Grid item>
+                        <FeedButton />
+                    </Grid>
+                    <Grid item>
 
-                </Grid>
-            </Stack>
-        </Box>
+                    </Grid>
+                </Stack>
+            </Box>
+        </PendingSportEventsProvider>
     );
 
     const AthleteDashboard = (

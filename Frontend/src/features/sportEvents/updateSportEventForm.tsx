@@ -246,7 +246,7 @@ const UpdateSportEventForm: React.FC = () =>
         onSuccess: () =>
         {
             alert( 'Sport event updated successfully!' );
-            navigate( `/dashboard` );
+            navigate( `/feed` );
             fetchPendingSportEventsCount();
             queryClient.invalidateQueries( { queryKey: [ 'sportEvents' ] } );
         },
