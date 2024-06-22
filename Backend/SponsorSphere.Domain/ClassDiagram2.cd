@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SponsorSphere.Domain.Models.Achievement">
+    <Position X="5.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAgAAAAAAAAAAAAAACAAAAAAACABAQAAAA=</HashCode>
+      <FileName>Models\Achievement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.Athlete">
+    <Position X="5.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEEAAAQAAAAAAAAAAACAAAAAIAg=</HashCode>
+      <FileName>Models\Athlete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.BlogPost">
+    <Position X="11.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAgAAAAAAgAAAAAAAAAAAAAQAABAAAAAAAAA=</HashCode>
+      <FileName>Models\BlogPost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.BlogPostPicture">
+    <Position X="11.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAEAABAAAAAAAAAQAAA=</HashCode>
+      <FileName>Models\BlogPostPicture.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.Goal">
+    <Position X="5.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAKAAAABAACAAAQAAAA=</HashCode>
+      <FileName>Models\Goal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.Picture">
+    <Position X="11.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAAAAAABAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Models\Picture.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.RoleConstants">
+    <Position X="9.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\RoleConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.Sponsor">
+    <Position X="9.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Sponsor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.SponsorCompany">
+    <Position X="9.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SponsorCompany.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.SponsorIndividual">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Models\SponsorIndividual.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.Sponsorship">
+    <Position X="7.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAACAAAAAAAAAAAAAAACAAAAAAAQBAAAAAAQIAAA=</HashCode>
+      <FileName>Models\Sponsorship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.SportEvent">
+    <Position X="13.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAAAAAAAQAAAQEAAIAAAAAAACAAABAAAA=</HashCode>
+      <FileName>Models\SportEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.User">
+    <Position X="7.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAEAAAgAAAhABAAAACQAQAAAIAABQAAAAAAQAQAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SponsorSphere.Domain.Models.UserRole" Collapsed="true">
+    <Position X="11.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\UserRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="SponsorSphere.Domain.Enums.CountryEnum" Collapsed="true">
+    <Position X="13.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>n37ib1+dC2ev+/oWjMf9xZKA9ev/fgCAUMH8AAhA9u4=</HashCode>
+      <FileName>Enums\CountryEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SponsorSphere.Domain.Enums.EventsEnum" Collapsed="true">
+    <Position X="13.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAQAAAAAAAAAEAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\EventsEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SponsorSphere.Domain.Enums.RolesEnum" Collapsed="true">
+    <Position X="13.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\RolesEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SponsorSphere.Domain.Enums.SponsorshipLevel" Collapsed="true">
+    <Position X="13.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAIAAAAAAAgA=</HashCode>
+      <FileName>Enums\SponsorshipLevel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SponsorSphere.Domain.Enums.SportEventStatus" Collapsed="true">
+    <Position X="13.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Enums\SportEventStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SponsorSphere.Domain.Enums.SportsEnum" Collapsed="true">
+    <Position X="13.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RIgACoAAAAAAAAABAAAAAACAiAAAAAIAAACQAAAJQAA=</HashCode>
+      <FileName>Enums\SportsEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

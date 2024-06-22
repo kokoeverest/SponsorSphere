@@ -5,6 +5,7 @@ export interface UserInfoResponse {
     role: string;
     userName: string;
     userType: string;
+    cookieExpiry: Date;
 }
 
 export const getUserInfo = async (): Promise<UserInfoResponse> =>

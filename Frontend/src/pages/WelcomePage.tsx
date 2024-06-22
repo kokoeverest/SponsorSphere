@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StyledButton from '../components/controls/Button';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import AuthContext from '@/context/AuthContext';
+import StyledText from '@/components/controls/Typography';
 
 const WelcomePage: React.FC = () =>
 {
@@ -25,9 +26,13 @@ const WelcomePage: React.FC = () =>
     };
 
     return (
-        <Box className="welcome-page">
-            <h1>Welcome to SponsorSphere</h1>
-            <p>Your one-stop platform for athlete sponsorship.</p>
+        <>
+            <Box sx={ { p: 5 } }>
+                <StyledText variant='h2'>Welcome to SponsorSphere</StyledText>
+                <StyledText variant='h4'>Your one-stop platform for athlete sponsorship.</StyledText>
+            </Box>
+            <Box className="welcome-page">
+                <Divider></Divider>
                 { isLogged
                     ? <StyledButton onClick={ handleExploreClick }>Explore</StyledButton>
                     : <div className='container-buttons'>
@@ -35,7 +40,8 @@ const WelcomePage: React.FC = () =>
                         <StyledButton onClick={ handleLoginClick }>Login</StyledButton>
                     </div>
                 }
-        </Box>
+            </Box>
+        </>
     );
 };
 

@@ -36,14 +36,15 @@ const RegisterAthleteForm: React.FC = () =>
   // Mutations
   const mutation = useMutation( {
     mutationFn: athleteApi.registerAthlete,
-    onSuccess: ( userId ) =>
+    onSuccess: () =>
     {
-      <Alert severity='success' variant='filled'>You registered successfully!</Alert>;
-      navigate( `/athletes/${ userId }` );
+      alert( "You registered successfully! You can log in with your email and password." );
+      navigate( `/login` );
       queryClient.invalidateQueries( { queryKey: [ 'getAthletes' ] } );
     },
     onError: ( error: any ) =>
     {
+      alert( "This email is already registered. Please use another email." );
       if ( error.response && error.response.data && error.response.data.message )
       {
         if ( error.response.data.message.includes( "is already taken" ) )

@@ -31,14 +31,15 @@ const RegisterCompany: React.FC = () => {
     // Mutations
     const mutation = useMutation({
         mutationFn: sponsorCompanyApi.registerSponsorCompany,
-        onSuccess: (userId) => {
+        onSuccess: ( ) => {
 
-            <Alert severity='info' variant='filled'>You registered successfully!</Alert>;
-            navigate(`/sponsors/individuals/${userId}`);
+            alert( "You registered successfully! You can log in with your email and password." );
+            navigate( `/login` );
             queryClient.invalidateQueries({ queryKey: ['getSponsorIndividuals'] });
         },
         onError: ( error: any ) =>
         {
+            alert( "This email is already registered. Please use another email." );
             if ( error.response && error.response.data && error.response.data.message )
             {
                 if ( error.response.data.message.includes( "is already taken" ) )

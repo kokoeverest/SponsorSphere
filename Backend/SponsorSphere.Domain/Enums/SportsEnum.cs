@@ -50,6 +50,12 @@ namespace SponsorSphere.Domain.Enums
         TrailRunning,
 
         [Display(Name = "Road Running")]
-        RoadRunning
+        RoadRunning,
+
+        [Display(Name = "Tennis")]
+        Tennis,
+
+        [Display(Name = "Free Skiing")]
+        FreeSkiing,
     }
 }

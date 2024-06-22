@@ -23,7 +23,7 @@ import AuthContext from '@/context/AuthContext';
 
 
 const SponsorCompanyDetail: React.FC = () =>
-    {
+{
     const { id } = useContext( AuthContext );
     const { sponsorId } = useParams<{ sponsorId: string; }>();
     const [ sponsor, setSponsor ] = useState<SponsorCompanyDto | SponsorIndividualDto | null>( null );
@@ -58,7 +58,7 @@ const SponsorCompanyDetail: React.FC = () =>
                 setLoading( false );
             }
         };
-        console.log( 'sponsor id:', sponsorId );
+
         fetchSponsorData();
     }, [ sponsorId ] );
 
@@ -98,10 +98,13 @@ const SponsorCompanyDetail: React.FC = () =>
                 <Divider />
 
                 <Divider flexItem><StyledText>General info</StyledText></Divider>
-                <StyledBox>
-                    <StyledText>SponsorSphere member since: <strong>{ new Date( sponsor!.created ).toLocaleDateString() }</strong></StyledText>
-                    <Divider hidden />
-                </StyledBox>
+                <Stack>
+
+                    <StyledBox>
+                        <StyledText>SponsorSphere member since: <strong>{ new Date( sponsor!.created ).toLocaleDateString() }</strong></StyledText>
+                        <Divider hidden />
+                    </StyledBox>
+                </Stack>
 
                 <Divider flexItem><StyledText>Sponsorships</StyledText></Divider>
                 <StyledBox>
@@ -173,7 +176,7 @@ const SponsorCompanyDetail: React.FC = () =>
                     </Stack>
                 </Box>
                 <Divider flexItem />
-            { sponsorId == id && <UpdateUserProfile /> }
+                { sponsorId == id && <UpdateUserProfile /> }
 
             </Stack>
 

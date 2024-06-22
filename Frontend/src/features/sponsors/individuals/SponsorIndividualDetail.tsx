@@ -56,7 +56,7 @@ const SponsorIndividualDetail: React.FC = () =>
                 setLoading( false );
             }
         };
-        console.log( 'sponsor id:', sponsorId );
+
         fetchSponsorData();
     }, [ sponsorId ] );
 
@@ -96,13 +96,16 @@ const SponsorIndividualDetail: React.FC = () =>
                 <Divider />
 
                 <Divider flexItem><StyledText>General info</StyledText></Divider>
+                <Stack>
 
-                <StyledBox>
-                    <StyledText>SponsorSphere member since: <strong>{ new Date( sponsor!.created ).toLocaleDateString() }</strong></StyledText>
-                    <StyledText>Age: <strong>{ sponsor.age }</strong></StyledText>
+                    <StyledBox>
+                        <StyledText>SponsorSphere member since: <strong>{ new Date( sponsor!.created ).toLocaleDateString() }</strong></StyledText>
+                        <Divider hidden />
+                        <StyledText>Age: <strong>{ sponsor.age }</strong></StyledText>
 
-                    <Divider hidden />
-                </StyledBox>
+                        <Divider hidden />
+                    </StyledBox>
+                </Stack>
 
                 <Divider flexItem><StyledText>Sponsorships</StyledText></Divider>
                 <StyledBox>
@@ -175,7 +178,7 @@ const SponsorIndividualDetail: React.FC = () =>
                 </Box>
                 <Divider flexItem />
 
-            { sponsorId == id && <UpdateUserProfile /> }
+                { sponsorId == id && <UpdateUserProfile /> }
             </Stack>
 
             <BlogPostDetail

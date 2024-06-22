@@ -193,12 +193,12 @@ const AthleteDetail: React.FC = () =>
         <StyledBox>
           <Stack>
 
-          <StyledText>SponsorSphere member since: <strong>{ new Date( athlete.created ).toLocaleDateString() }</strong></StyledText>
-          <Divider hidden />
-          <StyledText>Age: <strong>{ athlete.age }</strong></StyledText>
-          <Divider hidden />
-          <StyledText >Sport: <strong>{ athlete.sport }</strong></StyledText>
-          <Divider hidden />
+            <StyledText>SponsorSphere member since: <strong>{ new Date( athlete.created ).toLocaleDateString() }</strong></StyledText>
+            <Divider hidden />
+            <StyledText>Age: <strong>{ athlete.age }</strong></StyledText>
+            <Divider hidden />
+            <StyledText >Sport: <strong>{ athlete.sport }</strong></StyledText>
+            <Divider hidden />
           </Stack>
         </StyledBox>
 
@@ -209,9 +209,9 @@ const AthleteDetail: React.FC = () =>
             <List>
               <ListItemButton>
                 <StyledText>
-                  { athlete.name } has { athlete.sponsorships.length } 
-                  { athlete?.sponsorships.length === 1 ? ' sponsor' : ' sponsors' } 
-                  {' with a total of'} {athlete?.sponsorships[0].amount} euro
+                  { athlete.name } has { athlete.sponsorships.length }
+                  { athlete?.sponsorships.length === 1 ? ' sponsor' : ' sponsors' }
+                  {/* {' with a total of'} {athlete?.sponsorships[0].amount} euro */ }
                 </StyledText>
 
               </ListItemButton>
@@ -330,7 +330,7 @@ const AthleteDetail: React.FC = () =>
             ) }
           </Stack>
         </Box>
-        
+
         <Divider flexItem />
         { athleteId == id && <UpdateUserProfile /> }
 

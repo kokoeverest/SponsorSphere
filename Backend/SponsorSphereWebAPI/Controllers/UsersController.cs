@@ -35,12 +35,15 @@ namespace SponsorSphereWebAPI.Controllers
             }
             var userType = user.GetType().ToString()[28..];
 
+            var cookieExpiryDate = DateTime.UtcNow.AddDays(1);
+
             return Ok(new
             {
                 Id = user.Id,
                 Role = roles.First(),
                 UserName = user.UserName,
-                UserType = userType
+                UserType = userType,
+                CookieExpiry = cookieExpiryDate,
             }
             );
         }

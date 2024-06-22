@@ -11,8 +11,7 @@ const StyledBox: React.FC<BoxProps> = ( { children, ...rest } ) => (
             borderRadius: '10px',
             border: '2px solid lightgrey', 
             m: 2, 
-            p: 2, 
-            width: '85%' } }
+            p: 2, width: '60em' } }
         { ...rest }
     >
         { children }

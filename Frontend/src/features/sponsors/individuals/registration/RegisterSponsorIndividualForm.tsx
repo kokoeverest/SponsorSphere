@@ -13,32 +13,35 @@ import enumApi from '@/api/enumApi';
 import sponsorIndividualApi from '@/api/sponsorIndividualApi';
 
 
-const RegisterIndividualForm: React.FC = () => {
+const RegisterIndividualForm: React.FC = () =>
+{
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const [selectedCountry, setSelectedCountry] = useState('BGR');
+    const [ selectedCountry, setSelectedCountry ] = useState( 'BGR' );
     const [ errorMessage, setErrorMessage ] = useState<string | null>( null );
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<RegisterIndividualFormInput>({
-        resolver: yupResolver(RegisterIndividualSchema),
-    });
+    } = useForm<RegisterIndividualFormInput>( {
+        resolver: yupResolver( RegisterIndividualSchema ),
+    } );
 
-    const countriesQuery = useQuery({ queryKey: ['getCountries'], queryFn: enumApi.getCountries });
+    const countriesQuery = useQuery( { queryKey: [ 'getCountries' ], queryFn: enumApi.getCountries } );
 
     // Mutations
-    const mutation = useMutation({
+    const mutation = useMutation( {
         mutationFn: sponsorIndividualApi.registerSponsorIndividual,
-        onSuccess: (userId) => {
-            <Alert severity='success' variant='filled'>You registered successfully!</Alert>
-            navigate(`/sponsors/individuals/${userId}`);
-            queryClient.invalidateQueries({ queryKey: ['getSponsorIndividuals'] });
+        onSuccess: () =>
+        {
+            alert( "You registered successfully! You can log in with your email and password." );
+            navigate( `/login` );
+            queryClient.invalidateQueries( { queryKey: [ 'getSponsorIndividuals' ] } );
         },
         onError: ( error: any ) =>
         {
+            alert( "This email is already registered. Please use another email." );
             if ( error.response && error.response.data && error.response.data.message )
             {
                 if ( error.response.data.message.includes( "is already taken" ) )
@@ -50,17 +53,17 @@ const RegisterIndividualForm: React.FC = () => {
                 }
             }
         }
-    });
+    } );
 
-    const onSubmitHandler: SubmitHandler<RegisterIndividualFormInput> = async (data) => mutation.mutate(data);
+    const onSubmitHandler: SubmitHandler<RegisterIndividualFormInput> = async ( data ) => mutation.mutate( data );
 
     return (
-        <StyledForm onSubmit={ handleSubmit(onSubmitHandler) }>
+        <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
             <h1>Register as Sponsor</h1>
 
             <TextField
                 required
-                { ...register('name') }
+                { ...register( 'name' ) }
                 label='First name'
                 type="text"
                 placeholder="First name"
@@ -70,7 +73,7 @@ const RegisterIndividualForm: React.FC = () => {
 
             <TextField
                 required
-                { ...register('lastName') }
+                { ...register( 'lastName' ) }
                 label='Last name'
                 type="text"
                 placeholder="Last name"
@@ -80,7 +83,7 @@ const RegisterIndividualForm: React.FC = () => {
 
             <TextField
                 required
-                { ...register('email') }
+                { ...register( 'email' ) }
                 label='Email'
                 type="email"
                 placeholder="Enter a valid email"
@@ -90,7 +93,7 @@ const RegisterIndividualForm: React.FC = () => {
 
             <TextField
                 required
-                { ...register('password') }
+                { ...register( 'password' ) }
                 label='Password'
                 type="password"
                 placeholder="Enter strong password"
@@ -100,7 +103,7 @@ const RegisterIndividualForm: React.FC = () => {
 
             <TextField
                 required
-                { ...register('birthDate') }
+                { ...register( 'birthDate' ) }
                 type="date"
                 error={ !!errors.birthDate }
                 helperText={ errors.birthDate?.message }
@@ -108,7 +111,7 @@ const RegisterIndividualForm: React.FC = () => {
 
             <TextField
                 required
-                { ...register('phoneNumber') }
+                { ...register( 'phoneNumber' ) }
                 label='Phone number'
                 type="tel"
                 error={ !!errors.phoneNumber }
@@ -117,17 +120,17 @@ const RegisterIndividualForm: React.FC = () => {
 
             <TextField
                 required
-                { ...register('country') }
+                { ...register( 'country' ) }
                 select
                 label="Select country"
                 value={ selectedCountry }
-                onChange={ (event) => setSelectedCountry(event.target.value) }
+                onChange={ ( event ) => setSelectedCountry( event.target.value ) }
                 error={ !!errors.country }
                 helperText={ errors.country?.message }
             >
-                { countriesQuery.data?.map((country) => (
+                { countriesQuery.data?.map( ( country ) => (
                     <MenuItem key={ country } value={ country }>{ country }</MenuItem>
-                )) }
+                ) ) }
             </TextField>
 
             <br />

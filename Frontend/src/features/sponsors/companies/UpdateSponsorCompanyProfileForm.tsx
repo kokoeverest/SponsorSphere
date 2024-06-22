@@ -23,7 +23,7 @@ const UpdateSponsorCompanyProfileForm: React.FC = () =>
     const location = useLocation();
     const queryClient = useQueryClient();
     const user = location.state as SponsorCompanyDto;
-    const profilePage =`/sponsors/${ user.id }`;
+    const profilePage =`/sponsors/companies/${ user.id }`;
 
     const [ selectedCountry, setSelectedCountry ] = useState( user.country );
     const [ profilePicture, setProfilePicture ] = useState<File | GetPictureDto | null>( null );

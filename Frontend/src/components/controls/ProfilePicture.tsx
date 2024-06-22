@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './Form.css';
 import { Avatar, AvatarProps } from '@mui/material';
+import StyledText from './Typography';
 
 const ProfilePicture: React.FC<AvatarProps> = ( { children, ...rest } ) => (
     <Avatar
@@ -12,7 +13,7 @@ const ProfilePicture: React.FC<AvatarProps> = ( { children, ...rest } ) => (
         }
         { ...rest }
     >
-        { children }
+        <StyledText variant='h3'>{ children }</StyledText>
     </Avatar>
 );
 
