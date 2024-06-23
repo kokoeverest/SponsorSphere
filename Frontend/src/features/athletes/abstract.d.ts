@@ -6,7 +6,7 @@ export interface UpdateAthleteProfileFormInput
     country: string;
     phoneNumber: string;
     created: Date;
-    pictureId: File | GetPictureDto | null;
+    picture: File | GetPictureDto | null;
     website: string | null;
     faceBookLink: string | null;
     instagramLink: string | null;

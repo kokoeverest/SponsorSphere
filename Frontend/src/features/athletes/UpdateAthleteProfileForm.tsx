@@ -77,7 +77,7 @@ const UpdateAthleteProfileForm: React.FC = () =>
             setValue( "country", user.country );
             setValue( "phoneNumber", user.phoneNumber );
             setValue( "email", user.email );
-            setValue( "pictureId", profilePicture );
+            setValue( "picture", profilePicture );
             setValue( "website", user.website );
             setValue( "faceBookLink", user.faceBookLink );
             setValue( "instagramLink", user.instagramLink );
@@ -108,7 +108,7 @@ const UpdateAthleteProfileForm: React.FC = () =>
                         ? <UploadPictureButton onUpload={ handlePictureUpload } />
                         : <StyledButton onClick={ onDeleteHandler }>Remove uploaded picture</StyledButton> }
 
-                    <Grid container spacing={ 2 } { ...register( 'pictureId' ) }>
+                    <Grid container spacing={ 2 } { ...register( 'picture' ) }>
                         <Grid item>
                             { profilePicture ? (
                                 <ProfilePicture

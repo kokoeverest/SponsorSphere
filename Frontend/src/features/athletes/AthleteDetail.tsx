@@ -216,7 +216,7 @@ const AthleteDetail: React.FC = () =>
 
               { athlete.sponsorships.map( ( sponsorship, sponsorId ) => (
                 <ListItem key={ sponsorId }>
-                  <StyledText>{ `Sponsor: ${ sponsorship.sponsor }` }</StyledText>
+                  <StyledText>{ `Sponsor: ${ sponsorship.sponsorId}` }</StyledText>
                 </ListItem>
               ) ) }
             </List>

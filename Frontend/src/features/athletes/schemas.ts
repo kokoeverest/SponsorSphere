@@ -43,7 +43,7 @@ const UpdateAthleteProfileSchema = yup.object().shape( {
     .required( "Phone number is required" ),
   country: yup.string().required( "Country is required" ),
   sport: yup.string().required( "Sport is required" ),
-  pictureId: yup.mixed().nullable(),
+  picture: yup.mixed().nullable(),
   website: yup.string().nullable().optional(),
   faceBookLink: yup.string().nullable().optional(),
   instagramLink: yup.string().nullable().optional(),

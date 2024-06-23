@@ -1,4 +1,6 @@
 import { BlogPostDto } from "./blogPost";
+import { GetPictureDto } from "./picture";
+import { SponsorshipDto } from "./sponsorship";
 
 export interface UserDto {
     id: number;
@@ -8,6 +10,7 @@ export interface UserDto {
     phoneNumber: string;
     created: Date;
     pictureId: number | null;
+    picture: GetPictureDto;
     website: string;
     faceBookLink: string;
     instagramLink: string;
