@@ -12,7 +12,7 @@ const CreateBlogPost: React.FC = () =>
         navigate( '/blogposts/create' );
     };
     return (
-        <StyledButton onClick={ createBlogPostHandler } sx={ { color: 'black', backgroundColor: 'var(--backGroundOrange)' } }>Create a blog post</StyledButton>
+        <StyledButton onClick={ createBlogPostHandler } sx={ { color: 'black', backgroundColor: 'var(--backGroundGrey)' } }>Create a blog post</StyledButton>
     );
 };
 

@@ -27,7 +27,7 @@ const MyProfile: React.FC = () =>
             onClick={ myProfileClickHandler }
             sx={ {
                 color: 'black',
-                backgroundColor: 'var(--backGroundOrange)'
+                backgroundColor: 'var(--backGroundGrey)'
             } }
         >
             My Profile

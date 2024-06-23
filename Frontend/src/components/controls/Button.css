@@ -13,7 +13,7 @@ button {
 }
 
 button:hover {
-    border-color: var(--backGroundOrange);
+    border-color: var(--backGroundGrey);
 }
 
 /* button:focus, */

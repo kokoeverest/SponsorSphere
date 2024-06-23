@@ -9,7 +9,7 @@ const PendingSportEvents: React.FC = () =>
 
     return (
         <Badge badgeContent={ count } max={ 99 } color='error'>
-            <StyledButton sx={ { backgroundColor: 'var(--backGroundOrange)' } }>
+            <StyledButton sx={ { backgroundColor: 'var(--backGroundGrey)' } }>
                 Pending Sport Events
             </StyledButton>
         </Badge>

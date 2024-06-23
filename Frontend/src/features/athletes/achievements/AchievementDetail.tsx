@@ -11,11 +11,12 @@ import StyledButton from '@/components/controls/Button';
 import { AthleteDto } from '@/types/athlete';
 import sportEventApi from '@/api/sportEventApi';
 import { SportEventDto } from '@/types/sportEvent';
-import { Alert, CircularProgress, Typography } from '@mui/material';
+import { Alert, Box, CircularProgress, Divider } from '@mui/material';
 import achievementApi from '@/api/achievementApi';
 import { urlBuilder } from '@/common/helpers';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import StyledText from '@/components/controls/Typography';
 
 interface AchievementDetailProps
 {
@@ -80,7 +81,7 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
             await achievementApi.deleteAchievement( sportEvent.id, Number( id ) );
             onClose();
             queryClient.invalidateQueries( { queryKey: [ `deleteAchievement` ] } );
-            navigate( urlBuilder(id!, role!, userType!) );
+            navigate( urlBuilder( id!, role!, userType! ) );
         }
     };
 
@@ -96,18 +97,55 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
         >
-            <DialogTitle id="scroll-dialog-title">{ athlete?.name }'s achievement from { new Date( sportEvent!.eventDate ).toLocaleDateString() }:</DialogTitle>
+            <DialogTitle id="scroll-dialog-title"
+                sx={ {
+                    width: '60rem',
+                    maxWidth: '80%'
+                } }
+            >
+                <StyledText>
+                    { athlete?.name }'s achievement from { new Date( sportEvent!.eventDate ).toLocaleDateString() }:
+                </StyledText>
+            </DialogTitle>
             <DialogContent dividers={ scroll === 'paper' }>
                 <DialogContentText
                     id="scroll-dialog-description"
                     ref={ descriptionElementRef }
                     tabIndex={ -1 }
                 >
-                    <Typography>Sport of the event: {sportEvent?.sport}</Typography>
-                    <Typography>{sportEvent?.name} in {sportEvent?.country}</Typography>
-                    { achievement.placeFinished && <Typography>Finished: { achievement.placeFinished } place</Typography> }
-                    
-                    { achievement.description && <Typography>Description: {achievement.description}</Typography> }
+                    <Divider flexItem>
+
+                        <StyledText>
+                            Sport of the event: { sportEvent?.sport }
+                        </StyledText>
+
+                    </Divider>
+
+                    <Divider flexItem>
+
+                        <StyledText>{ sportEvent?.name } in { sportEvent?.country }</StyledText>
+                    </Divider>
+                    {
+                        achievement.placeFinished &&
+                        <Divider flexItem>
+
+                            <StyledText>Finished: </StyledText>
+                            <Box><StyledText>{ achievement.placeFinished } place</StyledText></Box>
+                        </Divider>
+                    }
+
+                    { achievement.description &&
+                        <Divider flexItem>
+
+                            <StyledText>Description:</StyledText>
+                            <Box>
+                                <StyledText variant='body1'>
+                                    { achievement.description }
+
+                                </StyledText>
+                            </Box>
+                        </Divider>
+                    }
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

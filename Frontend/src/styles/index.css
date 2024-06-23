@@ -1,5 +1,6 @@
 :root {
-  --backGroundOrange: #c2bbbb;
+  --backGroundGrey: #c2bbbb;
+  --backGroundOrange: #fa8233;
   --backGroundBlue: #4398f1;
   --formGrey: rgb(235, 229, 229);
   --borderRadius: '10px';
@@ -8,7 +9,7 @@
   font-weight: 400;
   color-scheme: light dark;
   color: rgb(0, 0, 0);
-  background-color: var(--backGroundOrange);
+  background-color: var(--backGroundGrey);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -69,6 +70,6 @@ h1 {
 }
 
 .headerTitle:hover {
-  filter: drop-shadow(0em -1em 0.06em var(--backGroundOrange));
+  filter: drop-shadow(0em -1em 0.06em var(--backGroundGrey));
   cursor: pointer;
 }

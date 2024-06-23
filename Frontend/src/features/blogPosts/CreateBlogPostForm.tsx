@@ -69,7 +69,23 @@ const CreateBlogPostForm: React.FC = () =>
     return (
         <>
             { !blogPostCreateMutation.isError && !blogPostCreateMutation.isPending && (
-                <StyledForm onSubmit={ handleSubmit( onSubmitHandler ) }>
+                <StyledForm 
+                onSubmit={ handleSubmit( onSubmitHandler ) }
+                    sx={ {
+                        m: 'auto',
+                        p: 2,
+                        borderRadius: '10px',
+                        position: 'sticky',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: '1px solid lightgrey',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
+                        '& .MuiTextField-root': { m: 2, width: '80%' },
+                        width: '60em',
+                        backgroundColor: 'var(--formGrey)',
+                        color: 'black'
+                    } }
+                    >
                     <input hidden defaultValue={ idAsNumber } { ...register( "authorId" ) } />
 
                     <StyledText variant="h3">Create a blog post</StyledText>

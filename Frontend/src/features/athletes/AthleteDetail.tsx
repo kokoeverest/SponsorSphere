@@ -105,26 +105,25 @@ const AthleteDetail: React.FC = () =>
   {
     const fetchSponsorshipData = async () =>
     {
-      try
+      if ( athlete && sponsor )
       {
-        if ( athlete && sponsor )
+        try
         {
           const result = await sponsorshipApi.getSponsorship( athlete?.id, sponsor.id );
           setExistingSponsorship( result );
+        } catch ( error )
+        {
+          setExistingSponsorship( null );
+        } finally
+        {
+          setLoading( false );
         }
-      } catch ( error )
-      {
-        setExistingSponsorship( null );
-      } finally
-      {
-        setLoading( false );
       }
-
     };
 
     fetchSponsorshipData();
 
-  }, );
+  }, [ athlete, sponsor] );
 
   if ( loading ) return <CircularProgress />;
   if ( error ) return <Alert severity='error' variant='filled'>{ error }</Alert>;
@@ -190,7 +189,7 @@ const AthleteDetail: React.FC = () =>
 
         <Divider flexItem><StyledText>General info</StyledText></Divider>
 
-        <StyledBox>
+        <StyledBox alignSelf={ 'center' }>
           <Stack>
 
             <StyledText>SponsorSphere member since: <strong>{ new Date( athlete.created ).toLocaleDateString() }</strong></StyledText>
@@ -213,8 +212,13 @@ const AthleteDetail: React.FC = () =>
                   { athlete?.sponsorships.length === 1 ? ' sponsor' : ' sponsors' }
                   {/* {' with a total of'} {athlete?.sponsorships[0].amount} euro */ }
                 </StyledText>
-
               </ListItemButton>
+
+              { athlete.sponsorships.map( ( sponsorship, sponsorId ) => (
+                <ListItem key={ sponsorId }>
+                  <StyledText>{ `Sponsor: ${ sponsorship.sponsor }` }</StyledText>
+                </ListItem>
+              ) ) }
             </List>
 
 

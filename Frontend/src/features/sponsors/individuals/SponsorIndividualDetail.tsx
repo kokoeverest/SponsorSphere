@@ -98,7 +98,7 @@ const SponsorIndividualDetail: React.FC = () =>
                 <Divider flexItem><StyledText>General info</StyledText></Divider>
                 <Stack>
 
-                    <StyledBox>
+                    <StyledBox alignSelf={'center'}>
                         <StyledText>SponsorSphere member since: <strong>{ new Date( sponsor!.created ).toLocaleDateString() }</strong></StyledText>
                         <Divider hidden />
                         <StyledText>Age: <strong>{ sponsor.age }</strong></StyledText>

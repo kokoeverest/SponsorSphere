@@ -80,7 +80,7 @@ const SponsorCompanyDetail: React.FC = () =>
     if ( !sponsor ) return <p>Sponsor not found</p>;
 
     return (
-        <Box sx={ { backgroundColor: 'whitesmoke' } }>
+        <Box alignItems="center" sx={ { backgroundColor: 'whitesmoke' } }>
             <Stack alignItems="center" spacing={ 2 }>
                 <h1>{ sponsor?.name }</h1>
 
@@ -100,7 +100,7 @@ const SponsorCompanyDetail: React.FC = () =>
                 <Divider flexItem><StyledText>General info</StyledText></Divider>
                 <Stack>
 
-                    <StyledBox>
+                    <StyledBox alignSelf={'center'}>
                         <StyledText>SponsorSphere member since: <strong>{ new Date( sponsor!.created ).toLocaleDateString() }</strong></StyledText>
                         <Divider hidden />
                     </StyledBox>
