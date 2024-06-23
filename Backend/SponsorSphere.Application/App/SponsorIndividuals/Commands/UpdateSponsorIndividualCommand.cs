@@ -45,17 +45,17 @@ public class UpdateSponsorIndividualCommandHandler : IRequestHandler<UpdateSpons
                 throw new NotFoundException("User is not found!");
             }
 
-            if (loggedUser.PictureId == 0)
+            if (loggedUser.Picture is null)
             {
                 existingPicture = null;
             }
             else
             {
-                existingPicture = await _unitOfWork.PicturesRepository.GetByIdAsync(loggedUser.PictureId);
+                existingPicture = loggedUser.Picture;
             }
 
-            var newProfilePicture = request.SponsorIndividualToUpdate.PictureId is not null
-                ? await PictureHelper.TransformFileToPicture(request.SponsorIndividualToUpdate.PictureId, cancellationToken)
+            var newProfilePicture = request.SponsorIndividualToUpdate.Picture is not null
+                ? await PictureHelper.TransformFileToPicture(request.SponsorIndividualToUpdate.Picture, cancellationToken)
                 : null;
 
             var updatedSponsorIndividual = _mapper.Map<SponsorIndividualDto>(request.SponsorIndividualToUpdate);
@@ -64,21 +64,21 @@ public class UpdateSponsorIndividualCommandHandler : IRequestHandler<UpdateSpons
             {
                 newProfilePicture.Id = existingPicture.Id;
 
-                var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
+                //var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
 
-                await _unitOfWork.PicturesRepository.UpdateAsync(mappedPicture);
-                updatedSponsorIndividual.PictureId = newProfilePicture.Id;
+                await _unitOfWork.PicturesRepository.UpdateAsync(newProfilePicture);
+                updatedSponsorIndividual.Picture = newProfilePicture;
             }
 
             else if (newProfilePicture != null)
             {
                 newProfilePicture = await _unitOfWork.PicturesRepository.CreateAsync(newProfilePicture);
-                updatedSponsorIndividual.PictureId = newProfilePicture.Id;
+                updatedSponsorIndividual.Picture = newProfilePicture;
             }
 
             else if (existingPicture != null)
             {
-                updatedSponsorIndividual.PictureId = existingPicture.Id;
+                updatedSponsorIndividual.Picture = existingPicture;
             }
 
 

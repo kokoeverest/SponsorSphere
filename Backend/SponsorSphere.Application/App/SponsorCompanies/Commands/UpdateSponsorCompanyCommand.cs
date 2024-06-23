@@ -46,17 +46,17 @@ public class UpdateSponsorCompanyCommandHandler : IRequestHandler<UpdateSponsorC
                 throw new NotFoundException("User is not found!");
             }
 
-            if (loggedUser.PictureId == 0)
+            if (loggedUser.Picture is null)
             {
                 existingPicture = null;
             }
             else
             {
-                existingPicture = await _unitOfWork.PicturesRepository.GetByIdAsync(loggedUser.PictureId);
+                existingPicture = loggedUser.Picture;
             }
 
-            var newProfilePicture = request.SponsorCompanyToUpdate.PictureId is not null
-                ? await PictureHelper.TransformFileToPicture(request.SponsorCompanyToUpdate.PictureId, cancellationToken)
+            var newProfilePicture = request.SponsorCompanyToUpdate.Picture is not null
+                ? await PictureHelper.TransformFileToPicture(request.SponsorCompanyToUpdate.Picture, cancellationToken)
                 : null;
 
             var updatedSponsorCompany = _mapper.Map<SponsorCompanyDto>(request.SponsorCompanyToUpdate);
@@ -65,21 +65,21 @@ public class UpdateSponsorCompanyCommandHandler : IRequestHandler<UpdateSponsorC
             {
                 newProfilePicture.Id = existingPicture.Id;
 
-                var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
+                //var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
 
-                await _unitOfWork.PicturesRepository.UpdateAsync(mappedPicture);
-                updatedSponsorCompany.PictureId = newProfilePicture.Id;
+                await _unitOfWork.PicturesRepository.UpdateAsync(newProfilePicture);
+                updatedSponsorCompany.Picture = newProfilePicture;
             }
 
             else if (newProfilePicture != null)
             {
                 newProfilePicture = await _unitOfWork.PicturesRepository.CreateAsync(newProfilePicture);
-                updatedSponsorCompany.PictureId = newProfilePicture.Id;
+                updatedSponsorCompany.Picture = newProfilePicture;
             }
 
             else if (existingPicture != null)
             {
-                updatedSponsorCompany.PictureId = existingPicture.Id;
+                updatedSponsorCompany.Picture = existingPicture;
             }
 
             var result = await _unitOfWork.SponsorCompaniesRepository.UpdateAsync(updatedSponsorCompany);

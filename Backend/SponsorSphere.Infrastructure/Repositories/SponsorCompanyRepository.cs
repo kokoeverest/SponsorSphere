@@ -69,7 +69,7 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .SetProperty(sc => sc.Email, updatedSponsorCompany.Email)
                 .SetProperty(sc => sc.Country, updatedSponsorCompany.Country)
                 .SetProperty(sc => sc.PhoneNumber, updatedSponsorCompany.PhoneNumber)
-                .SetProperty(sc => sc.PictureId, updatedSponsorCompany.PictureId)
+                .SetProperty(sc => sc.Picture, updatedSponsorCompany.Picture)
                 .SetProperty(sc => sc.Website, updatedSponsorCompany.Website)
                 .SetProperty(sc => sc.FaceBookLink, updatedSponsorCompany.FaceBookLink)
                 .SetProperty(sc => sc.InstagramLink, updatedSponsorCompany.InstagramLink)

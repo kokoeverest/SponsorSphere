@@ -10,7 +10,8 @@ namespace SponsorSphere.Domain.Models
         public  CountryEnum Country { get; set; }
         public override string? PhoneNumber { get; set; } = string.Empty;
         public DateTime Created { get; set; } = DateTime.UtcNow;
-        public int PictureId { get; set; }
+        public int? PictureId { get; set; }
+        public Picture? Picture { get; set; }
         public string Website { get; set; } = string.Empty;
         public string FaceBookLink { get; set; } = string.Empty;
         public string InstagramLink { get; set; } = string.Empty;

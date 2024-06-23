@@ -1,7 +1,9 @@
 ﻿using SponsorSphere.Application.App.BlogPosts.Dtos;
+using SponsorSphere.Application.App.Pictures.Dtos;
 using SponsorSphere.Application.App.Sponsorships.Dtos;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Enums;
+using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.App.Users.Dtos
 {
@@ -14,6 +16,7 @@ namespace SponsorSphere.Application.App.Users.Dtos
         public string PhoneNumber { get; set; } = string.Empty;
         public DateTime Created { get; set; }
         public int PictureId { get; set; }
+        public Picture? Picture { get; set; }
         public string Website { get; set; } = string.Empty;
         public string FaceBookLink { get; set; } = string.Empty;
         public string InstagramLink { get; set; } = string.Empty;

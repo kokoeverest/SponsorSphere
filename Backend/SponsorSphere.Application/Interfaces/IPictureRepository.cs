@@ -17,7 +17,7 @@ namespace SponsorSphere.Application.Interfaces
         /// </summary>
         /// <param name="picture">The updated picture DTO containing the new values.</param>
         /// <returns>The updated <see cref="PictureDto"/>.</returns>
-        Task<PictureDto> UpdateAsync(PictureDto picture);
+        Task<Picture> UpdateAsync(Picture picture);
 
         /// <summary>
         /// Asynchronously deletes a picture.

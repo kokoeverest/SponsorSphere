@@ -25,7 +25,7 @@ namespace SponsorSphere.Application.App.Users.Dtos
         [Required]
         public string PhoneNumber { get; set; } = string.Empty;
         public DateTime Created { get; set; }
-        public IFormFile? PictureId { get; set; }
+        public IFormFile? Picture { get; set; }
 
         public string? Website { get; set; } = string.Empty;
         public string? FaceBookLink { get; set; } = string.Empty;

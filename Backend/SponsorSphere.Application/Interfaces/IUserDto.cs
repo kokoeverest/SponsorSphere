@@ -1,6 +1,8 @@
 ﻿using SponsorSphere.Application.App.BlogPosts.Dtos;
+using SponsorSphere.Application.App.Pictures.Dtos;
 using SponsorSphere.Application.App.Sponsorships.Dtos;
 using SponsorSphere.Domain.Enums;
+using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Interfaces
 {
@@ -12,7 +14,8 @@ namespace SponsorSphere.Application.Interfaces
         public CountryEnum Country { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime Created { get; set; }
-        public int PictureId { get; set; }
+        //public int PictureId { get; set; }
+        public Picture? Picture { get; set; }
         public string Website { get; set; }
         public string FaceBookLink { get; set; }
         public string InstagramLink { get; set; }

@@ -14,7 +14,7 @@ namespace SponsorSphere.Application.Profiles
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
 
             CreateMap<UpdateAthleteDto, AthleteDto>()
-                .ForMember(dest => dest.PictureId, opt => opt.Ignore());
+                .ForMember(dest => dest.Picture, opt => opt.Ignore());
         }
     }
 }

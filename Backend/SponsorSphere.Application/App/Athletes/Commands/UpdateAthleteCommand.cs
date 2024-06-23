@@ -39,24 +39,24 @@ public class UpdateAthleteCommandHandler : IRequestHandler<UpdateAthleteCommand,
             await _unitOfWork.BeginTransactionAsync();
 
             var loggedUser = await _userManager.FindByEmailAsync(request.AthleteToUpdate.Email);
-            Picture? existingPicture;
 
             if (loggedUser is null)
             {
                 throw new NotFoundException("User is not found!");
             }
+            Picture? existingPicture;
 
-            if (loggedUser.PictureId == 0)
+            if (loggedUser.Picture is null)
             {
                 existingPicture = null;
             }
             else
             {
-                existingPicture = await _unitOfWork.PicturesRepository.GetByIdAsync(loggedUser.PictureId);
+                existingPicture = loggedUser.Picture;
             }
 
-            var newProfilePicture = request.AthleteToUpdate.PictureId is not null
-                ? await PictureHelper.TransformFileToPicture(request.AthleteToUpdate.PictureId, cancellationToken)
+            var newProfilePicture = request.AthleteToUpdate.Picture is not null
+                ? await PictureHelper.TransformFileToPicture(request.AthleteToUpdate.Picture, cancellationToken)
                 : null;
 
             var updatedAthlete = _mapper.Map<AthleteDto>(request.AthleteToUpdate);
@@ -65,21 +65,23 @@ public class UpdateAthleteCommandHandler : IRequestHandler<UpdateAthleteCommand,
             {
                 newProfilePicture.Id = existingPicture.Id;
 
-                var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
+                //var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
 
-                await _unitOfWork.PicturesRepository.UpdateAsync(mappedPicture);
-                updatedAthlete.PictureId = newProfilePicture.Id;
+                await _unitOfWork.PicturesRepository.UpdateAsync(newProfilePicture);
+                updatedAthlete.Picture = newProfilePicture;
             }
 
             else if (newProfilePicture != null)
             {
                 newProfilePicture = await _unitOfWork.PicturesRepository.CreateAsync(newProfilePicture);
-                updatedAthlete.PictureId = newProfilePicture.Id;
+                //var mappedPicture = _mapper.Map<PictureDto>(newProfilePicture);
+                updatedAthlete.Picture = newProfilePicture;
             }
 
             else if (existingPicture != null)
             {
-                updatedAthlete.PictureId = existingPicture.Id;
+                //var mappedPicture = _mapper.Map<PictureDto>(existingPicture);
+                updatedAthlete.Picture = existingPicture;
             }
 
             var result = await _unitOfWork.AthletesRepository.UpdateAsync(updatedAthlete);

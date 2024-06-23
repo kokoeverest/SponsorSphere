@@ -39,12 +39,12 @@ namespace SponsorSphere.Infrastructure.Repositories
             return picture;
         }
 
-        public async Task<PictureDto> UpdateAsync(PictureDto updatedPicture)
+        public async Task<Picture> UpdateAsync(Picture updatedPicture)
         {
             await _context.Pictures
                 .Where(p => p.Id == updatedPicture.Id)
                 .ExecuteUpdateAsync(setters => setters
-                .SetProperty(p => p.Content, Convert.FromBase64String(updatedPicture.Content))
+                .SetProperty(p => p.Content,updatedPicture.Content)
                 .SetProperty(p => p.Url, updatedPicture.Url)
                 .SetProperty(p => p.Modified, DateTime.UtcNow));
 

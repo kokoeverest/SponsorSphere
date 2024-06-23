@@ -45,9 +45,11 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<Athlete> GetByIdAsync(int athleteId)
         {
             var athlete = await _context.Athletes
+                .Include(ath => ath.Picture)
                 .Include(ath => ath.BlogPosts)
                     .ThenInclude(bp => bp.Pictures)
                 .Include(ath => ath.Sponsorships)
+                    .ThenInclude(sp => sp.Sponsor)
                 .Include(ath => ath.Goals)
                 .Include(ath => ath.Achievements)
                 .FirstOrDefaultAsync(ath => ath.Id == athleteId)
@@ -151,7 +153,7 @@ namespace SponsorSphere.Infrastructure.Repositories
                 .SetProperty(ath => ath.Email, updatedAthlete.Email)
                 .SetProperty(ath => ath.Country, updatedAthlete.Country)
                 .SetProperty(ath => ath.PhoneNumber, updatedAthlete.PhoneNumber)
-                .SetProperty(ath => ath.PictureId, updatedAthlete.PictureId)
+                .SetProperty(ath => ath.Picture, updatedAthlete.Picture)
                 .SetProperty(ath => ath.Website, updatedAthlete.Website)
                 .SetProperty(ath => ath.FaceBookLink, updatedAthlete.FaceBookLink)
                 .SetProperty(ath => ath.InstagramLink, updatedAthlete.InstagramLink)

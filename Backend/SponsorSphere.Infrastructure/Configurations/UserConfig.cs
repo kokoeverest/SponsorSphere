@@ -24,6 +24,11 @@ namespace SponsorSphere.Infrastructure.Configurations
                 .IsRequired(true)
                 .HasMaxLength(16);
 
+            builder.HasOne(u => u.Picture)
+                .WithOne()
+                .HasForeignKey<User>(u => u.PictureId);
+                
+
             builder.Property(u => u.Website)
                 .IsRequired(false)
                 .HasMaxLength(200);

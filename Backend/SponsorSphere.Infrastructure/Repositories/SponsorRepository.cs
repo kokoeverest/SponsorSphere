@@ -18,6 +18,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<Sponsor> GetByIdAsync(int userId)
         {
             var sponsor = await _context.Sponsors
+                .Include(sc => sc.Picture)
                 .Include(sc => sc.BlogPosts)
                     .ThenInclude(bp => bp.Pictures)
                 .Include(sc => sc.Sponsorships)
