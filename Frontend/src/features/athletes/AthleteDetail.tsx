@@ -40,6 +40,7 @@ const AthleteDetail: React.FC = () =>
   const [ error, setError ] = useState<string | null>( null );
   const [ profilePicture, setProfilePicture ] = useState<string | null>( null );
   const [ existingSponsorship, setExistingSponsorship ] = useState<SponsorshipDto | null>( null );
+  const [ sponsorHover, setSponsorHover ] = useState<SponsorDto | null>( null );
 
   const [ selectedBlogPost, setSelectedBlogPost ] = useState<BlogPostDto | null>( null );
   const [ selectedAuthor, setSelectedAuthor ] = useState<UserDto | null>( null );
@@ -123,7 +124,7 @@ const AthleteDetail: React.FC = () =>
 
     fetchSponsorshipData();
 
-  }, [ athlete, sponsor] );
+  }, [ athlete, sponsor ] );
 
   if ( loading ) return <CircularProgress />;
   if ( error ) return <Alert severity='error' variant='filled'>{ error }</Alert>;
@@ -169,6 +170,13 @@ const AthleteDetail: React.FC = () =>
     setSelectedGoal( null );
   };
 
+  const handleSponsorHover = async ( sponsorId: string ) =>
+  {
+    console.log(`Id: ${sponsorId}`);
+    const result = await sponsorCompanyApi.getSponsorCompanyById( sponsorId );
+    setSponsorHover( result );
+  };
+
   return (
     <StyledBox sx={ { backgroundColor: 'whitesmoke' } }>
       <Stack alignItems="center" spacing={ 2 }>
@@ -206,18 +214,27 @@ const AthleteDetail: React.FC = () =>
           { athlete.sponsorships && athlete.sponsorships.length > 0 ? (
 
             <List>
-              <ListItemButton>
                 <StyledText>
                   { athlete.name } has { athlete.sponsorships.length }
                   { athlete?.sponsorships.length === 1 ? ' sponsor' : ' sponsors' }
-                  {/* {' with a total of'} {athlete?.sponsorships[0].amount} euro */ }
                 </StyledText>
-              </ListItemButton>
 
               { athlete.sponsorships.map( ( sponsorship, sponsorId ) => (
-                <ListItem key={ sponsorId }>
-                  <StyledText>{ `Sponsor: ${ sponsorship.sponsor }` }</StyledText>
-                </ListItem>
+                <div key={ sponsorId }>
+                  <ListItemButton
+                    onMouseOver={ () => handleSponsorHover( String( sponsorship.sponsorId ) ) }
+                    onMouseOut={ () => setSponsorHover( null ) }
+                  >
+                    <ListItem>
+                      <StyledText>{ `Sponsor id: ${ sponsorship.sponsorId }` }</StyledText>
+                    </ListItem>
+                  </ListItemButton>
+                  { sponsorHover?.id === sponsorship.sponsorId && (
+                    <StyledBox position= 'absolute' bgcolor={'var(--formGrey)'}>
+                      <StyledText>{ sponsorHover.name }</StyledText>
+                    </StyledBox>
+                  ) }
+                </div>
               ) ) }
             </List>
 

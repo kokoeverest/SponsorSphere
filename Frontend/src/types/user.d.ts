@@ -1,4 +1,5 @@
 import { BlogPostDto } from "./blogPost";
+import { SponsorshipDto } from "./sponsorship";
 
 export interface UserDto {
     id: number;

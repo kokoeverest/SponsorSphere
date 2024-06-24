@@ -11,12 +11,13 @@ import StyledButton from '@/components/controls/Button';
 import { AthleteDto } from '@/types/athlete';
 import sportEventApi from '@/api/sportEventApi';
 import { SportEventDto } from '@/types/sportEvent';
-import { Alert, Box, CircularProgress, Divider } from '@mui/material';
+import { Alert, Box, CircularProgress, Container, Divider } from '@mui/material';
 import achievementApi from '@/api/achievementApi';
 import { urlBuilder } from '@/common/helpers';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import StyledText from '@/components/controls/Typography';
+import StyledBox from '@/components/controls/Box';
 
 interface AchievementDetailProps
 {
@@ -113,18 +114,17 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
                     ref={ descriptionElementRef }
                     tabIndex={ -1 }
                 >
-                    <Divider flexItem>
 
+                    <Divider flexItem>
+                        <StyledText>{ sportEvent?.name } in { sportEvent?.country }</StyledText>
+                    </Divider>
+
+                    <Divider flexItem>
                         <StyledText>
                             Sport of the event: { sportEvent?.sport }
                         </StyledText>
-
                     </Divider>
 
-                    <Divider flexItem>
-
-                        <StyledText>{ sportEvent?.name } in { sportEvent?.country }</StyledText>
-                    </Divider>
                     {
                         achievement.placeFinished &&
                         <Divider flexItem>
@@ -135,16 +135,28 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
                     }
 
                     { achievement.description &&
-                        <Divider flexItem>
+                        <Container>
+                            <Box sx={ {
+                                border: '2px solid var(--backGroundOrange)',
+                                borderRadius: '10px',
+                                maxWidth: '100%',
+                                p: 2,
+                                m: 2
+                            } }>
+                                <StyledText sx={ { justifySelf: 'center' } }>Description:</StyledText>
 
-                            <StyledText>Description:</StyledText>
-                            <Box>
-                                <StyledText variant='body1'>
+                                <StyledText variant='body1'
+                                    sx={ {
+                                        flexWrap: 'inherit',
+                                        whiteSpace: 'pretty',
+                                        wordWrap: 'break-word',
+                                        width: '100%',
+                                        overflow: 'hidden'
+                                    } } >
                                     { achievement.description }
-
                                 </StyledText>
                             </Box>
-                        </Divider>
+                        </Container>
                     }
                 </DialogContentText>
             </DialogContent>
