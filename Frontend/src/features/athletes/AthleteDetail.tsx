@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import athleteApi from '@/api/athleteApi';
 import { AthleteDto } from '../../types/athlete';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, Box, Divider, Link, List, ListItem, ListItemButton, Stack } from '@mui/material';
+import { Alert, Box, Divider, Link, List, ListItem, ListItemButton, Stack, Tooltip } from '@mui/material';
 import pictureApi from '@/api/pictureApi';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -172,7 +172,6 @@ const AthleteDetail: React.FC = () =>
 
   const handleSponsorHover = async ( sponsorId: string ) =>
   {
-    console.log(`Id: ${sponsorId}`);
     const result = await sponsorCompanyApi.getSponsorCompanyById( sponsorId );
     setSponsorHover( result );
   };
@@ -214,10 +213,10 @@ const AthleteDetail: React.FC = () =>
           { athlete.sponsorships && athlete.sponsorships.length > 0 ? (
 
             <List>
-                <StyledText>
-                  { athlete.name } has { athlete.sponsorships.length }
-                  { athlete?.sponsorships.length === 1 ? ' sponsor' : ' sponsors' }
-                </StyledText>
+              <StyledText>
+                { athlete.name } has { athlete.sponsorships.length }
+                { athlete?.sponsorships.length === 1 ? ' sponsor' : ' sponsors' }
+              </StyledText>
 
               { athlete.sponsorships.map( ( sponsorship, sponsorId ) => (
                 <div key={ sponsorId }>
@@ -230,7 +229,7 @@ const AthleteDetail: React.FC = () =>
                     </ListItem>
                   </ListItemButton>
                   { sponsorHover?.id === sponsorship.sponsorId && (
-                    <StyledBox position= 'absolute' bgcolor={'var(--formGrey)'}>
+                    <StyledBox position='absolute' bgcolor={ 'var(--formGrey)' }>
                       <StyledText>{ sponsorHover.name }</StyledText>
                     </StyledBox>
                   ) }
@@ -320,34 +319,52 @@ const AthleteDetail: React.FC = () =>
         <Box>
           <Stack direction="row" spacing={ 8 } justifyContent="center">
             { athlete.website && (
-              <Link href={ athlete.website } target="_blank" rel="noopener noreferrer">
-                <WebhookIcon />
-              </Link>
+
+              <Tooltip title='Website'>
+                <Link href={ athlete.website } target="_blank" rel="noopener noreferrer">
+                  <WebhookIcon />
+                </Link>
+              </Tooltip>
             ) }
             { athlete.faceBookLink && (
-              <Link href={ athlete.faceBookLink } target="_blank" rel="noopener noreferrer">
-                <FacebookIcon />
-              </Link>
+
+              <Tooltip title='Link to Facebook page'>
+                <Link href={ athlete.faceBookLink } target="_blank" rel="noopener noreferrer">
+                  <FacebookIcon />
+                </Link>
+              </Tooltip>
             ) }
             { athlete.instagramLink && (
-              <Link href={ athlete.instagramLink } target="_blank" rel="noopener noreferrer">
-                <InstagramIcon />
-              </Link>
+
+              <Tooltip title='Link to Instagram page'>
+                <Link href={ athlete.instagramLink } target="_blank" rel="noopener noreferrer">
+                  <InstagramIcon />
+                </Link>
+              </Tooltip>
             ) }
             { athlete.stravaLink && (
-              <Link href={ `${ athlete.stravaLink }` } target="_blank" rel="noopener noreferrer">
-                <StravaIcon />
-              </Link>
+
+              <Tooltip title='Link to Strava page'>
+                <Link href={ `${ athlete.stravaLink }` } target="_blank" rel="noopener noreferrer">
+                  <StravaIcon />
+                </Link>
+              </Tooltip>
             ) }
             { athlete.twitterLink && (
-              <Link href={ athlete.twitterLink } target="_blank" rel="noopener noreferrer">
-                <TwitterIcon />
-              </Link>
+
+              <Tooltip title='Link to Twitter page'>
+                <Link href={ athlete.twitterLink } target="_blank" rel="noopener noreferrer">
+                  <TwitterIcon />
+                </Link>
+              </Tooltip>
             ) }
             { athlete.email && (
-              <Link href={ `mailto:${ athlete.email }` } target="_blank" rel="noopener noreferrer">
-                <EmailIcon />
-              </Link>
+
+              <Tooltip title='Send email'>
+                <Link href={ `mailto:${ athlete.email }` } target="_blank" rel="noopener noreferrer">
+                  <EmailIcon />
+                </Link>
+              </Tooltip>
             ) }
           </Stack>
         </Box>

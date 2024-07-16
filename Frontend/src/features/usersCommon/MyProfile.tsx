@@ -14,7 +14,6 @@ const MyProfile: React.FC = () =>
         if ( role != 'Admin' )
         {
             navigate( urlBuilder( id!, role!, userType! ) );
-            console.log( role );
         }
         else
         {

@@ -11,11 +11,12 @@ import StyledButton from '@/components/controls/Button';
 import { AthleteDto } from '@/types/athlete';
 import sportEventApi from '@/api/sportEventApi';
 import { SportEventDto } from '@/types/sportEvent';
-import { Alert, CircularProgress, Slider, Typography } from '@mui/material';
-import StyledBox from '@/components/controls/Box';
+import { Alert, Box, CircularProgress, Divider, Slider } from '@mui/material';
 import goalApi from '@/api/goalApi';
 import { useNavigate } from 'react-router-dom';
 import { urlBuilder } from '@/common/helpers';
+import StyledText from '@/components/controls/Typography';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface GoalDetailProps
 {
@@ -34,6 +35,7 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
     const [ error, setError ] = useState<string | null>( null );
     const [ sportEvent, setSportEvent ] = useState<SportEventDto | null>( null );
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     let totalSponsorshipsAmount = 0;
     athlete?.sponsorships.forEach( sponsorship => totalSponsorshipsAmount += sponsorship.amount );
@@ -100,6 +102,7 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
             await goalApi.deleteGoal( sportEvent.id, Number( id ) );
             onClose();
             navigate( urlBuilder( id!, role!, userType! ) );
+            queryClient.invalidateQueries( { queryKey: [ 'deleteGoal' ] } );
         }
     };
 
@@ -117,23 +120,42 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
             aria-describedby="scroll-dialog-description"
             sx={ { lineHeight: 2 } }
         >
-            <DialogTitle id="scroll-dialog-title">{ athlete?.name } dreams to impress the world on <br />
-                { new Date( sportEvent!.eventDate ).toLocaleDateString() }:</DialogTitle>
+            <DialogTitle
+                id="scroll-dialog-title"
+            >
+                <StyledText>
+                    { athlete?.name } dreams to impress the world on <br />
+                    { new Date( sportEvent!.eventDate ).toLocaleDateString() }:
+                </StyledText>
+            </DialogTitle>
+
             <DialogContent dividers={ scroll === 'paper' }>
                 <DialogContentText
                     id="scroll-dialog-description"
                     ref={ descriptionElementRef }
                     tabIndex={ -1 }
                 >
-                    <Typography>Sport of the event: { sportEvent?.sport }</Typography>
-                    <Typography>{ sportEvent?.name } in { sportEvent?.country }</Typography>
-                    <Typography>So far { athlete?.name } has { totalSponsorshipsAmount } euro </Typography>
-
+                    <StyledText variant='h6'>{ sportEvent?.name } in { sportEvent?.country }</StyledText>
+                    <Divider />
+                    <StyledText variant='h6'>Sport of the event: { sportEvent?.sport }</StyledText>
+                    <Divider />
+                    <StyledText variant='h6'>So far { athlete?.name } has <StyledText variant='h5' sx={ { color: 'green', display: 'inline' } }>{ totalSponsorshipsAmount } </StyledText> euro </StyledText>
+                    <Divider />
                     { notEnoughMoney > 0
-                        ? <Typography>{ athlete?.name } needs { notEnoughMoney } euro more to be able to participate!</Typography>
-                        : <Typography> { athlete?.name } has received the needed money for this goal!</Typography> }
+                        ? <StyledText variant='h6'>{ athlete?.name } needs <StyledText variant='h5' sx={ { color: 'red', display: 'inline' } }>{ notEnoughMoney }</StyledText> euro more to be able to participate!</StyledText>
+                        : <StyledText variant='h6'> { athlete?.name } has received the needed money for this goal!</StyledText>
+                    }
 
-                    <StyledBox sx={ { marginTop: 6 } }>
+                    <Box sx={
+                        {
+                            marginTop: 6,
+                            border: '2px solid var(--backGroundOrange)',
+                            borderRadius: '10px',
+                            maxWidth: '100%',
+                            p: 2
+                        }
+                    }
+                    >
                         <Slider
                             min={ 0 }
                             max={ goal.amountNeeded }
@@ -144,9 +166,7 @@ const GoalDetail: React.FC<GoalDetailProps> = ( {
                             marks={ marks }
                             sx={ { color: notEnoughMoney > 0 ? 'red' : 'green', maxWidth: '95%' } }
                         />
-                    </StyledBox>
-
-                    <Typography>Current sponsors: { }</Typography>
+                    </Box>
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

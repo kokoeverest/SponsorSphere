@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, Box, Divider, Link, List, ListItem, ListItemButton, Stack } from '@mui/material';
+import { Alert, Box, Divider, Link, List, ListItem, ListItemButton, Stack, Tooltip } from '@mui/material';
 import pictureApi from '@/api/pictureApi';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -96,16 +96,16 @@ const SponsorIndividualDetail: React.FC = () =>
                 <Divider />
 
                 <Divider flexItem><StyledText>General info</StyledText></Divider>
-                <Stack>
+                <StyledBox alignSelf={ 'center' }>
+                    <Stack>
 
-                    <StyledBox alignSelf={'center'}>
                         <StyledText>SponsorSphere member since: <strong>{ new Date( sponsor!.created ).toLocaleDateString() }</strong></StyledText>
                         <Divider hidden />
                         <StyledText>Age: <strong>{ sponsor.age }</strong></StyledText>
 
                         <Divider hidden />
-                    </StyledBox>
-                </Stack>
+                    </Stack>
+                </StyledBox>
 
                 <Divider flexItem><StyledText>Sponsorships</StyledText></Divider>
                 <StyledBox>
@@ -145,34 +145,46 @@ const SponsorIndividualDetail: React.FC = () =>
                 <Box>
                     <Stack direction="row" spacing={ 8 } justifyContent="center">
                         { sponsor?.website && (
-                            <Link href={ sponsor.website } target="_blank" rel="noopener noreferrer">
-                                <WebhookIcon />
-                            </Link>
+                            <Tooltip title='Website'>
+                                <Link href={ sponsor.website } target="_blank" rel="noopener noreferrer">
+                                    <WebhookIcon />
+                                </Link>
+                            </Tooltip>
                         ) }
                         { sponsor?.faceBookLink && (
-                            <Link href={ sponsor.faceBookLink } target="_blank" rel="noopener noreferrer">
-                                <FacebookIcon />
-                            </Link>
+                            <Tooltip title='Link to Facebook page'>
+                                <Link href={ sponsor.faceBookLink } target="_blank" rel="noopener noreferrer">
+                                    <FacebookIcon />
+                                </Link>
+                            </Tooltip>
                         ) }
                         { sponsor?.instagramLink && (
-                            <Link href={ sponsor.instagramLink } target="_blank" rel="noopener noreferrer">
-                                <InstagramIcon />
-                            </Link>
+                            <Tooltip title='Link to Instagram page'>
+                                <Link href={ sponsor.instagramLink } target="_blank" rel="noopener noreferrer">
+                                    <InstagramIcon />
+                                </Link>
+                            </Tooltip>
                         ) }
                         { sponsor?.stravaLink && (
-                            <Link href={ `${ sponsor.stravaLink }` } target="_blank" rel="noopener noreferrer">
-                                <StravaIcon />
-                            </Link>
+                            <Tooltip title='Link to Strava page'>
+                                <Link href={ `${ sponsor.stravaLink }` } target="_blank" rel="noopener noreferrer">
+                                    <StravaIcon />
+                                </Link>
+                            </Tooltip>
                         ) }
                         { sponsor?.twitterLink && (
-                            <Link href={ sponsor.twitterLink } target="_blank" rel="noopener noreferrer">
-                                <TwitterIcon />
-                            </Link>
+                            <Tooltip title='Link to Twitter page'>
+                                <Link href={ sponsor.twitterLink } target="_blank" rel="noopener noreferrer">
+                                    <TwitterIcon />
+                                </Link>
+                            </Tooltip>
                         ) }
                         { sponsor?.email && (
-                            <Link href={ `mailto:${ sponsor.email }` } target="_blank" rel="noopener noreferrer">
-                                <EmailIcon />
-                            </Link>
+                            <Tooltip title='Send email'>
+                                <Link href={ `mailto:${ sponsor.email }` } target="_blank" rel="noopener noreferrer">
+                                    <EmailIcon />
+                                </Link>
+                            </Tooltip>
                         ) }
                     </Stack>
                 </Box>

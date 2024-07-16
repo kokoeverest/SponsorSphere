@@ -34,6 +34,13 @@ builder.Services.AddSwaggerGen(options =>
 }
 );
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    options.SlidingExpiration = true;
+    options.LoginPath = "/login";
+});
+
 builder.Services.AddIdentityApiEndpoints<User>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;

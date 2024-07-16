@@ -15,9 +15,8 @@ import { Alert, Box, CircularProgress, Container, Divider } from '@mui/material'
 import achievementApi from '@/api/achievementApi';
 import { urlBuilder } from '@/common/helpers';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import StyledText from '@/components/controls/Typography';
-import StyledBox from '@/components/controls/Box';
 
 interface AchievementDetailProps
 {
@@ -75,14 +74,22 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
         }
     }, [ open ] );
 
-    const onDeleteHandler = async () => 
+    const mutation = useMutation( {
+        mutationFn: ( { sportEventId, userId }: { sportEventId: number, userId: number; } ) =>
+            achievementApi.deleteAchievement( sportEventId, userId ),
+        onSuccess: () =>
+        {
+            onClose();
+            queryClient.invalidateQueries( { queryKey: [ `getAthletes` ] } );
+            navigate( urlBuilder( id!, role!, userType! ) );
+        },
+    } );
+
+    const onDeleteHandler = async ( sportEventId: number, userId: number ) => 
     {
         if ( sportEvent )
         {
-            await achievementApi.deleteAchievement( sportEvent.id, Number( id ) );
-            onClose();
-            queryClient.invalidateQueries( { queryKey: [ `deleteAchievement` ] } );
-            navigate( urlBuilder( id!, role!, userType! ) );
+            mutation.mutate( { sportEventId, userId } );
         }
     };
 
@@ -97,6 +104,7 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
             scroll={ scroll }
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
+            sx={ { lineHeight: 2 } }
         >
             <DialogTitle id="scroll-dialog-title"
                 sx={ {
@@ -128,9 +136,7 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
                     {
                         achievement.placeFinished &&
                         <Divider flexItem>
-
-                            <StyledText>Finished: </StyledText>
-                            <Box><StyledText>{ achievement.placeFinished } place</StyledText></Box>
+                            <StyledText>Finished: <StyledText variant='h4' sx={ { color: 'green', display: 'inline' } }>{ achievement.placeFinished }</StyledText> place</StyledText>
                         </Divider>
                     }
 
@@ -163,7 +169,7 @@ const AchievementDetail: React.FC<AchievementDetailProps> = ( {
             <DialogActions>
                 <div className='container-buttons'>
                     <StyledButton onClick={ onClose }>Close</StyledButton>
-                    { Number( id ) === achievement.athleteId && <StyledButton onClick={ onDeleteHandler }>Delete achievement</StyledButton> }
+                    { Number( id ) === achievement.athleteId && <StyledButton onClick={ () => onDeleteHandler( sportEvent!.id, Number( id! ) ) }>Delete achievement</StyledButton> }
                 </div>
             </DialogActions>
         </Dialog>
