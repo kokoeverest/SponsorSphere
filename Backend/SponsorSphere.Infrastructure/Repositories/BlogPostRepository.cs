@@ -25,7 +25,7 @@ namespace SponsorSphere.Infrastructure.Repositories
         public async Task<int> DeleteAsync(int blogPostId)
         {
             return await _context.BlogPosts
-                .Where(se => se.Id.Equals(blogPostId))
+                .Where(bp => bp.Id.Equals(blogPostId))
                 .ExecuteDeleteAsync();
         }
 

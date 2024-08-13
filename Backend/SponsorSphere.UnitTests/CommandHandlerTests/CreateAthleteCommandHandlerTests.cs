@@ -4,10 +4,8 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using SponsorSphere.Application.App.Athletes.Commands;
 using SponsorSphere.Application.App.Athletes.Dtos;
-using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Interfaces;
 using SponsorSphere.Domain.Models;
-using SponsorSphere.UnitTests.Helpers;
 
 namespace SponsorSphere.UnitTests.CommandHandlerTests
 {

@@ -16,6 +16,9 @@ namespace SponsorSphere.IntegrationTests.AthleteTests
         private readonly SponsorSphereDbContext _context;
         private readonly AthletesController _controller;
 
+        public int DefaultPageNumber = 1;
+        public int DefaultPageSize = 10;
+
         public AthleteControllerTests(DatabaseFixture fixture)
         {
             _context = fixture.Context;
@@ -54,7 +57,7 @@ namespace SponsorSphere.IntegrationTests.AthleteTests
         public async Task AthletesController_GetAllAthletesFromDatabase_ReturnAllAthletes()
         {
             // Act
-            var requestResult = await _controller.GetAllAthletes(1, 10);
+            var requestResult = await _controller.GetAllAthletes(DefaultPageNumber, DefaultPageSize);
 
             // Assert
             var result = requestResult as OkObjectResult;
@@ -104,7 +107,7 @@ namespace SponsorSphere.IntegrationTests.AthleteTests
             var country = CountryEnum.BGR;
 
             // Act
-            var requestResult = await _controller.GetAthletesByCountry(country, 1, 10);
+            var requestResult = await _controller.GetAthletesByCountry(country, DefaultPageNumber, DefaultPageSize);
 
             // Assert
             var result = requestResult as OkObjectResult;

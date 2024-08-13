@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SponsorSphere.Application.App.Pictures.Dtos;
 using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Domain.Models;

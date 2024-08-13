@@ -18,8 +18,10 @@ namespace SponsorSphereWebAPI.Filters
             CultureInfo invariant = CultureInfo.InvariantCulture;
             string format = "hh:mm:ss";
             string controller = context.ActionDescriptor.DisplayName!;
+            string action = 
+                $"[{DateTime.Now.ToString(format, invariant)} INF] Controller: {controller}, total execution time ({StopWatch!.ElapsedMilliseconds}ms)";
 
-            Console.WriteLine($"[{DateTime.Now.ToString(format, invariant)} INF] Controller: {controller}, total execution time ({StopWatch!.ElapsedMilliseconds}ms)");
+            Console.WriteLine(action);
         }
     }
 }
