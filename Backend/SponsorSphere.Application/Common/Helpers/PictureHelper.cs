@@ -5,26 +5,48 @@ using SponsorSphere.Domain.Models;
 
 namespace SponsorSphere.Application.Common.Helpers
 {
+    /// <summary>
+    /// A static helper class that provides methods for working with pictures.
+    /// </summary>
     public static class PictureHelper
     {
+        /// <summary>
+        /// Transforms the provided file into a Picture object.
+        /// </summary>
+        /// <param name="picture">The IFormFile object representing the picture file.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A Picture object representing the transformed file.</returns>
         public static async Task<Picture> TransformFileToPicture(IFormFile picture, CancellationToken cancellationToken)
         {
-            using var memoryStream = new MemoryStream();
-
-            await picture.CopyToAsync(memoryStream, cancellationToken);
-
-            if (memoryStream.Length < FileConstants.FileMaxSize)
+            if (!FileConstants.validPictureFormats.Contains(picture.ContentType))
             {
-                return new Picture
-                {
-                    Content = memoryStream.ToArray(),
-                    Modified = DateTime.UtcNow,
-                };
+                throw new BadRequestException("The file type is incorrect! Only .png, .jpg and .jpeg files are supported");
             }
-            else
+
+            var fileExtension = Path.GetExtension(picture.FileName).ToLowerInvariant();
+            if (!FileConstants.validExtensions.Contains(fileExtension))
+            {
+                throw new BadRequestException("The file extension is incorrect! Only .png, .jpg and .jpeg files are supported");
+            }
+
+            if (picture.Length > FileConstants.MaxFileSize)
             {
                 throw new BadRequestException("The file is too large.");
             }
+
+            if (picture.Length < FileConstants.MinFileSize)
+            {
+                throw new BadRequestException("The file is too small.");
+            }
+
+            using var memoryStream = new MemoryStream();
+            await picture.CopyToAsync(memoryStream, cancellationToken);
+
+            return new Picture
+            {
+                Content = memoryStream.ToArray(),
+                Modified = DateTime.UtcNow,
+            };
         }
     }
 }

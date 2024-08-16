@@ -56,11 +56,11 @@ namespace SponsorSphere.UnitTests.CommandHandlerTests
         public async Task CreateBlogPost_ValidBlogPostWithPictures_ShouldHaveNonEmptyPicturesList()
         {
             // Arrange
-            var fakePicture = Substitute.For<IFormFile>();
+            var fakePicture = TestData.fakeValidIFormFile;
             var fakeCreateBlogPostDto = Substitute.For<CreateBlogPostDto>();
-            fakeCreateBlogPostDto.Pictures = 
-                [ fakePicture
-                ];
+            
+            fakeCreateBlogPostDto.Pictures = [ fakePicture ];
+
             _mapperMock.Map<BlogPost>(Arg.Any<CreateBlogPostDto>()).Returns(TestData.FakeBlogPost);
 
             _unitOfWorkMock.BlogPostsRepository

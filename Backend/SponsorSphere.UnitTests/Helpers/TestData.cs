@@ -1,5 +1,7 @@
-﻿using SponsorSphere.Application.App.Achievements.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+using SponsorSphere.Application.App.Achievements.Dtos;
 using SponsorSphere.Application.App.BlogPosts.Dtos;
+using SponsorSphere.Application.Common.Constants;
 using SponsorSphere.Domain.Enums;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure.Constants;
@@ -14,11 +16,37 @@ namespace SponsorSphere.UnitTests.Helpers
         private static int fakeBlogPostId = 1;
         private static int fakeAthleteId = 2;
 
+        private static readonly byte[] _validFileSize = new byte[FileConstants.MaxFileSize - 1];
+        private static readonly byte[] _tooLargeFileSize = new byte[FileConstants.MaxFileSize + 1];
+        private static readonly byte[] _tooSmallFileSize = new byte[FileConstants.MinFileSize - 1];
+        private static readonly MemoryStream ValidStream = new(_validFileSize);
+        private static readonly MemoryStream InvalidStream = new(_tooLargeFileSize);
+        private static readonly string _fileName = "filename.jpg";
+        private static readonly string _name = "name";
+
         private static Picture samplePicture = new()
         {
             Id = 1,
             Modified = DateTime.UtcNow,
             Content = Encoding.ASCII.GetBytes(UserConstants.PictureContent)
+        };
+
+        internal static IFormFile fakeValidIFormFile = new FormFile(ValidStream, 0, ValidStream.Length, _name, _fileName)
+        {
+            Headers = new HeaderDictionary(),
+            ContentType = "image/jpeg"
+        };
+
+        internal static IFormFile fakeTooLargeIFormFile = new FormFile(InvalidStream, 0, InvalidStream.Length, _name, _fileName)
+        {
+            Headers = new HeaderDictionary(),
+            ContentType = "image/jpeg"
+        };
+
+        internal static IFormFile fakeTooSmallIFormFile = new FormFile(new MemoryStream(_tooSmallFileSize), 0, _tooSmallFileSize.Length, _name, _fileName)
+        {
+            Headers = new HeaderDictionary(),
+            ContentType = "image/jpeg"
         };
 
         private static SportEvent fakeSportEvent = new()
