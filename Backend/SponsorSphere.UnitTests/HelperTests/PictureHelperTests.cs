@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using SponsorSphere.Application.Common.Constants;
-using SponsorSphere.Application.Common.Exceptions;
+﻿using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Application.Common.Helpers;
 using SponsorSphere.Domain.Models;
 using SponsorSphere.UnitTests.Helpers;

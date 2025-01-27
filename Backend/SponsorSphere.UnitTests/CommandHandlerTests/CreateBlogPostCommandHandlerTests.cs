@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using SponsorSphere.Application.App.BlogPosts.Commands;
@@ -58,7 +57,7 @@ namespace SponsorSphere.UnitTests.CommandHandlerTests
             // Arrange
             var fakePicture = TestData.fakeValidIFormFile;
             var fakeCreateBlogPostDto = Substitute.For<CreateBlogPostDto>();
-            
+
             fakeCreateBlogPostDto.Pictures = [ fakePicture ];
 
             _mapperMock.Map<BlogPost>(Arg.Any<CreateBlogPostDto>()).Returns(TestData.FakeBlogPost);

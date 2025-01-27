@@ -134,6 +134,7 @@ namespace SponsorSphere.Infrastructure.Repositories
                 (athlete, achievement) => new { Athlete = athlete, Achievement = achievement })
                 .Where(joinResult => joinResult.Achievement.PlaceFinished == 1)
                 .Select(joinResult => joinResult.Athlete)
+                .Include(a => a.Achievements)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .OrderBy(joinResult => joinResult.LastName)

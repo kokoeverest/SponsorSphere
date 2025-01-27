@@ -2,10 +2,12 @@
 using SponsorSphere.Application.App.Athletes.Dtos;
 using SponsorSphere.Application.Common.Exceptions;
 using SponsorSphere.Domain.Enums;
+using SponsorSphere.Domain.Models;
 using SponsorSphere.Infrastructure;
 using SponsorSphere.Infrastructure.Repositories;
 using SponsorSphere.IntegrationTests.Helpers;
 using SponsorSphereWebAPI.Controllers;
+using System.Collections;
 using System.Diagnostics.Metrics;
 using System.Net;
 
@@ -118,6 +120,116 @@ namespace SponsorSphere.IntegrationTests.AthleteTests
 
             Assert.NotNull(athletes);
             Assert.True(athletes.All(a => a.Country == country));
+        }
+
+        [Fact]
+        public async Task AthletesController_GetAthletesCount_ReturnsInteger()
+        {
+            // Arrange & Act
+            var resultCount = await _controller.GetAthletesCount();
+
+            // Assert
+            var result = resultCount as OkObjectResult;
+            
+            Assert.IsType<int>(result!.Value);
+            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+
+        }
+
+        [Fact]
+        public async Task AthletesController_GetAthletesBySport_ReturnsFilteredAthletes()
+        {
+            // Arrange
+            var sport = SportsEnum.UltramarathonRunning;
+
+            // Act
+            var requestResult = await _controller.GetAthletesBySport(sport, DefaultPageNumber, DefaultPageSize);
+
+            // Assert
+            var result = requestResult as OkObjectResult;
+            var athletes = result!.Value as List<AthleteDto>;
+
+            Assert.NotNull(result);
+            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+
+            Assert.NotNull(athletes);
+            Assert.True(athletes.All(a => a.Sport == sport));
+        }
+
+        [Fact]
+        public async Task AthletesController_GetAthletesByAge_ReturnsAthletesFromAge()
+        {
+            // Arrange
+            var age = 20;
+
+            // Act
+            var requestResult = await _controller.GetAthletesByAge(age, DefaultPageNumber, DefaultPageSize);
+
+            // Assert
+            var result = requestResult as OkObjectResult;
+            var athletes = result!.Value as List<AthleteDto>;
+
+            Assert.NotNull(result);
+            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+
+            Assert.NotNull(athletes);
+            Assert.True(athletes.All(a => a.Age <= age));
+        }
+
+        [Fact]
+        public async Task AthletesController_GetAthletesByAge_ReturnsEmptyCollection_IfNoResult()
+        {
+            // Arrange
+            var tooLowAge = 10;
+
+            // Act
+            var requestResult = await _controller.GetAthletesByAge(tooLowAge, DefaultPageNumber, DefaultPageSize);
+
+            // Assert
+            var result = requestResult as OkObjectResult;
+            var athletes = result!.Value as List<AthleteDto>;
+
+            Assert.Empty(athletes!);
+        }
+
+        [Fact]
+        public async Task AthletesController_GetAthletesByAchievement_ReturnsFilteredAthletes()
+        {
+            // Arrange & Act
+            var requestResult = await _controller.GetAthletesByAchievements(DefaultPageNumber, DefaultPageSize);
+
+            // Assert
+            var result = requestResult as OkObjectResult;
+            var athletes = result!.Value as List<AthleteDto>;
+
+            Assert.NotNull(result);
+            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+
+            Assert.NotNull(athletes);
+            Assert.NotEmpty(athletes[0].Achievements);
+        }
+
+        [Fact]
+        public async Task AthletesController_GetAthletesByAmount_ReturnAthletesOrderedByAmountSponsored()
+        {
+            // Act
+            var requestResult = await _controller.GetAthletesByAmount(DefaultPageNumber, DefaultPageSize);
+
+            // Assert
+            var result = requestResult as OkObjectResult;
+            var athletes = result!.Value as List<object>;
+            Assert.NotNull(result);
+            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+            Assert.NotNull(athletes);
+
+            dynamic athleteInfo = athletes.First();
+            var athleteType = athleteInfo.GetType();
+
+            var athleteId = (int)athleteType.GetProperty("AthleteId")!.GetValue(athleteInfo)!;
+            var totalAmount = (int)athleteType.GetProperty("TotalAmount")!.GetValue(athleteInfo)!;
+
+            Assert.True(athleteId > 0);
+            Assert.True(totalAmount > 0);
         }
     }
 }
